@@ -25,6 +25,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+import httpx
 from openai import AsyncOpenAI
 
 logging.basicConfig(
@@ -290,6 +291,9 @@ async def enrich_batch(
                 temperature=0.3,
                 tools=tools,  # type: ignore
                 tool_choice={"type": "function", "function": {"name": "output"}},
+                # DeepSeek V4 defaults to thinking mode, which rejects forced
+                # tool_choice — disable it (same fix as llm_service).
+                extra_body={"thinking": {"type": "disabled"}},
             )
 
             tool_calls = response.choices[0].message.tool_calls
@@ -396,6 +400,9 @@ async def main():
         base_url=config["base_url"],
         timeout=120.0,
         max_retries=1,
+        # trust_env=False: DeepSeek is reachable directly; a VPN system proxy
+        # breaks Python TLS through the tunnel (same fix as llm_service).
+        http_client=httpx.AsyncClient(trust_env=False, timeout=120.0),
     )
 
     semaphore = asyncio.Semaphore(MAX_CONCURRENT_BATCHES)
@@ -432,6 +439,15 @@ async def main():
     # Stats
     with_tags = sum(1 for a in attractions if a.get("tags"))
     logger.info(f"Enrichment complete: {with_tags}/{total} have tags")
+
+    # Safety: never overwrite a good knowledge base with an all-defaults run
+    # (e.g. when every batch failed on a network issue).
+    if with_tags == 0 and total > 0:
+        logger.error(
+            "0 attractions enriched — aborting WITHOUT saving to protect the "
+            "existing attractions.json. Fix the connection issue and re-run."
+        )
+        return
 
     # Tag distribution
     tag_counts: Dict[str, int] = {}

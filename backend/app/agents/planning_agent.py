@@ -15,6 +15,7 @@ import json
 import logging
 from typing import Any, Dict, List, Optional
 
+import httpx
 from openai import AsyncOpenAI
 
 from app.config.settings import settings
@@ -178,6 +179,9 @@ def _get_llm_client() -> AsyncOpenAI:
         base_url=settings.DEEPSEEK_BASE_URL,
         timeout=90.0,
         max_retries=1,
+        # trust_env=False: DeepSeek is reachable directly; a VPN system proxy
+        # breaks Python TLS through the tunnel (same fix as llm_service).
+        http_client=httpx.AsyncClient(trust_env=False, timeout=90.0),
     )
 
 
@@ -256,6 +260,9 @@ async def generate_itinerary(
                 temperature=0.5,
                 tools=tools,  # type: ignore
                 tool_choice={"type": "function", "function": {"name": "output"}},
+                # DeepSeek V4 defaults to thinking mode, which rejects forced
+                # tool_choice — disable it (same fix as llm_service).
+                extra_body={"thinking": {"type": "disabled"}},
             )
 
             tool_calls = response.choices[0].message.tool_calls

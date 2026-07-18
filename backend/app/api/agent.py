@@ -65,6 +65,7 @@ class PlanResponse(BaseModel):
     candidate_places: Optional[List[Dict[str, Any]]]
     recommendations: Optional[List[Dict[str, Any]]]
     itinerary: Optional[Dict[str, Any]]
+    weather: Optional[Dict[str, Any]]
     current_step: str
     error: Optional[str]
     messages: List[Dict[str, str]]
@@ -114,6 +115,7 @@ async def agent_plan(request: PlanRequest):
         candidate_places=state.get("candidate_places"),
         recommendations=state.get("recommendations"),
         itinerary=state.get("itinerary"),
+        weather=state.get("weather") or None,
         current_step=state.get("current_step", "unknown"),
         error=state.get("error"),
         messages=_sanitize_messages(state.get("messages", [])),

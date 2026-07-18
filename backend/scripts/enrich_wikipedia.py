@@ -22,6 +22,7 @@ Usage:
 import asyncio
 import json
 import logging
+import sys
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -180,6 +181,66 @@ async def enrich_one(
     return result
 
 
+def _detect_proxy() -> Optional[str]:
+    """Read the Windows system proxy from the registry.
+
+    httpx trust_env does not reliably pick up the registry proxy on
+    Windows (verified), so read it ourselves.
+    """
+    if sys.platform != "win32":
+        return None
+    try:
+        import winreg
+        key = winreg.OpenKey(
+            winreg.HKEY_CURRENT_USER,
+            r"Software\Microsoft\Windows\CurrentVersion\Internet Settings",
+        )
+        enabled, _ = winreg.QueryValueEx(key, "ProxyEnable")
+        server, _ = winreg.QueryValueEx(key, "ProxyServer")
+        winreg.CloseKey(key)
+        if not enabled or not server:
+            return None
+        if "=" in server:  # per-protocol form: "http=h:1;https=h:2"
+            parts = dict(p.split("=", 1) for p in server.split(";") if "=" in p)
+            server = parts.get("https") or parts.get("http", "")
+        server = server.strip()
+        return f"http://{server}" if server else None
+    except Exception:
+        return None
+
+
+async def _make_shared_client() -> httpx.AsyncClient:
+    """Create the shared HTTP client, probing direct vs system proxy.
+
+    Wikipedia/Wikimedia is GFW-blocked, so a VPN is required. Try direct
+    connection first (works with VPN in TUN/global mode), then the system
+    proxy (works with VPN in system-proxy mode).
+    """
+    proxy = _detect_proxy()
+    # Proxy first (GFW-blocked in CN), direct only as fallback.
+    for candidate in (proxy, None):
+        probe = httpx.AsyncClient(timeout=60.0, trust_env=False, proxy=candidate)
+        try:
+            response = await probe.get(
+                "https://wikimedia.org/", headers={"User-Agent": USER_AGENT}
+            )
+            if response.status_code < 500:
+                mode = "system proxy" if candidate else "direct"
+                logger.info(f"Wikipedia client: {mode} connection OK")
+                # Return a FRESH client — the probe client has already sent
+                # a request and httpx forbids re-entering it with `async with`.
+                return httpx.AsyncClient(timeout=60.0, trust_env=False, proxy=candidate)
+        except Exception:
+            pass
+        finally:
+            await probe.aclose()
+    logger.warning(
+        "Wikipedia unreachable both direct and via proxy — "
+        "proceeding with direct connection (expect failures)"
+    )
+    return httpx.AsyncClient(timeout=60.0, trust_env=False)
+
+
 async def main():
     """Main entry point: read Wikidata JSON, enrich with Wikipedia, save."""
     if not INPUT_FILE.exists():
@@ -209,7 +270,7 @@ async def main():
         async with semaphore:
             return await enrich_one(shared_client, attraction, idx, total)
 
-    async with httpx.AsyncClient(timeout=60.0, trust_env=False) as shared_client:
+    async with await _make_shared_client() as shared_client:
         tasks = [bounded_enrich(att, i) for i, att in enumerate(attractions)]
         enriched = await asyncio.gather(*tasks)
 

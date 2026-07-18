@@ -68,6 +68,12 @@ TARGET_COUNTS = {
     "长沙": 25,
     "厦门": 25,
     "大理": 20,
+    # ── Phase 6 expansion cities ──
+    "三亚": 30,
+    "桂林": 30,
+    "苏州": 30,
+    "张家界": 25,
+    "丽江": 25,
 }
 
 USER_AGENT = "TravelMindAgent/0.1"

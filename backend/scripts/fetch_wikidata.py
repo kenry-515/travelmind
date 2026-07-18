@@ -37,26 +37,35 @@ logger = logging.getLogger(__name__)
 SPARQL_ENDPOINT = "https://query.wikidata.org/sparql"
 USER_AGENT = "TravelMindAgent/0.1 (https://github.com/travelmind; travelmind@example.com)"
 
-# 10 target cities from data strategy
+# 15 target cities: original 10 + 5 added in Phase 6 data expansion
+# NOTE: use prefecture-level entities that actually hold P131* links —
+# Q-IDs verified 2026-07-18 after Wikidata's Chinese-city reorganization
+# (older "city" entities like Q30038/Q133313/Q69067/Q1200627 are now empty).
 CITIES = [
     {"name": "重庆", "wd_id": "Q11725"},
-    {"name": "成都", "wd_id": "Q30038"},
-    {"name": "广州", "wd_id": "Q133313"},
+    {"name": "成都", "wd_id": "Q30002"},
+    {"name": "广州", "wd_id": "Q16572"},
     {"name": "北京", "wd_id": "Q956"},
     {"name": "上海", "wd_id": "Q8686"},
     {"name": "西安", "wd_id": "Q5826"},
     {"name": "杭州", "wd_id": "Q4970"},
     {"name": "长沙", "wd_id": "Q174091"},
-    {"name": "厦门", "wd_id": "Q69067"},
-    {"name": "大理", "wd_id": "Q1200627"},   # Dali Bai Autonomous Prefecture
+    {"name": "厦门", "wd_id": "Q68744"},
+    {"name": "大理", "wd_id": "Q999156"},
+    # ── Phase 6 expansion (Q-IDs verified via wbsearchentities 2026-07-18) ──
+    {"name": "三亚", "wd_id": "Q319804"},
+    {"name": "桂林", "wd_id": "Q189633"},
+    {"name": "苏州", "wd_id": "Q42622"},
+    {"name": "张家界", "wd_id": "Q197379"},
+    {"name": "丽江", "wd_id": "Q205914"},
 ]
 
 # Output path (relative to project root)
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 OUTPUT_FILE = DATA_DIR / "wikidata_attractions.json"
 
-# Maximum results per city
-MAX_PER_CITY = 80
+# Maximum results per city (raised 80 → 120 in Phase 6 for densification)
+MAX_PER_CITY = 120
 
 
 # ── SPARQL Query Builder ─────────────────────────────────
@@ -110,6 +119,37 @@ def build_sparql(city_wd_id: str) -> str:
     }}
     LIMIT {MAX_PER_CITY}
     """
+
+
+# ── Proxy detection ──────────────────────────────────────
+
+def _detect_proxy() -> Optional[str]:
+    """Read the Windows system proxy from the registry.
+
+    httpx trust_env does not reliably pick up the registry proxy on
+    Windows (we verified: explicit proxy= works, trust_env=True fails),
+    so read it ourselves. Returns e.g. 'http://127.0.0.1:34131' or None.
+    """
+    if sys.platform != "win32":
+        return None
+    try:
+        import winreg
+        key = winreg.OpenKey(
+            winreg.HKEY_CURRENT_USER,
+            r"Software\Microsoft\Windows\CurrentVersion\Internet Settings",
+        )
+        enabled, _ = winreg.QueryValueEx(key, "ProxyEnable")
+        server, _ = winreg.QueryValueEx(key, "ProxyServer")
+        winreg.CloseKey(key)
+        if not enabled or not server:
+            return None
+        if "=" in server:  # per-protocol form: "http=h:1;https=h:2"
+            parts = dict(p.split("=", 1) for p in server.split(";") if "=" in p)
+            server = parts.get("https") or parts.get("http", "")
+        server = server.strip()
+        return f"http://{server}" if server else None
+    except Exception:
+        return None
 
 
 # ── API Call ─────────────────────────────────────────────
@@ -170,11 +210,23 @@ async def query_wikidata(city: Dict[str, str]) -> List[Dict[str, Any]]:
 
 
 async def _execute_query(query: str, max_retries: int = 2) -> List[Dict[str, Any]]:
-    """Execute a single SPARQL query with retries. Returns parsed results."""
+    """Execute a single SPARQL query with retries. Returns parsed results.
+
+    Wikidata is blocked by the GFW, so a VPN is required. Try direct
+    connection first (works with VPN in TUN/global mode), then fall back
+    to the system proxy (works with VPN in system-proxy mode).
+    """
     last_error = None
+    proxy = _detect_proxy()
     for attempt in range(max_retries + 1):
+        # Proxy first (Wikidata is GFW-blocked; direct always fails in CN),
+        # direct only as fallback (covers VPN TUN mode without system proxy).
+        use_proxy = attempt % 2 == 0 and proxy is not None
         try:
-            async with httpx.AsyncClient(timeout=120.0, trust_env=False) as client:
+            async with httpx.AsyncClient(
+                timeout=120.0, trust_env=False,
+                proxy=proxy if use_proxy else None,
+            ) as client:
                 response = await client.get(
                     SPARQL_ENDPOINT,
                     params={"format": "json", "query": query},
@@ -182,14 +234,19 @@ async def _execute_query(query: str, max_retries: int = 2) -> List[Dict[str, Any
                 )
                 response.raise_for_status()
                 data = response.json()
+                if use_proxy:
+                    logger.info("  (via system proxy)")
                 return _parse_bindings(data)
         except Exception as e:
             last_error = e
             if attempt < max_retries:
                 wait = 2 ** attempt
-                logger.warning(f"  Attempt {attempt + 1} failed, retrying in {wait}s: {e}")
+                logger.warning(
+                    f"  Attempt {attempt + 1} failed "
+                    f"({'proxy' if use_proxy else 'direct'}), retrying in {wait}s: {e!r}"
+                )
                 await asyncio.sleep(wait)
-    logger.error(f"  All {max_retries + 1} attempts failed: {last_error}")
+    logger.error(f"  All {max_retries + 1} attempts failed: {last_error!r}")
     return []
 
 
@@ -248,31 +305,76 @@ def _parse_bindings(data: Dict[str, Any]) -> List[Dict[str, Any]]:
 # ── Main ─────────────────────────────────────────────────
 
 async def main():
-    """Fetch attractions from all 10 cities and save to JSON."""
+    """Fetch attractions and save to JSON.
+
+    CLI: `python scripts/fetch_wikidata.py [城市名 ...]` — fetch only the
+    given cities. Results are MERGED into the output file: a city's old
+    entries are replaced only when the fresh fetch returned >0 for it,
+    so flaky WDQS responses never wipe previously-good data.
+    """
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-    all_results: List[Dict[str, Any]] = []
-    total = 0
+    only = set(sys.argv[1:])
+    cities = [c for c in CITIES if not only or c["name"] in only]
+    if not cities:
+        logger.error(f"No matching cities for args: {sorted(only)}")
+        return
+    if only:
+        logger.info(f"Subset run: {[c['name'] for c in cities]}")
 
-    for city in CITIES:
+    all_results: List[Dict[str, Any]] = []
+    fetched_ok: set = set()
+
+    for city in cities:
         try:
             results = await query_wikidata(city)
             all_results.extend(results)
-            total += len(results)
+            if results:
+                fetched_ok.add(city["name"])
         except Exception as e:
             logger.error(f"Failed to fetch {city['name']}: {e}")
             continue
         # Be polite to the public endpoint
-        if city != CITIES[-1]:
+        if city != cities[-1]:
             time.sleep(1.0)
+
+    # ── Merge with existing file ─────────────────────────
+    # Fetched-and-nonempty cities are replaced; everything else is kept.
+    merged: List[Dict[str, Any]] = []
+    seen: set = set()
+
+    def _key(a: Dict[str, Any]):
+        return (a.get("wikidata_id") or a.get("name", ""), a.get("city", ""))
+
+    for a in all_results:
+        k = _key(a)
+        if k not in seen:
+            seen.add(k)
+            merged.append(a)
+
+    if OUTPUT_FILE.exists():
+        with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+            old = json.load(f)
+        kept = 0
+        for a in old.get("attractions", []):
+            if a.get("city") in fetched_ok:
+                continue  # replaced by fresh results
+            k = _key(a)
+            if k not in seen:
+                seen.add(k)
+                merged.append(a)
+                kept += 1
+        logger.info(f"Merged: {len(all_results)} fresh + {kept} kept from previous run")
+
+    total = len(merged)
 
     # Save
     output = {
         "source": "Wikidata SPARQL (CC0)",
         "query_date": time.strftime("%Y-%m-%d"),
         "total": total,
-        "cities": [c["name"] for c in CITIES],
-        "attractions": all_results,
+        "cities": sorted({a.get("city", "") for a in merged}),
+        "attractions": merged,
     }
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
@@ -282,7 +384,7 @@ async def main():
 
     # Per-city breakdown
     from collections import Counter
-    city_counts = Counter(r["city"] for r in all_results)
+    city_counts = Counter(r["city"] for r in merged)
     for city in CITIES:
         count = city_counts.get(city["name"], 0)
         status = "✅" if count >= 20 else "⚠️" if count >= 10 else "❌"
