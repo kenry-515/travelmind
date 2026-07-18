@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Trash2 } from 'lucide-react'
 import { ChatBox, type Message } from '../components/ChatBox'
 import { ChatInput } from '../components/ChatInput'
 import { api } from '../lib/api'
@@ -9,13 +9,40 @@ function genId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
 }
 
+// 会话持久化（sessionStorage，按标签页隔离）：刷新/离开后再进入不丢历史。
+// 后端 /chat 是无状态的（每次请求携带完整 messages），客户端恢复即可续聊。
+const STORAGE_KEY = 'travelmind_chat'
+const MAX_STORED = 30
+
+interface StoredChat {
+  messages: Message[]
+  sessionId: string | null
+}
+
+function loadStoredChat(): StoredChat {
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY)
+    if (raw) {
+      const parsed = JSON.parse(raw)
+      return {
+        messages: Array.isArray(parsed.messages) ? parsed.messages : [],
+        sessionId: parsed.sessionId || null,
+      }
+    }
+  } catch {
+    // corrupted storage — start fresh
+  }
+  return { messages: [], sessionId: null }
+}
+
 export function ChatPage() {
   const [searchParams] = useSearchParams()
   const initialQuery = searchParams.get('q') || ''
 
-  const [messages, setMessages] = useState<Message[]>([])
+  const [stored] = useState<StoredChat>(loadStoredChat)
+  const [messages, setMessages] = useState<Message[]>(stored.messages)
   const [loading, setLoading] = useState(false)
-  const [sessionId, setSessionId] = useState<string | null>(null)
+  const [sessionId, setSessionId] = useState<string | null>(stored.sessionId)
   const hasSentInitial = useRef(false)
   const messagesRef = useRef(messages)
   const sessionRef = useRef(sessionId)
@@ -23,6 +50,24 @@ export function ChatPage() {
   // Keep refs in sync for stable callback
   messagesRef.current = messages
   sessionRef.current = sessionId
+
+  // Persist chat on change (capped to keep storage small)
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ messages: messages.slice(-MAX_STORED), sessionId })
+      )
+    } catch {
+      // storage full or unavailable — non-fatal
+    }
+  }, [messages, sessionId])
+
+  const clearChat = useCallback(() => {
+    setMessages([])
+    setSessionId(null)
+    sessionStorage.removeItem(STORAGE_KEY)
+  }, [])
 
   // Send the initial query once on mount
   useEffect(() => {
@@ -34,7 +79,7 @@ export function ChatPage() {
         role: 'user',
         content: initialQuery,
       }
-      setMessages([userMsg])
+      setMessages((prev) => [...prev, userMsg])
       setLoading(true)
 
       api.post('/chat', {
@@ -48,12 +93,12 @@ export function ChatPage() {
             role: 'assistant',
             content: data.content,
           }
-          setMessages([userMsg, aiMsg])
+          setMessages((prev) => [...prev, aiMsg])
           setSessionId(data.session_id)
         })
         .catch(() => {
-          setMessages([
-            userMsg,
+          setMessages((prev) => [
+            ...prev,
             {
               id: genId(),
               role: 'assistant',
@@ -121,12 +166,22 @@ export function ChatPage() {
         >
           <ArrowLeft size={20} />
         </Link>
-        <div>
+        <div className="flex-1">
           <h2 className="text-sm font-semibold text-slate-800">TravelMind 助手</h2>
           <p className="text-xs text-slate-400">
-            {sessionId ? '会话已建立' : '正在连接...'}
+            {messages.length > 0 ? `已进行 ${Math.ceil(messages.length / 2)} 轮对话` : '旅行问答 · 随时提问'}
           </p>
         </div>
+        {messages.length > 0 && (
+          <button
+            onClick={clearChat}
+            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-slate-400 transition-colors hover:bg-slate-100 hover:text-red-500"
+            aria-label="清空对话"
+          >
+            <Trash2 size={14} />
+            清空
+          </button>
+        )}
       </header>
 
       {/* Messages */}

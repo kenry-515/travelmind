@@ -49,6 +49,25 @@ export function ItineraryPage() {
     runPipeline(query)
   }, [query])
 
+  /** LLM 输出中常含字面 \n 转义序列，统一还原为真实换行 */
+  function cleanText(text: string): string {
+    return (text || '').replace(/\\n/g, '\n')
+  }
+
+  /** Normalize literal "\n" sequences across the whole itinerary once. */
+  function cleanItinerary(it: ItineraryData): ItineraryData {
+    return {
+      ...it,
+      overview: cleanText(it.overview),
+      general_tips: cleanText(it.general_tips),
+      plan: it.plan.map((d) => ({
+        ...d,
+        transport_tips: cleanText(d.transport_tips),
+        attractions: d.attractions.map((a) => ({ ...a, notes: cleanText(a.notes) })),
+      })),
+    }
+  }
+
   async function runPipeline(userInput: string) {
     setState({ stage: 'loading', message: '正在提取用户画像...' })
 
@@ -94,7 +113,7 @@ export function ItineraryPage() {
 
       setState({
         stage: 'ready',
-        itinerary: data.itinerary,
+        itinerary: cleanItinerary(data.itinerary),
         places: (data.recommendations || []) as PlaceItem[],
         weather,
         error: data.error,
@@ -241,11 +260,6 @@ export function ItineraryPage() {
                       </h3>
                       <p className="text-xs text-slate-400">第 {day.day} 天</p>
                     </div>
-                    <div className="hidden sm:block text-xs text-slate-400">
-                      <Navigation size={14} className="inline mr-1" />
-                      {day.transport_tips.slice(0, 30)}
-                      {day.transport_tips.length > 30 ? '...' : ''}
-                    </div>
                   </div>
 
                   {/* Attractions */}
@@ -316,13 +330,18 @@ export function ItineraryPage() {
                     </div>
                   )}
 
-                  {/* Transport tips (mobile only) */}
-                  <div className="border-t border-slate-100 px-5 py-3 sm:hidden">
-                    <p className="flex items-center gap-1.5 text-xs text-slate-400">
-                      <Navigation size={14} />
-                      {day.transport_tips}
-                    </p>
-                  </div>
+                  {/* Transport tips (full text, all viewports) */}
+                  {day.transport_tips && (
+                    <div className="border-t border-slate-100 px-5 py-3">
+                      <p className="flex items-start gap-1.5 text-xs text-slate-500">
+                        <Navigation size={14} className="mt-0.5 shrink-0" />
+                        <span>
+                          <span className="font-medium text-slate-600">交通建议：</span>
+                          {day.transport_tips}
+                        </span>
+                      </p>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -334,7 +353,7 @@ export function ItineraryPage() {
                   <Lightbulb size={16} />
                   旅行贴士
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-amber-700">
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-amber-700">
                   {state.itinerary.general_tips}
                 </p>
               </div>

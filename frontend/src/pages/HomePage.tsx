@@ -24,14 +24,15 @@ export function HomePage() {
     setBackendStatus('loading')
     try {
       const { data } = await api.get('/health')
-      if (data.status === 'ok') {
+      const apiOk = data.services?.api === 'healthy'
+      const dbNote =
+        data.services?.database === 'healthy' ? '数据库已连接' : '数据库（可选）未启用'
+      if (data.status === 'ok' || apiOk) {
         setBackendStatus('healthy')
-        setStatusDetail(
-          `API: ${data.services.api} | Database: ${data.services.database} | v${data.version}`
-        )
+        setStatusDetail(`API 正常 · ${dbNote} · v${data.version}`)
       } else {
         setBackendStatus('degraded')
-        setStatusDetail(`API: ${data.services.api} | Database: ${data.services.database}`)
+        setStatusDetail(`API: ${data.services.api} · ${dbNote}`)
       }
     } catch (_err) {
       setBackendStatus('error')
