@@ -1,0 +1,74 @@
+{
+  "description": "TravelMind 热门趋势数据 — 人工维护的初始基准数据，后续可替换为实时 API",
+  "version": "1.0.0",
+  "updated": "2026-07-18",
+  "source": "Manual curation from public hot lists (Ctrip, Mafengwo, Xiaohongshu, Douyin)",
+  "notes": "Heat score 0-100. Higher = more trending. Updated monthly.",
+  "trends": [
+    {"city": "重庆", "place_name": "洪崖洞", "tag": "夜景", "heat_score": 98, "rank": 1, "source": "douyin_hot"},
+    {"city": "重庆", "place_name": "李子坝轻轨站", "tag": "网红打卡", "heat_score": 92, "rank": 2, "source": "douyin_hot"},
+    {"city": "重庆", "place_name": "长江索道", "tag": "夜景", "heat_score": 88, "rank": 3, "source": "xiaohongshu"},
+    {"city": "重庆", "place_name": "磁器口古镇", "tag": "古镇", "heat_score": 85, "rank": 4, "source": "ctrip_hot"},
+    {"city": "重庆", "place_name": "解放碑", "tag": "购物", "heat_score": 80, "rank": 5, "source": "ctrip_hot"},
+    {"city": "重庆", "place_name": "南山一棵树", "tag": "夜景", "heat_score": 78, "rank": 6, "source": "xiaohongshu"},
+    {"city": "重庆", "place_name": "武隆天生三桥", "tag": "自然", "heat_score": 75, "rank": 7, "source": "ctrip_hot"},
+    {"city": "重庆", "place_name": "鹅岭二厂", "tag": "文艺", "heat_score": 72, "rank": 8, "source": "xiaohongshu"},
+
+    {"city": "成都", "place_name": "大熊猫繁育研究基地", "tag": "亲子", "heat_score": 96, "rank": 1, "source": "ctrip_hot"},
+    {"city": "成都", "place_name": "宽窄巷子", "tag": "美食", "heat_score": 90, "rank": 2, "source": "douyin_hot"},
+    {"city": "成都", "place_name": "锦里古街", "tag": "古镇", "heat_score": 85, "rank": 3, "source": "ctrip_hot"},
+    {"city": "成都", "place_name": "武侯祠", "tag": "历史", "heat_score": 82, "rank": 4, "source": "ctrip_hot"},
+    {"city": "成都", "place_name": "太古里", "tag": "购物", "heat_score": 88, "rank": 5, "source": "douyin_hot"},
+    {"city": "成都", "place_name": "青城山", "tag": "自然", "heat_score": 78, "rank": 6, "source": "ctrip_hot"},
+    {"city": "成都", "place_name": "都江堰", "tag": "历史", "heat_score": 76, "rank": 7, "source": "ctrip_hot"},
+
+    {"city": "广州", "place_name": "广州塔", "tag": "夜景", "heat_score": 92, "rank": 1, "source": "douyin_hot"},
+    {"city": "广州", "place_name": "长隆欢乐世界", "tag": "亲子", "heat_score": 90, "rank": 2, "source": "ctrip_hot"},
+    {"city": "广州", "place_name": "白云山", "tag": "自然", "heat_score": 82, "rank": 3, "source": "ctrip_hot"},
+    {"city": "广州", "place_name": "沙面", "tag": "摄影", "heat_score": 80, "rank": 4, "source": "xiaohongshu"},
+    {"city": "广州", "place_name": "陈家祠", "tag": "历史", "heat_score": 78, "rank": 5, "source": "ctrip_hot"},
+
+    {"city": "北京", "place_name": "故宫", "tag": "历史", "heat_score": 98, "rank": 1, "source": "ctrip_hot"},
+    {"city": "北京", "place_name": "环球影城", "tag": "亲子", "heat_score": 95, "rank": 2, "source": "douyin_hot"},
+    {"city": "北京", "place_name": "长城", "tag": "历史", "heat_score": 93, "rank": 3, "source": "ctrip_hot"},
+    {"city": "北京", "place_name": "南锣鼓巷", "tag": "美食", "heat_score": 85, "rank": 4, "source": "xiaohongshu"},
+    {"city": "北京", "place_name": "颐和园", "tag": "自然", "heat_score": 82, "rank": 5, "source": "ctrip_hot"},
+    {"city": "北京", "place_name": "798艺术区", "tag": "文艺", "heat_score": 80, "rank": 6, "source": "xiaohongshu"},
+
+    {"city": "上海", "place_name": "外滩", "tag": "夜景", "heat_score": 97, "rank": 1, "source": "douyin_hot"},
+    {"city": "上海", "place_name": "迪士尼乐园", "tag": "亲子", "heat_score": 96, "rank": 2, "source": "ctrip_hot"},
+    {"city": "上海", "place_name": "南京路步行街", "tag": "购物", "heat_score": 88, "rank": 3, "source": "ctrip_hot"},
+    {"city": "上海", "place_name": "豫园", "tag": "古镇", "heat_score": 84, "rank": 4, "source": "ctrip_hot"},
+    {"city": "上海", "place_name": "武康路", "tag": "文艺", "heat_score": 82, "rank": 5, "source": "xiaohongshu"},
+
+    {"city": "西安", "place_name": "兵马俑", "tag": "历史", "heat_score": 99, "rank": 1, "source": "ctrip_hot"},
+    {"city": "西安", "place_name": "大唐不夜城", "tag": "夜景", "heat_score": 95, "rank": 2, "source": "douyin_hot"},
+    {"city": "西安", "place_name": "回民街", "tag": "美食", "heat_score": 88, "rank": 3, "source": "ctrip_hot"},
+    {"city": "西安", "place_name": "大雁塔", "tag": "历史", "heat_score": 85, "rank": 4, "source": "ctrip_hot"},
+    {"city": "西安", "place_name": "西安城墙", "tag": "历史", "heat_score": 82, "rank": 5, "source": "ctrip_hot"},
+
+    {"city": "杭州", "place_name": "西湖", "tag": "自然", "heat_score": 98, "rank": 1, "source": "ctrip_hot"},
+    {"city": "杭州", "place_name": "灵隐寺", "tag": "寺庙", "heat_score": 90, "rank": 2, "source": "ctrip_hot"},
+    {"city": "杭州", "place_name": "法喜寺", "tag": "寺庙", "heat_score": 85, "rank": 3, "source": "xiaohongshu"},
+    {"city": "杭州", "place_name": "宋城", "tag": "打卡", "heat_score": 82, "rank": 4, "source": "ctrip_hot"},
+    {"city": "杭州", "place_name": "龙井村", "tag": "自然", "heat_score": 78, "rank": 5, "source": "xiaohongshu"},
+
+    {"city": "长沙", "place_name": "橘子洲头", "tag": "网红打卡", "heat_score": 95, "rank": 1, "source": "douyin_hot"},
+    {"city": "长沙", "place_name": "太平街", "tag": "美食", "heat_score": 90, "rank": 2, "source": "xiaohongshu"},
+    {"city": "长沙", "place_name": "岳麓山", "tag": "自然", "heat_score": 85, "rank": 3, "source": "ctrip_hot"},
+    {"city": "长沙", "place_name": "茶颜悦色", "tag": "美食", "heat_score": 92, "rank": 4, "source": "douyin_hot"},
+    {"city": "长沙", "place_name": "湖南省博物馆", "tag": "博物馆", "heat_score": 80, "rank": 5, "source": "ctrip_hot"},
+
+    {"city": "厦门", "place_name": "鼓浪屿", "tag": "海岛", "heat_score": 96, "rank": 1, "source": "ctrip_hot"},
+    {"city": "厦门", "place_name": "曾厝垵", "tag": "美食", "heat_score": 85, "rank": 2, "source": "xiaohongshu"},
+    {"city": "厦门", "place_name": "环岛路", "tag": "骑行", "heat_score": 82, "rank": 3, "source": "xiaohongshu"},
+    {"city": "厦门", "place_name": "南普陀寺", "tag": "寺庙", "heat_score": 78, "rank": 4, "source": "ctrip_hot"},
+    {"city": "厦门", "place_name": "厦门大学", "tag": "摄影", "heat_score": 80, "rank": 5, "source": "xiaohongshu"},
+
+    {"city": "大理", "place_name": "洱海", "tag": "自然", "heat_score": 95, "rank": 1, "source": "xiaohongshu"},
+    {"city": "大理", "place_name": "大理古城", "tag": "古镇", "heat_score": 92, "rank": 2, "source": "ctrip_hot"},
+    {"city": "大理", "place_name": "苍山", "tag": "爬山", "heat_score": 85, "rank": 3, "source": "ctrip_hot"},
+    {"city": "大理", "place_name": "喜洲古镇", "tag": "古镇", "heat_score": 82, "rank": 4, "source": "xiaohongshu"},
+    {"city": "大理", "place_name": "双廊", "tag": "摄影", "heat_score": 80, "rank": 5, "source": "xiaohongshu"}
+  ]
+}

@@ -1,0 +1,168 @@
+"""
+TravelMind Agent — SQLAlchemy ORM Models (8 tables)
+"""
+
+import uuid
+from datetime import datetime, timezone
+
+from sqlalchemy import (
+    Column,
+    String,
+    Text,
+    Float,
+    Integer,
+    DateTime,
+    ForeignKey,
+    JSON,
+    ARRAY,
+)
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
+
+from app.database.connection import Base
+
+
+def gen_uuid():
+    return str(uuid.uuid4())
+
+
+def now_utc():
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
+# ── User ──────────────────────────────────────────────
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
+    session_id = Column(String(255), unique=True, nullable=False, index=True)
+    nickname = Column(String(100), nullable=True)
+    created_at = Column(DateTime, default=now_utc)
+    last_active_at = Column(DateTime, default=now_utc)
+
+    profile = relationship("UserProfile", back_populates="user", uselist=False)
+    recommendation_history = relationship("RecommendationHistory", back_populates="user")
+    itineraries = relationship("Itinerary", back_populates="user")
+    feedbacks = relationship("Feedback", back_populates="user")
+
+
+# ── UserProfile ───────────────────────────────────────
+
+class UserProfile(Base):
+    __tablename__ = "user_profiles"
+
+    id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
+    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False, unique=True)
+    preferred_tags = Column(ARRAY(String), default=list)         # ["摄影", "美食", "历史"]
+    travel_style = Column(String(50), nullable=True)              # "休闲" / "特种兵" / "亲子"
+    budget_level = Column(String(20), nullable=True)              # "经济" / "舒适" / "奢华"
+    preferred_duration = Column(Integer, nullable=True)           # days
+    avoid_tags = Column(ARRAY(String), default=list)              # ["拥挤", "爬山"]
+    raw_extraction = Column(JSON, nullable=True)                  # full LLM output
+    created_at = Column(DateTime, default=now_utc)
+    updated_at = Column(DateTime, default=now_utc, onupdate=now_utc)
+
+    user = relationship("User", back_populates="profile")
+
+
+# ── Attraction ────────────────────────────────────────
+
+class Attraction(Base):
+    __tablename__ = "attractions"
+
+    id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
+    name = Column(String(255), nullable=False, index=True)
+    name_en = Column(String(255), nullable=True)
+    city = Column(String(100), nullable=False, index=True)
+    lat = Column(Float, nullable=True)
+    lon = Column(Float, nullable=True)
+    address = Column(Text, nullable=True)
+    description = Column(Text, nullable=True)
+    description_source = Column(String(50), nullable=True)     # "wikipedia" / "amap" / "ai"
+    image_urls = Column(ARRAY(Text), default=list)
+    price_level = Column(Integer, nullable=True)               # 1-5
+    best_time = Column(String(100), nullable=True)              # "春季" / "全年" / "10-12月"
+    suitable_for = Column(ARRAY(String), default=list)          # ["情侣", "亲子", "摄影"]
+    opening_hours = Column(String(255), nullable=True)
+    data_source = Column(String(50), nullable=True)            # "wikidata" / "amap" / "combined"
+    source_id = Column(String(255), nullable=True)              # external ID
+    confidence = Column(Float, default=1.0)                     # data reliability 0-1
+    created_at = Column(DateTime, default=now_utc)
+    updated_at = Column(DateTime, default=now_utc, onupdate=now_utc)
+
+    tags = relationship("AttractionTag", back_populates="attraction")
+
+
+# ── AttractionTag ─────────────────────────────────────
+
+class AttractionTag(Base):
+    __tablename__ = "attraction_tags"
+
+    id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
+    attraction_id = Column(UUID(as_uuid=False), ForeignKey("attractions.id"), nullable=False)
+    tag = Column(String(50), nullable=False, index=True)          # "摄影", "美食", "历史", etc.
+
+    attraction = relationship("Attraction", back_populates="tags")
+
+
+# ── TrendData ─────────────────────────────────────────
+
+class TrendData(Base):
+    __tablename__ = "trend_data"
+
+    id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
+    city = Column(String(100), nullable=False, index=True)
+    place_name = Column(String(255), nullable=True)
+    tag = Column(String(50), nullable=True)                      # trending category
+    heat_score = Column(Float, default=0.0)                      # 0-100
+    rank = Column(Integer, nullable=True)
+    source = Column(String(100), nullable=True)                  # "ctrip_hotlist" / "xiaohongshu" ...
+    fetched_at = Column(DateTime, default=now_utc)
+
+
+# ── RecommendationHistory ─────────────────────────────
+
+class RecommendationHistory(Base):
+    __tablename__ = "recommendation_history"
+
+    id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
+    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
+    query_input = Column(Text, nullable=True)
+    results = Column(JSON, nullable=True)                        # [{place_id, score, factors}, ...]
+    scores_detail = Column(JSON, nullable=True)                  # full scoring breakdown
+    created_at = Column(DateTime, default=now_utc)
+
+    user = relationship("User", back_populates="recommendation_history")
+
+
+# ── Itinerary ─────────────────────────────────────────
+
+class Itinerary(Base):
+    __tablename__ = "itineraries"
+
+    id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
+    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
+    title = Column(String(255), nullable=True)
+    days = Column(Integer, nullable=False)
+    plan = Column(JSON, nullable=False)                          # full day-by-day plan
+    weather_snapshot = Column(JSON, nullable=True)               # weather at planning time
+    created_at = Column(DateTime, default=now_utc)
+
+    user = relationship("User", back_populates="itineraries")
+
+
+# ── Feedback ──────────────────────────────────────────
+
+class Feedback(Base):
+    __tablename__ = "feedback"
+
+    id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
+    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
+    target_type = Column(String(50), nullable=False)             # "recommendation" / "itinerary" / "chat"
+    target_id = Column(UUID(as_uuid=False), nullable=True)
+    rating = Column(Integer, nullable=True)                      # 1-5
+    comment = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=now_utc)
+
+    user = relationship("User", back_populates="feedbacks")

@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/* TravelMind Agent — Global Styles */
+:root {
+  --travel-primary: #2563eb;
+  --travel-accent: #f59e0b;
+  --travel-bg: #f8fafc;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--travel-bg);
+  color: #1e293b;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Toast slide-in animation (replaces tailwindcss-animate plugin) */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.25s ease-out;
+}
