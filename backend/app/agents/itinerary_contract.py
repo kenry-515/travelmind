@@ -82,10 +82,11 @@ def validate_day_continuity(data: Dict[str, Any]) -> List[str]:
     """day numbers must be 1..N and trip.daysCount must match len(days)."""
     errors = []
     days = data.get("days", []) if isinstance(data, dict) else []
-    numbers = [d.get("day") for d in days]
+    numbers = [d.get("day") for d in days if isinstance(d, dict)]
     if numbers != list(range(1, len(days) + 1)):
         errors.append(f"day 编号不连续: {numbers}")
-    days_count = (data.get("trip") or {}).get("daysCount")
+    trip = data.get("trip") if isinstance(data.get("trip"), dict) else {}
+    days_count = trip.get("daysCount")
     if days_count is not None and days_count != len(days):
         errors.append(f"daysCount({days_count}) 与 days 长度({len(days)}) 不一致")
     return errors
@@ -99,14 +100,18 @@ def inject_computed_fields(data: Dict[str, Any], start: Optional[date] = None) -
     """Inject all backend-owned fields in place; returns the same dict."""
     start = start or date.today()
     days = data.get("days", [])
+    if not isinstance(days, list):
+        days = data["days"] = []
 
     trip = data.setdefault("trip", {})
+    if not isinstance(trip, dict):
+        trip = data["trip"] = {}
     trip["dateStart"] = _fmt_date(start)
     trip["dateEnd"] = _fmt_date(start + timedelta(days=max(len(days) - 1, 0)))
     trip["daysCount"] = len(days)
 
     # budget percent — largest-remainder rounding so they sum to exactly 100
-    budget = data.get("budget", [])
+    budget = [b for b in data.get("budget", []) if isinstance(b, dict)]
     total = sum(b.get("amount", 0) for b in budget)
     if total > 0:
         raw = [(i, 100.0 * b.get("amount", 0) / total) for i, b in enumerate(budget)]
@@ -124,8 +129,10 @@ def inject_computed_fields(data: Dict[str, Any], start: Optional[date] = None) -
             b["percent"] = 0
 
     for item in data.get("checklist", []):
-        item["done"] = False
+        if isinstance(item, dict):
+            item["done"] = False
 
+    inject_place_count(data)
     data["schemaVersion"] = SCHEMA_VERSION
     return data
 
@@ -133,8 +140,13 @@ def inject_computed_fields(data: Dict[str, Any], start: Optional[date] = None) -
 def budget_sum_mismatch(data: Dict[str, Any]) -> bool:
     """True when sum(budget.amount) diverges from the stated 人均预算 stat
     beyond BUDGET_SUM_TOLERANCE (skipped when the stat is unparseable)."""
-    total = sum(b.get("amount", 0) for b in data.get("budget", []))
-    for stat in (data.get("trip") or {}).get("stats", []):
+    total = sum(
+        b.get("amount", 0) for b in data.get("budget", []) if isinstance(b, dict)
+    )
+    trip = data.get("trip") if isinstance(data.get("trip"), dict) else {}
+    for stat in trip.get("stats", []):
+        if not isinstance(stat, dict):
+            continue
         if "预算" in stat.get("label", ""):
             m = re.search(r"([\d,]+)", stat.get("value", ""))
             if m:
@@ -142,3 +154,130 @@ def budget_sum_mismatch(data: Dict[str, Any]) -> bool:
                 if stated > 0:
                     return abs(total - stated) / stated > BUDGET_SUM_TOLERANCE
     return False
+
+
+# ── Stats governance (backend-owned derivable numbers) ──
+
+# Items that are meal stops, not visitable places (excluded from 地点数)
+_MEAL_STOP_RE = re.compile(r"午餐|晚餐|早餐|宵夜|小吃|用餐|餐厅|食堂|饭店|美食街")
+
+# stats entry whose label marks the place count (backend overwrites it)
+_PLACE_COUNT_LABEL_RE = re.compile(r"景点|地点|去处|打卡地")
+
+
+def count_places(data: Dict[str, Any]) -> int:
+    """Total day items minus meal stops."""
+    count = 0
+    for day in data.get("days", []):
+        if not isinstance(day, dict):
+            continue
+        for item in day.get("items", []):
+            if not isinstance(item, dict):
+                continue
+            if not _MEAL_STOP_RE.search(item.get("poi", "")):
+                count += 1
+    return count
+
+
+def inject_place_count(data: Dict[str, Any]) -> Dict[str, Any]:
+    """Overwrite the 地点数 stat with the backend-computed value (append the
+    entry if the model omitted it, respecting stats maxItems=6)."""
+    n = count_places(data)
+    trip = data.setdefault("trip", {})
+    if not isinstance(trip, dict):
+        data["trip"] = trip = {}
+    stats = trip.setdefault("stats", [])
+    if not isinstance(stats, list):
+        stats = trip["stats"] = []
+    for stat in stats:
+        if isinstance(stat, dict) and _PLACE_COUNT_LABEL_RE.search(stat.get("label", "")):
+            stat["value"] = f"{n} 个"
+            break
+    else:
+        if len(stats) < 6:
+            stats.insert(1, {"value": f"{n} 个", "label": "计划地点"})
+    return data
+
+
+# ── Month / season consistency ───────────────────────────
+
+_MONTH_RE = re.compile(r"(\d{1,2})月")
+
+_SEASONS = {12: "冬季", 1: "冬季", 2: "冬季",
+            3: "春季", 4: "春季", 5: "春季",
+            6: "夏季", 7: "夏季", 8: "夏季",
+            9: "秋季", 10: "秋季", 11: "秋季"}
+
+
+def season_of(month: int) -> str:
+    return _SEASONS.get(month, "")
+
+
+def _collect_texts(data: Dict[str, Any]) -> List[str]:
+    """All user-visible free-text fields where a wrong month could appear.
+    Type-tolerant: malformed entries are left to the schema validator."""
+    texts: List[str] = []
+    texts.extend(t for t in data.get("tips", []) if isinstance(t, str))
+    for c in data.get("checklist", []):
+        if isinstance(c, dict):
+            texts.append(c.get("text", ""))
+        elif isinstance(c, str):
+            texts.append(c)
+    for day in data.get("days", []):
+        if not isinstance(day, dict):
+            continue
+        texts.append(day.get("eat", ""))
+        for item in day.get("items", []):
+            if isinstance(item, dict):
+                texts.append(item.get("note", ""))
+    return [t for t in texts if isinstance(t, str)]
+
+
+def month_inconsistency_errors(data: Dict[str, Any], trip_month: int) -> List[str]:
+    """Any explicit 'X月' reference that contradicts the trip month."""
+    errors = []
+    for text in _collect_texts(data):
+        for m in _MONTH_RE.finditer(text):
+            month = int(m.group(1))
+            if 1 <= month <= 12 and month != trip_month:
+                errors.append(f"月份不符（行程为 {trip_month} 月）: {text[:60]}")
+                break
+    return errors
+
+
+# ── Weather coverage requirements ────────────────────────
+
+_RAIN_WORDS = ("雨", "雷", "雪", "雹")
+_WEATHER_ITEM_RE = re.compile(r"雨|伞|雷暴|降水|天气|防晒|防风|雪")
+
+
+def trip_has_rain(weather: Optional[Dict[str, Any]], days_count: int) -> bool:
+    """True if any of the trip's days (first daysCount entries) forecasts rain."""
+    if not weather:
+        return False
+    for d in (weather.get("daily") or [])[: max(days_count, 1)]:
+        desc = d.get("weather_desc", "") or ""
+        if any(w in desc for w in _RAIN_WORDS):
+            return True
+        if (d.get("precipitation") or 0) > 0.5:
+            return True
+    return False
+
+
+def weather_coverage_errors(data: Dict[str, Any]) -> List[str]:
+    """When the trip forecasts rain: tips must include ≥1 weather-related
+    entry and checklist ≥1 weather-related item."""
+    errors = []
+    if not any(
+        _WEATHER_ITEM_RE.search(t) for t in data.get("tips", []) if isinstance(t, str)
+    ):
+        errors.append("有降雨预报但 tips 中没有天气相关提示")
+    checklist_texts = []
+    for c in data.get("checklist", []):
+        if isinstance(c, dict):
+            checklist_texts.append(c.get("text", ""))
+        elif isinstance(c, str):
+            checklist_texts.append(c)
+    if not any(_WEATHER_ITEM_RE.search(t) for t in checklist_texts):
+        errors.append("有降雨预报但 checklist 中没有天气相关物品（如折叠伞）")
+    return errors

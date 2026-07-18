@@ -170,7 +170,9 @@ async def agent_regenerate_day(request: RegenerateDayRequest):
     days[day_index] is rebuilt by the LLM — everything else is returned
     byte-identical after full contract revalidation.
     """
-    trip = request.itinerary.get("trip") or {}
+    trip = request.itinerary.get("trip")
+    if not isinstance(trip, dict):
+        trip = {}
     logger.info(
         f"Regenerate day: city={trip.get('city')}, day_index={request.day_index}, "
         f"feedback={request.feedback[:50]}"

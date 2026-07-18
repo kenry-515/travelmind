@@ -16,6 +16,7 @@ logged and {} is returned so the orchestrator can accumulate it.
 
 import json
 import logging
+from datetime import date, timedelta
 from typing import Any, Dict, List, Optional
 
 import httpx
@@ -24,11 +25,15 @@ from openai import AsyncOpenAI
 from app.agents.itinerary_contract import (
     budget_sum_mismatch,
     inject_computed_fields,
+    month_inconsistency_errors,
     schema_for_llm,
+    season_of,
+    trip_has_rain,
     validate_day,
     validate_day_continuity,
     validate_itinerary,
     validate_pre_injection,
+    weather_coverage_errors,
 )
 from app.config.settings import settings
 
@@ -192,7 +197,8 @@ _QUALITY_REQUIREMENTS = """【规划要求】
    并在 stats 中给出「人均预算」一项；不需要输出 percent（后端计算）
 7. checklist 给 3-12 条行前准备（实名证件/预约票/必备 App/装备），done 一律 false
 8. tips 给 2-6 条实用提示，必须具体可执行（写清 App 名、价格、时间），禁止空泛建议
-9. stats 给 2-6 项概览统计（天数/地点数/人均预算/预计日均步数等）
+9. stats 给 2-6 项概览统计（天数/人均预算/预计日均步数等由你估算；
+   地点数由系统统计，你填的数值会被后端覆盖为真实值）
 10. 行程张弛有度；有老人小孩同行时控制步行强度"""
 
 
@@ -210,6 +216,23 @@ def _build_planning_prompt(
     style = profile.get("travel_style", "") or "休闲"
     constraints = profile.get("constraints", "") or "无特殊要求"
 
+    start = date.today()
+    end = start + timedelta(days=max(days - 1, 0))
+    month = start.month
+    season = season_of(month)
+    date_block = (
+        f"【行程日期与季节】{start.month}月{start.day}日 至 {end.month}月{end.day}日"
+        f"（{month}月 · {season}）。tips、checklist、note 中凡涉及月份/季节的表述"
+        f"必须与实际月份（{month}月）和{season}一致，禁止出现其他月份。"
+    )
+
+    rain_block = ""
+    if weather and trip_has_rain(weather, days):
+        rain_block = (
+            "\n【天气要求】预报有降雨：tips 至少 1 条与雨天/天气相关；"
+            "checklist 至少 1 件天气相关物品（如折叠伞，写明实际月份）。"
+        )
+
     return f"""请为以下旅行需求生成一份详细的 {days} 日行程规划（严格按 output 函数的 JSON 结构）：
 
 【目的地】{dest}
@@ -219,6 +242,8 @@ def _build_planning_prompt(
 【兴趣标签】{', '.join(tags) if tags else '不限'}
 【旅行风格】{style}
 【特殊要求】{constraints}
+
+{date_block}{rain_block}
 
 【推荐景点】（按推荐度排序，请从中选取安排行程）
 {_format_places(places)}
@@ -235,9 +260,13 @@ _SYSTEM_PROMPT_FULL = """你是 TravelMind 高级旅行规划师。根据用户�
 
 # ── Validation helper ────────────────────────────────────
 
-def _full_validate(data: Dict[str, Any]) -> List[str]:
+def _full_validate(
+    data: Dict[str, Any],
+    trip_month: int,
+    weather: Optional[Dict[str, Any]] = None,
+) -> List[str]:
     """Pre-injection validation: LLM-facing schema (percent not yet present)
-    + day continuity + budget-sum consistency."""
+    + day continuity + budget-sum + month/season + weather coverage."""
     errors = validate_pre_injection(data)
     errors += validate_day_continuity(data)
     if budget_sum_mismatch(data):
@@ -245,6 +274,9 @@ def _full_validate(data: Dict[str, Any]) -> List[str]:
         errors.append(
             f"budget 加总({total}) 与 stats 人均预算偏差超过容忍度"
         )
+    errors += month_inconsistency_errors(data, trip_month)
+    if weather and trip_has_rain(weather, len(data.get("days", []))):
+        errors += weather_coverage_errors(data)
     return errors
 
 
@@ -270,6 +302,7 @@ async def generate_itinerary(
         return {}
 
     days = profile.get("days", 3)
+    trip_month = date.today().month
     top_n = min(len(recommendations), 20)
     places = recommendations[:top_n]
     prompt = _build_planning_prompt(profile, places, weather)
@@ -291,7 +324,7 @@ async def generate_itinerary(
                 logger.warning(f"Planning attempt {attempt + 1}: {last_error}")
                 continue
 
-            errors = _full_validate(data)
+            errors = _full_validate(data, trip_month, weather)
             if errors:
                 last_error = {"schema_errors": errors[:5]}
                 logger.warning(
@@ -306,7 +339,10 @@ async def generate_itinerary(
             errors = validate_itinerary(data) + validate_day_continuity(data)
             if errors:
                 last_error = {"post_injection_errors": errors[:5]}
-                logger.warning(f"Planning attempt {attempt + 1}: post-injection errors")
+                logger.warning(
+                    f"Planning attempt {attempt + 1}: post-injection errors — "
+                    f"first: {errors[0][:150]}"
+                )
                 continue
 
             logger.info(
