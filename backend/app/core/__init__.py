@@ -46,7 +46,7 @@ class BaseVisionProvider(ABC):
 
 
 class BaseMapProvider(ABC):
-    """Abstract base for map providers (Amap POI, Baidu routing)."""
+    """Abstract base for map providers (Amap POI / routing / distance matrix)."""
 
     @abstractmethod
     async def search_places(

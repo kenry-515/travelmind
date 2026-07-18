@@ -7,7 +7,7 @@ Formula (from architecture.md):
   Score = 0.35 × Preference_Match     (user tags vs place tags cosine-like overlap)
         + 0.25 × Trend_Heat           (from trend_agent / trends.json)
         + 0.15 × Budget_Match         (user budget vs place price_level)
-        + 0.10 × Location_Efficiency  (placeholder — Baidu routing in Phase 4)
+        + 0.10 × Location_Efficiency  (Amap distance matrix: ≤5km=1.0 … >30km=0.1)
         + 0.10 × Time_Match           (best_time vs travel month)
         + 0.05 × Data_Reliability     (source credibility weight)
 

@@ -37,6 +37,9 @@ class Settings(BaseSettings):
     # --- Maps ---
     AMAP_API_KEY: str = ""
     AMAP_SIGN_KEY: str = ""  # 数字签名私钥 (optional, only if signing is enabled)
+    # Deprecated: Baidu Maps was replaced by Amap. Kept as a no-op so older
+    # .env files containing BAIDU_MAP_AK don't fail settings validation
+    # (extra=forbid). Safe to remove once .env no longer has it.
     BAIDU_MAP_AK: str = ""
 
     # --- Weather ---
