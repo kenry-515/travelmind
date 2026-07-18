@@ -30,7 +30,11 @@ def setup_logging():
         datefmt="%Y-%m-%d %H:%M:%S",
     )
     # Quiet down noisy third-party loggers
+    # (openai/httpcore log full request bodies at DEBUG — including base64
+    # image payloads from the vision service)
     logging.getLogger("httpx").setLevel(logging.WARNING)
+    logging.getLogger("httpcore").setLevel(logging.WARNING)
+    logging.getLogger("openai").setLevel(logging.WARNING)
     logging.getLogger("chromadb").setLevel(logging.WARNING)
 
 

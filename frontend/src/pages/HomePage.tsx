@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { SearchInput } from '../components/SearchInput'
 import { ExampleQuestions } from '../components/ExampleQuestions'
 import { api } from '../lib/api'
-import { Sparkles, MessageCircle, Map } from 'lucide-react'
+import { Sparkles, MessageCircle, Map, Camera } from 'lucide-react'
 
 type ServiceStatus = 'idle' | 'loading' | 'healthy' | 'degraded' | 'error'
 
@@ -77,6 +77,13 @@ export function HomePage() {
           <Map size={18} />
           快速体验
         </Link>
+        <Link
+          to="/image"
+          className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
+        >
+          <Camera size={18} />
+          图片识别
+        </Link>
       </div>
 
       {/* Example Questions */}
@@ -114,8 +121,8 @@ export function HomePage() {
 
       {/* Footer */}
       <footer className="mt-16 text-center text-xs text-slate-400">
-        <p>TravelMind Agent — Phase 4 Multi-Agent Travel Planner</p>
-        <p className="mt-1">Powered by DeepSeek · Open-Meteo · Amap · Chroma</p>
+        <p>TravelMind Agent — Phase 5 Multi-Agent Travel Planner</p>
+        <p className="mt-1">Powered by DeepSeek · Kimi Vision · Open-Meteo · Amap · Chroma</p>
       </footer>
     </main>
   )

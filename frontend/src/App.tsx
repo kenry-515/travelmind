@@ -3,6 +3,7 @@ import { HomePage } from './pages/HomePage'
 import { ChatPage } from './pages/ChatPage'
 import { RecommendPage } from './pages/RecommendPage'
 import { ItineraryPage } from './pages/ItineraryPage'
+import { ImagePage } from './pages/ImagePage'
 import { ToastContainer } from './components/Toast'
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/recommend" element={<RecommendPage />} />
         <Route path="/itinerary" element={<ItineraryPage />} />
+        <Route path="/image" element={<ImagePage />} />
       </Routes>
     </BrowserRouter>
   )

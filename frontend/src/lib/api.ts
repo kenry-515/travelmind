@@ -185,3 +185,29 @@ export async function fetchWeatherAdvice(city: string, days = 5): Promise<Weathe
   )
   return data
 }
+
+
+// ── Image Analysis (Phase 5) ────────────────────────────
+
+export interface ImageAnalyzeResult {
+  location: string
+  landmark_features: string
+  tags: string[]
+  description: string
+  confidence: number
+}
+
+/** Analyze an uploaded travel photo with the Kimi vision model (kimi-k2.6). */
+export async function analyzeImage(file: File): Promise<ImageAnalyzeResult> {
+  const formData = new FormData()
+  formData.append('image', file)
+  // Vision inference can take tens of seconds — use a longer timeout than
+  // the axios instance default (30s).
+  // Content-Type: undefined removes the instance's default application/json
+  // header so the browser sets multipart/form-data with the proper boundary.
+  const { data } = await api.post<ImageAnalyzeResult>('/image/analyze', formData, {
+    timeout: 90000,
+    headers: { 'Content-Type': undefined },
+  })
+  return data
+}
