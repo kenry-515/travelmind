@@ -63,38 +63,24 @@ export interface RecommendResponse {
   }
 }
 
-export interface DayAttraction {
-  name: string
-  time: string
-  duration_min: number
-  notes: string
-}
+// ── Itinerary contract types (generated from docs/itinerary.schema.json —
+// run `npm run gen:types` to regenerate; only indexed aliases live here) ──
 
-export interface DayMeal {
-  type: string
-  suggestion: string
-}
+import type { TravelItinerary } from '../types/itinerary'
 
-export interface DayPlan {
-  day: number
-  theme: string
-  attractions: DayAttraction[]
-  meals: DayMeal[]
-  transport_tips: string
-}
-
-export interface ItineraryData {
-  overview: string
-  days: number
-  plan: DayPlan[]
-  general_tips: string
-}
+export type { TravelItinerary }
+export type ItineraryTrip = TravelItinerary['trip']
+export type TripStat = ItineraryTrip['stats'][number]
+export type TripDay = TravelItinerary['days'][number]
+export type DayItem = TripDay['items'][number]
+export type BudgetItem = TravelItinerary['budget'][number]
+export type ChecklistItem = TravelItinerary['checklist'][number]
 
 export interface PlanResponse {
   user_input: string
   user_profile: Record<string, unknown> | null
   recommendations: PlaceItem[] | null
-  itinerary: ItineraryData | null
+  itinerary: TravelItinerary | null
   weather: WeatherForecast | null
   current_step: string
   error: string | null
@@ -228,4 +214,28 @@ export interface CityInfo {
 export async function fetchWeatherCities(): Promise<CityInfo[]> {
   const { data } = await api.get<{ cities: CityInfo[] }>('/weather/cities')
   return data.cities
+}
+
+
+// ── Partial itinerary regeneration (局部重生成) ──────────
+
+/** Regenerate one day of an itinerary from user feedback.
+ *  Returns the full itinerary with only days[dayIndex] replaced. */
+export async function regenerateDay(params: {
+  itinerary: TravelItinerary
+  dayIndex: number
+  feedback: string
+  userInput?: string
+}): Promise<TravelItinerary> {
+  const { data } = await api.post<{ itinerary: TravelItinerary }>(
+    '/agent/plan/regenerate-day',
+    {
+      itinerary: params.itinerary,
+      day_index: params.dayIndex,
+      feedback: params.feedback,
+      user_input: params.userInput,
+    },
+    { timeout: 90000 }
+  )
+  return data.itinerary
 }

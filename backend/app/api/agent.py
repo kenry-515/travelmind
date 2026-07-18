@@ -2,8 +2,9 @@
 TravelMind Agent — Agent API
 Endpoints for the multi-agent travel planning workflow.
 
-POST /api/v1/agent/plan    — Run the full orchestrated workflow.
-POST /api/v1/agent/profile — Standalone profile extraction.
+POST /api/v1/agent/plan                — Run the full orchestrated workflow.
+POST /api/v1/agent/profile             — Standalone profile extraction.
+POST /api/v1/agent/plan/regenerate-day — Rebuild one day of an itinerary.
 """
 
 import logging
@@ -13,7 +14,9 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field, field_validator
 
 from app.agents.orchestrator import run_travel_workflow
+from app.agents.planning_agent import regenerate_day
 from app.agents.profile_agent import extract_profile
+from app.rag.retriever import retrieve
 
 logger = logging.getLogger(__name__)
 
@@ -73,6 +76,22 @@ class PlanResponse(BaseModel):
 
 class ProfileResponse(BaseModel):
     profile: Dict[str, Any]
+
+
+class RegenerateDayRequest(BaseModel):
+    """Partial itinerary regeneration request."""
+
+    itinerary: Dict[str, Any] = Field(..., description="当前完整行程 JSON（契约结构）")
+    day_index: int = Field(..., ge=0, description="要重生成的天的 0 基索引")
+    feedback: str = Field(..., min_length=1, max_length=500, description="用户反馈，如「第二天太赶了」")
+    user_input: Optional[str] = Field(
+        None, max_length=2000,
+        description="原始需求文本（可选，用于重建用户画像）",
+    )
+
+
+class RegenerateDayResponse(BaseModel):
+    itinerary: Dict[str, Any]
 
 
 # ── Helpers ─────────────────────────────────────────────
@@ -141,3 +160,54 @@ async def agent_profile(request: ProfileRequest):
         )
 
     return ProfileResponse(profile=profile)
+
+
+@router.post("/agent/plan/regenerate-day", response_model=RegenerateDayResponse)
+async def agent_regenerate_day(request: RegenerateDayRequest):
+    """Regenerate a single day of an existing itinerary （局部重生成）.
+
+    The frontend sends the full current itinerary + user feedback; only
+    days[day_index] is rebuilt by the LLM — everything else is returned
+    byte-identical after full contract revalidation.
+    """
+    trip = request.itinerary.get("trip") or {}
+    logger.info(
+        f"Regenerate day: city={trip.get('city')}, day_index={request.day_index}, "
+        f"feedback={request.feedback[:50]}"
+    )
+
+    # Profile context: re-extract from the original request when available,
+    # otherwise build a minimal one from the itinerary itself.
+    if request.user_input:
+        try:
+            profile = await extract_profile(request.user_input)
+        except Exception:
+            profile = {}
+    else:
+        profile = {}
+    if not profile.get("destination"):
+        profile["destination"] = trip.get("city", "")
+    profile.setdefault("days", trip.get("daysCount", len(request.itinerary.get("days", []))))
+
+    # Candidate places for the regeneration prompt (RAG; non-fatal fallback)
+    places: List[Dict[str, Any]] = []
+    try:
+        places = await retrieve(profile, request.feedback, top_k=10)
+    except Exception as e:
+        logger.warning(f"RAG retrieve failed for regen (non-fatal): {e}")
+
+    try:
+        updated = await regenerate_day(
+            itinerary=request.itinerary,
+            day_index=request.day_index,
+            feedback=request.feedback,
+            profile=profile,
+            places=places,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except RuntimeError as e:
+        logger.error(f"Day regeneration failed: {e}")
+        raise HTTPException(status_code=502, detail=str(e))
+
+    return RegenerateDayResponse(itinerary=updated)

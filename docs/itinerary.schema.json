@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TravelItinerary",
+  "description": "AI 旅游攻略智能体的行程输出契约：大模型生成层必须产出符合本结构的 JSON，前端渲染层只消费本结构。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["trip", "days", "budget", "checklist", "tips"],
+  "properties": {
+    "schemaVersion": { "type": "string", "description": "可选，契约版本号，由后端注入" },
+    "trip": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "city", "dateStart", "dateEnd", "daysCount", "stats"],
+      "properties": {
+        "title": { "type": "string", "description": "行程标题，如「秋日上海 · 三日行程」" },
+        "city": { "type": "string" },
+        "dateStart": { "type": "string", "description": "如 11月20日" },
+        "dateEnd": { "type": "string", "description": "如 11月22日" },
+        "daysCount": { "type": "integer", "minimum": 1 },
+        "stats": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 6,
+          "description": "概览统计条：天数 / 地点数 / 人均预算 / 日均步数等",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["value", "label"],
+            "properties": {
+              "value": { "type": "string", "description": "如「3 天」「¥2,400」" },
+              "label": { "type": "string", "description": "如「人均预算」「预计日均」" }
+            }
+          }
+        }
+      }
+    },
+    "days": {
+      "type": "array",
+      "minItems": 1,
+      "description": "每天一个主题（区域线索，如「老城厢」「梧桐区」），不是景点罗列；同一天内地点地理上顺路。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["day", "theme", "title", "items", "eat"],
+        "properties": {
+          "day": { "type": "integer", "minimum": 1 },
+          "theme": { "type": "string", "description": "区域主题标签，如「DAY 1 · 老城厢」" },
+          "title": { "type": "string", "description": "当天主目的地，如「外滩 · 豫园」" },
+          "items": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 8,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["time", "poi", "note"],
+              "properties": {
+                "time": { "type": "string", "pattern": "^\\d{2}:\\d{2}$", "description": "24 小时制，如 08:30" },
+                "poi": { "type": "string", "description": "地点/活动，需提前预约的要写清" },
+                "note": { "type": "string", "description": "一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）" }
+              }
+            }
+          },
+          "eat": { "type": "string", "description": "每日一味：具体餐厅 + 招牌菜，如「豫园『南翔馒头店』蟹粉小笼」" }
+        }
+      }
+    },
+    "budget": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 8,
+      "description": "分类花费预估，用于渲染进度条。amount 各项加总必须等于人均总预算；percent 为占总额比例，由后端从 amount 计算注入（模型只需输出 amount）。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "amount", "percent"],
+        "properties": {
+          "label": { "type": "string", "description": "如 餐饮/门票/交通/购物" },
+          "amount": { "type": "integer", "minimum": 0, "description": "金额（元）" },
+          "percent": { "type": "integer", "minimum": 0, "maximum": 100 }
+        }
+      }
+    },
+    "checklist": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 12,
+      "description": "行前清单，渲染为可打勾列表；done 一律为 false（后端强制），由用户在前端勾选。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["text"],
+        "properties": {
+          "text": { "type": "string" },
+          "done": { "type": "boolean", "default": false }
+        }
+      }
+    },
+    "tips": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 6,
+      "description": "实用提示 chips：具体可执行（写清 App 名/价格/时间），禁止空泛建议。",
+      "items": { "type": "string" }
+    }
+  }
+}

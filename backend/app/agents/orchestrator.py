@@ -243,12 +243,18 @@ async def _planning(state: TravelState) -> TravelState:
         recommendations = state.get("recommendations") or []
 
         if recommendations:
-            itinerary = await _generate_itinerary(profile, recommendations)
+            # Weather-adaptive: pass the fetched forecast into planning
+            itinerary = await _generate_itinerary(
+                profile, recommendations, weather=state.get("weather")
+            )
             state["itinerary"] = itinerary
-            if isinstance(itinerary, dict):
+            if not itinerary:
+                # generate_itinerary 已达重试上限的结构化失败
+                _append_error(state, "planning", "行程生成失败（已达重试上限）")
+            elif isinstance(itinerary, dict):
                 logger.info(
-                    f"Itinerary: {itinerary.get('days', 0)} days planned "
-                    f"({len(itinerary.get('plan', []))} day-entries)"
+                    f"Itinerary: {itinerary.get('trip', {}).get('daysCount', 0)} days planned "
+                    f"({len(itinerary.get('days', []))} day-entries)"
                 )
         else:
             logger.warning("No recommendations to plan — skipping")
