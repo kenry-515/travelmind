@@ -1,65 +1,87 @@
 # TravelMind Agent (智游伴)
 
-AI-powered multi-agent travel planning system — from a single user sentence to a complete travel itinerary.
+AI-powered multi-agent travel planning system — from a single user sentence **or a travel photo** to a complete travel itinerary.
 
 ## Overview
 
-TravelMind Agent leverages LLM-based multi-agent collaboration, RAG knowledge enhancement, and multi-modal understanding to deliver personalized travel recommendations. The system orchestrates 6 specialized agents (Profile, Trend, RAG Retriever, Recommendation, Planning, Vision) through a LangGraph workflow.
+TravelMind Agent leverages LLM-based multi-agent collaboration, RAG knowledge enhancement, and multimodal understanding to deliver personalized travel recommendations. A LangGraph workflow orchestrates the pipeline: Profile → Trend → Weather → RAG → Recommendation → Planning.
 
-**Status:** 🚧 Phase 1 — Foundation (MVP in 14 days)
+**Status:** ✅ Phase 5 complete — multimodal image analysis live. Phase 6 (demo polish) in progress.
+
+### Core Features
+
+- **一句话生成行程** — natural language request → structured itinerary with timed attractions, meals, transport tips and weather
+- **智能推荐** — 6-factor weighted scoring (preference / trend / budget / location / time / reliability) over a 445-attraction knowledge base (10 cities)
+- **图片识别（多模态）** — upload a travel photo, Kimi `kimi-k2.6` recognizes location & style tags, then closes the loop by recommending similar attractions from the same tags
+- **AI 对话** — streaming travel Q&A (SSE)
+- **天气建议** — 7-day forecast with travel suitability scores (Open-Meteo, no key required)
 
 ## Architecture
 
 ```
-L1: User Interaction  — React + TS + Vite + Tailwind + shadcn/ui
-L2: API Service       — FastAPI REST /api/v1/*
+L1: User Interaction  — React 19 + TS + Vite + Tailwind 4
+L2: API Service       — FastAPI REST /api/v1/* (10 routes)
 L3: Agent Intelligence — LangGraph StateGraph (Orchestrator + 6 Agents)
-L4: AI Capability     — LLM / Vision / Embedding Services
-L5: Data Resource     — PostgreSQL + Chroma + File Storage
+L4: AI Capability     — DeepSeek (LLM) / Kimi k2.6 (Vision) / TF-IDF+Tag Embedding
+L5: Data Resource     — Chroma (1075-dim vectors) + JSON knowledge base (+ optional PostgreSQL)
 ```
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui |
-| Backend | Python 3.11, FastAPI, SQLAlchemy 2.0 (async), Pydantic v2 |
-| AI/LLM | DeepSeek (chat), Qwen-VL (vision), LangGraph (agent orchestration) |
-| RAG | LangChain + Chroma |
-| Maps | Amap (POI), Baidu (routing) |
+| Frontend | React 19, TypeScript 6, Vite 8, Tailwind CSS 4, shadcn/ui, Lucide |
+| Backend | Python 3.11, FastAPI, Pydantic v2 |
+| AI/LLM | DeepSeek (chat), Kimi `kimi-k2.6` (vision), LangGraph (orchestration) |
+| RAG | Chroma + sklearn TF-IDF (70%) & tag one-hot (30%) = 1075-dim composite |
+| Maps | Amap/高德 (POI, routing, distance matrix; MD5-signed) |
 | Weather | Open-Meteo (free, no key) |
-| Database | PostgreSQL + Chroma |
+| Database | PostgreSQL (optional — system runs fine offline without it) |
 
 ## Quick Start
 
 ### Prerequisites
 - Python 3.11+
 - Node.js 18+
-- PostgreSQL 15+
 
-### Backend Setup
+### Backend
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # or `venv\Scripts\activate` on Windows
 pip install -r requirements.txt
-cp .env.example .env      # fill in your API keys
-uvicorn app.main:app --reload
+cp .env.example .env      # fill in your API keys (see below)
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
-### Frontend Setup
+### Frontend
 ```bash
 cd frontend
 npm install
-npm run dev
+npm run dev               # http://localhost:5173 (proxies /api → :8000)
 ```
 
-### Environment Variables
-Copy `.env.example` to `backend/.env` and fill in:
-- `DEEPSEEK_API_KEY` — DeepSeek API key (required for LLM)
-- `QWEN_API_KEY` — Qwen-VL API key (required for vision)
-- `AMAP_API_KEY` — Amap/高德 API key (required for POI data)
-- `BAIDU_MAP_AK` — Baidu Maps API key (required for routing)
+Windows 一键启动（开发）：双击根目录 `start-dev.bat`。
+
+### Environment Variables (`backend/.env`)
+- `DEEPSEEK_API_KEY` — DeepSeek API key（主 LLM，必需）
+- `MOONSHOT_API_KEY` — Kimi 开放平台 key（图片识别，必需；platform.kimi.com 创建）
+- `AMAP_API_KEY` + `AMAP_SIGN_KEY` — 高德 API key + 数字签名私钥（路线/距离矩阵）
+- `DATABASE_URL` — PostgreSQL（可选，不配置则降级运行）
+- 其余默认值见 `backend/.env.example`
+
+## API Routes (`/api/v1`)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/health` | Service health check |
+| POST | `/chat` | Streaming travel Q&A (SSE) |
+| POST | `/agent/plan` | Full pipeline: Profile→Trend→Weather→RAG→Recommend→Plan |
+| POST | `/agent/profile` | Standalone NL profile extraction |
+| POST | `/recommend` | NL query → ranked places (no itinerary) |
+| POST | `/recommend/quick` | Pre-extracted {city, tags} → ranked places |
+| GET | `/weather/cities` | Supported cities |
+| GET | `/weather/{city}` | 7-day forecast + travel scores |
+| POST | `/weather/travel-advice` | Simplified weather advice |
+| POST | `/image/analyze` | Photo → {location, tags, description, confidence} (Kimi vision) |
 
 ## Project Structure
 
@@ -67,22 +89,22 @@ Copy `.env.example` to `backend/.env` and fill in:
 TravelMindAgent/
 ├── backend/
 │   ├── app/
-│   │   ├── main.py              # FastAPI entry point
-│   │   ├── config/settings.py    # pydantic-settings
-│   │   ├── database/            # SQLAlchemy async + models
-│   │   ├── api/                 # REST endpoints
-│   │   ├── agents/              # LangGraph agents
-│   │   ├── services/            # External service integrations
-│   │   └── rag/                 # RAG: embedding, vector store, retriever
-│   ├── scripts/                 # Data pipeline scripts
-│   └── requirements.txt
-├── frontend/
-│   └── src/
-│       ├── components/          # Reusable UI components
-│       ├── pages/               # Route pages
-│       └── lib/                 # Utilities
-├── data/                        # Generated knowledge base (gitignored)
-└── docs/                        # Documentation
+│   │   ├── main.py              # FastAPI entry (lifespan: RAG init)
+│   │   ├── config/settings.py   # pydantic-settings
+│   │   ├── api/                 # 6 routers: health/chat/agent/recommend/weather/image
+│   │   ├── agents/              # orchestrator, profile, trend, recommendation,
+│   │   │                        # planning, vision
+│   │   ├── services/            # llm(DeepSeek), vision(Kimi), amap, weather
+│   │   └── rag/                 # TF-IDF+tag embedding, Chroma store, retriever
+│   ├── scripts/                 # data pipeline (wikidata/wikipedia/amap/AI-enrich/build)
+│   └── data/                    # knowledge base: attractions(445)/trends/tags
+├── frontend/src/
+│   ├── pages/                   # Home / Chat / Recommend / Itinerary / Image
+│   ├── components/              # SearchInput, ChatBox, PlaceCard, ScoreBar,
+│   │                            # ImageUploader, Toast, ErrorBoundary, ...
+│   └── lib/api.ts               # typed API client (axios)
+├── docs/                        # incl. DEMO_GUIDE.md
+└── start-dev.bat                # Windows one-click dev startup
 ```
 
 ## License
