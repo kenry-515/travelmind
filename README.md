@@ -11,7 +11,7 @@ TravelMind Agent leverages LLM-based multi-agent collaboration, RAG knowledge en
 ### Core Features
 
 - **一句话生成行程** — natural language request → structured itinerary with timed attractions, meals, transport tips and weather
-- **智能推荐** — 6-factor weighted scoring (preference / trend / budget / location / time / reliability) over a 445-attraction knowledge base (10 cities)
+- **智能推荐** — 6-factor weighted scoring (preference / trend / budget / location / time / reliability) over an 896-attraction knowledge base (15 cities)
 - **图片识别（多模态）** — upload a travel photo, Kimi `kimi-k2.6` recognizes location & style tags, then closes the loop by recommending similar attractions from the same tags
 - **AI 对话** — streaming travel Q&A (SSE)
 - **天气建议** — 7-day forecast with travel suitability scores (Open-Meteo, no key required)
@@ -97,7 +97,7 @@ TravelMindAgent/
 │   │   ├── services/            # llm(DeepSeek), vision(Kimi), amap, weather
 │   │   └── rag/                 # TF-IDF+tag embedding, Chroma store, retriever
 │   ├── scripts/                 # data pipeline (wikidata/wikipedia/amap/AI-enrich/build)
-│   └── data/                    # knowledge base: attractions(445)/trends/tags
+│   └── data/                    # knowledge base: attractions(896)/trends(84)/tags(51)
 ├── frontend/src/
 │   ├── pages/                   # Home / Chat / Recommend / Itinerary / Image
 │   ├── components/              # SearchInput, ChatBox, PlaceCard, ScoreBar,
