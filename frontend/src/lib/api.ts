@@ -211,3 +211,17 @@ export async function analyzeImage(file: File): Promise<ImageAnalyzeResult> {
   })
   return data
 }
+
+
+/** City supported by the weather service (same 10 cities as the knowledge base). */
+export interface CityInfo {
+  name: string
+  lat: number
+  lon: number
+}
+
+/** List cities available for weather / quick recommendations. */
+export async function fetchWeatherCities(): Promise<CityInfo[]> {
+  const { data } = await api.get<{ cities: CityInfo[] }>('/weather/cities')
+  return data.cities
+}

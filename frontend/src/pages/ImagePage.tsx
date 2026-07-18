@@ -2,21 +2,38 @@
  * TravelMind Agent — ImagePage
  *
  * Upload a travel photo and let the Kimi vision model (kimi-k2.6) recognize
- * the location, landmark features, and style/mood tags — the multimodal
- * entry point of the recommendation pipeline.
+ * the location, landmark features, and style/mood tags — then close the
+ * multimodal loop by finding similar attractions from the same tags
+ * (RAG → 6-factor scoring via /recommend/quick).
  */
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import { ArrowLeft, AlertCircle, MapPin, Tag, FileText, Landmark } from 'lucide-react'
+import {
+  ArrowLeft, AlertCircle, MapPin, Tag, FileText, Landmark, Loader2, TrendingUp,
+} from 'lucide-react'
 import { ImageUploader } from '../components/ImageUploader'
-import { analyzeImage, type ImageAnalyzeResult } from '../lib/api'
+import { PlaceCard } from '../components/PlaceCard'
+import { toast } from '../components/Toast'
+import {
+  analyzeImage,
+  fetchQuickRecommendations,
+  fetchWeatherCities,
+  type ImageAnalyzeResult,
+  type PlaceItem,
+} from '../lib/api'
 
 type PageState =
   | { stage: 'idle' }
   | { stage: 'loading' }
   | { stage: 'done'; result: ImageAnalyzeResult }
+  | { stage: 'error'; message: string }
+
+type RecState =
+  | { stage: 'idle' }
+  | { stage: 'loading' }
+  | { stage: 'done'; city: string; places: PlaceItem[] }
   | { stage: 'error'; message: string }
 
 /** Prefer the backend's friendly `detail` message over raw axios errors. */
@@ -26,19 +43,58 @@ function resolveErrorMessage(err: unknown): string {
     if (typeof detail === 'string' && detail) return detail
     if (err.code === 'ECONNABORTED') return '识别超时，请换一张更小的图片或稍后再试。'
   }
-  return '图片分析服务暂不可用，请稍后重试。'
+  return '服务暂不可用，请稍后重试。'
 }
 
 export function ImagePage() {
   const [state, setState] = useState<PageState>({ stage: 'idle' })
+  const [cities, setCities] = useState<string[]>([])
+  const [city, setCity] = useState('')
+  const [recState, setRecState] = useState<RecState>({ stage: 'idle' })
+
+  // 加载城市列表（与知识库相同的 10 个城市）
+  useEffect(() => {
+    fetchWeatherCities()
+      .then((list) => setCities(list.map((c) => c.name)))
+      .catch(() => toast.warning('城市列表加载失败，相似推荐可能不可用'))
+  }, [])
+
+  // 分析完成后，尝试从识别出的地点名中推断城市（如「西湖」→ 不含城市名则不推断）
+  useEffect(() => {
+    if (state.stage === 'done' && state.result.location) {
+      const matched = cities.find((c) => state.result.location.includes(c))
+      if (matched) setCity(matched)
+    }
+  }, [state, cities])
 
   const handleAnalyze = async (file: File) => {
     setState({ stage: 'loading' })
+    setRecState({ stage: 'idle' }) // 新图片清空上一轮推荐
     try {
       const result = await analyzeImage(file)
       setState({ stage: 'done', result })
     } catch (err: unknown) {
       setState({ stage: 'error', message: resolveErrorMessage(err) })
+    }
+  }
+
+  const handleRecommend = async () => {
+    if (state.stage !== 'done') return
+    if (!city) {
+      toast.warning('请先选择城市')
+      return
+    }
+    const tags = state.result.tags
+    if (tags.length === 0) {
+      toast.warning('没有可用的风格标签，无法推荐')
+      return
+    }
+    setRecState({ stage: 'loading' })
+    try {
+      const data = await fetchQuickRecommendations({ city, tags, top_k: 6 })
+      setRecState({ stage: 'done', city: data.city, places: data.places })
+    } catch (err: unknown) {
+      setRecState({ stage: 'error', message: resolveErrorMessage(err) })
     }
   }
 
@@ -74,7 +130,7 @@ export function ImagePage() {
           </div>
         )}
 
-        {/* Result */}
+        {/* Analysis result */}
         {state.stage === 'done' && (
           <div className="mt-6 space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             {/* Location */}
@@ -136,6 +192,64 @@ export function ImagePage() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Similar attractions — closes the multimodal loop */}
+        {state.stage === 'done' && (
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+              <TrendingUp size={16} className="text-blue-500" />
+              找相似景点
+            </div>
+            <p className="mt-1 text-xs text-slate-400">
+              用图片的风格标签，在知识库中匹配相似景点（RAG + 6 因子打分）
+            </p>
+            <div className="mt-3 flex items-center gap-3">
+              <select
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 shadow-sm focus:border-blue-400 focus:outline-none"
+                aria-label="选择城市"
+              >
+                <option value="">选择城市</option>
+                {cities.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={handleRecommend}
+                disabled={recState.stage === 'loading' || !city}
+                className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 disabled:opacity-50"
+              >
+                {recState.stage === 'loading' && (
+                  <Loader2 size={16} className="animate-spin" />
+                )}
+                {recState.stage === 'loading' ? '推荐中...' : '开始推荐'}
+              </button>
+            </div>
+
+            {recState.stage === 'error' && (
+              <div className="mt-4 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                <AlertCircle size={18} className="mt-0.5 shrink-0" />
+                <span>{recState.message}</span>
+              </div>
+            )}
+
+            {recState.stage === 'done' &&
+              (recState.places.length > 0 ? (
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  {recState.places.map((place, i) => (
+                    <PlaceCard key={place.name} place={place} rank={i + 1} />
+                  ))}
+                </div>
+              ) : (
+                <p className="mt-4 text-sm text-slate-500">
+                  在「{recState.city}」未找到匹配景点，换个城市或标签试试。
+                </p>
+              ))}
           </div>
         )}
 
