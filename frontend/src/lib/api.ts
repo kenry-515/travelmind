@@ -136,9 +136,13 @@ export interface WeatherAdvice {
 
 /** Run the full travel planning workflow (Profile → Trend → Weather → RAG → Recommend → Plan). */
 export async function fetchPlan(userInput: string): Promise<PlanResponse> {
-  const { data } = await api.post<PlanResponse>('/agent/plan', {
-    user_input: userInput,
-  })
+  // The full pipeline includes DeepSeek itinerary generation (30-90s) —
+  // the 30s axios default is not enough.
+  const { data } = await api.post<PlanResponse>(
+    '/agent/plan',
+    { user_input: userInput },
+    { timeout: 120000 }
+  )
   return data
 }
 

@@ -185,6 +185,57 @@ def _get_llm_client() -> AsyncOpenAI:
     )
 
 
+# ── Tolerant JSON parsing ────────────────────────────────
+
+def _extract_first_json_object(text: str) -> Optional[str]:
+    """Extract the first balanced {...} block, respecting strings/escapes.
+
+    LLM tool-call arguments occasionally arrive truncated or with trailing
+    garbage — slicing the first balanced object salvages most of those.
+    """
+    start = text.find("{")
+    if start == -1:
+        return None
+    depth = 0
+    in_str = False
+    escape = False
+    for i in range(start, len(text)):
+        ch = text[i]
+        if escape:
+            escape = False
+            continue
+        if ch == "\\":
+            escape = True
+            continue
+        if ch == '"':
+            in_str = not in_str
+            continue
+        if in_str:
+            continue
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return text[start : i + 1]
+    return None  # truncated mid-object
+
+
+def _parse_json_tolerant(text: str) -> Optional[Dict[str, Any]]:
+    """Parse JSON, falling back to the first balanced object on failure."""
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+    candidate = _extract_first_json_object(text)
+    if candidate and candidate != text:
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError:
+            pass
+    return None
+
+
 # ── Main API ─────────────────────────────────────────────
 
 
@@ -232,7 +283,7 @@ async def generate_itinerary(
     itinerary = None
     last_error = None
 
-    for attempt in range(2):  # retry once on empty/failure
+    for attempt in range(3):  # retry on empty/failure (LLM output is non-deterministic)
         try:
             client = _get_llm_client()
 
@@ -267,8 +318,8 @@ async def generate_itinerary(
 
             tool_calls = response.choices[0].message.tool_calls
             if tool_calls and tool_calls[0].function.arguments:
-                itinerary = json.loads(tool_calls[0].function.arguments)
-                if itinerary.get("plan"):
+                itinerary = _parse_json_tolerant(tool_calls[0].function.arguments)
+                if itinerary and itinerary.get("plan"):
                     logger.info(
                         f"Itinerary generated: {itinerary.get('days', 0)} days, "
                         f"{len(itinerary.get('plan', []))} day-entries"
@@ -279,12 +330,9 @@ async def generate_itinerary(
             # Fallback: try content
             content = response.choices[0].message.content
             if content:
-                try:
-                    parsed = json.loads(content)
-                    if parsed.get("plan"):
-                        return parsed
-                except json.JSONDecodeError:
-                    pass
+                parsed = _parse_json_tolerant(content)
+                if parsed and parsed.get("plan"):
+                    return parsed
 
             logger.warning(f"Empty itinerary response (attempt {attempt + 1})")
 
