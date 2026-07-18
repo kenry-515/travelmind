@@ -360,8 +360,10 @@ async def recommend(
             W_RELIABILITY * reliability
         )
 
-        # Build enriched result
-        result = dict(place["_original"])
+        # Build enriched result from the NORMALIZED flat fields — NOT from
+        # place["_original"], which keeps RAG candidates' nested Chroma shape
+        # ({metadata: {...}}) and would blank out name/city/tags in API responses.
+        result = {k: v for k, v in place.items() if k != "_original"}
         result["total_score"] = round(total, 4)
         result["_score_breakdown"] = {
             "preference_match": round(pref, 3),
