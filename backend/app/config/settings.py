@@ -20,7 +20,8 @@ class Settings(BaseSettings):
     DEEPSEEK_API_KEY: str = ""
     DEEPSEEK_BASE_URL: str = "https://api.deepseek.com"
     LLM_TIMEOUT: float = 60.0
-    LLM_MODEL: str = "deepseek-chat"
+    # deepseek-chat 名称已于 2026-07-24 弃用，对应 deepseek-v4-flash 非思考模式
+    LLM_MODEL: str = "deepseek-v4-flash"
 
     # --- Vision ---
     VISION_PROVIDER: str = "kimi"

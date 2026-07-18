@@ -48,10 +48,16 @@ class DeepSeekProvider(BaseLLMProvider):
         temperature: float = 0.7,
         max_tokens: int = 4096,
         timeout: Optional[float] = None,
+        thinking: bool = False,
     ):
         self.model = model or settings.LLM_MODEL
         self.temperature = temperature
         self.max_tokens = max_tokens
+        # DeepSeek V4 defaults to thinking mode, which rejects forced
+        # tool_choice and burns output tokens on reasoning. The old
+        # deepseek-chat was non-thinking — disable it to keep behavior
+        # (and cost/latency) consistent.
+        self.thinking = thinking
 
         key = api_key or settings.DEEPSEEK_API_KEY
         if not key or key.startswith("sk-xxx"):
@@ -71,6 +77,10 @@ class DeepSeekProvider(BaseLLMProvider):
             http_client=httpx.AsyncClient(trust_env=False, timeout=timeout),
         )
 
+    def _thinking_extra_body(self) -> Dict[str, Any]:
+        """Request body extension: explicitly toggle DeepSeek V4 thinking mode."""
+        return {"thinking": {"type": "enabled" if self.thinking else "disabled"}}
+
     async def chat(
         self,
         messages: List[Dict[str, str]],
@@ -88,6 +98,7 @@ class DeepSeekProvider(BaseLLMProvider):
                 messages=full_messages,  # type: ignore
                 temperature=temperature if temperature is not None else self.temperature,
                 max_tokens=max_tokens if max_tokens is not None else self.max_tokens,
+                extra_body=self._thinking_extra_body(),
                 **kwargs,
             )
             content = response.choices[0].message.content
@@ -115,6 +126,7 @@ class DeepSeekProvider(BaseLLMProvider):
                 temperature=temperature if temperature is not None else self.temperature,
                 max_tokens=max_tokens if max_tokens is not None else self.max_tokens,
                 stream=True,
+                extra_body=self._thinking_extra_body(),
                 **kwargs,
             )
             async for chunk in stream:
@@ -171,6 +183,7 @@ class DeepSeekProvider(BaseLLMProvider):
                 temperature=temperature,
                 tools=tools,  # type: ignore
                 tool_choice={"type": "function", "function": {"name": "output"}},
+                extra_body=self._thinking_extra_body(),
                 **kwargs,
             )
 

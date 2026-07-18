@@ -114,7 +114,7 @@ def _load_settings():
                 class _LLMEnv(BaseSettings):
                     DEEPSEEK_API_KEY: str = ""
                     DEEPSEEK_BASE_URL: str = "https://api.deepseek.com"
-                    LLM_MODEL: str = "deepseek-chat"
+                    LLM_MODEL: str = "deepseek-v4-flash"
                     model_config = {"env_file": ".env", "env_file_encoding": "utf-8", "case_sensitive": True, "extra": "ignore"}
                 _e = _LLMEnv()
                 api_key = _e.DEEPSEEK_API_KEY
@@ -125,7 +125,7 @@ def _load_settings():
         return {
             "api_key": api_key,
             "base_url": base_url or "https://api.deepseek.com",
-            "model": model or "deepseek-chat",
+            "model": model or "deepseek-v4-flash",
         }
 
 
