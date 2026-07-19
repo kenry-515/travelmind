@@ -11,6 +11,7 @@ Usage:
     from app.services.amap_service import get_distance_matrix, get_walking_route
 """
 
+import asyncio
 import hashlib
 import logging
 from typing import Any, Dict, List, Optional, Tuple
@@ -27,6 +28,7 @@ BASE_URL = "https://restapi.amap.com"
 WALKING_URL = f"{BASE_URL}/v3/direction/walking"
 TRANSIT_URL = f"{BASE_URL}/v3/direction/transit/integrated"
 DISTANCE_URL = f"{BASE_URL}/v3/distance"
+SEARCH_URL = f"{BASE_URL}/v3/place/text"
 
 # ── Rate limiting ────────────────────────────────────────
 
@@ -60,6 +62,69 @@ def _sign_params(params: Dict[str, Any]) -> Dict[str, Any]:
 
     params["sig"] = sig
     return params
+
+
+async def search_poi(
+    keywords: str,
+    city: str,
+    limit: int = 5,
+) -> List[Dict[str, Any]]:
+    """Search Amap POI by keywords within a city.
+
+    Returns a list of {name, adname (行政区, e.g. 渝中区), address, typecode,
+    lat, lon} — used for POI 存续校验、区域归属和地理坐标。
+    Returns [] on any failure (treated as 'not found' by callers).
+    """
+    params = _sign_params({
+        "key": settings.AMAP_API_KEY,
+        "keywords": keywords,
+        "city": city,
+        "citylimit": "true",
+        "offset": str(limit),
+        "page": "1",
+        "extensions": "all",
+        "output": "JSON",
+    })
+
+    try:
+        # 异常重试一次（Amap 偶发抖动）；空结果不重试（可能是真无此 POI）
+        for attempt in range(2):
+            try:
+                response = await _get_client().get(SEARCH_URL, params=params)
+                response.raise_for_status()
+                data = response.json()
+                break
+            except Exception:
+                if attempt == 0:
+                    await asyncio.sleep(0.4)
+                else:
+                    raise
+        if data.get("status") != "1":
+            logger.debug(f"POI search failed: {data.get('info')} for {keywords}@{city}")
+            return []
+
+        results: List[Dict[str, Any]] = []
+        for poi in data.get("pois", []):
+            lat, lon = None, None
+            loc = poi.get("location", "")
+            if "," in loc:
+                lon_str, lat_str = loc.split(",", 1)
+                try:
+                    lon, lat = float(lon_str), float(lat_str)
+                except ValueError:
+                    pass
+            results.append({
+                "name": poi.get("name", ""),
+                "adname": poi.get("adname", ""),
+                "address": poi.get("address", ""),
+                "typecode": poi.get("typecode", ""),
+                "lat": lat,
+                "lon": lon,
+            })
+        return results
+    except Exception as e:
+        logger.debug(f"POI search error for {keywords}@{city}: {e}")
+        return []
 
 
 # ── Public API ───────────────────────────────────────────

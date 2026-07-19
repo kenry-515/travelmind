@@ -158,8 +158,8 @@ def budget_sum_mismatch(data: Dict[str, Any]) -> bool:
 
 # ── Stats governance (backend-owned derivable numbers) ──
 
-# Items that are meal stops, not visitable places (excluded from 地点数)
-_MEAL_STOP_RE = re.compile(r"午餐|晚餐|早餐|宵夜|小吃|用餐|餐厅|食堂|饭店|美食街")
+# Items that are meal/rest/hotel stops, not visitable places (excluded from 地点数)
+_MEAL_STOP_RE = re.compile(r"午餐|晚餐|早餐|宵夜|小吃|用餐|餐厅|食堂|饭店|美食街|午休|休息|酒店|住宿")
 
 # stats entry whose label marks the place count (backend overwrites it)
 _PLACE_COUNT_LABEL_RE = re.compile(r"景点|地点|去处|打卡地")

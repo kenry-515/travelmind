@@ -35,6 +35,7 @@ from app.agents.itinerary_contract import (
     validate_pre_injection,
     weather_coverage_errors,
 )
+from app.agents.route_optimizer import optimize_itinerary
 from app.config.settings import settings
 
 logger = logging.getLogger(__name__)
@@ -226,6 +227,15 @@ def _build_planning_prompt(
         f"必须与实际月份（{month}月）和{season}一致，禁止出现其他月份。"
     )
 
+    # 同行人为父母/长辈时，主题命名避免「亲子」（亲子=带孩子）
+    companions_text = f"{companions} {constraints}"
+    naming_block = ""
+    if any(k in companions_text for k in ("父母", "老人", "长辈", "爸妈")) or companions == "家庭":
+        naming_block = (
+            "\n【主题命名】同行人为父母/长辈：每日 theme 命名用「家庭休闲」「慢游」"
+            "等风格，禁用「亲子」一词（亲子=带孩子）。"
+        )
+
     rain_block = ""
     if weather and trip_has_rain(weather, days):
         rain_block = (
@@ -243,7 +253,7 @@ def _build_planning_prompt(
 【旅行风格】{style}
 【特殊要求】{constraints}
 
-{date_block}{rain_block}
+{date_block}{rain_block}{naming_block}
 
 【推荐景点】（按推荐度排序，请从中选取安排行程）
 {_format_places(places)}
@@ -256,6 +266,21 @@ _SYSTEM_PROMPT_FULL = """你是 TravelMind 高级旅行规划师。根据用户�
 生成严格符合 output 函数 JSON 结构的行程。所有内容必须真实可执行：
 地点来自推荐列表，建议必须具体（预约方式、价格、时间、App 名）。
 你必须调用 'output' 函数返回结构化结果，不要返回纯文本。"""
+
+
+def _normalize_nested_json(data: Any) -> Any:
+    """LLM 偶发把顶层字段（trip/days/budget/checklist/tips）输出成
+    JSON 字符串而非对象——先把这些内嵌序列化展开，再走校验。"""
+    if not isinstance(data, dict):
+        return data
+    for key in ("trip", "days", "budget", "checklist", "tips", "items"):
+        val = data.get(key)
+        if isinstance(val, str):
+            try:
+                data[key] = json.loads(val)
+            except json.JSONDecodeError:
+                pass
+    return data
 
 
 # ── Validation helper ────────────────────────────────────
@@ -324,6 +349,7 @@ async def generate_itinerary(
                 logger.warning(f"Planning attempt {attempt + 1}: {last_error}")
                 continue
 
+            data = _normalize_nested_json(data)
             errors = _full_validate(data, trip_month, weather)
             if errors:
                 last_error = {"schema_errors": errors[:5]}
@@ -332,6 +358,14 @@ async def generate_itinerary(
                     f"first: {errors[0][:120]}"
                 )
                 continue
+
+            # B 阶段后处理：POI 存续 / 区域归属 / 顺路重排（非致命失败）
+            try:
+                data = await optimize_itinerary(
+                    data, profile.get("destination", "")
+                )
+            except Exception as e:
+                logger.warning(f"Route optimization failed (non-fatal): {e}")
 
             inject_computed_fields(data)
 
@@ -435,6 +469,7 @@ async def regenerate_day(
                 last_error = "empty/unparseable LLM response"
                 continue
 
+            new_day = _normalize_nested_json(new_day)
             new_day["day"] = day_no  # enforce, model may drift
             errors = validate_day(new_day)
             if errors:
