@@ -39,3 +39,4 @@ chroma_data/
 backend/.env
 frontend/.env
 frontend/.env.local
+.dlg-smoke.json

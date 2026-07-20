@@ -61,11 +61,20 @@ const LOADING_MESSAGES = [
 export function ItineraryPage() {
   const [searchParams] = useSearchParams()
   const query = searchParams.get('q') || ''
-  const [state, setState] = useState<PageState>(() =>
-    query
-      ? { stage: 'loading', message: LOADING_MESSAGES[0] }
-      : { stage: 'ready', itinerary: fixture, weather: null, error: null, preview: true }
-  )
+  const [state, setState] = useState<PageState>(() => {
+    if (query) return { stage: 'loading', message: LOADING_MESSAGES[0] }
+    // 对话式规划跳转：优先读 sessionStorage 中的行程 JSON
+    try {
+      const raw = sessionStorage.getItem('travelmind_itinerary')
+      if (raw) {
+        const stored = JSON.parse(raw) as TravelItinerary
+        return { stage: 'ready', itinerary: stored, weather: null, error: null, preview: false }
+      }
+    } catch {
+      // fall through to fixture preview
+    }
+    return { stage: 'ready', itinerary: fixture, weather: null, error: null, preview: true }
+  })
   const [checked, setChecked] = useState<boolean[]>([])
   const [regenIndex, setRegenIndex] = useState<number | null>(null)
   const [regenText, setRegenText] = useState('')
@@ -84,6 +93,27 @@ export function ItineraryPage() {
     hasRun.current = true
     runPipeline(query)
   }, [query])
+
+  // 从对话页/存储打开的行程：补取天气（非预览才需要）
+  useEffect(() => {
+    if (state.stage !== 'ready' || state.weather || state.preview) return
+    const city = state.itinerary.trip.city
+    if (!city) return
+    let cancelled = false
+    fetchWeather(city, state.itinerary.trip.daysCount)
+      .then((w) => {
+        if (!cancelled && state.stage === 'ready') {
+          setState({ ...state, weather: w })
+        }
+      })
+      .catch(() => {
+        // weather is non-critical
+      })
+    return () => {
+      cancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.stage])
 
   async function runPipeline(userInput: string) {
     setState({ stage: 'loading', message: LOADING_MESSAGES[0] })

@@ -239,3 +239,61 @@ export async function regenerateDay(params: {
   )
   return data.itinerary
 }
+
+
+// ── Conversational Planning (对话式规划 · 意图层) ─────────
+
+export interface DialogSlots {
+  city: string | null
+  days: number | null
+  date: string
+  companions: string
+  budget_level: string
+  tags: string[]
+  pace: string
+}
+
+export interface DialogSuggestion {
+  label: string
+  text: string
+  city?: string
+  days?: string
+}
+
+export type DialogStage = 'collecting' | 'confirming' | 'generating' | 'delivered'
+
+export interface DialogResponse {
+  session_id: string
+  reply: string
+  stage: DialogStage
+  slots: DialogSlots
+  followups_left: number
+  suggestions?: DialogSuggestion[] | null
+  confirm: boolean
+  itinerary?: TravelItinerary | null
+  queued: number
+}
+
+/** Send a message (or slot override) to the conversational planner. */
+export async function sendDialogMessage(params: {
+  sessionId?: string
+  text?: string
+  slotOverride?: Partial<DialogSlots>
+}): Promise<DialogResponse> {
+  const { data } = await api.post<DialogResponse>('/dialog/message', {
+    session_id: params.sessionId,
+    text: params.text ?? '',
+    slot_override: params.slotOverride,
+  })
+  return data
+}
+
+/** Trigger itinerary generation after the user confirms the summary. */
+export async function generateDialogPlan(sessionId: string): Promise<DialogResponse> {
+  const { data } = await api.post<DialogResponse>(
+    '/dialog/generate',
+    { session_id: sessionId },
+    { timeout: 180000 }
+  )
+  return data
+}

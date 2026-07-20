@@ -82,6 +82,13 @@ Windows 一键启动（开发）：双击根目录 `start-dev.bat`。
 | GET | `/weather/{city}` | 7-day forecast + travel scores |
 | POST | `/weather/travel-advice` | Simplified weather advice |
 | POST | `/image/analyze` | Photo → {location, tags, description, confidence} (Kimi vision) |
+| POST | `/dialog/message` | 对话式规划：多轮槽位收敛 / 修改分流 |
+| POST | `/dialog/generate` | 确认摘要后触发生成（复用全管线） |
+| POST | `/agent/plan/regenerate-day` | 局部重生成：只重建行程中的一天 |
+
+> **对话会话状态说明**：`/dialog/*` 的会话状态（槽位/阶段/行程）当前为**内存实现**
+> （TTL 2h），需**单 worker** 运行，进程重启即丢会话；生产环境请替换为
+> Redis 等外部存储（见 `backend/app/agents/dialog_manager.py` 的 `_sessions`）。
 
 ## Project Structure
 
