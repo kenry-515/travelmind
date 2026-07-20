@@ -283,6 +283,30 @@ def _normalize_nested_json(data: Any) -> Any:
     return data
 
 
+def _unwrap_tool_envelope(data: Any) -> Any:
+    """模型偶发回显整个工具定义（{"name": "output", "parameters": {...}}）
+    或 arguments 字符串——剥掉信封取真正的行程对象。"""
+    if not isinstance(data, dict):
+        return data
+    if isinstance(data.get("parameters"), dict):
+        data = data["parameters"]
+    elif isinstance(data.get("parameters"), str):
+        try:
+            data = json.loads(data["parameters"])
+        except json.JSONDecodeError:
+            pass
+    elif isinstance(data.get("arguments"), (dict, str)):
+        args = data["arguments"]
+        if isinstance(args, str):
+            try:
+                args = json.loads(args)
+            except json.JSONDecodeError:
+                pass
+        if isinstance(args, dict):
+            data = args
+    return data
+
+
 # ── Validation helper ────────────────────────────────────
 
 def _full_validate(
@@ -349,7 +373,7 @@ async def generate_itinerary(
                 logger.warning(f"Planning attempt {attempt + 1}: {last_error}")
                 continue
 
-            data = _normalize_nested_json(data)
+            data = _normalize_nested_json(_unwrap_tool_envelope(data))
             errors = _full_validate(data, trip_month, weather)
             if errors:
                 last_error = {"schema_errors": errors[:5]}
@@ -469,7 +493,7 @@ async def regenerate_day(
                 last_error = "empty/unparseable LLM response"
                 continue
 
-            new_day = _normalize_nested_json(new_day)
+            new_day = _normalize_nested_json(_unwrap_tool_envelope(new_day))
             new_day["day"] = day_no  # enforce, model may drift
             errors = validate_day(new_day)
             if errors:
