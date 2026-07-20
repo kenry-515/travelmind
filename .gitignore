@@ -35,6 +35,13 @@ chroma_data/
 *.log
 *.pid
 
+# Test / debug artifacts
+*-smoke.json
+.webbridge-req-*.json
+.e2e-*.jpg
+.fixture-*.json
+.tmp*
+
 # Environment
 backend/.env
 frontend/.env
