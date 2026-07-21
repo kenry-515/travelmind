@@ -42,6 +42,30 @@ percent 和=100 / budget 加总≈人均预算 / 月份一致 / daysCount 一致
 |---|---|
 | 首页 / 推荐 / 行程(fixture) / 图片 / 对话式规划 | **5/5 通过**（最近一次运行） |
 
+## Phase 2 质量评测基线（2026-07-21 首次全量）
+
+评测命令：`cd backend && python -X utf8 -m evals.run_evals`（12 query × 9 约束，
+真实管线生成 + 确定性打分，结果见 `backend/evals/results/2026-07-21.json`）
+
+| 指标 | 基线值 | 说明 |
+|---|---|---|
+| **Micro** | **75.0%** | 约束单元格 81/108 |
+| **Macro** | **0.0%** | 12 条 query 无一条全约束通过 |
+| **Final Pass Rate** | **0.0%** | 同 Macro |
+| schema_valid | 92% | q05 西安生成失败（重试耗尽） |
+| days_correct | 92% | 同上 |
+| stats_place_count | 92% | 同上 |
+| budget_consistent | 92% | 同上 |
+| month_consistent | 92% | 同上 |
+| weather_coverage | 92% | 同上 |
+| route_ok | 75% | 3 条检出折返并优化 |
+| **poi_verified** | **25%** | 主要短板①：高德名称索引命中弱（上海/北京公园类尤甚），改进空间大 |
+| **weather_fit** | **25%** | 主要短板②：7 月雷暴季模型仍排户外，prompt 天气约束需强化 |
+
+解读：92% 的工程约束（契约/统计/月份/预算）已稳；失分集中在两个
+"真实世界"维度——POI 可核实率与天气自适应。这正是看板要量化的差距，
+也是后续优化的优先方向（更名的 POI 名称归一 / 更强的天气约束注入）。
+
 ## 定时巡检现状
 
 - 每小时 :23 全栈冒烟（cron `849cb3b1`）

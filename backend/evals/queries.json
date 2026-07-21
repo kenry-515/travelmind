@@ -1,0 +1,18 @@
+{
+  "description": "TravelMind 行程质量评测集（每条覆盖不同城市/天数/预算/人群/兴趣）。expect 字段用于确定性打分，不许写死在脚本里。",
+  "version": "1.0.0",
+  "queries": [
+    { "id": "q01", "input": "重庆3日游，喜欢夜景和美食，带父母", "expect": { "city": "重庆", "days": 3 } },
+    { "id": "q02", "input": "成都看熊猫吃火锅，3天，带5岁孩子", "expect": { "city": "成都", "days": 3 } },
+    { "id": "q03", "input": "上海3日游，喜欢历史和艺术，情侣", "expect": { "city": "上海", "days": 3 } },
+    { "id": "q04", "input": "北京4天历史文化之旅，喜欢博物馆", "expect": { "city": "北京", "days": 4 } },
+    { "id": "q05", "input": "西安4日游，大学生穷游，喜欢历史和博物馆", "expect": { "city": "西安", "days": 4 } },
+    { "id": "q06", "input": "杭州2日休闲游，喜欢西湖和茶", "expect": { "city": "杭州", "days": 2 } },
+    { "id": "q07", "input": "三亚3日游，喜欢海滩和海岛，亲子游", "expect": { "city": "三亚", "days": 3 } },
+    { "id": "q08", "input": "桂林山水摄影5日游，一个人", "expect": { "city": "桂林", "days": 5 } },
+    { "id": "q09", "input": "苏州园林慢游2天，喜欢文艺", "expect": { "city": "苏州", "days": 2 } },
+    { "id": "q10", "input": "丽江古城3日游，和朋友一起", "expect": { "city": "丽江", "days": 3 } },
+    { "id": "q11", "input": "张家界看山2日游，喜欢自然风光", "expect": { "city": "张家界", "days": 2 } },
+    { "id": "q12", "input": "长沙2日美食之旅，预算经济", "expect": { "city": "长沙", "days": 2 } }
+  ]
+}

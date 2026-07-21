@@ -48,6 +48,18 @@ cd backend && python -X utf8 scripts/e2e_pages.py
 对话页(意图状态条)。WebBridge 调用一律走 `scripts/wb.py` 封装
 （临时 JSON 文件 + curl.exe，禁止 shell 内联中文）。
 
+## 4. 质量评测看板（每周/按需，有 LLM 成本）
+
+```bash
+cd backend && python -X utf8 -m evals.run_evals [--limit N]
+```
+
+对 `backend/evals/queries.json`（12 条，可扩充）逐条真实生成，
+再用确定性打分器输出 **Micro / Macro / Final Pass Rate** 三级指标，
+结果落盘 `backend/evals/results/YYYY-MM-DD.json`。
+指标含义与当前基线见 `docs/BASELINE.md` 和 README「质量评测」。
+不并入每小时冒烟（有成本）；需要提升通过率时逐项看 `per_constraint`。
+
 ## 定时巡检（cron）
 
 - **每小时 :23**：`smoke_test.py`（零 LLM 成本），失败时自动重启后端重试一次再上报
