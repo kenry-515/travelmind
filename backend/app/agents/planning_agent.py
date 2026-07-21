@@ -24,6 +24,7 @@ from openai import AsyncOpenAI
 
 from app.agents.itinerary_contract import (
     budget_sum_mismatch,
+    compute_weather_fit,
     inject_computed_fields,
     month_inconsistency_errors,
     schema_for_llm,
@@ -384,14 +385,22 @@ async def generate_itinerary(
                 continue
 
             # B 阶段后处理：POI 存续 / 区域归属 / 顺路重排（非致命失败）
+            route_report: Dict[str, Any] = {}
             try:
-                data = await optimize_itinerary(
+                data, route_report = await optimize_itinerary(
                     data, profile.get("destination", "")
                 )
             except Exception as e:
                 logger.warning(f"Route optimization failed (non-fatal): {e}")
 
             inject_computed_fields(data)
+
+            # 校验报告：路线核实结论 + 天气匹配度（Phase 1 可视化）
+            if route_report:
+                fit, weather_notes = compute_weather_fit(data, weather)
+                route_report["weather_fit"] = fit
+                route_report["weather_notes"] = weather_notes
+                data["validation_report"] = route_report
 
             # Post-injection sanity (percent/daysCount now present)
             errors = validate_itinerary(data) + validate_day_continuity(data)

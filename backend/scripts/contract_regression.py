@@ -85,6 +85,17 @@ def main() -> int:
     days = it.get("days", [])
     check("天数与 daysCount 一致", trip.get("daysCount") == len(days))
 
+    vr = it.get("validation_report")
+    check(
+        "validation_report 存在且结构完整",
+        bool(vr)
+        and isinstance(vr.get("poi"), list)
+        and isinstance(vr.get("poi_verified"), str)
+        and isinstance(vr.get("routes"), list)
+        and vr.get("weather_fit") in ("good", "fair", "poor", "unknown"),
+        f"poi_verified={vr.get('poi_verified') if vr else None}",
+    )
+
     passed = sum(1 for _, ok in RESULTS if ok)
     print(f"\n===== 契约回归: {passed}/{len(RESULTS)} 通过 =====")
     return 0 if passed == len(RESULTS) else 1

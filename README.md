@@ -28,6 +28,7 @@ L1 交互层   React 19 + Vite（对话式规划 / 推荐 / 行程卡片 / 图�
 L2 意图层   FastAPI + 对话状态机（槽位收敛、修改分流、局部重生成）
 L3 生成层   LangGraph 管线（Profile→Trend→Weather→RAG→Recommend→Plan）
             + 契约校验（docs/itinerary.schema.json）+ 高德存续/顺路处理
+            + validation_report（每个行程附带 POI 存续/顺路/天气校验报告，前端可视化）
 ```
 
 ## 部署约束

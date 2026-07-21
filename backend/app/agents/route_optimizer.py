@@ -20,6 +20,7 @@ import asyncio
 import logging
 import math
 import re
+from datetime import date
 from typing import Any, Dict, List, Optional, Tuple
 
 from app.agents.itinerary_contract import _MEAL_STOP_RE
@@ -137,14 +138,12 @@ def _theme_districts(theme: str) -> List[str]:
 async def optimize_itinerary(
     data: Dict[str, Any],
     city: str,
-) -> Dict[str, Any]:
-    """对 LLM 生成的行程草案做存续/归属/顺路处理，返回处理后的新 dict。
+) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    """对 LLM 生成的行程草案做存续/归属/顺路处理。
 
-    修改范围（其余字段一律不动）：
-    - 查无 POI → 同区域同类替换（poi 文案 + 该条 note 按原风格补写说明）
-    - 行政区与 theme 不符的条目在保持每天 ≥3 条时移动到对应天
-    - 同日游览点按最近邻重排（时间槽升序重排）
-    - 跨度 >30km 在 tips 追加一条标注
+    返回 (处理后的行程, 校验报告)：
+    - 校验报告汇总每个 POI 的存续状态、每日路线里程/折返结论、校验日期，
+      供 docs/itinerary.schema.json 的 validation_report 字段使用。
     """
     import copy
 
@@ -152,6 +151,7 @@ async def optimize_itinerary(
     days = result.get("days", [])
     tips: List[str] = result.setdefault("tips", [])
     city = city or (result.get("trip") or {}).get("city", "")
+    replaced_notes: Dict[str, str] = {}  # 新 POI 名 → 替换说明（报告用）
 
     # ── Step 1: 并发核实所有游览点 ───────────────────────
     poi_set: List[str] = []
@@ -226,6 +226,9 @@ async def optimize_itinerary(
                 f"已替换为同在{replacement.get('adname', city)}的{replacement['name']}；"
                 f"建议预留 2 小时慢逛"
             )
+            replaced_notes[replacement["name"]] = (
+                f"原计划「{_base_name(old)}」{closure['evidence']}，已核实替换"
+            )
             trip_poi_names.add(_normalize(replacement["name"]))
             lookups[replacement["name"]] = {
                 "status": "ok",
@@ -280,6 +283,7 @@ async def optimize_itinerary(
             logger.info(f"Region fix: {item['poi']} day{day.get('day')} → day{days[dst_idx].get('day')}")
 
     # ── Step 4: 同日最近邻顺路重排 ──────────────────────
+    reordered_days: set = set()
     for day in days:
         items = day.get("items", [])
         visit_idx = [i for i, it in enumerate(items) if _is_visit(it.get("poi", ""))]
@@ -327,6 +331,7 @@ async def optimize_itinerary(
         for slot, idx_in_chain in zip(coord_slots, chain):
             new_order[slot] = idx_in_chain
         day["items"] = [items[i] for i in new_order]
+        reordered_days.add(day.get("day"))
         logger.info(
             f"Route reordered day {day.get('day')}: "
             f"{original_len:.1f}km → {optimized_len:.1f}km"
@@ -357,4 +362,66 @@ async def optimize_itinerary(
             seen.add(t)
             deduped.append(t)
     result["tips"] = deduped[:6]  # 契约 maxItems 6
-    return result
+
+    # ── 校验报告组装（schema.validation_report 用）──────
+    report_poi: List[Dict[str, Any]] = []
+    seen_poi: set = set()
+    for day in days:
+        for item in day.get("items", []):
+            if not _is_visit(item.get("poi", "")):
+                continue
+            poi = item["poi"]
+            if poi in seen_poi:
+                continue
+            seen_poi.add(poi)
+            info = lookups.get(poi, {}) or {}
+            entry: Dict[str, Any] = {"name": poi}
+            if poi in replaced_notes:
+                entry["status"] = "replaced"
+                entry["note"] = replaced_notes[poi]
+            else:
+                status = info.get("status")
+                if status == "ok":
+                    entry["status"] = "verified"
+                elif status == "closed":
+                    entry["status"] = "closed"
+                    entry["note"] = "已确认停业/搬迁"
+                else:
+                    entry["status"] = "unknown"
+                    entry["note"] = "高德地图未核实到在营状态，建议出行前确认"
+            district = info.get("adname") or (
+                lookups.get(_base_name(poi)) or {}
+            ).get("adname", "")
+            if district:
+                entry["district"] = district
+            report_poi.append(entry)
+
+    verified_n = sum(1 for e in report_poi if e["status"] in ("verified", "replaced"))
+
+    report_routes: List[Dict[str, Any]] = []
+    for day in days:
+        pts = []
+        for it in day.get("items", []):
+            if not _is_visit(it.get("poi", "")):
+                continue
+            info = lookups.get(it["poi"], {}) or {}
+            if info.get("lat") and info.get("lon"):
+                pts.append((info["lat"], info["lon"]))
+        total_km = round(sum(_haversine_km(*a, *b) for a, b in zip(pts, pts[1:])), 1)
+        route_entry: Dict[str, Any] = {
+            "day": day.get("day"),
+            "total_km": total_km,
+            "backtrack": day.get("day") in reordered_days,
+        }
+        if route_entry["backtrack"]:
+            route_entry["note"] = "检测到折返，已按地理顺路重排"
+        report_routes.append(route_entry)
+
+    report = {
+        "poi": report_poi,
+        "poi_verified": f"{verified_n}/{len(report_poi)}",
+        "routes": report_routes,
+        "route_backtrack": any(r["backtrack"] for r in report_routes),
+        "checked_at": date.today().isoformat(),
+    }
+    return result, report

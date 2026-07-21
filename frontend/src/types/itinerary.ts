@@ -1986,4 +1986,59 @@ export interface TravelItinerary {
     | [string, string, string, string]
     | [string, string, string, string, string]
     | [string, string, string, string, string, string];
+  /**
+   * 可选，校验报告（后端生成层产出，非模型输出）：POI 存续、路线顺路、天气匹配的结论汇总。
+   */
+  validation_report?: {
+    /**
+     * 每个游览点的存续校验结论
+     */
+    poi: {
+      name: string;
+      status: "verified" | "unknown" | "closed" | "replaced";
+      /**
+       * 所属行政区，如 渝中区
+       */
+      district?: string;
+      /**
+       * 人类可读的原因说明（未核实/被替换时必填）
+       */
+      note?: string;
+    }[];
+    /**
+     * 已核实/总游览点，如 10/11
+     */
+    poi_verified: string;
+    /**
+     * 每日路线结论
+     */
+    routes: {
+      day: number;
+      /**
+       * 当日游览点连线总里程（公里）
+       */
+      total_km?: number;
+      /**
+       * 是否检测到明显折返（优化器重排过）
+       */
+      backtrack: boolean;
+      note?: string;
+    }[];
+    /**
+     * 汇总级：是否存在折返
+     */
+    route_backtrack: boolean;
+    /**
+     * 天气与行程匹配度
+     */
+    weather_fit: "good" | "fair" | "poor" | "unknown";
+    /**
+     * 逐日天气匹配说明（如「D1 雷暴日，3 个室内项目」）
+     */
+    weather_notes?: string[];
+    /**
+     * 校验日期，如 2026-07-21
+     */
+    checked_at: string;
+  };
 }

@@ -281,3 +281,56 @@ def weather_coverage_errors(data: Dict[str, Any]) -> List[str]:
     if not any(_WEATHER_ITEM_RE.search(t) for t in checklist_texts):
         errors.append("有降雨预报但 checklist 中没有天气相关物品（如折叠伞）")
     return errors
+
+
+# ── Weather fit (validation_report 用) ───────────────────
+
+# 偏室内活动的 POI 关键词（粗略启发式，用于天气匹配度评估）
+_INDOOR_RE = re.compile(
+    r"博物馆|古镇|室内|文创|商场|酒店|午餐|晚餐|早餐|小吃|休息|午休|"
+    r"寺|庙|会馆|购物|书店|剧院|餐厅|美术|图书|温泉|溶洞|茶|咖啡|手作|展馆"
+)
+
+
+def compute_weather_fit(
+    data: Dict[str, Any],
+    weather: Optional[Dict[str, Any]],
+) -> tuple:
+    """评估行程与天气的匹配度（validation_report.weather_fit）。
+
+    Returns (fit, notes): fit ∈ good/fair/poor/unknown。
+    有雨的日子若户外项目多于室内 → 记为不匹配（poor）并给出原因说明。
+    """
+    if not weather or not weather.get("daily"):
+        return "unknown", []
+
+    notes: List[str] = []
+    has_mismatch = False
+    for i, day in enumerate(data.get("days", [])):
+        if not isinstance(day, dict):
+            continue
+        fc = weather["daily"][i] if i < len(weather["daily"]) else None
+        if not fc:
+            continue
+        desc = fc.get("weather_desc", "") or ""
+        precip = fc.get("precipitation") or 0
+        rainy = any(w in desc for w in _RAIN_WORDS) or precip > 0.5
+        if not rainy:
+            continue
+
+        items = [it for it in day.get("items", []) if isinstance(it, dict)]
+        indoor = sum(1 for it in items if _INDOOR_RE.search(it.get("poi", "")))
+        outdoor = len(items) - indoor
+        if outdoor > indoor:
+            has_mismatch = True
+            notes.append(
+                f"第{day.get('day')}天{desc}，仍有 {outdoor} 个户外项目，"
+                f"建议准备雨具和室内备选"
+            )
+        else:
+            notes.append(
+                f"第{day.get('day')}天{desc}，以 {indoor} 个室内项目为主，安排合理"
+            )
+
+    fit = "poor" if has_mismatch else "good"
+    return fit, notes

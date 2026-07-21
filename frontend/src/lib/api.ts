@@ -75,6 +75,9 @@ export type TripDay = TravelItinerary['days'][number]
 export type DayItem = TripDay['items'][number]
 export type BudgetItem = TravelItinerary['budget'][number]
 export type ChecklistItem = TravelItinerary['checklist'][number]
+export type ValidationReport = NonNullable<TravelItinerary['validation_report']>
+export type PoiValidation = ValidationReport['poi'][number]
+export type RouteValidation = ValidationReport['routes'][number]
 
 export interface PlanResponse {
   user_input: string

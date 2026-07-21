@@ -34,6 +34,7 @@ import {
   type WeatherForecast,
 } from '../lib/api'
 import { toast } from '../components/Toast'
+import { ValidationReportCard } from '../components/ValidationReportCard'
 import fixtureJson from '../../fixtures/itinerary.example.json'
 
 const fixture = fixtureJson as TravelItinerary
@@ -300,6 +301,11 @@ export function ItineraryPage() {
                 </div>
               )}
             </div>
+
+            {/* ── 校验报告卡片（Phase 1：真实数据校验可视化） ── */}
+            {state.itinerary.validation_report && (
+              <ValidationReportCard report={state.itinerary.validation_report} />
+            )}
 
             {/* ── 每天一栏 ── */}
             <div className="space-y-6">

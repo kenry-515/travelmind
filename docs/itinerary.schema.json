@@ -102,6 +102,53 @@
       "maxItems": 6,
       "description": "实用提示 chips：具体可执行（写清 App 名/价格/时间），禁止空泛建议。",
       "items": { "type": "string" }
+    },
+    "validation_report": {
+      "type": "object",
+      "description": "可选，校验报告（后端生成层产出，非模型输出）：POI 存续、路线顺路、天气匹配的结论汇总。",
+      "additionalProperties": false,
+      "required": ["poi", "poi_verified", "routes", "route_backtrack", "weather_fit", "checked_at"],
+      "properties": {
+        "poi": {
+          "type": "array",
+          "description": "每个游览点的存续校验结论",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "status"],
+            "properties": {
+              "name": { "type": "string" },
+              "status": { "type": "string", "enum": ["verified", "unknown", "closed", "replaced"] },
+              "district": { "type": "string", "description": "所属行政区，如 渝中区" },
+              "note": { "type": "string", "description": "人类可读的原因说明（未核实/被替换时必填）" }
+            }
+          }
+        },
+        "poi_verified": { "type": "string", "description": "已核实/总游览点，如 10/11" },
+        "routes": {
+          "type": "array",
+          "description": "每日路线结论",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["day", "backtrack"],
+            "properties": {
+              "day": { "type": "integer" },
+              "total_km": { "type": "number", "description": "当日游览点连线总里程（公里）" },
+              "backtrack": { "type": "boolean", "description": "是否检测到明显折返（优化器重排过）" },
+              "note": { "type": "string" }
+            }
+          }
+        },
+        "route_backtrack": { "type": "boolean", "description": "汇总级：是否存在折返" },
+        "weather_fit": { "type": "string", "enum": ["good", "fair", "poor", "unknown"], "description": "天气与行程匹配度" },
+        "weather_notes": {
+          "type": "array",
+          "description": "逐日天气匹配说明（如「D1 雷暴日，3 个室内项目」）",
+          "items": { "type": "string" }
+        },
+        "checked_at": { "type": "string", "description": "校验日期，如 2026-07-21" }
+      }
     }
   }
 }
