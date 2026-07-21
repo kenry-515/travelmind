@@ -14,6 +14,8 @@ import sys
 import time
 from pathlib import Path
 
+import httpx
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from wb import close_session, evaluate, navigate  # noqa: E402
@@ -38,6 +40,13 @@ def check(name: str, ok: bool, detail: str = "") -> bool:
 
 
 def main() -> int:
+    # 前端不在不算失败（定时巡检场景下前端 dev server 不一定常开）
+    try:
+        httpx.get(BASE, timeout=3, trust_env=False)
+    except Exception:
+        print(f"⏭️  前端 {BASE} 不可达 — 跳过页面 E2E（dev server 未启动）")
+        return 0
+
     try:
         navigate(BASE + "/", SESSION, new_tab=True, group_title="E2E 页面巡检")
     except RuntimeError as e:

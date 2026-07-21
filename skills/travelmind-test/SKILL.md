@@ -48,6 +48,13 @@ cd backend && python -X utf8 scripts/e2e_pages.py
 对话页(意图状态条)。WebBridge 调用一律走 `scripts/wb.py` 封装
 （临时 JSON 文件 + curl.exe，禁止 shell 内联中文）。
 
+## 定时巡检（cron）
+
+- **每小时 :23**：`smoke_test.py`（零 LLM 成本），失败时自动重启后端重试一次再上报
+- **每天 08:41**：`contract_regression.py`（少量 DeepSeek token）+ 前端在线时附带 `e2e_pages.py`
+- 前端 dev server 不在线时 `e2e_pages.py` 自动跳过（退出码 0，不误报）
+- 修改/取消：让用户直接说（如"把每小时冒烟改成每两小时"）
+
 ## 失败排查
 
 - 冒烟 health 失败 → 后端没起或端口被占（`netstat -ano | findstr :8000`）

@@ -27,6 +27,7 @@ langchain-community==0.4.2
 langgraph==1.2.9
 chromadb==0.5.20
 tiktoken==0.7.0
+pillow==11.0.0           # 测试脚本生成验证图片 (test_vision / smoke_test --with-vision)
 
 # --- HTTP Client ---
 httpx==0.28.1
