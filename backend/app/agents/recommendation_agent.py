@@ -218,11 +218,22 @@ def _extract_metadata(place: Dict[str, Any]) -> Dict[str, Any]:
     """
     meta = place.get("metadata", {})
     if meta:
+        # Phase 7: Reconstruct price_range from flat Chroma metadata fields
+        pr_min = meta.get("price_range_min")
+        pr_max = meta.get("price_range_max")
+        price_range = None
+        if pr_min is not None or pr_max is not None:
+            price_range = {"min": int(pr_min or 0), "max": int(pr_max or 0)}
+
         return {
             "name": meta.get("name", place.get("name", "")),
             "city": meta.get("city", place.get("city", "")),
             "tags": _parse_tags(meta.get("tags", "")),
             "price_level": meta.get("price_level", "适中"),
+            "price_range": price_range or meta.get("price_range") or place.get("price_range"),
+            "price_source": meta.get("price_source", ""),
+            "price_updated_at": meta.get("price_updated_at", ""),
+            "amap_id": meta.get("amap_id", ""),
             "popularity_score": _safe_float(meta.get("popularity_score"), 5),
             "best_time": meta.get("best_time", "全年"),
             "suitable_for": meta.get("suitable_for", ""),
@@ -238,6 +249,10 @@ def _extract_metadata(place: Dict[str, Any]) -> Dict[str, Any]:
         "city": place.get("city", ""),
         "tags": place.get("tags", []) or [],
         "price_level": place.get("price_level", "适中"),
+        "price_range": place.get("price_range"),
+        "price_source": place.get("price_source", ""),
+        "price_updated_at": place.get("price_updated_at", ""),
+        "amap_id": place.get("amap_id", ""),
         "popularity_score": _safe_float(place.get("popularity_score"), 5),
         "best_time": place.get("best_time", "全年"),
         "suitable_for": place.get("suitable_for", ""),

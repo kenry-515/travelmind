@@ -57,7 +57,28 @@
               "properties": {
                 "time": { "type": "string", "pattern": "^\\d{2}:\\d{2}$", "description": "24 小时制，如 08:30" },
                 "poi": { "type": "string", "description": "地点/活动，需提前预约的要写清" },
-                "note": { "type": "string", "description": "一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）" }
+                "note": { "type": "string", "description": "一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）" },
+                "price_range": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "description": "门票价格区间，后端从知识库注入，非模型输出",
+                  "properties": {
+                    "min": {"type": "integer", "minimum": 0},
+                    "max": {"type": "integer", "minimum": 0}
+                  }
+                },
+                "price_source": {
+                  "type": "string",
+                  "description": "价格数据来源，如'高德POI'或'估算（基于价格等级）'"
+                },
+                "price_updated_at": {
+                  "type": "string",
+                  "description": "价格数据更新时间 ISO 日期，如'2026-07-21'"
+                },
+                "booking_url": {
+                  "type": "string",
+                  "description": "预订/查看实时价格跳转链接"
+                }
               }
             }
           },
@@ -148,6 +169,21 @@
           "items": { "type": "string" }
         },
         "checked_at": { "type": "string", "description": "校验日期，如 2026-07-21" }
+      }
+    },
+    "price_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "价格汇总，后端注入，非模型输出。用于前端预算对比与价格新鲜度提示。",
+      "properties": {
+        "total_estimate_min": { "type": "integer", "minimum": 0 },
+        "total_estimate_max": { "type": "integer", "minimum": 0 },
+        "priced_items": { "type": "integer", "minimum": 0, "description": "有价格数据的 POI 数" },
+        "total_items": { "type": "integer", "minimum": 0, "description": "可参观 POI 总数" },
+        "stale_items": { "type": "integer", "minimum": 0, "description": "价格超过 90 天未更新的 POI 数" },
+        "budget_slot": { "type": "string", "description": "用户的预算档次，如 经济/适中/舒适" },
+        "over_budget": { "type": "boolean", "description": "行程花费是否超出用户预算" },
+        "over_budget_warning": { "type": "string", "description": "超预算时的人类可读提示" }
       }
     }
   }

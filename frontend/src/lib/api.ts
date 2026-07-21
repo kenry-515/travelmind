@@ -86,6 +86,43 @@ export type ValidationReport = NonNullable<TravelItinerary['validation_report']>
 export type PoiValidation = ValidationReport['poi'][number]
 export type RouteValidation = ValidationReport['routes'][number]
 
+// Phase 7: Price layer types (backward-compatible optional fields)
+export interface PriceRange {
+  min: number
+  max: number
+}
+
+export interface PriceInfo {
+  price_range?: PriceRange
+  price_source?: string
+  price_updated_at?: string
+  booking_url?: string
+}
+
+export interface PriceSummary {
+  total_estimate_min: number
+  total_estimate_max: number
+  priced_items: number
+  total_items: number
+  stale_items: number
+  budget_slot: string
+  over_budget: boolean
+  over_budget_warning: string
+}
+
+/** Check if a price is stale (>90 days since last update) */
+export function isPriceStale(updatedAt: string | undefined): boolean {
+  if (!updatedAt) return true
+  try {
+    const updated = new Date(updatedAt)
+    const now = new Date()
+    const daysDiff = (now.getTime() - updated.getTime()) / (1000 * 60 * 60 * 24)
+    return daysDiff > 90
+  } catch {
+    return true
+  }
+}
+
 export interface PlanResponse {
   user_input: string
   user_profile: Record<string, unknown> | null

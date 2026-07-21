@@ -65,7 +65,12 @@ def _load_attractions(path: Path) -> List[Dict[str, Any]]:
 
 
 def _build_metadata(attraction: Dict[str, Any]) -> Dict[str, Any]:
-    """Build Chroma-compatible metadata from an attraction."""
+    """Build Chroma-compatible metadata from an attraction.
+
+    Chroma metadata only supports str, int, float, bool — nested objects
+    like price_range are flattened into price_range_min / price_range_max.
+    """
+    pr = attraction.get("price_range") or {}
     return {
         "name": attraction.get("name", ""),
         "city": attraction.get("city", ""),
@@ -73,6 +78,12 @@ def _build_metadata(attraction: Dict[str, Any]) -> Dict[str, Any]:
         "lon": attraction.get("lon"),
         "tags": ", ".join(attraction.get("tags", [])) if attraction.get("tags") else "",
         "price_level": attraction.get("price_level", "适中"),
+        # Phase 7: Flat price fields for Chroma compatibility
+        "price_range_min": int(pr.get("min", 0)) if isinstance(pr, dict) else 0,
+        "price_range_max": int(pr.get("max", 0)) if isinstance(pr, dict) else 0,
+        "price_source": attraction.get("price_source", ""),
+        "price_updated_at": attraction.get("price_updated_at", ""),
+        "amap_id": attraction.get("amap_id", ""),
         "popularity_score": attraction.get("popularity_score", 5),
         "best_time": attraction.get("best_time", "全年"),
         "suitable_for": attraction.get("suitable_for", ""),

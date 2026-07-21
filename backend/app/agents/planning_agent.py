@@ -148,6 +148,23 @@ async def _call_llm(
     return None
 
 
+# ── Knowledge-base cache (for price enrichment) ────────────
+
+_kb_attractions_cache: Optional[List[Dict[str, Any]]] = None
+
+
+def _get_kb_attractions() -> List[Dict[str, Any]]:
+    """Load attractions from the data file (cached at module level)."""
+    global _kb_attractions_cache
+    if _kb_attractions_cache is None:
+        from pathlib import Path
+        data_path = Path(__file__).parent.parent.parent / "data" / "attractions.json"
+        with open(data_path, "r", encoding="utf-8") as f:
+            _kb_attractions_cache = json.load(f).get("attractions", [])
+        logger.info(f"Loaded {len(_kb_attractions_cache)} attractions for price enrichment")
+    return _kb_attractions_cache
+
+
 # ── Prompt building ──────────────────────────────────────
 
 def _format_places(places: List[Dict[str, Any]], limit: int = 15) -> str:
@@ -161,11 +178,24 @@ def _format_places(places: List[Dict[str, Any]], limit: int = 15) -> str:
             tags_p = [t.strip() for t in tags_p.split(",") if t.strip()]
         suitable = p.get("suitable_for", "") or p.get("metadata", {}).get("suitable_for", "")
         best_time = p.get("best_time", "") or p.get("metadata", {}).get("best_time", "")
-        price = p.get("price_level", "") or p.get("metadata", {}).get("price_level", "")
+
+        # Phase 7: Use real price_range when available, fall back to price_level
+        pr = p.get("price_range") or p.get("metadata", {}).get("price_range") or {}
+        if isinstance(pr, dict) and (pr.get("max", 0) > 0 or pr.get("min", 0) > 0):
+            if pr.get("min") == pr.get("max"):
+                price = f"¥{pr['min']}"
+            else:
+                price = f"¥{pr.get('min', 0)}-{pr.get('max', 0)}"
+        elif isinstance(pr, dict) and pr.get("max", 0) == 0 and pr.get("min", 0) == 0:
+            price = "免费"
+        else:
+            # Fallback to legacy price_level label
+            price = p.get("price_level", "") or p.get("metadata", {}).get("price_level", "")
+
         lines.append(
             f"{i + 1}. {name} "
             f"(标签: {', '.join(tags_p[:5])}; 适合: {suitable}; "
-            f"最佳时间: {best_time}; 价格: {price}; 推荐分: {score:.2f})"
+            f"最佳时间: {best_time}; 门票: {price}; 推荐分: {score:.2f})"
         )
     return "\n".join(lines)
 
@@ -392,6 +422,15 @@ async def generate_itinerary(
                 )
             except Exception as e:
                 logger.warning(f"Route optimization failed (non-fatal): {e}")
+
+            # Phase 7: Price enrichment from knowledge base (non-LLM, best-effort)
+            try:
+                from app.services.price_enricher import enrich_prices
+                kb_attractions = _get_kb_attractions()
+                user_budget = profile.get("budget_level", "") or profile.get("budget", "")
+                enrich_prices(data, kb_attractions, user_budget=user_budget)
+            except Exception as e:
+                logger.warning(f"Price enrichment failed (non-fatal): {e}")
 
             inject_computed_fields(data)
 
