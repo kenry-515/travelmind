@@ -12,6 +12,8 @@ from app.api.recommend import router as recommend_router
 from app.api.weather import router as weather_router
 from app.api.image import router as image_router
 from app.api.dialog import router as dialog_router
+from app.api.itineraries import router as itineraries_router
+from app.api.favorites import router as favorites_router
 
 api_router = APIRouter(prefix="/api/v1")
 api_router.include_router(health_router, tags=["health"])
@@ -21,3 +23,5 @@ api_router.include_router(recommend_router, tags=["recommend"])
 api_router.include_router(weather_router, tags=["weather"])
 api_router.include_router(image_router, tags=["image"])
 api_router.include_router(dialog_router, tags=["dialog"])
+api_router.include_router(itineraries_router, tags=["itineraries"])
+api_router.include_router(favorites_router, tags=["favorites"])

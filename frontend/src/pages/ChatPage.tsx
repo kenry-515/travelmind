@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useSearchParams, Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Trash2, Loader2, MapPin, Sparkles } from 'lucide-react'
+import { ArrowLeft, Trash2, List, Loader2, MapPin, Sparkles } from 'lucide-react'
 import { ChatBox, type Message } from '../components/ChatBox'
 import { ChatInput } from '../components/ChatInput'
 import { IntentBar } from '../components/IntentBar'
@@ -211,6 +211,14 @@ export function ChatPage() {
               : '多轮对话收敛意图，确认后生成行程卡片'}
           </p>
         </div>
+        <Link
+          to="/history"
+          className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-slate-400 transition-colors hover:bg-slate-100 hover:text-blue-500"
+          aria-label="我的行程"
+        >
+          <List size={14} />
+          我的行程
+        </Link>
         {(messages.length > 0 || dialog.sessionId) && (
           <button
             onClick={clearAll}

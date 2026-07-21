@@ -11,7 +11,7 @@ POST /api/v1/dialog/generate  — 确认后触发生成（复用生成管线，�
 import logging
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
 from app.agents.dialog_manager import (
@@ -27,8 +27,12 @@ from app.agents.dialog_manager import (
 from app.agents.orchestrator import run_travel_workflow
 from app.agents.planning_agent import regenerate_day
 from app.agents.profile_agent import extract_profile
+from app.api.deps import get_device_id
+from app.database import connection as db_conn
 from app.rag.retriever import retrieve
 from app.services.llm_service import get_llm_provider
+from app.services.user_service import get_or_create_user
+from app.services import itinerary_service
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +62,7 @@ class DialogResponse(BaseModel):
     suggestions: Optional[List[Dict[str, str]]] = None
     confirm: bool = False
     itinerary: Optional[Dict[str, Any]] = None
+    itinerary_id: Optional[str] = None
     queued: int = 0
 
 
@@ -184,7 +189,10 @@ async def dialog_message(request: DialogMessageRequest):
 
 
 @router.post("/dialog/generate", response_model=DialogResponse)
-async def dialog_generate(request: DialogGenerateRequest):
+async def dialog_generate(
+    request: DialogGenerateRequest,
+    device_id: Optional[str] = Depends(get_device_id),
+):
     """用户点「生成行程卡片」→ 复用生成管线（零改动）。"""
     sid, state = await get_session(request.session_id)
 
@@ -218,10 +226,32 @@ async def dialog_generate(request: DialogGenerateRequest):
     state["queued"] = []
     await save_session(sid, state)
 
+    # ── Auto-save itinerary to PostgreSQL (non-blocking, best-effort) ──
+    saved_id: Optional[str] = None
+    if db_conn.DB_HEALTHY and itinerary and device_id:
+        try:
+            async with db_conn.async_session() as db:
+                user = await get_or_create_user(db, device_id)
+                saved = await itinerary_service.save_itinerary(
+                    db=db,
+                    user_id=user.id,
+                    itinerary=itinerary,
+                    validation_report=itinerary.get("validation_report"),
+                    profile_snapshot={
+                        "slots": state.get("slots", {}),
+                        "user_input": user_input,
+                    },
+                    weather_snapshot=result.get("weather"),
+                )
+                if saved:
+                    saved_id = saved.id
+        except Exception as e:
+            logger.warning(f"Auto-save itinerary skipped (non-fatal): {e}")
+
     reply = "行程卡片生成好啦 ✅ 点卡片看完整版；想改哪里直接说（比如「第二天太赶了」）。"
     if queued_count:
         reply += f"（你生成中留的 {queued_count} 条留言，直接再说一遍即可）"
-    return _resp(sid, state, reply, itinerary=itinerary)
+    return _resp(sid, state, reply, itinerary=itinerary, itinerary_id=saved_id)
 
 
 async def _handle_modification(sid: str, state: Dict[str, Any], text: str) -> DialogResponse:

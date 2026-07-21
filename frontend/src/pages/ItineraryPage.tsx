@@ -15,6 +15,8 @@ import {
   ArrowLeft,
   Clock,
   Coffee,
+  Heart,
+  List,
   Loader2,
   AlertCircle,
   Sun,
@@ -27,8 +29,12 @@ import {
 } from 'lucide-react'
 import {
   fetchPlan,
+  fetchItineraryDetail,
   fetchWeather,
   regenerateDay,
+  addFavorite,
+  removeFavorite,
+  fetchFavorites,
   type TravelItinerary,
   type TripDay,
   type WeatherForecast,
@@ -74,12 +80,18 @@ export function ItineraryPage() {
     } catch {
       // fall through to fixture preview
     }
+    // History page → load by ID
+    const idParam = searchParams.get('id')
+    if (idParam) return { stage: 'loading', message: '加载行程详情...' }
     return { stage: 'ready', itinerary: fixture, weather: null, error: null, preview: true }
   })
   const [checked, setChecked] = useState<boolean[]>([])
   const [regenIndex, setRegenIndex] = useState<number | null>(null)
   const [regenText, setRegenText] = useState('')
   const [regenBusy, setRegenBusy] = useState(false)
+  const [favorited, setFavorited] = useState(false)
+  const [favoriteId, setFavoriteId] = useState<string | null>(null)
+  const [favBusy, setFavBusy] = useState(false)
   const hasRun = useRef(false)
 
   // Reset checklist ticks whenever the itinerary changes
@@ -95,6 +107,33 @@ export function ItineraryPage() {
     hasRun.current = true
     runPipeline(query)
   }, [query])
+
+  // Load itinerary by ID (from /history page)
+  useEffect(() => {
+    const idParam = searchParams.get('id')
+    if (!idParam || query || hasRun.current) return
+    hasRun.current = true
+    loadItineraryById(idParam)
+  }, [searchParams.get('id')])
+
+  async function loadItineraryById(id: string) {
+    setState({ stage: 'loading', message: '加载行程详情...' })
+    try {
+      const detail = await fetchItineraryDetail(id)
+      setState({
+        stage: 'ready',
+        itinerary: detail.plan,
+        weather: detail.weather_snapshot,
+        error: null,
+        preview: false,
+      })
+    } catch {
+      setState({
+        stage: 'error',
+        message: '无法加载该行程，它可能已被删除。',
+      })
+    }
+  }
 
   // 从对话页/存储打开的行程：补取天气（非预览才需要）
   useEffect(() => {
@@ -116,6 +155,50 @@ export function ItineraryPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.stage])
+
+  async function toggleFavorite() {
+    if (state.stage !== 'ready' || favBusy) return
+    setFavBusy(true)
+    try {
+      if (favorited && favoriteId) {
+        await removeFavorite(favoriteId)
+        setFavorited(false)
+        setFavoriteId(null)
+        toast.success('已取消收藏')
+      } else {
+        // Use itineraryId from URL or a composite id
+        const targetId = searchParams.get('id') || state.itinerary.trip.title
+        const res = await addFavorite('itinerary', targetId)
+        if (res.ok && res.favorite) {
+          setFavorited(true)
+          setFavoriteId(res.favorite.id)
+          toast.success('已收藏')
+        }
+      }
+    } catch {
+      toast.error('收藏操作失败')
+    } finally {
+      setFavBusy(false)
+    }
+  }
+
+  // Check favorite status when itinerary is loaded with an ID
+  useEffect(() => {
+    const itineraryId = searchParams.get('id')
+    if (!itineraryId || state.stage !== 'ready') return
+    fetchFavorites('itinerary')
+      .then((res) => {
+        const fav = res.favorites.find(
+          (f) => f.target_type === 'itinerary' && f.target_id === itineraryId
+        )
+        if (fav) {
+          setFavorited(true)
+          setFavoriteId(fav.id)
+        }
+      })
+      .catch(() => { /* favorites check is non-critical */ })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.stage, searchParams.get('id')])
 
   async function runPipeline(userInput: string) {
     setState({ stage: 'loading', message: LOADING_MESSAGES[0] })
@@ -213,6 +296,33 @@ export function ItineraryPage() {
               {state.itinerary.trip.daysCount} 天行程
               {state.preview && ' · 示例预览'}
             </span>
+          )}
+          <div className="flex-1" />
+          <Link
+            to="/history"
+            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-slate-400 transition-colors hover:bg-slate-100 hover:text-blue-500"
+            aria-label="我的行程"
+          >
+            <List size={14} />
+            我的行程
+          </Link>
+          {state.stage === 'ready' && !state.preview && (
+            <button
+              onClick={toggleFavorite}
+              disabled={favBusy}
+              className={`flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs transition-colors ${
+                favorited
+                  ? 'text-red-500 hover:bg-red-50'
+                  : 'text-slate-400 hover:bg-slate-100 hover:text-red-400'
+              }`}
+              aria-label={favorited ? '取消收藏' : '收藏行程'}
+            >
+              <Heart
+                size={14}
+                className={favorited ? 'fill-current' : ''}
+              />
+              {favorited ? '已收藏' : '收藏'}
+            </button>
           )}
         </div>
       </header>

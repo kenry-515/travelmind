@@ -57,7 +57,15 @@ def _init_rag() -> bool:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application startup / shutdown lifecycle."""
-    # Startup: auto-create tables in development only.
+    # Check database connectivity first (sets DB_HEALTHY flag)
+    from app.database.connection import check_db_connection
+    db_ok = await check_db_connection()
+    if db_ok:
+        logger.info("Database connection verified.")
+    else:
+        logger.warning("Database unavailable — history/favorites disabled.")
+
+    # Auto-create tables in development (Alembic preferred for production).
     if settings.APP_ENV == "development":
         try:
             async with engine.begin() as conn:

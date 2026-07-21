@@ -4,6 +4,7 @@
  */
 
 import axios from 'axios'
+import { getDeviceId } from './deviceId'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1'
 
@@ -13,6 +14,12 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+})
+
+// Inject X-Device-ID header on every request for anonymous user identity
+api.interceptors.request.use((config) => {
+  config.headers['X-Device-ID'] = getDeviceId()
+  return config
 })
 
 // Response interceptor for error handling
@@ -299,4 +306,97 @@ export async function generateDialogPlan(sessionId: string): Promise<DialogRespo
     { timeout: 180000 }
   )
   return data
+}
+
+
+// ── Itinerary History (Phase 6) ───────────────────────────
+
+export interface ItinerarySummary {
+  id: string
+  title: string
+  city: string
+  days: number
+  created_at: string
+}
+
+export interface ItineraryListResponse {
+  itineraries: ItinerarySummary[]
+  total: number
+  page: number
+  page_size: number
+}
+
+export interface ItineraryDetailResponse {
+  id: string
+  title: string | null
+  days: number
+  plan: TravelItinerary
+  validation_report: ValidationReport | null
+  profile_snapshot: Record<string, unknown> | null
+  weather_snapshot: WeatherForecast | null
+  created_at: string
+  updated_at: string
+}
+
+/** List the current user's saved itineraries. */
+export async function fetchItineraries(
+  page = 1,
+  pageSize = 20
+): Promise<ItineraryListResponse> {
+  const { data } = await api.get<ItineraryListResponse>('/itineraries', {
+    params: { page, page_size: pageSize },
+  })
+  return data
+}
+
+/** Get a single itinerary by ID. */
+export async function fetchItineraryDetail(id: string): Promise<ItineraryDetailResponse> {
+  const { data } = await api.get<ItineraryDetailResponse>(`/itineraries/${id}`)
+  return data
+}
+
+/** Delete an itinerary. */
+export async function deleteItinerary(id: string): Promise<void> {
+  await api.delete(`/itineraries/${id}`)
+}
+
+
+// ── Favorites (Phase 6) ──────────────────────────────────
+
+export interface FavoriteItem {
+  id: string
+  target_type: string
+  target_id: string
+  created_at: string
+}
+
+export interface FavoriteListResponse {
+  favorites: FavoriteItem[]
+}
+
+/** List the current user's favorites. */
+export async function fetchFavorites(
+  targetType?: string
+): Promise<FavoriteListResponse> {
+  const { data } = await api.get<FavoriteListResponse>('/favorites', {
+    params: targetType ? { target_type: targetType } : {},
+  })
+  return data
+}
+
+/** Add a favorite (attraction or itinerary). */
+export async function addFavorite(
+  targetType: string,
+  targetId: string
+): Promise<{ ok: boolean; favorite?: FavoriteItem }> {
+  const { data } = await api.post('/favorites', {
+    target_type: targetType,
+    target_id: targetId,
+  })
+  return data
+}
+
+/** Remove a favorite. */
+export async function removeFavorite(id: string): Promise<void> {
+  await api.delete(`/favorites/${id}`)
 }

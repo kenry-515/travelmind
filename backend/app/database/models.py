@@ -6,15 +6,16 @@ import uuid
 from datetime import datetime, timezone
 
 from sqlalchemy import (
+    Boolean,
     Column,
-    String,
-    Text,
     Float,
-    Integer,
-    DateTime,
     ForeignKey,
+    Integer,
     JSON,
     ARRAY,
+    String,
+    Text,
+    DateTime,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
@@ -36,7 +37,9 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
-    session_id = Column(String(255), unique=True, nullable=False, index=True)
+    session_id = Column(String(255), unique=True, nullable=True, index=True)
+    device_id = Column(String(64), unique=True, nullable=True, index=True)
+    is_anonymous = Column(Boolean, default=True)
     nickname = Column(String(100), nullable=True)
     created_at = Column(DateTime, default=now_utc)
     last_active_at = Column(DateTime, default=now_utc)
@@ -45,6 +48,7 @@ class User(Base):
     recommendation_history = relationship("RecommendationHistory", back_populates="user")
     itineraries = relationship("Itinerary", back_populates="user")
     feedbacks = relationship("Feedback", back_populates="user")
+    favorites = relationship("Favorite", back_populates="user")
 
 
 # ── UserProfile ───────────────────────────────────────
@@ -147,7 +151,10 @@ class Itinerary(Base):
     days = Column(Integer, nullable=False)
     plan = Column(JSON, nullable=False)                          # full day-by-day plan
     weather_snapshot = Column(JSON, nullable=True)               # weather at planning time
+    validation_report = Column(JSON, nullable=True)              # Phase 1 validation data
+    profile_snapshot = Column(JSON, nullable=True)               # user slots at generation time
     created_at = Column(DateTime, default=now_utc)
+    updated_at = Column(DateTime, default=now_utc, onupdate=now_utc)
 
     user = relationship("User", back_populates="itineraries")
 
@@ -166,3 +173,17 @@ class Feedback(Base):
     created_at = Column(DateTime, default=now_utc)
 
     user = relationship("User", back_populates="feedbacks")
+
+
+# ── Favorite ──────────────────────────────────────────
+
+class Favorite(Base):
+    __tablename__ = "favorites"
+
+    id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
+    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False, index=True)
+    target_type = Column(String(20), nullable=False)             # "attraction" | "itinerary"
+    target_id = Column(String(255), nullable=False)              # attraction name or itinerary UUID
+    created_at = Column(DateTime, default=now_utc)
+
+    user = relationship("User", back_populates="favorites")

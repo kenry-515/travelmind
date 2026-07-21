@@ -14,4 +14,7 @@ sys.exit(0 if s.count() > 0 else 1)
   python scripts/build_knowledge_base.py
 fi
 
+echo "[entrypoint] Running database migrations..."
+python -m alembic upgrade head || echo "[entrypoint] WARNING: Migrations failed — check DB connection and alembic config"
+
 exec python -m uvicorn app.main:app --host 0.0.0.0 --port 8000

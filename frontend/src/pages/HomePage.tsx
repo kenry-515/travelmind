@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { SearchInput } from '../components/SearchInput'
 import { ExampleQuestions } from '../components/ExampleQuestions'
 import { api } from '../lib/api'
-import { Sparkles, MessageCircle, Map, Camera } from 'lucide-react'
+import { Sparkles, MessageCircle, Map, Camera, List } from 'lucide-react'
 
 type ServiceStatus = 'idle' | 'loading' | 'healthy' | 'degraded' | 'error'
 
@@ -84,6 +84,13 @@ export function HomePage() {
         >
           <Camera size={18} />
           图片识别
+        </Link>
+        <Link
+          to="/history"
+          className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
+        >
+          <List size={18} />
+          我的行程
         </Link>
       </div>
 
