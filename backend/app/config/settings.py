@@ -50,6 +50,10 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/travelmind_db"
     DATABASE_URL_SYNC: str = "postgresql://postgres:postgres@localhost:5432/travelmind_db"
 
+    # --- Session Store ---
+    SESSION_STORE: str = "memory"  # memory | redis
+    REDIS_URL: str = "redis://localhost:6379/0"
+
     # --- Chroma ---
     CHROMA_PERSIST_DIR: str = "./chroma_data"
 

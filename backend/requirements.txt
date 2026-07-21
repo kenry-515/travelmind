@@ -19,6 +19,7 @@ jsonschema==4.23.0
 sqlalchemy[asyncio]==2.0.36
 asyncpg==0.30.0
 alembic==1.14.0
+redis==5.2.1            # RedisSessionStore (async redis-py)
 
 # --- AI / LLM ---
 openai==1.57.0           # DeepSeek compatible (OpenAI SDK)

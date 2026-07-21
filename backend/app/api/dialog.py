@@ -21,6 +21,7 @@ from app.agents.dialog_manager import (
     get_session,
     merge_slots,
     next_action,
+    save_session,
     synthesize_input,
 )
 from app.agents.orchestrator import run_travel_workflow
@@ -133,13 +134,14 @@ async def _classify_with_llm(text: str) -> Dict[str, Any]:
 @router.post("/dialog/message", response_model=DialogResponse)
 async def dialog_message(request: DialogMessageRequest):
     """多轮对话：槽位收敛、组合建议、确认摘要、生成后修改分流。"""
-    sid, state = get_session(request.session_id)
+    sid, state = await get_session(request.session_id)
     text = (request.text or "").strip()
 
     # ── 修正 2：GENERATING 态输入 → 提示 + 排队，不进分流 ──
     if state["stage"] == "generating":
         if text:
             state["queued"].append(text)
+            await save_session(sid, state)
         return _resp(
             sid, state,
             "正在生成行程中，约需 30-60 秒～你的留言已记下，生成后继续。",
@@ -151,6 +153,7 @@ async def dialog_message(request: DialogMessageRequest):
         changed = apply_slot_override(state, request.slot_override)
         if changed:
             state["stage"] = "confirming"
+            await save_session(sid, state)
             return _resp(sid, state, build_summary(state), confirm=True)
 
     if not text:
@@ -171,6 +174,7 @@ async def dialog_message(request: DialogMessageRequest):
 
     merge_slots(state, extracted)
     action = next_action(state)
+    await save_session(sid, state)
 
     if action["type"] == "suggest":
         return _resp(sid, state, action["reply"], suggestions=action["suggestions"])
@@ -182,13 +186,14 @@ async def dialog_message(request: DialogMessageRequest):
 @router.post("/dialog/generate", response_model=DialogResponse)
 async def dialog_generate(request: DialogGenerateRequest):
     """用户点「生成行程卡片」→ 复用生成管线（零改动）。"""
-    sid, state = get_session(request.session_id)
+    sid, state = await get_session(request.session_id)
 
     if state["stage"] == "delivered" and state.get("itinerary"):
         return _resp(sid, state, "行程卡片已生成过啦，直接告诉我要改哪里就行。",
                      itinerary=state["itinerary"])
 
     state["stage"] = "generating"
+    await save_session(sid, state)
     user_input = synthesize_input(state["slots"])
     logger.info(f"Dialog generate: {user_input}")
 
@@ -204,12 +209,14 @@ async def dialog_generate(request: DialogGenerateRequest):
 
     if not itinerary:
         state["stage"] = "confirming"
+        await save_session(sid, state)
         err = result.get("error") or "行程生成失败，请再试一次。"
         return _resp(sid, state, f"抱歉，{err}\n{build_summary(state)}", confirm=True)
 
     state["itinerary"] = itinerary
     state["stage"] = "delivered"
     state["queued"] = []
+    await save_session(sid, state)
 
     reply = "行程卡片生成好啦 ✅ 点卡片看完整版；想改哪里直接说（比如「第二天太赶了」）。"
     if queued_count:
@@ -252,6 +259,7 @@ async def _handle_modification(sid: str, state: Dict[str, Any], text: str) -> Di
         except (ValueError, RuntimeError) as e:
             return _resp(sid, state, f"修改第 {day_index + 1} 天时出错了：{e}")
         state["itinerary"] = updated
+        await save_session(sid, state)
         return _resp(
             sid, state,
             f"第 {day_index + 1} 天已重新安排 ✅ 其他天没动。还要继续调吗？",
@@ -262,10 +270,12 @@ async def _handle_modification(sid: str, state: Dict[str, Any], text: str) -> Di
         updates = decision.get("slot_updates") or {}
         apply_slot_override(state, updates)
         state["stage"] = "confirming"
+        await save_session(sid, state)
         return _resp(sid, state, build_summary(state), confirm=True)
 
     if dtype == "global":
         state["stage"] = "confirming"
+        await save_session(sid, state)
         summary = "好的，整体重新规划。\n" + build_summary(state)
         return _resp(sid, state, summary, confirm=True)
 

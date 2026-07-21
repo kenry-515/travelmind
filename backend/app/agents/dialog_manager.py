@@ -18,6 +18,8 @@ import time
 import uuid
 from typing import Any, Dict, List, Optional, Tuple
 
+from app.services.session_store import get_session_store
+
 # ── 常量 ────────────────────────────────────────────────
 
 SESSION_TTL_SECONDS = 2 * 3600
@@ -49,22 +51,20 @@ _DAY_WORDS = {
 }
 
 
-# ── 会话存储（内存 + TTL）───────────────────────────────
+# ── 会话存取（经 SessionStore 抽象，内存/Redis 可切换）──
 
-_sessions: Dict[str, Dict[str, Any]] = {}
+async def get_session(session_id: Optional[str]) -> Tuple[str, Dict[str, Any]]:
+    """取或建会话。返回 (session_id, state)。
 
-
-def get_session(session_id: Optional[str]) -> Tuple[str, Dict[str, Any]]:
-    """取或建会话。返回 (session_id, state)。"""
-    now = time.time()
-    # 惰性清理过期会话
-    for sid in [s for s, v in _sessions.items() if now - v["touched"] > SESSION_TTL_SECONDS]:
-        _sessions.pop(sid, None)
-
-    if session_id and session_id in _sessions:
-        state = _sessions[session_id]
-        state["touched"] = now
-        return session_id, state
+    注意：返回的 state 是内存对象——修改后须用 save_session() 持久化
+    （Redis 后端必须显式写回，内存后端为兼容语义也统一显式保存）。
+    """
+    store = get_session_store()
+    if session_id:
+        state = await store.get(session_id)
+        if state is not None:
+            await store.touch(session_id, SESSION_TTL_SECONDS)
+            return session_id, state
 
     sid = session_id or f"dlg_{uuid.uuid4().hex[:12]}"
     state = {
@@ -73,10 +73,16 @@ def get_session(session_id: Optional[str]) -> Tuple[str, Dict[str, Any]]:
         "followups_used": 0,
         "itinerary": None,
         "queued": [],
-        "touched": now,
+        "touched": time.time(),
     }
-    _sessions[sid] = state
+    await store.set(sid, state, SESSION_TTL_SECONDS)
     return sid, state
+
+
+async def save_session(session_id: str, state: Dict[str, Any]) -> None:
+    """把内存中修改过的 state 显式写回存储（并重置 TTL）。"""
+    state["touched"] = time.time()
+    await get_session_store().set(session_id, state, SESSION_TTL_SECONDS)
 
 
 # ── 槽位合并（确定性，非空才覆盖）──────────────────────

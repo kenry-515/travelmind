@@ -33,7 +33,9 @@ L3 生成层   LangGraph 管线（Profile→Trend→Weather→RAG→Recommend→
 
 ## 部署约束
 
-- **对话会话为内存实现**（TTL 2h）：必须**单 worker** 运行，进程重启即丢会话；生产环境请替换为 Redis 等外部存储（`backend/app/agents/dialog_manager.py`）
+- **对话会话存储**：默认内存实现（TTL 2h，单 worker，重启丢会话）；设置
+  `SESSION_STORE=redis` + `REDIS_URL` 后切换 Redis 外置，**解除单 worker
+  限制并支持重启恢复**（`uvicorn --workers 2` 冒烟已验证）
 - **API Keys 按量付费**：DeepSeek（主 LLM）/ Kimi 开放平台（视觉）/ 高德（POI·路线）；Open-Meteo 天气免费
 - 回归基准 fixture：`docs/itinerary.example.json`（上海）、`docs/itinerary.example.cq.json`（重庆）
 
