@@ -3,6 +3,8 @@
 > **目标：** 让 KimiCode 无缝接管开发，从 Phase 5（Day 10）继续。
 > **当前日期：** 2026-07-18
 > **完成进度：** Phase 1-4 / 6（共 14 天，已完成 Day 1-9）
+>
+> **归档说明（2026-07-21）：** 本文档为 Claude Code 时期的历史交接记录。项目现已完成 Phase 5 多模态（Kimi 视觉）、结构化行程契约升级、数据扩充（896 景点/15 城）与对话式规划。关键数字已就地修正；最新状态以 `README.md` 与 `docs/BASELINE.md` 为准。
 
 ---
 
@@ -21,7 +23,7 @@
 | Phase 2 | Day 3 | LLM Service + Chat API + ChatPage | ✅ |
 | Phase 3 | Day 4-7 | 多 Agent + 真实数据 + RAG | ✅ |
 | Phase 4 | Day 8-9 | 天气服务 + 推荐/行程 API + 前端页面 | ✅ |
-| **Phase 5** | **Day 10-11** | **多模态（Qwen-VL 图片识别）** | **← 下一步** |
+| Phase 5 | Day 10-11 | 多模态（Kimi k2.6 图片识别） | ✅ 已完成 |
 | Phase 6 | Day 12-14 | 数据扩充 + UI 打磨 + Demo 准备 | 待开始 |
 
 ---
@@ -33,7 +35,7 @@
 | **前端** | React 19 + TypeScript 6 + Vite 8 + Tailwind CSS 4 + shadcn/ui + Lucide React |
 | **后端** | Python 3.11 + FastAPI + Uvicorn + Pydantic v2 |
 | **LLM** | DeepSeek（deepseek-chat），用户付费 API Key |
-| **视觉** | Qwen-VL-Max（主力）/ Tencent Hunyuan-Vision（备选）|
+| **视觉** | Kimi k2.6（Moonshot 开放平台，按量计费）|
 | **地图** | 高德 Amap（POI 搜索 + 步行/公交/驾车路线 + 距离矩阵）— 已替代百度 |
 | **天气** | Open-Meteo（免费，无限调用，无需 Key）|
 | **数据** | Wikidata SPARQL → Wikipedia API → Amap POI → DeepSeek AI 标注 |
@@ -58,7 +60,7 @@ D:\TravelMindAgent\
 │   │   ├── database\           # SQLAlchemy async + models
 │   │   ├── middleware\         # RequestIDMiddleware（纯 ASGI）
 │   │   ├── api\
-│   │   │   ├── __init__.py     # 路由聚合（9 条路由）
+│   │   │   ├── __init__.py     # 路由聚合（13 条路由）
 │   │   │   ├── health.py       # GET /api/v1/health
 │   │   │   ├── chat.py         # POST /api/v1/chat (SSE 流式)
 │   │   │   ├── agent.py        # POST /api/v1/agent/plan + /agent/profile
@@ -81,14 +83,14 @@ D:\TravelMindAgent\
 │   │       ├── vector_store.py      # ChromaStore 封装
 │   │       └── retriever.py         # 5 因子 RAG 检索器
 │   ├── scripts\
-│   │   ├── fetch_wikidata.py        # Wikidata SPARQL（10 城市）
+│   │   ├── fetch_wikidata.py        # Wikidata SPARQL（15 城市）
 │   │   ├── enrich_wikipedia.py      # Wikipedia 摘要（wikimedia.org 绕过 GFW）
 │   │   ├── enrich_amap.py           # 高德 POI 补充 + MD5 签名
 │   │   ├── ai_enrich.py             # DeepSeek 批量标注
 │   │   └── build_knowledge_base.py  # 合并 → Chroma 入库
 │   ├── data\
-│   │   ├── attractions.json         # 最终知识库（445 景点，10 城市）
-│   │   ├── trends.json              # 56 条趋势数据
+│   │   ├── attractions.json         # 最终知识库（896 景点，15 城市）
+│   │   ├── trends.json              # 84 条趋势数据
 │   │   └── tags.json                # 51 个标签（6 大类）
 │   └── chroma_data\                 # Chroma 持久化向量库
 ├── frontend\
@@ -119,7 +121,7 @@ D:\TravelMindAgent\
     ├── tech-stack.md
     ├── architecture.md
     ├── data-strategy.md
-    ├── api-constraints.md（需更新，还有百度残留）
+    ├── api-constraints.md（memory 目录为当时的工作笔记，未随仓库归档；百度配置已于 2026-07 清理）
     ├── task-breakdown.md
     ├── day5-status.md
     ├── day6-status.md
@@ -218,11 +220,11 @@ def _amap_sign(params: dict, sign_key: str) -> str:
 | 长沙 | 28 | Wikidata |
 | 厦门 | 25 | Wikidata + Amap 补充 |
 | 大理 | 20 | Wikidata + Amap 补充 |
-| **总计** | **445** | |
+| **总计** | **896** | |
 
-- 全部 445 个景点已 AI 标注（tags, suitable_for, best_time, price_level, popularity_score）
-- Chroma 向量库：445 文档，1075 维，持久化在 `backend/chroma_data/`
-- 趋势数据：56 条（10 城市）
+- 全部 896 个景点已 AI 标注（tags, suitable_for, best_time, price_level, popularity_score）
+- Chroma 向量库：896 文档，1075 维，持久化在 `backend/chroma_data/`
+- 趋势数据：84 条（15 城市）
 
 ---
 
@@ -233,7 +235,7 @@ def _amap_sign(params: dict, sign_key: str) -> str:
 - `AMAP_API_KEY` — ✅ 已配置
 - `AMAP_SIGN_KEY` — ✅ 已配置（数字签名私钥，见 backend/.env）
 - `DATABASE_URL` — PostgreSQL（开发环境可选，不存在也能跑）
-- Qwen-VL Key — ⚠️ **Phase 5 需要配置**
+- `MOONSHOT_API_KEY`（Kimi 开放平台）— ✅ 已配置
 
 ---
 
@@ -264,10 +266,10 @@ def _amap_sign(params: dict, sign_key: str) -> str:
 
 1. **`backend/app/services/vision_service.py`**
    - `BaseVisionProvider` 抽象类
-   - `QwenVLProvider` — 阿里云 DashScope API（`https://dashscope.aliyuncs.com/compatible-mode/v1`）
+   - `KimiVisionProvider` — Kimi 开放平台（`https://api.moonshot.cn/v1`，kimi-k2.6）
    - `TencentHunyuanProvider` — 备选
    - `analyze_image(image_base64) → {location, tags, description}`
-   - Qwen-VL-Max 免费额度：100 万 tokens/月
+   - Kimi k2.6 按量计费（输入 ¥6.5/输出 ¥27 每 1M tokens）
 
 2. **`backend/app/agents/vision_agent.py`**
    - `analyze_travel_image(image_data) → dict`
@@ -358,7 +360,7 @@ Amap POI Search（高德补充 + MD5 签名）
 DeepSeek AI Enrichment（批量 25 个）
   └─► tags, suitable_for, best_time, price_level, popularity_score
 
-Merge → data/attractions.json (445 places) → Chroma (1075 维)
+Merge → backend/data/attractions.json (896 places) → Chroma (1075 维)
 ```
 
 ### 11.4 Phase 3 完整状态（Day 4-7）
@@ -366,7 +368,7 @@ Merge → data/attractions.json (445 places) → Chroma (1075 维)
 已实现的 5 个 Agent：
 
 1. **Profile Agent** — DeepSeek chat_structured() NL → {destination, tags, budget, days, companions, travel_style, constraints}
-2. **Trend Agent** — 56 条趋势数据，4 策略模糊名称匹配（exact → substring → core name strip → shared 3-char chunks），未匹配的热门景点会作为合成推荐补充
+2. **Trend Agent** — 84 条趋势数据，4 策略模糊名称匹配（exact → substring → core name strip → shared 3-char chunks），未匹配的热门景点会作为合成推荐补充
 3. **RAG Retriever** — 5 因子检索（similarity 0.45 + tag_match 0.25 + popularity 0.15 + budget 0.10 + season 0.05）
 4. **Recommendation Agent** — 6 因子加权打分，高德距离矩阵计算 Location Efficiency（≤5km=1.0, >30km=0.1），趋势补充机制
 5. **Planning Agent** — DeepSeek JSON Schema 输出结构化日程（overview, days, plan[{day, theme, attractions, meals, transport_tips}], general_tips），支持 retry
@@ -386,12 +388,12 @@ Merge → data/attractions.json (445 places) → Chroma (1075 维)
 - ItineraryPage（天气卡片 + 日程时间线 + 餐饮/交通）
 - 完整 TypeScript 类型化 API Client
 
-### 11.6 API 约束（需更新：还有百度残留）
+### 11.6 API 约束（已于 2026-07 清理百度残留，BAIDU_MAP_AK 保留弃用占位）
 
 | API | 每日免费额度 | 状态 |
 |-----|------------|------|
 | DeepSeek chat | Pay-as-you-go | ✅ 主力 LLM |
-| Qwen-VL-Max | 1M tokens/月 | ⚠️ 待 Phase 5 配置 |
+| Kimi k2.6 | 按量计费 | ✅ 已集成（图片识别） |
 | Tencent Hunyuan | 1000 图片/天 | 备选 |
 | Amap POI/Search | 5000/天 | ✅ 已配置 + 签名 |
 | Open-Meteo Weather | 无限（无需 Key）| ✅ 已集成 |
@@ -400,10 +402,10 @@ Merge → data/attractions.json (445 places) → Chroma (1075 维)
 
 ### 11.7 数据质量
 
-- 445 个景点，10 城市全覆盖
+- 896 个景点，15 城市全覆盖
 - 全部 AI 标注（tags, suitable_for, best_time, price_level, popularity_score）
 - 每条有 `_validate_enrichment()` 服务端校验
-- 56 条趋势数据（手动整理，结构化方便未来替换为 API）
+- 84 条趋势数据（手动整理，结构化方便未来替换为 API）
 - 51 个标签（6 大类：旅行主题/活动类型/自然风光/人文历史/美食购物/出行特征）
 
 ---

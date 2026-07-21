@@ -1,5 +1,7 @@
 # 智游伴 TravelMind Agent
 
+> **说明（2026-07-21 补充）：** 本文档为项目原始产品需求文档（PDR），反映立项时的设计意图。其中技术选型以最终实现为准——视觉模型为 Kimi k2.6，嵌入为 TF-IDF + Tag One-Hot 组合（非专用 Embedding 模型），地图为高德，知识库为 896 景点/15 城市。最新状态以 `README.md` 与 `docs/BASELINE.md` 为准。
+
 ## 产品需求文档（PDR）
 
 版本：v1.0
@@ -1430,11 +1432,7 @@ Embedding：
 
 -  OpenAI Embedding 
 -  BGE Embedding 
--  Qwen Embedding 
-
-------
-
-# 17. 推荐排序Agent（Recommendation Agent）
+-  TF-IDF + Tag One-Hot 组合嵌入（本项目当前实现，1075 维）
 
 ## 17.1 功能定位
 
@@ -1778,7 +1776,7 @@ Agent：
 | 功能      | 技术                               |
 | --------- | ---------------------------------- |
 | Agent框架 | LangGraph                          |
-| LLM调用   | OpenAI API / Claude API / Qwen API |
+| LLM调用   | DeepSeek API（对话/规划）/ Kimi API（视觉，kimi-k2.6） |
 | RAG       | LangChain                          |
 | 向量库    | FAISS/Chroma                       |
 | 后端      | FastAPI                            |
@@ -2667,11 +2665,7 @@ Embedding模型：
 
 -  BGE Embedding 
 -  OpenAI Embedding 
--  Qwen Embedding 
-
-------
-
-# 34. 第二阶段：多目标动态评分模型
+-  TF-IDF + Tag One-Hot 组合嵌入（本项目当前实现，1075 维）
 
 ## 34.1 设计思想
 
