@@ -1,0 +1,7 @@
+# Ensure consistent line endings for Docker/Linux compatibility
+# Shell scripts MUST use LF (not CRLF) or they'll fail in Linux containers
+
+*.sh           text eol=lf
+Dockerfile     text eol=lf
+.dockerignore  text eol=lf
+*.conf         text eol=lf

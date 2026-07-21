@@ -1,0 +1,56 @@
+# TravelMind Agent — 一键编排
+# backend (FastAPI) + frontend (nginx) + redis (会话) + postgres（可选，--profile db 启用）
+#
+# 前置：cp backend/.env.example backend/.env 并填入真实 Keys（见 docs/DEPLOY.md）
+
+services:
+  backend:
+    build: ./backend
+    env_file:
+      - ./backend/.env
+    environment:
+      # compose 内强制 Redis 会话存储（覆盖 .env 中的 memory 默认值）
+      SESSION_STORE: redis
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/travelmind_db
+      DATABASE_URL_SYNC: postgresql://postgres:postgres@postgres:5432/travelmind_db
+    volumes:
+      - chroma-data:/app/chroma_data       # 向量库持久化（空库时 entrypoint 自举）
+      - ./backend/data:/app/data:ro        # 知识库数据（只读挂载）
+    depends_on:
+      - redis
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    profiles: ["db"]                        # 可选：docker compose --profile db up
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: travelmind_db
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+volumes:
+  chroma-data:
+  redis-data:
+  pg-data:
