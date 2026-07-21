@@ -230,7 +230,9 @@ def synthesize_input(slots: Dict[str, Any]) -> str:
 # ── 修改分流（规则优先，见用户修正 1）────────────────────
 
 _GLOBAL_RE = re.compile(r"整体|全部|全都|整个|所有|总体")
-_DAY_RE = re.compile(r"第?([一二三四五两12345]|首|末)天")
+# 天数限定词：「第N天」/「第二天」汉字序数可裸用，纯数字必须带「第」
+# （否则「改成4天」会被误判为天数限定——那是 slot_change）
+_DAY_RE = re.compile(r"第\s*[一二两三四五12345]\s*天|[一二两三四五]天|首日|末天|最后一天")
 _SLOT_DAYS_RE = re.compile(r"(?:改成|改为|换成|变成)?\s*(\d{1,2})\s*天")
 _BUDGET_RE = re.compile(r"预算.*?(砍半|减半|提高|增加|提升|降低|减少|缩减)")
 _CITY_CHANGE_RE = re.compile(r"(?:改去|换成|不去.+?了?去|改到)([\u4e00-\u9fa5]{2,4})")
@@ -240,12 +242,15 @@ def _day_index_of(text: str) -> Optional[int]:
     m = _DAY_RE.search(text)
     if not m:
         return None
-    w = m.group(1)
-    if w == "首":
+    token = m.group(0)
+    if token in ("首日",):
         return 0
-    if w == "末":
+    if token in ("末天", "最后一天"):
         return -1  # 由调用方按行程长度解析
-    return _DAY_WORDS.get(w, 1) - 1
+    for w, n in _DAY_WORDS.items():
+        if w in token:
+            return n - 1
+    return None
 
 
 def classify_modification(text: str, itinerary: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
@@ -258,6 +263,18 @@ def classify_modification(text: str, itinerary: Optional[Dict[str, Any]] = None)
     4. 命中行程内具体 POI → local（所在天）
     5. 未命中 → unknown（API 层 LLM 兜底 / 反问）
     """
+    # 显式改天数（"改成3天/改为三天"）→ slot_change，优先于天数限定判定
+    m = re.search(r"(?:改成|改为|变成|换成)\s*([一二两三四五123456789]{1,2})\s*天", text)
+    if m and not _GLOBAL_RE.search(text):
+        token = m.group(1)
+        days_val = _DAY_WORDS.get(token) or (int(token) if token.isdigit() else None)
+        if days_val:
+            return {
+                "type": "slot_change",
+                "slot_updates": {"days": days_val},
+                "reason": "days-change",
+            }
+
     day_idx = _day_index_of(text)
     has_global = bool(_GLOBAL_RE.search(text))
 

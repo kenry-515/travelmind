@@ -8,20 +8,29 @@ Multi-agent travel planning system:
   - Recommendation Agent: 6-factor weighted scoring (Phase 3 Day 7)
   - Planning Agent: LLM itinerary generation (Phase 3 Day 7)
   - Vision Agent: travel photo analysis → taxonomy tags (Phase 5 Day 10)
+
+顶层导出全部惰性加载（PEP 562）：import app.agents.xxx 时不会连带拉起
+orchestrator / RAG / chromadb 等重依赖，加快启动也让纯逻辑模块可独立测试。
 """
 
-from app.agents.orchestrator import (
-    TravelState,
-    get_graph,
-    run_travel_workflow,
-)
-from app.agents.profile_agent import extract_profile
-from app.agents.vision_agent import analyze_travel_image
+from typing import Any
 
-__all__ = [
-    "TravelState",
-    "get_graph",
-    "run_travel_workflow",
-    "extract_profile",
-    "analyze_travel_image",
-]
+_LAZY_EXPORTS = {
+    "TravelState": ("app.agents.orchestrator", "TravelState"),
+    "get_graph": ("app.agents.orchestrator", "get_graph"),
+    "run_travel_workflow": ("app.agents.orchestrator", "run_travel_workflow"),
+    "extract_profile": ("app.agents.profile_agent", "extract_profile"),
+    "analyze_travel_image": ("app.agents.vision_agent", "analyze_travel_image"),
+}
+
+__all__ = list(_LAZY_EXPORTS)
+
+
+def __getattr__(name: str) -> Any:
+    target = _LAZY_EXPORTS.get(name)
+    if target is None:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    import importlib
+
+    module = importlib.import_module(target[0])
+    return getattr(module, target[1])

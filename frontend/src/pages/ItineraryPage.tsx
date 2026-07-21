@@ -83,11 +83,12 @@ export function ItineraryPage() {
   const hasRun = useRef(false)
 
   // Reset checklist ticks whenever the itinerary changes
+  const readyItinerary = state.stage === 'ready' ? state.itinerary : null
   useEffect(() => {
-    if (state.stage === 'ready') {
-      setChecked(state.itinerary.checklist.map(() => false))
+    if (readyItinerary) {
+      setChecked(readyItinerary.checklist.map(() => false))
     }
-  }, [state.stage === 'ready' ? state.itinerary : null])
+  }, [readyItinerary])
 
   useEffect(() => {
     if (!query || hasRun.current) return

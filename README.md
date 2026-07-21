@@ -52,3 +52,15 @@ cd backend && python -X utf8 -m evals.run_evals   # 需后端在线，约 8-12 �
 - 评测集：`backend/evals/queries.json`（12 条，可扩充，不许写死在脚本）
 - 结果落盘：`backend/evals/results/YYYY-MM-DD.json`（含逐 query 逐项明细）
 - 当前基线指标：见 `docs/BASELINE.md`
+
+## 测试
+
+```bash
+cd backend && python -m pytest          # 单元测试（无真实外部调用，约 2s）
+```
+
+- 覆盖 dialog_manager / itinerary_contract / recommendation_agent 纯逻辑
+  （槽位与分流、契约校验、6 因子评分），外部调用全部 mock/fake
+- CI：`.github/workflows/ci.yml`（pytest + 前端 tsc + oxlint，push/PR 触发）
+- 另有脚本级测试（见上文运行方式与本节之外）：`scripts/smoke_test.py`
+  全栈冒烟、`scripts/contract_regression.py` 契约回归、`evals/` 质量看板
