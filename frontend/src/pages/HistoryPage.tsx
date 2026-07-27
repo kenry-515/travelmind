@@ -97,13 +97,17 @@ export function HistoryPage() {
   )
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="relative min-h-screen overflow-hidden bg-surface-secondary pb-20 sm:pb-0">
+      {/* 弱化极光背景（Phase 12.24） */}
+      <div aria-hidden className="aurora aurora-soft">
+        <span /><span /><span />
+      </div>
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-4xl items-center gap-3 px-4 py-3">
+      <header className="glass sticky top-0 z-10 border-b border-border-light">
+        <div className="mx-auto flex max-w-4xl items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
           <Link
             to="/"
-            className="rounded-lg p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"
+            className="rounded-xl p-1.5 text-slate-500 transition-colors hover:bg-brand-50 hover:text-brand-600"
             aria-label="返回首页"
           >
             <ArrowLeft size={20} />
@@ -117,11 +121,11 @@ export function HistoryPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-4xl px-4 py-6">
+      <main className="relative mx-auto max-w-4xl px-4 py-6">
         {/* Loading */}
         {state.stage === 'loading' && (
           <div className="mt-20 text-center">
-            <Loader2 size={40} className="mx-auto mb-4 animate-spin text-blue-500" />
+            <Loader2 size={40} className="mx-auto mb-4 animate-spin text-brand-500" />
             <p className="text-slate-500">加载历史记录...</p>
           </div>
         )}
@@ -133,7 +137,7 @@ export function HistoryPage() {
             <p className="text-slate-600">{state.message}</p>
             <button
               onClick={loadData}
-              className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+              className="btn-primary mt-4 px-4 py-2 text-sm"
             >
               重试
             </button>
@@ -142,12 +146,15 @@ export function HistoryPage() {
 
         {/* Empty state */}
         {state.stage === 'ready' && state.itineraries.length === 0 && (
-          <div className="mt-20 text-center">
-            <MapPin size={48} className="mx-auto mb-4 text-slate-300" />
-            <p className="text-slate-500">还没有保存的行程</p>
+          <div className="mt-20 text-center animate-fade-in-up">
+            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-brand-100 to-accent-100 animate-float-slow">
+              <MapPin size={36} className="text-brand-500" />
+            </div>
+            <p className="font-semibold text-slate-600">还没有保存的行程</p>
+            <p className="mt-1 text-sm text-slate-400">规划好的行程会自动保存在这里</p>
             <Link
               to="/chat"
-              className="mt-4 inline-block rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+              className="btn-primary mt-4 inline-flex px-6 py-3 text-sm"
             >
               去规划一个吧 →
             </Link>
@@ -160,19 +167,19 @@ export function HistoryPage() {
             {state.itineraries.map((item) => (
               <div
                 key={item.id}
-                className="group flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
+                className="card hover-lift group flex items-center gap-4 p-4"
               >
                 {/* Clickable main area */}
                 <button
                   onClick={() => handleView(item.id)}
                   className="flex flex-1 items-center gap-4 text-left"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-500">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100 text-brand-500">
                     <MapPin size={22} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-medium text-slate-900 truncate">
+                      <h3 className="font-bold text-slate-900 truncate">
                         {item.title}
                       </h3>
                       {favoriteItineraryIds.has(item.id) && (
@@ -219,21 +226,23 @@ export function HistoryPage() {
           </div>
         )}
 
-        {/* Bottom actions */}
-        <div className="mt-8 flex justify-center gap-4 pb-8">
-          <Link
-            to="/"
-            className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50"
-          >
-            返回首页
-          </Link>
-          <Link
-            to="/chat"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
-          >
-            规划新行程
-          </Link>
-        </div>
+        {/* Bottom actions — 仅列表非空时显示（空状态自带 CTA，避免重复） */}
+        {state.stage === 'ready' && state.itineraries.length > 0 && (
+          <div className="mt-8 flex justify-center gap-4 pb-8">
+            <Link
+              to="/"
+              className="btn-secondary px-4 py-2 text-sm"
+            >
+              返回首页
+            </Link>
+            <Link
+              to="/chat"
+              className="btn-primary px-4 py-2 text-sm"
+            >
+              规划新行程
+            </Link>
+          </div>
+        )}
       </main>
     </div>
   )

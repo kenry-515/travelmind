@@ -22,11 +22,9 @@ export function RecommendPage() {
   const [query, setQuery] = useState('')
   const [state, setState] = useState<PageState>({ stage: 'idle' })
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    const q = query.trim()
-    if (!q) return
-
+  const runSearch = async (q: string) => {
+    if (!q.trim()) return
+    setQuery(q)
     setState({ stage: 'loading' })
 
     try {
@@ -43,26 +41,35 @@ export function RecommendPage() {
     }
   }
 
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    await runSearch(query.trim())
+  }
+
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="relative min-h-screen overflow-hidden bg-surface-secondary pb-20 sm:pb-0">
+      {/* 弱化极光背景（Phase 12.24） */}
+      <div aria-hidden className="aurora aurora-soft">
+        <span /><span /><span />
+      </div>
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3">
+      <header className="glass sticky top-0 z-10 border-b border-border-light">
+        <div className="mx-auto flex max-w-5xl items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
           <Link
             to="/"
-            className="rounded-lg p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"
+            className="rounded-xl p-1.5 text-slate-500 transition-colors hover:bg-brand-50 hover:text-brand-600"
             aria-label="返回首页"
           >
             <ArrowLeft size={20} />
           </Link>
           <h2 className="text-sm font-semibold text-slate-800">智能推荐</h2>
-          <span className="text-xs text-slate-400">
+          <span className="hidden text-xs text-slate-400 sm:inline">
             输入需求，AI 为你推荐最佳景点
           </span>
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-4 py-6">
+      <main className="relative mx-auto max-w-5xl px-4 py-6">
         {/* Search Bar */}
         <form onSubmit={handleSubmit} className="mb-8">
           <div className="relative flex items-center">
@@ -71,14 +78,14 @@ export function RecommendPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="例如：推荐重庆3日游，喜欢夜景和美食..."
-              className="w-full rounded-xl border border-slate-300 bg-white px-5 py-3.5 pr-12 text-base shadow-sm transition-all placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+              className="w-full rounded-2xl border border-border bg-white px-5 py-3.5 pr-14 text-base shadow-card transition-all placeholder:text-slate-400 focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-100"
               disabled={state.stage === 'loading'}
             />
             <button
               type="submit"
               disabled={state.stage === 'loading' || !query.trim()}
               aria-label="搜索推荐"
-              className="absolute right-3 rounded-lg p-2 text-slate-400 transition-colors hover:bg-blue-50 hover:text-blue-600 disabled:opacity-50"
+              className="btn-primary absolute right-2 rounded-xl p-2"
             >
               {state.stage === 'loading' ? (
                 <Loader2 size={22} className="animate-spin" />
@@ -91,26 +98,28 @@ export function RecommendPage() {
 
         {/* Idle state */}
         {state.stage === 'idle' && (
-          <div className="mt-20 text-center">
-            <Sparkles className="mx-auto mb-4 text-slate-300" size={48} />
-            <p className="text-lg text-slate-400">
-              输入你的旅行需求，AI 将为你智能推荐
+          <div className="mt-16 text-center animate-fade-in-up">
+            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-brand-100 to-accent-100 animate-float-slow">
+              <Sparkles className="text-brand-500" size={36} />
+            </div>
+            <p className="text-lg font-medium text-slate-600">
+              说说你想怎么玩，AI 给你挑出最值得去的
             </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-2">
+            <p className="mt-1 text-sm text-slate-400">点一个试试，或直接输入你的需求 👇</p>
+            <div className="mx-auto mt-6 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2">
               {[
-                '推荐重庆3日游，喜欢夜景和美食',
-                '想去成都看熊猫，吃火锅',
-                '西安历史文化之旅',
-                '带父母去杭州休闲游',
+                { icon: '🌉', text: '推荐重庆3日游，喜欢夜景和美食' },
+                { icon: '🐼', text: '想去成都看熊猫，吃火锅' },
+                { icon: '🏛️', text: '西安历史文化之旅' },
+                { icon: '👨‍👩‍👧', text: '带父母去杭州休闲游' },
               ].map((example) => (
                 <button
-                  key={example}
-                  onClick={() => {
-                    setQuery(example)
-                  }}
-                  className="rounded-full border border-slate-200 px-4 py-1.5 text-sm text-slate-500 transition-colors hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
+                  key={example.text}
+                  onClick={() => runSearch(example.text)}
+                  className="hover-lift flex items-center gap-3 rounded-2xl border border-border bg-white px-4 py-3 text-left text-sm text-slate-700 shadow-card hover:border-brand-300 hover:bg-brand-50/50"
                 >
-                  {example}
+                  <span className="text-xl">{example.icon}</span>
+                  <span>{example.text}</span>
                 </button>
               ))}
             </div>
@@ -120,7 +129,7 @@ export function RecommendPage() {
         {/* Loading */}
         {state.stage === 'loading' && (
           <div className="mt-20 text-center">
-            <Loader2 size={40} className="mx-auto mb-4 animate-spin text-blue-500" />
+            <Loader2 size={40} className="mx-auto mb-4 animate-spin text-brand-500" />
             <p className="text-slate-500">AI 正在分析你的需求，搜索最佳景点...</p>
             <p className="mt-1 text-xs text-slate-400">
               这可能需要 10-15 秒
@@ -135,7 +144,7 @@ export function RecommendPage() {
             <p className="text-slate-600">{state.message}</p>
             <button
               onClick={() => setState({ stage: 'idle' })}
-              className="mt-4 text-sm text-blue-600 hover:underline"
+              className="mt-4 text-sm font-medium text-brand-600 hover:underline"
             >
               重新搜索
             </button>
@@ -146,8 +155,8 @@ export function RecommendPage() {
         {state.stage === 'results' && (
           <>
             {/* Summary */}
-            <div className="mb-6 rounded-xl bg-white border border-slate-200 p-5 shadow-sm">
-              <div className="flex items-center justify-between">
+            <div className="card mb-6 p-4 sm:p-5">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h3 className="text-lg font-bold text-slate-900">
                     {state.data.city} · 共 {state.data.total_results} 个推荐
@@ -164,20 +173,29 @@ export function RecommendPage() {
                       ))}
                     </div>
                   )}
+                  {/* Phase 12.2: Multi-city notice */}
+                  {(state.data.trend_summary as { multi_city?: boolean; cities?: string[] }).multi_city && (
+                    <p className="mt-1 text-xs text-amber-600">
+                      未识别到具体城市，已展示全库匹配结果。如需生成行程，请在搜索中加入城市名（如"推荐重庆美食"）。
+                    </p>
+                  )}
                 </div>
-                <Link
-                  to={`/itinerary?q=${encodeURIComponent(query)}`}
-                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
-                >
-                  生成行程
-                </Link>
+                {/* Only show "生成行程" when a specific city is identified */}
+                {!state.data.city.startsWith('多城市') && (
+                  <Link
+                    to={`/itinerary?q=${encodeURIComponent(query)}`}
+                    className="btn-primary whitespace-nowrap px-4 py-2 text-sm"
+                  >
+                    生成行程
+                  </Link>
+                )}
               </div>
             </div>
 
-            {/* Place Grid */}
+            {/* Place Grid — show city label for multi-city results */}
             <div className="grid gap-4 sm:grid-cols-2">
               {state.data.places.map((place, i) => (
-                <PlaceCard key={`${place.name}-${i}`} place={place} rank={i + 1} />
+                <PlaceCard key={`${place.city || '?'}-${place.name}-${i}`} place={place} rank={i + 1} />
               ))}
             </div>
           </>

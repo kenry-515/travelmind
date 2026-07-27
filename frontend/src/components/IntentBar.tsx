@@ -62,7 +62,7 @@ export function IntentBar({ slots, onSlotChange, disabled }: IntentBarProps) {
   }
 
   return (
-    <div className="border-b border-slate-200 bg-white/95 px-4 py-2 backdrop-blur">
+    <div className="glass border-b border-border-light px-4 py-2">
       <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-2">
         <span className="text-xs font-medium text-slate-400">意图</span>
         {CHIP_DEFS.map((chip) => {
@@ -73,10 +73,10 @@ export function IntentBar({ slots, onSlotChange, disabled }: IntentBarProps) {
               key={chip.key}
               onClick={() => openEditor(chip)}
               disabled={disabled}
-              className={`group flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs transition-colors ${
+              className={`group flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs transition-all ${
                 isEmpty
-                  ? 'border-dashed border-slate-300 text-slate-400 hover:border-blue-300 hover:text-blue-600'
-                  : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700'
+                  ? 'border-dashed border-slate-300 text-slate-400 hover:border-brand-300 hover:text-brand-600'
+                  : 'border-border bg-surface-secondary text-slate-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700'
               }`}
               title={`点击修改${chip.label}`}
             >
@@ -97,12 +97,12 @@ export function IntentBar({ slots, onSlotChange, disabled }: IntentBarProps) {
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && submit()}
             placeholder={`输入${editing.label}${editing.key === 'tags' ? '（顿号分隔）' : ''}`}
-            className="w-56 rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs focus:border-blue-400 focus:outline-none"
+            className="w-56 rounded-xl border border-border px-2.5 py-1.5 text-xs focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
             autoFocus
           />
           <button
             onClick={submit}
-            className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700"
+            className="btn-primary rounded-xl px-3 py-1.5 text-xs"
           >
             确定
           </button>

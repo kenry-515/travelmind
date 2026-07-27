@@ -11,7 +11,7 @@ from app.agents import recommendation_agent as ra
 
 
 def run(coro):
-    return asyncio.get_event_loop().run_until_complete(coro)
+    return asyncio.run(coro)
 
 
 class TestScorePreference:
@@ -115,7 +115,73 @@ class TestRecommendMain:
             assert set(r["_score_breakdown"].keys()) == {
                 "preference_match", "trend_heat", "budget_match",
                 "location_efficiency", "time_match", "data_reliability",
+                "weather",
             }
 
     def test_empty_candidates(self):
         assert run(ra.recommend({"tags": []}, [], trends=[])) == []
+
+
+class TestDiversityPenaltyNested:
+    """Phase 12.21 回归：Chroma 嵌套候选（name 在 metadata 里）不得被全员误判同名
+    （旧代码 p.get("name") 恒为 ""，所有候选共享 area_key="" → 第3个起统一 ×0.7，
+    这是 multi-city min_score_filter 大面积低分的主因）。"""
+
+    def test_nested_distinct_names_no_penalty(self):
+        names = ["柳林沙滩", "滇池", "浮山湾", "鼓浪屿", "曾厝垵"]
+        nested = [{"id": str(i), "metadata": {"name": n, "tags": ""}}
+                  for i, n in enumerate(names)]
+        assert ra._diversity_penalty(nested) == [1.0] * 5
+
+    def test_nested_same_area_still_penalized(self):
+        names = ["张家界国家森林公园大门", "张家界国家森林公园索道", "张家界国家森林公园餐厅"]
+        nested = [{"id": str(i), "metadata": {"name": n, "tags": ""}}
+                  for i, n in enumerate(names)]
+        assert ra._diversity_penalty(nested) == [1.0, 0.9, 0.7]
+
+    def test_flat_shape_unchanged(self):
+        places = [{"name": n} for n in ["洪崖洞", "磁器口", "长江索道"]]
+        assert ra._diversity_penalty(places) == [1.0, 1.0, 1.0]
+
+
+class TestMultiCityLocation:
+    """Phase 12.21：跨城模糊意图（_multi_city）下 location 因子保持中性 0.5，
+    且不应调用 amap 定位打分（候选池质心对"全国发现"意图无意义）。"""
+
+    def test_multi_city_skips_location_scoring(self, monkeypatch):
+        called = []
+
+        def fake_amap():
+            called.append(1)
+            return None
+
+        monkeypatch.setattr(ra, "_get_amap_service", fake_amap)
+
+        candidates = [
+            {"id": "c1", "metadata": {"name": "鼓浪屿", "city": "厦门", "tags": "海岛",
+                                      "price_level": "适中", "popularity_score": 8,
+                                      "source": "amap"}},
+        ]
+        profile = {"tags": ["海岛"], "_multi_city": True}
+        results = run(ra.recommend(profile, candidates, trends=[]))
+
+        assert not called
+        assert results[0]["_score_breakdown"]["location_efficiency"] == 0.5
+
+    def test_single_city_still_calls_location(self, monkeypatch):
+        called = []
+
+        def fake_amap():
+            called.append(1)
+            return None
+
+        monkeypatch.setattr(ra, "_get_amap_service", fake_amap)
+
+        candidates = [
+            {"id": "c1", "metadata": {"name": "洪崖洞", "city": "重庆", "tags": "夜景",
+                                      "price_level": "适中", "popularity_score": 9,
+                                      "source": "amap"}},
+        ]
+        profile = {"tags": ["夜景"]}
+        run(ra.recommend(profile, candidates, trends=[]))
+        assert called  # 单城路径不受影响

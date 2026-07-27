@@ -1,135 +1,74 @@
-import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { SearchInput } from '../components/SearchInput'
 import { ExampleQuestions } from '../components/ExampleQuestions'
-import { api } from '../lib/api'
-import { Sparkles, MessageCircle, Map, Camera, List } from 'lucide-react'
+import { Sparkles, MessageCircle, Camera, List } from 'lucide-react'
 
-type ServiceStatus = 'idle' | 'loading' | 'healthy' | 'degraded' | 'error'
+const QUICK_LINKS = [
+  { to: '/recommend', icon: Sparkles, label: '智能推荐', desc: '热门目的地排行与评分', tint: 'from-brand-100 to-brand-50 text-brand-500' },
+  { to: '/chat', icon: MessageCircle, label: 'AI 对话', desc: '多轮对话式规划行程', tint: 'from-accent-100 to-accent-50 text-accent-600' },
+  { to: '/image', icon: Camera, label: '图片识别', desc: '上传图片智能识别景点', tint: 'from-amber-100 to-amber-50 text-amber-500' },
+  { to: '/history', icon: List, label: '我的行程', desc: '历史行程与收藏管理', tint: 'from-purple-100 to-purple-50 text-purple-500' },
+]
 
 export function HomePage() {
   const navigate = useNavigate()
-  const [backendStatus, setBackendStatus] = useState<ServiceStatus>('idle')
-  const [statusDetail, setStatusDetail] = useState('')
 
   const handleSearch = (query: string) => {
     navigate(`/chat?q=${encodeURIComponent(query)}`)
   }
 
-  const handleExampleSelect = (question: string) => {
-    navigate(`/chat?q=${encodeURIComponent(question)}`)
-  }
-
-  const checkHealth = async () => {
-    setBackendStatus('loading')
-    try {
-      const { data } = await api.get('/health')
-      const apiOk = data.services?.api === 'healthy'
-      const dbNote =
-        data.services?.database === 'healthy' ? '数据库已连接' : '数据库（可选）未启用'
-      if (data.status === 'ok' || apiOk) {
-        setBackendStatus('healthy')
-        setStatusDetail(`API 正常 · ${dbNote} · v${data.version}`)
-      } else {
-        setBackendStatus('degraded')
-        setStatusDetail(`API: ${data.services.api} · ${dbNote}`)
-      }
-    } catch (_err) {
-      setBackendStatus('error')
-      setStatusDetail('无法连接到后端服务，请确认后端已启动')
-    }
-  }
-
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-4 py-16">
+    <main className="grain relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 py-8 pb-20 sm:pb-8">
+      {/* 动态极光背景（Phase 12.24 视觉 2.0） */}
+      <div aria-hidden className="aurora">
+        <span /><span /><span />
+      </div>
+
       {/* Header */}
-      <div className="mb-10 text-center">
-        <h1 className="mb-3 text-5xl font-bold tracking-tight text-slate-900">
-          ✈️ TravelMind
+      <div className="relative mb-6 animate-fade-in-up text-center">
+        <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-brand-200 bg-white/70 px-3 py-1 text-xs font-medium text-brand-600 backdrop-blur">
+          <Sparkles size={12} />
+          AI 多智能体 · 真实数据校验
+        </div>
+        <h1 className="display-xl mb-3">
+          <span className="align-middle">✈️</span>{' '}
+          <span className="text-gradient">TravelMind</span>
         </h1>
-        <p className="text-lg text-slate-500">
-          AI 智能旅行规划助手 — 一句话，生成完美旅程
+        <p className="text-base leading-relaxed text-slate-500 sm:text-lg">
+          AI 智能旅行规划助手 — <span className="font-medium text-slate-700">一句话，生成完美旅程</span>
         </p>
       </div>
 
       {/* Search */}
-      <SearchInput onSearch={handleSearch} />
-
-      {/* Quick Nav */}
-      <div className="mt-6 flex gap-3">
-        <Link
-          to="/recommend"
-          className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
-        >
-          <Sparkles size={18} />
-          智能推荐
-        </Link>
-        <Link
-          to="/chat"
-          className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
-        >
-          <MessageCircle size={18} />
-          AI 对话
-        </Link>
-        <Link
-          to="/itinerary?q=推荐重庆3日游"
-          className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
-        >
-          <Map size={18} />
-          快速体验
-        </Link>
-        <Link
-          to="/image"
-          className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
-        >
-          <Camera size={18} />
-          图片识别
-        </Link>
-        <Link
-          to="/history"
-          className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
-        >
-          <List size={18} />
-          我的行程
-        </Link>
+      <div className="focus-glow relative flex w-full justify-center rounded-2xl transition-shadow animate-fade-in-up [animation-delay:80ms]">
+        <SearchInput onSearch={handleSearch} />
       </div>
 
-      {/* Example Questions */}
-      <ExampleQuestions onSelect={handleExampleSelect} />
+      {/* 示例问题 — 一句话就能开始 */}
+      <div className="relative flex w-full justify-center animate-fade-in-up [animation-delay:120ms]">
+        <ExampleQuestions onSelect={handleSearch} />
+      </div>
 
-      {/* Health Check */}
-      <div className="mt-12 text-center">
-        <button
-          onClick={checkHealth}
-          disabled={backendStatus === 'loading'}
-          className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
-        >
-          {backendStatus === 'loading' ? '⏳ 检测中...' : '🔍 检测后端连接'}
-        </button>
-
-        {backendStatus !== 'idle' && backendStatus !== 'loading' && (
-          <div
-            className={`mt-3 inline-block rounded-lg px-4 py-2 text-sm ${
-              backendStatus === 'healthy'
-                ? 'bg-green-50 text-green-700'
-                : backendStatus === 'degraded'
-                  ? 'bg-yellow-50 text-yellow-700'
-                  : 'bg-red-50 text-red-700'
-            }`}
+      {/* Quick Nav — 产品核心入口 */}
+      <div className="stagger relative mt-6 grid w-full max-w-lg grid-cols-2 gap-3">
+        {QUICK_LINKS.map(({ to, icon: Icon, label, desc, tint }) => (
+          <Link
+            key={to}
+            to={to}
+            className="card card-glow flex flex-col items-start gap-1.5 p-4"
           >
-            {backendStatus === 'healthy' && '✅ 后端连接正常'}
-            {backendStatus === 'degraded' && '⚠️ 后端部分可用'}
-            {backendStatus === 'error' && '❌ 后端连接失败'}
-            {statusDetail && (
-              <span className="ml-2 text-xs opacity-75">({statusDetail})</span>
-            )}
-          </div>
-        )}
+            <span className={`flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br ${tint}`}>
+              <Icon size={18} />
+            </span>
+            <span className="text-sm font-bold text-slate-800">{label}</span>
+            <span className="text-xs leading-relaxed text-slate-400">{desc}</span>
+          </Link>
+        ))}
       </div>
 
       {/* Footer */}
-      <footer className="mt-16 text-center text-xs text-slate-400">
-        <p>TravelMind Agent — Phase 5 Multi-Agent Travel Planner</p>
+      <footer className="relative mt-8 text-center text-xs text-slate-400">
+        <p>TravelMind Agent · Multi-Agent Travel Planner</p>
         <p className="mt-1">Powered by DeepSeek · Kimi Vision · Open-Meteo · Amap · Chroma</p>
       </footer>
     </main>

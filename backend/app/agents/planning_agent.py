@@ -17,14 +17,18 @@ logged and {} is returned so the orchestrator can accumulate it.
 import json
 import logging
 from datetime import date, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 import httpx
 from openai import AsyncOpenAI
 
 from app.agents.itinerary_contract import (
     budget_sum_mismatch,
+    classify_poi_indoor,
     compute_weather_fit,
+    attach_daily_dining_and_stay,
+    enforce_pace_density,
+    enforce_severe_weather_indoor,
     inject_computed_fields,
     month_inconsistency_errors,
     schema_for_llm,
@@ -38,10 +42,54 @@ from app.agents.itinerary_contract import (
 )
 from app.agents.route_optimizer import optimize_itinerary
 from app.config.settings import settings
+from app.services.name_normalizer import normalize_poi_name
 
 logger = logging.getLogger(__name__)
 
 MAX_RETRIES = 2  # 2 retries → 3 attempts total; then structured failure
+
+# Phase 8.1: Feasibility thresholds
+MAX_PLACES_PER_DAY = 8  # Warn if more than 8 visit items per day
+
+
+def _check_feasibility(
+    profile: Dict[str, Any],
+    recommendations: List[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Check if the request is feasible given available data.
+
+    Returns:
+        Dict with keys: feasible (bool), warning (str|None), severity (str).
+        Non-fatal warnings still allow generation; fatal blocks it.
+    """
+    days = profile.get("days", 1) or 1
+    num_candidates = len(recommendations)
+
+    # Not enough candidates for the number of days
+    if num_candidates < days:
+        return {
+            "feasible": True,
+            "warning": (
+                f"可用景点较少（{num_candidates}个），{days}天行程可能不够充实。"
+                f"建议缩短天数或扩大兴趣范围。"
+            ),
+            "severity": "warning",
+        }
+
+    # Way too many places requested per day
+    user_tags = profile.get("tags", []) or []
+    if days == 1 and num_candidates > MAX_PLACES_PER_DAY:
+        # Check if user explicitly asked for excessive coverage
+        return {
+            "feasible": True,
+            "warning": (
+                f"一天内逛完 {num_candidates} 个景点不太现实，"
+                f"行程将精选 {MAX_PLACES_PER_DAY} 个核心景点。"
+            ),
+            "severity": "warning",
+        }
+
+    return {"feasible": True, "warning": None, "severity": "info"}
 
 
 # ── Tolerant JSON parsing ────────────────────────────────
@@ -168,7 +216,11 @@ def _get_kb_attractions() -> List[Dict[str, Any]]:
 # ── Prompt building ──────────────────────────────────────
 
 def _format_places(places: List[Dict[str, Any]], limit: int = 15) -> str:
-    """Render the ranked candidate list for the prompt."""
+    """Render the ranked candidate list for the prompt.
+
+    Phase 12.13: Mark KB-verified POIs with a ✓ so the LLM knows which
+    names are system-verified and should be used verbatim.
+    """
     lines = []
     for i, p in enumerate(places[:limit]):
         name = p.get("name", p.get("metadata", {}).get("name", f"景点{i+1}"))
@@ -192,8 +244,15 @@ def _format_places(places: List[Dict[str, Any]], limit: int = 15) -> str:
             # Fallback to legacy price_level label
             price = p.get("price_level", "") or p.get("metadata", {}).get("price_level", "")
 
+        # Phase 12.13: KB-verified marker
+        kb_verified = "✓" if (p.get("kb_verified") or p.get("metadata", {}).get("kb_verified") or name) else ""
+
+        # Phase 12.15: Indoor/outdoor marker from tags or name
+        classification = classify_poi_indoor(name, kb_tags=tags_p if isinstance(tags_p, list) else None)
+        io_marker = {"indoor": "🏠室内", "semi": "🏛 semi", "outdoor": "☀️户外"}.get(classification, "")
+
         lines.append(
-            f"{i + 1}. {name} "
+            f"{i + 1}. ✓ {name} [{io_marker}] "
             f"(标签: {', '.join(tags_p[:5])}; 适合: {suitable}; "
             f"最佳时间: {best_time}; 门票: {price}; 推荐分: {score:.2f})"
         )
@@ -208,20 +267,101 @@ def _format_weather(weather: Optional[Dict[str, Any]]) -> str:
     if not daily:
         return ""
     lines = []
+    has_high_temp = False
+    has_rain = False
     for d in daily[:7]:
+        tmax = d.get('temp_max', 30)
+        tmin = d.get('temp_min', 20)
+        precip = d.get('precipitation', 0)
+        desc = d.get('weather_desc', '')
+        # Phase 12.17: mark rainy days with 🌧️ so the LLM maps date→rain
+        is_rainy = precip > 0.5 or any(w in desc for w in ["雨", "雷", "雪", "雹"])
         lines.append(
-            f"- {d.get('date')}: {d.get('weather_desc')}, "
-            f"{d.get('temp_min')}~{d.get('temp_max')}°C, "
-            f"降水 {d.get('precipitation')}mm"
+            f"- {d.get('date')}: {desc}, "
+            f"{tmin}~{tmax}°C, "
+            f"降水 {precip}mm" + (" 🌧️" if is_rainy else "")
         )
-    return "\n【逐日天气】（天气自适应约束：降雨/雷暴日优先安排室内项目，"
-    "晴朗日优先户外与日出日落机位）\n" + "\n".join(lines)
+        if tmax >= 35:
+            has_high_temp = True
+        if precip > 5 or any(w in desc for w in ["雨", "雷", "暴雨", "阵雨"]):
+            has_rain = True
+
+    header = "\n【逐日天气】"
+    constraints = []
+    if has_high_temp and has_rain:
+        constraints.append(
+            "⚠️ 高温+降雨双重预警：白天户外活动必须安排在 10:00 前或 17:00 后，"
+            "午后时段（12:00-16:00）严格安排室内/半室内项目（博物馆、商场、茶馆等），"
+            "每个降雨日至少 2 个室内项目；户外项目数 ≤ 室内项目数 + 1；"
+            "所有户外项目必须注明避暑措施（遮阳、饮水、空调休息点）"
+        )
+    elif has_high_temp:
+        constraints.append(
+            "⚠️ 高温预警（≥35°C）：户外活动限早晨/傍晚，午后强制安排室内项目，"
+            "每天至少 2 个室内避暑场所（博物馆/购物中心/茶馆/咖啡馆/美食街）"
+        )
+    elif has_rain:
+        constraints.append(
+            "🌧️ 降雨日室内配额：每个降雨日至少安排 2 个室内/半室内项目"
+            "（博物馆、购物中心、茶馆、美食街、餐厅等），"
+            "户外项目数 ≤ 室内项目数 + 1。晴朗日优先户外与日出日落机位"
+        )
+    else:
+        constraints.append(
+            "晴朗日优先户外与日出日落机位"
+        )
+
+    return header + "（" + "；".join(constraints) + "）\n" + "\n".join(lines)
+
+
+def _format_rainy_days(weather: Optional[Dict[str, Any]], days: int) -> str:
+    """Phase 12.17: Explicit day-number → rain mapping.
+
+    The LLM tends to treat rain constraints as an abstract quota and still
+    schedules famous outdoor landmarks on rainy days. Naming the exact
+    rainy day numbers makes the constraint concrete and actionable.
+    """
+    if not weather:
+        return ""
+    daily = weather.get("daily") or []
+    rainy = []
+    has_severe = False
+    for i, d in enumerate(daily[: max(days, 1)]):
+        desc = d.get("weather_desc", "") or ""
+        precip = d.get("precipitation") or 0
+        if any(w in desc for w in ("雨", "雷", "雪", "雹")) or precip > 0.5:
+            if any(w in desc for w in ("雷", "雹")):
+                has_severe = True
+                rainy.append(f"第 {i + 1} 天（{d.get('date')}，{desc}）⚠️恶劣天气")
+            else:
+                rainy.append(f"第 {i + 1} 天（{d.get('date')}，{desc}）")
+    if not rainy:
+        return ""
+    severe_rule = (
+        "⚠️ 标注恶劣天气（雷暴/冰雹）的当天，items 必须 100% 为室内/半室内项目，"
+        "一个户外项目都不允许（雷雨天户外活动有安全风险）；"
+        if has_severe else ""
+    )
+    return (
+        "\n【逐日降雨警示 — 必须遵守】"
+        + "、".join(rainy)
+        + " 预报有雨。"
+        + severe_rule
+        + "普通降雨日 items 以 🏠室内/🏛 semi 项目为主，户外项目不得多于 1 个。"
+    )
 
 
 _QUALITY_REQUIREMENTS = """【规划要求】
+0.【POI 名称优先规则】推荐列表中带「✓」标记的景点名称已经过系统验证，
+   请优先使用其准确的完整名称作为 items[].poi。如需使用不在列表中的景点，
+   请从「更多已验证景点」中选取。不要随意修改已验证景点的名称。
+   【poi 必须是真实场所】items[].poi 只能是真实存在的场所名称（景区、博物馆、
+   商场、餐厅、街区等），禁止把菜品名（如「过桥米线」）、小吃名、活动名当作 poi；
+   餐饮体验要么用推荐列表中的真实餐厅名，要么写入 eat「每日一味」，不要塞进 items。
 1. 每天必须有明确区域主题：theme 写「DAY n · 区域名」（如「DAY 1 · 老城厢」），title 写当天主目的地
 2. 同一天内的地点在地理上必须顺路，避免来回折返
-3. 每天 3-6 个条目；time 用 24 小时制 HH:MM；note 必须是一句"为什么这个时间点去"的理由
+3. 每天条目数按用户节奏分档：休闲/慢节奏 2-4 个（留白午休与机动时间），适中 3-5 个，
+   紧凑/特种兵 4-6 个；time 用 24 小时制 HH:MM；note 必须是一句"为什么这个时间点去"的理由
    （人少/光线/场次/闭馆时间/预约时段等），禁止泛泛而谈
 4. 需要提前预约购票的项目，必须在 poi 或 note 里写清（如「需提前在官方公众号预约」）
 5. eat 写"每日一味"：具体餐厅 + 招牌菜（如「豫园『南翔馒头店』蟹粉小笼」）
@@ -231,7 +371,221 @@ _QUALITY_REQUIREMENTS = """【规划要求】
 8. tips 给 2-6 条实用提示，必须具体可执行（写清 App 名、价格、时间），禁止空泛建议
 9. stats 给 2-6 项概览统计（天数/人均预算/预计日均步数等由你估算；
    地点数由系统统计，你填的数值会被后端覆盖为真实值）
-10. 行程张弛有度；有老人小孩同行时控制步行强度"""
+10. 行程张弛有度；有老人小孩同行时控制步行强度
+11.【天气自适应】高温日（≥35°C）午后 12:00-16:00 禁止排户外景点，每个高温日至少 2 个室内项目；
+   降雨/雷暴日：户外项目数不得超过室内项目数（户外 ≤ 室内），每个降雨日至少 2 个室内/半室内项目；
+   知名户外地标（山岳/湖泊/公园/岛屿类）在降雨日必须让位于室内替代项，不得因名气大而保留；
+   tips 中必须包含当季天气应对建议（遮阳/雨具/室内备选方案）"""
+
+
+# ── KB-aware POI catalog ──────────────────────────────────
+# Phase 12.13: Build a compact catalog of KB-verified POI names for the
+# target city, so the LLM can pick exact KB names instead of fabricating.
+
+# Tag categorization for grouping KB POIs in the catalog
+_TAG_CATEGORIES: Dict[str, str] = {
+    "museum": "博物馆/展馆",
+    "history": "历史遗迹",
+    "temple": "寺庙/宗教",
+    "park": "公园/自然",
+    "nature": "自然风光",
+    "mountain": "山岳",
+    "lake": "湖泊/水域",
+    "beach": "海滩/海岸",
+    "garden": "园林/花园",
+    "architecture": "建筑/街区",
+    "landmark": "地标",
+    "cultural": "文化/民俗",
+    "shopping": "购物/商业",
+    "food": "美食/餐饮",
+    "hotel": "住宿",
+    "entertainment": "娱乐",
+    "art": "艺术/创意",
+    "sport": "运动/户外",
+    "science": "科技",
+    "sightseeing": "观光",
+    "hot_spring": "温泉",
+    "island": "海岛",
+}
+
+
+def _classify_poi_tags(tags: List[str]) -> str:
+    """Map POI tags to a simplified category for catalog grouping."""
+    tags_lower = [t.lower() for t in tags]
+    for key, label in _TAG_CATEGORIES.items():
+        if any(key in t for t in tags_lower):
+            return label
+    # Check Chinese tags
+    for t in tags:
+        if any(kw in t for kw in ["寺", "庙", "宫", "殿", "塔", "教堂", "清真"]):
+            return "寺庙/宗教"
+        if any(kw in t for kw in ["园", "林", "植物", "花卉"]):
+            return "园林/花园"
+        if any(kw in t for kw in ["山", "峰", "岭", "岩"]):
+            return "山岳"
+        if any(kw in t for kw in ["湖", "河", "江", "海", "滩", "湾", "岛", "溪", "泉", "瀑"]):
+            return "自然风光"
+        if any(kw in t for kw in ["博", "纪念", "故居", "旧址", "遗址"]):
+            return "博物馆/展馆"
+        if any(kw in t for kw in ["街", "巷", "胡同", "广场", "建筑"]):
+            return "建筑/街区"
+        if any(kw in t for kw in ["吃", "美食", "餐厅", "火锅", "面", "茶", "咖啡"]):
+            return "美食/餐饮"
+        if any(kw in t for kw in ["购", "商场", "市场", "夜市"]):
+            return "购物/商业"
+    return "其他景点"
+
+
+def _build_kb_catalog(
+    city: str,
+    places: List[Dict[str, Any]],
+) -> str:
+    """Build a COMPACT KB-verified POI name hint for the target city.
+
+    Phase 12.13 v2: Lighter approach — just a comma-separated name list
+    of additional KB POIs (not already in the recommendation list), capped
+    at ~500 chars. The goal is name awareness without overwhelming the LLM.
+
+    Returns a compact line like:
+        【更多{城市}已验证景点】name1, name2, name3, ...
+    """
+    # Collect names already in the recommendation list
+    rec_names: Set[str] = set()
+    for p in places:
+        name = p.get("name", "") or p.get("metadata", {}).get("name", "")
+        if name:
+            rec_names.add(name)
+            # Also add core name for dedup
+            core = normalize_poi_name(name)
+            if core and core != name:
+                rec_names.add(core)
+
+    # Collect additional KB POIs in the same city (not already in rec_names)
+    extra_names: List[str] = []
+    try:
+        kb_all = _get_kb_attractions()
+        for a in kb_all:
+            if a.get("city", "") != city:
+                continue
+            name = a.get("name", "")
+            if not name or name in rec_names:
+                continue
+            core = normalize_poi_name(name)
+            if core in rec_names:
+                continue
+            extra_names.append(name)
+            rec_names.add(name)
+            rec_names.add(core)
+    except Exception:
+        pass
+
+    if not extra_names:
+        return ""
+
+    # Build compact comma-separated list, cap at ~500 chars
+    lines = [f"【更多{city}已验证景点（供参考选用）】"]
+    current_line = ""
+    for name in extra_names:
+        segment = f"、{name}"
+        if len(current_line) + len(segment) > 120:
+            lines.append(current_line)
+            current_line = name
+        else:
+            current_line = current_line + segment if current_line else name
+        if sum(len(l) for l in lines) + len(current_line) > 500:
+            remaining = len(extra_names) - extra_names.index(name) - 1
+            if remaining > 0:
+                current_line += f" …等{remaining}个"
+            break
+    if current_line:
+        lines.append(current_line)
+
+    return "\n".join(lines)
+
+
+def _build_extreme_guidance(
+    profile: Dict[str, Any],
+    places: List[Dict[str, Any]],
+    days: int,
+) -> str:
+    """Phase 12.10: Build prompt guidance blocks for extreme/edge scenarios.
+
+    Detects: non-standard destinations, large groups, extreme budget,
+    self-drive/motorcycle trips, and POI-constrained (niche/low-coverage) cases.
+    """
+    blocks: List[str] = []
+
+    # 1. Non-standard destination (e.g., 川西, 漠河, 川藏线)
+    orig_dest = profile.get("original_destination", "")
+    dest = profile.get("destination", "")
+    if orig_dest and orig_dest != dest:
+        blocks.append(
+            f"\n【区域适配】用户原始目的地为「{orig_dest}」，系统以「{dest}」"
+            f"作为最近的中心城市进行规划。请在 trip.title 和 trip.description 中"
+            f"体现「{orig_dest}」而非「{dest}」，tips 中应包含该区域的旅行注意事项"
+            f"（如高原反应、长途交通、边防证等）。行程中每天的 theme 和 items 应"
+            f"聚焦「{orig_dest}」的实际景点和体验。"
+        )
+
+    # 2. Large group (10+ people)
+    companions = profile.get("companions", "")
+    constraints_text = str(profile.get("constraints", ""))
+    if any(k in companions or k in constraints_text for k in ("团队", "团建", "集体")):
+        blocks.append(
+            "\n【大团出行】团队出行需注意：① 每天安排不超过 3 个主要景点，"
+            "留出集合/转场时间；② 优先选择有团体接待能力的场所（大餐厅、大景区）；"
+            "③ tips 中应包含团队协调建议（集合时间、分组行动等）；"
+            "④ checklist 中应包含团队物资（对讲机、急救包、点名表等）。"
+        )
+
+    # 3. Extreme budget (≤500元 total)
+    budget = profile.get("budget_level", "") or ""
+    if "500" in constraints_text or "极度有限" in constraints_text or "穷游" in constraints_text:
+        blocks.append(
+            "\n【极简预算】用户预算极度有限——① 每天优先安排免费/低票价景点"
+            "（公园、老街、免费博物馆、大学校园）；② 餐饮推荐平价小吃而非正餐餐厅；"
+            "③ 交通优先步行+公共交通，避免打车/包车；"
+            "④ budget.breakdown 中住宿控制在 50-80 元/晚（青旅/民宿床位），"
+            "餐饮每天控制在 30-50 元；⑤ tips 中提供省钱攻略（如学生证优惠、"
+            "免费日、公交卡等）。"
+        )
+
+    # 4. Self-drive / motorcycle trip
+    user_input_lower = ""
+    # Try to get raw input from constraints or tags
+    for tag in profile.get("tags", []):
+        user_input_lower += tag + " "
+    user_input_lower += constraints_text
+    if any(kw in user_input_lower for kw in ("自驾", "摩托车", "骑行", "摩旅", "房车")):
+        blocks.append(
+            "\n【自驾/摩托车旅行】这是一次公路旅行——① 每天的行程应沿路线方向"
+            "线性推进，避免折返；② items 中应包括途中的加油站/休息区/观景台；"
+            "③ tips 中必须包含路况提醒、天气对驾驶的影响、备选路线建议；"
+            "④ checklist 中应包含车辆装备（备胎、修车工具、防晒、头盔等）；"
+            "⑤ 每天驾驶距离建议控制在 200-400km 以内。"
+        )
+
+    # 5. POI-constrained (niche preferences, low coverage)
+    num_places = len(places)
+    if num_places < days * 3:
+        blocks.append(
+            f"\n【景点有限】当前可用推荐景点仅 {num_places} 个（{days} 天行程），"
+            f"少于理想的每天 3 个。请：① 每天安排 2-3 个景点即可，注重深度体验"
+            f"而非数量；② 为每天补充 1-2 个自由探索/休闲时段（逛老街、品茶、"
+            f"夜市等无需具体POI的体验）；③ tips 中坦诚说明该目的地景点密度较低，"
+            f"建议慢节奏深度游。"
+        )
+
+    # 6. Niche/小众 preference
+    if "小众" in str(profile.get("tags", [])):
+        blocks.append(
+            "\n【小众偏好】用户偏好避开人群的小众体验——① 优先选取推荐列表中"
+            "评论数较少或非头部的景点（这些往往更小众）；② 每天可安排 1 个"
+            "「隐藏玩法」（如本地人才知道的观景点、小众咖啡馆、独立书店）；"
+            "③ tips 中提供错峰建议（工作日、清晨/傍晚等低客流时段）。"
+        )
+
+    return "".join(blocks)
 
 
 def _build_planning_prompt(
@@ -269,10 +623,78 @@ def _build_planning_prompt(
 
     rain_block = ""
     if weather and trip_has_rain(weather, days):
-        rain_block = (
-            "\n【天气要求】预报有降雨：tips 至少 1 条与雨天/天气相关；"
-            "checklist 至少 1 件天气相关物品（如折叠伞，写明实际月份）。"
+        # Phase 12.17: name concrete indoor substitutes from the candidate
+        # list so the LLM has actionable options, not just abstract quotas.
+        indoor_examples: List[str] = []
+        for p in places:
+            pname = p.get("name", "") or p.get("metadata", {}).get("name", "")
+            if not pname:
+                continue
+            ptags = p.get("tags", []) or p.get("metadata", {}).get("tags", "")
+            if isinstance(ptags, str):
+                ptags = [t.strip() for t in ptags.split(",") if t.strip()]
+            if classify_poi_indoor(pname, kb_tags=ptags or None) in ("indoor", "semi"):
+                indoor_examples.append(pname)
+            if len(indoor_examples) >= 6:
+                break
+        examples_text = (
+            f"降雨日请优先从这些室内/半室内项目中选用：{'、'.join(indoor_examples)}。"
+            if indoor_examples else ""
         )
+        rain_block = (
+            "\n【降雨日室内配额 — 必须遵守】预报有降雨："
+            "① 每个降雨日至少安排 2 个室内/半室内项目（博物馆、购物中心、茶馆、美食街、餐厅等）；"
+            "② 降雨日户外项目数必须 ≤ 室内项目数；"
+            "③ 推荐列表中 ☀️户外 标记的知名地标（山岳/湖泊/公园/岛屿类）不得安排在降雨日，"
+            "应移至晴朗日；行程全部为雨日时用室内替代项；"
+            f"{examples_text}"
+            "④ tips 至少 1 条与雨天/天气相关；"
+            "⑤ checklist 至少 1 件天气相关物品（如折叠伞，写明实际月份）。"
+        )
+
+    # Phase 12.17: explicit day-number → rain mapping
+    rain_days_block = _format_rainy_days(weather, days) if weather else ""
+
+    # Phase 12.17 v3: verified indoor substitutes from the KB for this city.
+    # Without real names at hand the LLM invents plausible-sounding venues
+    # (poi_verified 回退的根因)；给它一份已验证清单直接选用。
+    kb_indoor_block = ""
+    if weather and trip_has_rain(weather, days):
+        try:
+            kb_indoor = [
+                a for a in _get_kb_attractions()
+                if a.get("city") == dest
+                and classify_poi_indoor(a.get("name", ""), kb_tags=a.get("tags") or None)
+                in ("indoor", "semi")
+            ]
+            kb_indoor.sort(key=lambda x: x.get("popularity_score", 0), reverse=True)
+            kb_names = [a["name"] for a in kb_indoor[:12] if a.get("name")]
+            if kb_names:
+                kb_indoor_block = (
+                    "\n【雨天室内备选 — 全部经系统验证，降雨日优先从中选用】"
+                    + "、".join(kb_names)
+                )
+        except Exception:
+            kb_indoor_block = ""
+
+    # Phase 12: Summer heat safety block (June-September)
+    summer_block = ""
+    if month in (6, 7, 8, 9):
+        summer_block = (
+            "\n【夏季高温安全约束】当前为{month}月盛夏——"
+            "① 每天 12:00-16:00 时段禁止安排户外景点（如登山、广场、露天景区），"
+            "必须替换为室内/半室内项目（博物馆、美术馆、商场、茶馆、餐厅）；"
+            "② 户外项目只能安排在 08:00-11:00 或 17:00-19:00；"
+            "③ 每天至少安排 2 个室内避暑休憩点（其中至少 1 个有空调）；"
+            "④ tips 中必须包含高温避暑建议（遮阳帽、饮用水、藿香正气水等）；"
+            "⑤ 若当天同时有降雨，室内项目数必须 ≥ 户外项目数。"
+        ).format(month=month)
+
+    # Phase 12.10: Extreme scenario guidance blocks
+    extreme_blocks = _build_extreme_guidance(profile, places, days)
+
+    # Phase 12.13: KB-aware POI catalog — all verified names the LLM can use
+    kb_catalog = _build_kb_catalog(dest, places)
 
     return f"""请为以下旅行需求生成一份详细的 {days} 日行程规划（严格按 output 函数的 JSON 结构）：
 
@@ -284,18 +706,26 @@ def _build_planning_prompt(
 【旅行风格】{style}
 【特殊要求】{constraints}
 
-{date_block}{rain_block}{naming_block}
+{date_block}{rain_block}{rain_days_block}{kb_indoor_block}{naming_block}{summer_block}{extreme_blocks}
 
-【推荐景点】（按推荐度排序，请从中选取安排行程）
+{kb_catalog}
+
+【推荐景点 — 带 ✓ 的经系统验证，请优先选用其准确名称】
 {_format_places(places)}
 {_format_weather(weather)}
 
 {_QUALITY_REQUIREMENTS}"""
 
 
-_SYSTEM_PROMPT_FULL = """你是 TravelMind 高级旅行规划师。根据用户需求、推荐景点和天气，
-生成严格符合 output 函数 JSON 结构的行程。所有内容必须真实可执行：
-地点来自推荐列表，建议必须具体（预约方式、价格、时间、App 名）。
+_SYSTEM_PROMPT_FULL = """你是 TravelMind 高级旅行规划师。根据用户需求、推荐景点（带 ✓ 标记的经系统验证）和天气，
+生成严格符合 output 函数 JSON 结构的行程。
+
+【POI 名称规范】
+推荐列表中带「✓」的景点名称已经过系统验证，请优先使用其准确名称作为 items[].poi。
+如果某个你熟知的热门景点未出现在推荐列表中，说明系统暂未收录该景点数据，
+请从推荐列表或「更多已验证景点」中选取最接近的替代。
+eat（每日一味）可使用真实存在的餐厅名，不受此限制。
+
 你必须调用 'output' 函数返回结构化结果，不要返回纯文本。"""
 
 
@@ -381,6 +811,11 @@ async def generate_itinerary(
         logger.error("DEEPSEEK_API_KEY not configured — cannot generate itinerary")
         return {}
 
+    # Phase 8.1: Feasibility check — warn if request is unrealistic
+    feasibility = _check_feasibility(profile, recommendations)
+    if feasibility.get("warning"):
+        logger.warning(f"Feasibility warning: {feasibility['warning']}")
+
     days = profile.get("days", 3)
     trip_month = date.today().month
     top_n = min(len(recommendations), 20)
@@ -414,14 +849,34 @@ async def generate_itinerary(
                 )
                 continue
 
+            # Phase 12.27: 节奏分档密度兜底（在路线优化前截断，保证统计一致）
+            try:
+                enforce_pace_density(data, profile.get("travel_style", "") or "")
+            except Exception as e:
+                logger.warning(f"Pace density enforcement failed (non-fatal): {e}")
+
             # B 阶段后处理：POI 存续 / 区域归属 / 顺路重排（非致命失败）
             route_report: Dict[str, Any] = {}
             try:
                 data, route_report = await optimize_itinerary(
-                    data, profile.get("destination", "")
+                    data, profile.get("destination", ""), weather=weather
                 )
             except Exception as e:
                 logger.warning(f"Route optimization failed (non-fatal): {e}")
+
+            # Phase 12.17 v5: 恶劣天气确定性室内替换（雷暴/冰雹日户外→KB 室内）
+            try:
+                enforce_severe_weather_indoor(data, weather, _get_kb_attractions())
+            except Exception as e:
+                logger.warning(f"Severe-weather guard failed (non-fatal): {e}")
+
+            # Phase 12.27: 按天挂载 KB 真实餐厅与住宿（"吃住都没有推荐"修复）
+            try:
+                attach_daily_dining_and_stay(
+                    data, _get_kb_attractions(), profile.get("destination", "")
+                )
+            except Exception as e:
+                logger.warning(f"Dining/stay attach failed (non-fatal): {e}")
 
             # Phase 7: Price enrichment from knowledge base (non-LLM, best-effort)
             try:
@@ -436,7 +891,9 @@ async def generate_itinerary(
 
             # 校验报告：路线核实结论 + 天气匹配度（Phase 1 可视化）
             if route_report:
-                fit, weather_notes = compute_weather_fit(data, weather)
+                # Phase 12.15: Pass KB for tag-based indoor classification
+                kb_attrs = _get_kb_attractions()
+                fit, weather_notes = compute_weather_fit(data, weather, kb_attractions=kb_attrs)
                 route_report["weather_fit"] = fit
                 route_report["weather_notes"] = weather_notes
                 data["validation_report"] = route_report

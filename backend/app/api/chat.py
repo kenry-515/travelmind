@@ -3,10 +3,9 @@ TravelMind Agent — Chat API
 POST /api/v1/chat  — send messages, get AI response (streaming or non-streaming).
 """
 
-import json
 import logging
 import uuid
-from typing import List, Literal, Optional
+from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
@@ -93,7 +92,7 @@ async def chat(request: ChatRequest):
                 yield b"data: [DONE]\n\n"
             except Exception as e:
                 logger.error(f"Stream error: {e}")
-                yield _sse_encode(f"[ERROR] {e}").encode("utf-8")
+                yield _sse_encode("[ERROR] 服务暂不可用，请稍后重试").encode("utf-8")
 
         return StreamingResponse(
             event_stream(),

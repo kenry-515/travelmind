@@ -24,14 +24,14 @@ export function SearchInput({ onSearch, placeholder }: SearchInputProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder || '你想去哪里旅行？输入你的需求...'}
-          className="w-full rounded-xl border border-slate-300 bg-white px-5 py-4 pr-12 text-lg text-slate-800 shadow-sm transition-all placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          className="w-full rounded-2xl border border-border bg-white px-4 py-3.5 pr-14 text-base text-slate-800 shadow-card transition-all placeholder:text-slate-400 focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-100 sm:px-5 sm:py-4 sm:text-lg"
         />
         <button
           type="submit"
           aria-label="搜索"
-          className="absolute right-3 rounded-lg p-2 text-slate-400 transition-colors hover:bg-blue-50 hover:text-blue-600"
+          className="btn-primary absolute right-2 rounded-xl p-2.5"
         >
-          <Search size={22} />
+          <Search size={20} />
         </button>
       </div>
     </form>

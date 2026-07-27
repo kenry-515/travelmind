@@ -1,16 +1,21 @@
 """
 TravelMind Agent — Orchestrator
-LangGraph StateGraph that coordinates all agents in sequence.
 
-Workflow:
-  START -> Profile Extraction -> Trend Analysis -> Weather Fetch
-        -> RAG Retrieval -> Recommendation Agent
-        -> Planning Agent -> Response Aggregator -> END
+Coordinates all agents in a 6-step pipeline:
 
-Each node reads/writes shared TravelState. Errors are captured
-in state["error"] so the graph can continue with graceful degradation.
+  Profile Extraction → Trend Analysis → Weather Fetch
+  → RAG Retrieval → Recommendation Agent
+  → Planning Agent → Response Aggregator
+
+Each step reads/writes shared TravelState. Errors are captured
+in state["error"] so the pipeline can continue with graceful degradation.
+
+Two entry points:
+  - run_travel_workflow()       → blocking, returns final TravelState
+  - run_travel_workflow_stream() → async generator, yields SSE progress events
 """
 
+import json
 import logging
 from typing import Any, Dict, List, Optional, TypedDict
 
@@ -18,11 +23,6 @@ logger = logging.getLogger(__name__)
 
 # ── Lazy imports (module-level) ──────────────────────────
 
-# langgraph is only needed when the graph is actually compiled.
-_StateGraph = None
-_END = None
-
-# Agent imports — tried once at module load; None if not yet implemented.
 _extract_profile = None
 _analyze_trends = None
 _retrieve = None
@@ -62,16 +62,6 @@ except ImportError:
     pass
 
 
-def _get_langgraph():
-    """Lazy-import langgraph so the module loads without it installed."""
-    global _StateGraph, _END
-    if _StateGraph is None:
-        from langgraph.graph import END as _END_, StateGraph as _SG
-        _StateGraph = _SG
-        _END = _END_
-    return _StateGraph, _END
-
-
 # ── TravelState ─────────────────────────────────────────
 
 class TravelState(TypedDict, total=False):
@@ -108,11 +98,16 @@ class TravelState(TypedDict, total=False):
     current_step: str
     error: Optional[str]
 
+    # ── Phase 8.1: Coverage / quality signals ──
+    coverage_level: str          # "normal" | "low"
+    coverage_warning: Optional[str]
+
 
 def _append_error(state: TravelState, step: str, error: Exception) -> None:
     """Accumulate errors across nodes without overwriting prior errors."""
-    prefix = "; " if state.get("error") else ""
-    state["error"] = f"{state.get('error', '')}{prefix}{step}: {error}"
+    prior = state.get("error")
+    prefix = "; " if prior else ""
+    state["error"] = f"{prior or ''}{prefix}{step}: {error}"
 
 
 # ── Node Implementations ────────────────────────────────
@@ -175,9 +170,15 @@ async def _trend_analysis(state: TravelState) -> TravelState:
 
 
 async def _rag_retrieval(state: TravelState) -> TravelState:
-    """Retrieve candidate places from the vector knowledge base."""
+    """Retrieve candidate places from the vector knowledge base.
+
+    Phase 12.16: Passes weather forecast to the retriever for indoor/outdoor
+    scoring boost — when rain is forecast, indoor POIs rank higher.
+    """
     logger.info("Orchestrator → RAG Retrieval")
     state["current_step"] = "rag_retrieval"
+    state["coverage_level"] = "normal"
+    state["coverage_warning"] = None
 
     if _retrieve is None:
         logger.debug("RAG retriever not yet implemented — skipping")
@@ -187,9 +188,19 @@ async def _rag_retrieval(state: TravelState) -> TravelState:
     try:
         profile = state.get("user_profile") or {}
         query = state["user_input"]
-        candidates = await _retrieve(profile, query, top_k=20)
+        weather = state.get("weather")  # Phase 12.16: weather-aware RAG
+        candidates = await _retrieve(profile, query, top_k=20, weather=weather)
         state["candidate_places"] = candidates
         logger.info(f"RAG retrieved {len(candidates)} candidates")
+
+        # Phase 8.1: Detect low evidence — <3 candidates = degraded
+        if len(candidates) < 3:
+            dest = profile.get("destination", "") or "该城市"
+            state["coverage_level"] = "low"
+            state["coverage_warning"] = (
+                f"「{dest}」数据有限，以下建议未经完全校验，仅供参考。"
+            )
+            logger.warning(f"Low coverage for '{dest}': {len(candidates)} candidates")
     except Exception as e:
         logger.error(f"RAG retrieval failed: {e}")
         state["candidate_places"] = []
@@ -214,7 +225,8 @@ async def _recommendation(state: TravelState) -> TravelState:
         trends = state.get("trend_data") or []
 
         if candidates:
-            ranked = await _recommend(profile, candidates, trends)
+            weather = state.get("weather")  # Phase 12.16: weather-aware scoring
+            ranked = await _recommend(profile, candidates, trends, weather=weather)
             state["recommendations"] = ranked
             logger.info(f"Recommendations: top {len(ranked)} places ranked")
         else:
@@ -333,6 +345,11 @@ async def _response_aggregator(state: TravelState) -> TravelState:
     if error:
         parts.append(f"⚠️ 部分步骤出现问题: {error}")
 
+    # Phase 8.1: Surface coverage warning
+    coverage_warning = state.get("coverage_warning")
+    if coverage_warning:
+        parts.append(f"⚠️ {coverage_warning}")
+
     if not parts:
         parts.append("AI 规划引擎已启动，正在处理你的需求...")
 
@@ -346,53 +363,6 @@ async def _response_aggregator(state: TravelState) -> TravelState:
     return state
 
 
-# ── Graph Builder ───────────────────────────────────────
-
-def _build_graph():
-    """Construct the LangGraph StateGraph for travel planning."""
-    StateGraph, END = _get_langgraph()
-
-    graph = StateGraph(TravelState)
-
-    # Register nodes
-    graph.add_node("profile_extraction", _profile_extraction)
-    graph.add_node("trend_analysis", _trend_analysis)
-    graph.add_node("weather_fetch", _weather_fetch)
-    graph.add_node("rag_retrieval", _rag_retrieval)
-    graph.add_node("recommendation", _recommendation)
-    graph.add_node("planning", _planning)
-    graph.add_node("response_aggregator", _response_aggregator)
-
-    # Edges — linear pipeline
-    graph.set_entry_point("profile_extraction")
-
-    # Profile → Trend → Weather → RAG → Recommend → Plan → Aggregator
-    graph.add_edge("profile_extraction", "trend_analysis")
-    graph.add_edge("trend_analysis", "weather_fetch")
-    graph.add_edge("weather_fetch", "rag_retrieval")
-    graph.add_edge("rag_retrieval", "recommendation")
-    graph.add_edge("recommendation", "planning")
-    graph.add_edge("planning", "response_aggregator")
-    # Aggregator → END
-    graph.add_edge("response_aggregator", END)
-
-    return graph
-
-
-# ── Singleton ───────────────────────────────────────────
-
-_graph = None  # compiled graph instance (lazy built)
-
-
-def get_graph():
-    """Get or build the singleton compiled graph (lazy construction)."""
-    global _graph
-    if _graph is None:
-        raw_graph = _build_graph()
-        _graph = raw_graph.compile()
-    return _graph
-
-
 # ── Public API ──────────────────────────────────────────
 
 async def run_travel_workflow(
@@ -401,15 +371,39 @@ async def run_travel_workflow(
 ) -> TravelState:
     """Run the full multi-agent travel planning workflow.
 
+    Delegates to run_travel_workflow_stream() and consumes only the final
+    result event. This keeps both code paths (blocking + streaming) in sync.
+
     Args:
         user_input: Natural language travel request from the user.
         messages: Optional conversation history for context.
 
     Returns:
         Complete TravelState with all agent outputs populated.
-        Nodes that fail set state["error"] but do not halt the graph.
     """
-    initial_state: TravelState = {
+    logger.info(f"Starting workflow for: {user_input[:80]}...")
+    final_state: TravelState = {}
+    async for event in run_travel_workflow_stream(user_input, messages):
+        if event.get("event") == "result":
+            final_state = event["data"]
+    logger.info(f"Workflow complete — step: {final_state.get('current_step')}")
+    return final_state
+
+
+async def run_travel_workflow_stream(
+    user_input: str,
+    messages: Optional[List[Dict[str, str]]] = None,
+):
+    """Run the travel planning workflow with SSE progress events.
+
+    Yields dict events:
+      - {"event": "progress", "step": "...", "status": "running"|"done", "message": "..."}
+      - {"event": "result", "data": TravelState}
+
+    The existing run_travel_workflow() delegates to this generator and
+    consumes only the final result (backward-compatible).
+    """
+    state: TravelState = {
         "user_input": user_input,
         "messages": list(messages) if messages else [
             {"role": "user", "content": user_input}
@@ -422,12 +416,104 @@ async def run_travel_workflow(
         "weather": None,
         "current_step": "start",
         "error": None,
+        "coverage_level": "normal",
+        "coverage_warning": None,
     }
 
-    compiled = get_graph()
+    logger.info(f"Starting streaming workflow for: {user_input[:80]}...")
 
-    logger.info(f"Starting workflow for: {user_input[:80]}...")
-    final_state = await compiled.ainvoke(initial_state)
-    logger.info(f"Workflow complete — step: {final_state.get('current_step')}")
+    # ── Step 1: Profile Extraction ──
+    yield {
+        "event": "progress",
+        "step": "profile_extraction",
+        "status": "running",
+        "message": "正在提取用户画像...",
+    }
+    state = await _profile_extraction(state)
+    yield {
+        "event": "progress",
+        "step": "profile_extraction",
+        "status": "done",
+        "message": f"已识别目的地：{(state.get('user_profile') or {}).get('destination', '未知')}",
+    }
 
-    return final_state
+    # ── Step 2: Trend Analysis ──
+    yield {
+        "event": "progress",
+        "step": "trend_analysis",
+        "status": "running",
+        "message": "正在分析热门趋势...",
+    }
+    state = await _trend_analysis(state)
+    yield {
+        "event": "progress",
+        "step": "trend_analysis",
+        "status": "done",
+    }
+
+    # ── Step 3: Weather Fetch ──
+    yield {
+        "event": "progress",
+        "step": "weather_fetch",
+        "status": "running",
+        "message": "正在获取天气数据...",
+    }
+    state = await _weather_fetch(state)
+    yield {
+        "event": "progress",
+        "step": "weather_fetch",
+        "status": "done",
+    }
+
+    # ── Step 4: RAG Retrieval ──
+    yield {
+        "event": "progress",
+        "step": "rag_retrieval",
+        "status": "running",
+        "message": "正在检索知识库...",
+    }
+    state = await _rag_retrieval(state)
+    yield {
+        "event": "progress",
+        "step": "rag_retrieval",
+        "status": "done",
+        "message": f"已检索 {(state.get('candidate_places') or []).__len__()} 个候选景点",
+    }
+
+    # ── Step 5: Recommendation ──
+    yield {
+        "event": "progress",
+        "step": "recommendation",
+        "status": "running",
+        "message": "正在评分和排序...",
+    }
+    state = await _recommendation(state)
+    yield {
+        "event": "progress",
+        "step": "recommendation",
+        "status": "done",
+    }
+
+    # ── Step 6: Planning (slowest step) ──
+    yield {
+        "event": "progress",
+        "step": "planning",
+        "status": "running",
+        "message": "正在生成行程规划（约需 30-60 秒）...",
+    }
+    state = await _planning(state)
+    yield {
+        "event": "progress",
+        "step": "planning",
+        "status": "done",
+    }
+
+    # ── Step 7: Response Aggregator ──
+    state = await _response_aggregator(state)
+
+    logger.info(f"Streaming workflow complete — step: {state.get('current_step')}")
+
+    yield {
+        "event": "result",
+        "data": state,
+    }

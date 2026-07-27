@@ -23,30 +23,46 @@ logger = logging.getLogger(__name__)
 
 _DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 _TRENDS_FILE = _DATA_DIR / "trends.json"
+_TRENDS_LIVE_FILE = _DATA_DIR / "social_trends_live.json"
 
 _trends_cache: Optional[List[Dict[str, Any]]] = None
 
 
 def _load_trends() -> List[Dict[str, Any]]:
-    """Load trends from JSON, caching in memory."""
+    """Load trends from JSON, caching in memory.
+
+    Phase 12.18: merge WebBridge live social trends (social_trends_live.json)
+    on top of the manually curated trends.json — live entries (real likes
+    from xiaohongshu) override static ones for the same city+place.
+    """
     global _trends_cache
     if _trends_cache is not None:
         return _trends_cache
 
-    if not _TRENDS_FILE.exists():
+    static: List[Dict[str, Any]] = []
+    if _TRENDS_FILE.exists():
+        try:
+            with open(_TRENDS_FILE, "r", encoding="utf-8") as f:
+                static = json.load(f).get("trends", [])
+        except Exception as e:
+            logger.error(f"Failed to load trends: {e}")
+    else:
         logger.warning(f"Trends file not found: {_TRENDS_FILE}")
-        _trends_cache = []
-        return _trends_cache
 
-    try:
-        with open(_TRENDS_FILE, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        _trends_cache = data.get("trends", [])
-        logger.debug(f"Loaded {len(_trends_cache)} trend entries")
-    except Exception as e:
-        logger.error(f"Failed to load trends: {e}")
-        _trends_cache = []
+    live: List[Dict[str, Any]] = []
+    if _TRENDS_LIVE_FILE.exists():
+        try:
+            with open(_TRENDS_LIVE_FILE, "r", encoding="utf-8") as f:
+                live = json.load(f).get("trends", [])
+        except Exception as e:
+            logger.warning(f"Failed to load live social trends: {e}")
 
+    live_keys = {(t.get("city"), t.get("place_name")) for t in live}
+    _trends_cache = [
+        t for t in static
+        if (t.get("city"), t.get("place_name")) not in live_keys
+    ] + live
+    logger.debug(f"Loaded {len(_trends_cache)} trend entries ({len(live)} live)")
     return _trends_cache
 
 
@@ -61,64 +77,21 @@ def _normalize_score(heat_score: int) -> float:
 def _fuzzy_match_name(trend_name: str, place_name: str) -> bool:
     """Check if a trend entry matches a place name.
 
-    Uses multi-strategy matching:
-      1. Exact match
-      2. Substring containment
-      3. Shared core substring (for "重庆磁器口" ↔ "磁器口古镇")
+    Delegates to the unified NameNormalizer, which covers:
+      1. Exact match after normalization
+      2. Alias resolution (poi_aliases.json)
+      3. Traditional → simplified Chinese
+      4. Substring containment of core names
     """
     if not trend_name or not place_name:
         return False
-    tn = trend_name.strip()
-    pn = place_name.strip()
-
-    # 1. Exact match
-    if tn == pn:
-        return True
-
-    # 2. Substring containment
-    if tn in pn or pn in tn:
-        return True
-
-    # 3. Core name overlap — strip common city prefixes / suffixes and compare
-    # Common prefixes: city names like 重庆, 成都, 北京
-    # Common suffixes: 风景区, 景区, 公园, 古镇, 博物馆, etc.
-    _COMMON_PREFIXES = [
-        "重庆", "成都", "北京", "上海", "广州", "深圳", "杭州",
-        "西安", "长沙", "厦门", "大理", "南京", "武汉", "苏州",
-    ]
-    _COMMON_SUFFIXES = [
-        "风景区", "景区", "公园", "古镇", "博物馆", "博物院",
-        "旅游区", "游览区", "步行街", "商业街", "风景区",
-        "国家级自然保护区", "省级", "国家森林公园",
-    ]
-
-    def _strip_affixes(s: str) -> str:
-        for prefix in _COMMON_PREFIXES:
-            if s.startswith(prefix):
-                s = s[len(prefix):]
-                break
-        for suffix in _COMMON_SUFFIXES:
-            if s.endswith(suffix) and len(s) > len(suffix) + 1:
-                s = s[:-len(suffix)]
-        return s.strip()
-
-    core_tn = _strip_affixes(tn)
-    core_pn = _strip_affixes(pn)
-
-    if not core_tn or not core_pn:
-        return False
-
-    # Check core-to-core containment
-    if core_tn in core_pn or core_pn in core_tn:
-        return True
-
-    # 4. Shared 3+ character substring
-    for i in range(len(core_tn) - 2):
-        chunk = core_tn[i:i + 3]
-        if chunk in core_pn:
-            return True
-
-    return False
+    try:
+        from app.services.name_normalizer import poi_names_match
+        return poi_names_match(trend_name, place_name)
+    except ImportError:
+        # Fallback to simple substring match
+        tn, pn = trend_name.strip(), place_name.strip()
+        return tn == pn or tn in pn or pn in tn
 
 
 async def analyze_trends(

@@ -42,9 +42,10 @@ async def get_or_create_user(
         await db.refresh(user)
         logger.info(f"Created new anonymous user: {user.id} (device={device_id[:12]}...)")
     else:
-        # Touch last_active_at (update in-place without a full commit cycle
-        # unless the caller needs it — lightweight touch)
-        pass
+        # Phase 12.29: Touch last_active_at for analytics/cleanup
+        from datetime import datetime, timezone
+        user.last_active_at = datetime.now(timezone.utc)
+        await db.commit()
 
     return user
 

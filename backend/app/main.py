@@ -10,10 +10,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import api_router
+from app.api.errors import APIError, api_error_handler
 from app.config.settings import settings
 from app.database.connection import engine
 from app.database.models import Base
 from app.middleware import RequestIDMiddleware
+from app.middleware.rate_limit import RateLimitMiddleware
 
 logger = logging.getLogger(__name__)
 
@@ -80,7 +82,14 @@ async def lifespan(app: FastAPI):
     _init_rag()
 
     yield
-    # Shutdown: dispose engine
+    # Shutdown: close ChromaDB gracefully (Phase 12.28c) then dispose engine
+    try:
+        from app.rag.vector_store import get_vector_store
+        store = get_vector_store()
+        if store.is_connected:
+            store.close()
+    except Exception:
+        pass
     await engine.dispose()
 
 
@@ -98,14 +107,11 @@ def create_app() -> FastAPI:
     # Request ID + logging middleware
     app.add_middleware(RequestIDMiddleware)
 
-    # CORS — allow frontend dev server
+    # CORS — allow frontend dev server (Phase 12.29: configurable via settings)
+    cors_origins = [o.strip() for o in settings.CORS_ORIGINS.split(",") if o.strip()]
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=[
-            "http://localhost:5173",
-            "http://localhost:3000",
-            "http://127.0.0.1:5173",
-        ],
+        allow_origins=cors_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -113,6 +119,12 @@ def create_app() -> FastAPI:
 
     # Mount API routes
     app.include_router(api_router)
+
+    # Unified error handler (Phase 12.28c)
+    app.add_exception_handler(APIError, api_error_handler)
+
+    # Rate limiting (Phase 12.28c) — 60 req/min per IP, health check exempt
+    app.add_middleware(RateLimitMiddleware, rate=60, per_seconds=60)
 
     return app
 

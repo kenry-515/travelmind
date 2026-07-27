@@ -49,7 +49,12 @@ class ChromaStore:
         return self._connected
 
     def connect(self) -> None:
-        """Initialize the Chroma persistent client and get/create collection."""
+        """Initialize the Chroma persistent client and get/create collection.
+
+        Phase 12.27: Sets hnsw:search_ef=200 to avoid the "Cannot return the
+        results in a contiguous 2D array. Probably ef or M is too small" error
+        when the collection grows beyond default HNSW parameters.
+        """
         try:
             import os
             os.environ.setdefault("ANONYMIZED_TELEMETRY", "False")
@@ -58,8 +63,23 @@ class ChromaStore:
             self._client = chromadb.PersistentClient(path=self._persist_dir)
             self._collection = self._client.get_or_create_collection(
                 name=self._collection_name,
-                metadata={"hnsw:space": "cosine"},
+                metadata={
+                    "hnsw:space": "cosine",
+                    "hnsw:search_ef": 200,  # Phase 12.27: prevent 2D-array error on larger KB
+                },
             )
+            # Ensure hnsw:search_ef is set on existing collections too (get_or_create
+            # only applies metadata on creation, not on get)
+            try:
+                current_meta = self._collection.metadata or {}
+                if current_meta.get("hnsw:search_ef") != 200:
+                    self._collection.modify(metadata={
+                        **current_meta,
+                        "hnsw:search_ef": 200,
+                    })
+                    logger.info("Updated existing collection hnsw:search_ef → 200")
+            except Exception:
+                pass  # modify() may not be supported in all Chroma versions
             self._connected = True
             logger.info(
                 f"Chroma connected: {self._persist_dir} "
@@ -77,6 +97,31 @@ class ChromaStore:
         self._connected = False
         self._collection = None
         self._client = None
+
+    def close(self) -> None:
+        """Phase 12.28c: Graceful shutdown — close ChromaDB client to prevent
+        lock file residue when the process is killed.
+
+        ChromaDB's PersistentClient holds a SQLite WAL lock. Without explicit
+        close(), process termination (SIGTERM/kill) can leave stale lock files
+        that block the next startup. This method ensures clean resource release.
+        """
+        if self._client is not None:
+            try:
+                # ChromaDB PersistentClient doesn't have a public close(),
+                # but we can force cleanup by deleting the client reference
+                # and letting GC handle the SQLite connection.
+                self._client._system.stop() if hasattr(self._client, '_system') else None
+            except Exception:
+                pass
+            try:
+                # Reset internal state to release SQLite connections
+                self._client = None
+            except Exception:
+                pass
+        self._connected = False
+        self._collection = None
+        logger.info("ChromaDB client closed gracefully")
 
     # -- Document operations --
 
@@ -150,6 +195,9 @@ class ChromaStore:
     ) -> List[Dict[str, Any]]:
         """Semantic similarity search.
 
+        Phase 12.27: Retries with halved n_results on HNSW "2D array" errors
+        (ef too small for the requested top_k + collection size), then merges.
+
         Args:
             query_embedding: Query embedding vector.
             top_k: Number of results to return.
@@ -158,19 +206,40 @@ class ChromaStore:
 
         Returns:
             List of result dicts with keys: id, document, metadata, score.
+            Returns empty list on unrecoverable error (with warning logged).
         """
         if not self._connected or self._collection is None:
             raise RuntimeError("ChromaStore not connected. Call connect() first.")
 
-        try:
-            results = self._collection.query(
-                query_embeddings=[query_embedding],
-                n_results=top_k,
-                where=where,
-                where_document=where_document,
+        last_error: Optional[str] = None
+
+        for attempt, n_results in enumerate((top_k, max(top_k // 2, 5), max(top_k // 4, 3))):
+            try:
+                results = self._collection.query(
+                    query_embeddings=[query_embedding],
+                    n_results=n_results,
+                    where=where,
+                    where_document=where_document,
+                )
+                last_error = None
+                break
+            except Exception as e:
+                last_error = str(e)
+                if "contiguous 2D array" in last_error or "ef" in last_error.lower():
+                    logger.warning(
+                        f"Chroma HNSW error (attempt {attempt+1}, top_k={n_results}): {e}. "
+                        f"Retrying with smaller n_results..."
+                    )
+                    continue
+                # Non-HNSW errors: don't retry
+                logger.error(f"Chroma query error: {e}")
+                return []
+
+        if last_error is not None:
+            logger.error(
+                f"Chroma query failed after all retries: {last_error}. "
+                f"Returning empty — caller should treat as degraded."
             )
-        except Exception as e:
-            logger.error(f"Chroma query error: {e}")
             return []
 
         # Flatten Chroma's result format
@@ -223,6 +292,38 @@ class ChromaStore:
             return output
         except Exception as e:
             logger.error(f"Chroma get_by_ids error: {e}")
+            return []
+
+    def get_by_metadata(
+        self,
+        where: Dict[str, Any],
+        limit: int = 500,
+    ) -> List[Dict[str, Any]]:
+        """Deterministic metadata-only fetch (no embedding search).
+
+        Phase 12.21: used for per-category candidate supplements where
+        semantic search is unreliable (e.g. a city's only seafood restaurant
+        has no char n-gram overlap with the query "海鲜").
+        Returns the same item shape as search() with score=0.0.
+        """
+        if not self._connected or self._collection is None:
+            return []
+        try:
+            results = self._collection.get(where=where, limit=limit)
+            ids = results.get("ids", []) or []
+            docs = results.get("documents", []) or []
+            metas = results.get("metadatas", []) or []
+            output = []
+            for i, doc_id in enumerate(ids):
+                output.append({
+                    "id": doc_id,
+                    "document": docs[i] if i < len(docs) else "",
+                    "metadata": metas[i] if i < len(metas) else {},
+                    "score": 0.0,
+                })
+            return output
+        except Exception as e:
+            logger.error(f"Chroma get_by_metadata error: {e}")
             return []
 
 

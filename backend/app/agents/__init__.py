@@ -1,8 +1,8 @@
 """
-TravelMind Agent — LangGraph Agents
+TravelMind Agent — Multi-Agent Pipeline
 
 Multi-agent travel planning system:
-  - Orchestrator: LangGraph StateGraph coordinating all agents
+  - Orchestrator: 6-step pipeline coordinating all agents
   - Profile Agent: NL → structured user profile extraction
   - Trend Agent: trending places analysis (Phase 3 Day 7)
   - Recommendation Agent: 6-factor weighted scoring (Phase 3 Day 7)
@@ -17,7 +17,6 @@ from typing import Any
 
 _LAZY_EXPORTS = {
     "TravelState": ("app.agents.orchestrator", "TravelState"),
-    "get_graph": ("app.agents.orchestrator", "get_graph"),
     "run_travel_workflow": ("app.agents.orchestrator", "run_travel_workflow"),
     "extract_profile": ("app.agents.profile_agent", "extract_profile"),
     "analyze_travel_image": ("app.agents.vision_agent", "analyze_travel_image"),

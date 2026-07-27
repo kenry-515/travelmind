@@ -4,19 +4,49 @@
   "description": "AI 旅游攻略智能体的行程输出契约：大模型生成层必须产出符合本结构的 JSON，前端渲染层只消费本结构。",
   "type": "object",
   "additionalProperties": false,
-  "required": ["trip", "days", "budget", "checklist", "tips"],
+  "required": [
+    "trip",
+    "days",
+    "budget",
+    "checklist",
+    "tips"
+  ],
   "properties": {
-    "schemaVersion": { "type": "string", "description": "可选，契约版本号，由后端注入" },
+    "schemaVersion": {
+      "type": "string",
+      "description": "可选，契约版本号，由后端注入"
+    },
     "trip": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["title", "city", "dateStart", "dateEnd", "daysCount", "stats"],
+      "required": [
+        "title",
+        "city",
+        "dateStart",
+        "dateEnd",
+        "daysCount",
+        "stats"
+      ],
       "properties": {
-        "title": { "type": "string", "description": "行程标题，如「秋日上海 · 三日行程」" },
-        "city": { "type": "string" },
-        "dateStart": { "type": "string", "description": "如 11月20日" },
-        "dateEnd": { "type": "string", "description": "如 11月22日" },
-        "daysCount": { "type": "integer", "minimum": 1 },
+        "title": {
+          "type": "string",
+          "description": "行程标题，如「秋日上海 · 三日行程」"
+        },
+        "city": {
+          "type": "string"
+        },
+        "dateStart": {
+          "type": "string",
+          "description": "如 11月20日"
+        },
+        "dateEnd": {
+          "type": "string",
+          "description": "如 11月22日"
+        },
+        "daysCount": {
+          "type": "integer",
+          "minimum": 1
+        },
         "stats": {
           "type": "array",
           "minItems": 2,
@@ -25,10 +55,19 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["value", "label"],
+            "required": [
+              "value",
+              "label"
+            ],
             "properties": {
-              "value": { "type": "string", "description": "如「3 天」「¥2,400」" },
-              "label": { "type": "string", "description": "如「人均预算」「预计日均」" }
+              "value": {
+                "type": "string",
+                "description": "如「3 天」「¥2,400」"
+              },
+              "label": {
+                "type": "string",
+                "description": "如「人均预算」「预计日均」"
+              }
             }
           }
         }
@@ -41,11 +80,26 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["day", "theme", "title", "items", "eat"],
+        "required": [
+          "day",
+          "theme",
+          "title",
+          "items",
+          "eat"
+        ],
         "properties": {
-          "day": { "type": "integer", "minimum": 1 },
-          "theme": { "type": "string", "description": "区域主题标签，如「DAY 1 · 老城厢」" },
-          "title": { "type": "string", "description": "当天主目的地，如「外滩 · 豫园」" },
+          "day": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "theme": {
+            "type": "string",
+            "description": "区域主题标签，如「DAY 1 · 老城厢」"
+          },
+          "title": {
+            "type": "string",
+            "description": "当天主目的地，如「外滩 · 豫园」"
+          },
           "items": {
             "type": "array",
             "minItems": 3,
@@ -53,18 +107,38 @@
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["time", "poi", "note"],
+              "required": [
+                "time",
+                "poi",
+                "note"
+              ],
               "properties": {
-                "time": { "type": "string", "pattern": "^\\d{2}:\\d{2}$", "description": "24 小时制，如 08:30" },
-                "poi": { "type": "string", "description": "地点/活动，需提前预约的要写清" },
-                "note": { "type": "string", "description": "一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）" },
+                "time": {
+                  "type": "string",
+                  "pattern": "^\\d{2}:\\d{2}$",
+                  "description": "24 小时制，如 08:30"
+                },
+                "poi": {
+                  "type": "string",
+                  "description": "地点/活动，需提前预约的要写清"
+                },
+                "note": {
+                  "type": "string",
+                  "description": "一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）"
+                },
                 "price_range": {
                   "type": "object",
                   "additionalProperties": false,
                   "description": "门票价格区间，后端从知识库注入，非模型输出",
                   "properties": {
-                    "min": {"type": "integer", "minimum": 0},
-                    "max": {"type": "integer", "minimum": 0}
+                    "min": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "max": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
                   }
                 },
                 "price_source": {
@@ -82,7 +156,14 @@
               }
             }
           },
-          "eat": { "type": "string", "description": "每日一味：具体餐厅 + 招牌菜，如「豫园『南翔馒头店』蟹粉小笼」" }
+          "eat": {
+            "type": "string",
+            "description": "今日餐饮：KB 真实餐厅推荐（系统挂载，格式：午餐「X」· 晚餐「Y」）"
+          },
+          "stay": {
+            "type": "string",
+            "description": "建议住宿：真实酒店/民宿名称（可含区域说明），如「桂林香格里拉大酒店」"
+          }
         }
       }
     },
@@ -94,11 +175,26 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["label", "amount", "percent"],
+        "required": [
+          "label",
+          "amount",
+          "percent"
+        ],
         "properties": {
-          "label": { "type": "string", "description": "如 餐饮/门票/交通/购物" },
-          "amount": { "type": "integer", "minimum": 0, "description": "金额（元）" },
-          "percent": { "type": "integer", "minimum": 0, "maximum": 100 }
+          "label": {
+            "type": "string",
+            "description": "如 餐饮/门票/交通/购物"
+          },
+          "amount": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "金额（元）"
+          },
+          "percent": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          }
         }
       }
     },
@@ -110,10 +206,17 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["text"],
+        "required": [
+          "text"
+        ],
         "properties": {
-          "text": { "type": "string" },
-          "done": { "type": "boolean", "default": false }
+          "text": {
+            "type": "string"
+          },
+          "done": {
+            "type": "boolean",
+            "default": false
+          }
         }
       }
     },
@@ -122,13 +225,22 @@
       "minItems": 2,
       "maxItems": 6,
       "description": "实用提示 chips：具体可执行（写清 App 名/价格/时间），禁止空泛建议。",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "validation_report": {
       "type": "object",
       "description": "可选，校验报告（后端生成层产出，非模型输出）：POI 存续、路线顺路、天气匹配的结论汇总。",
       "additionalProperties": false,
-      "required": ["poi", "poi_verified", "routes", "route_backtrack", "weather_fit", "checked_at"],
+      "required": [
+        "poi",
+        "poi_verified",
+        "routes",
+        "route_backtrack",
+        "weather_fit",
+        "checked_at"
+      ],
       "properties": {
         "poi": {
           "type": "array",
@@ -136,39 +248,91 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["name", "status"],
+            "required": [
+              "name",
+              "status"
+            ],
             "properties": {
-              "name": { "type": "string" },
-              "status": { "type": "string", "enum": ["verified", "unknown", "closed", "replaced"] },
-              "district": { "type": "string", "description": "所属行政区，如 渝中区" },
-              "note": { "type": "string", "description": "人类可读的原因说明（未核实/被替换时必填）" }
+              "name": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "verified",
+                  "unknown",
+                  "closed",
+                  "replaced"
+                ]
+              },
+              "district": {
+                "type": "string",
+                "description": "所属行政区，如 渝中区"
+              },
+              "note": {
+                "type": "string",
+                "description": "人类可读的原因说明（未核实/被替换时必填）"
+              }
             }
           }
         },
-        "poi_verified": { "type": "string", "description": "已核实/总游览点，如 10/11" },
+        "poi_verified": {
+          "type": "string",
+          "description": "已核实/总游览点，如 10/11"
+        },
         "routes": {
           "type": "array",
           "description": "每日路线结论",
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["day", "backtrack"],
+            "required": [
+              "day",
+              "backtrack"
+            ],
             "properties": {
-              "day": { "type": "integer" },
-              "total_km": { "type": "number", "description": "当日游览点连线总里程（公里）" },
-              "backtrack": { "type": "boolean", "description": "是否检测到明显折返（优化器重排过）" },
-              "note": { "type": "string" }
+              "day": {
+                "type": "integer"
+              },
+              "total_km": {
+                "type": "number",
+                "description": "当日游览点连线总里程（公里）"
+              },
+              "backtrack": {
+                "type": "boolean",
+                "description": "是否检测到明显折返（优化器重排过）"
+              },
+              "note": {
+                "type": "string"
+              }
             }
           }
         },
-        "route_backtrack": { "type": "boolean", "description": "汇总级：是否存在折返" },
-        "weather_fit": { "type": "string", "enum": ["good", "fair", "poor", "unknown"], "description": "天气与行程匹配度" },
+        "route_backtrack": {
+          "type": "boolean",
+          "description": "汇总级：是否存在折返"
+        },
+        "weather_fit": {
+          "type": "string",
+          "enum": [
+            "good",
+            "fair",
+            "poor",
+            "unknown"
+          ],
+          "description": "天气与行程匹配度"
+        },
         "weather_notes": {
           "type": "array",
           "description": "逐日天气匹配说明（如「D1 雷暴日，3 个室内项目」）",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
-        "checked_at": { "type": "string", "description": "校验日期，如 2026-07-21" }
+        "checked_at": {
+          "type": "string",
+          "description": "校验日期，如 2026-07-21"
+        }
       }
     },
     "price_summary": {
@@ -176,14 +340,41 @@
       "additionalProperties": false,
       "description": "价格汇总，后端注入，非模型输出。用于前端预算对比与价格新鲜度提示。",
       "properties": {
-        "total_estimate_min": { "type": "integer", "minimum": 0 },
-        "total_estimate_max": { "type": "integer", "minimum": 0 },
-        "priced_items": { "type": "integer", "minimum": 0, "description": "有价格数据的 POI 数" },
-        "total_items": { "type": "integer", "minimum": 0, "description": "可参观 POI 总数" },
-        "stale_items": { "type": "integer", "minimum": 0, "description": "价格超过 90 天未更新的 POI 数" },
-        "budget_slot": { "type": "string", "description": "用户的预算档次，如 经济/适中/舒适" },
-        "over_budget": { "type": "boolean", "description": "行程花费是否超出用户预算" },
-        "over_budget_warning": { "type": "string", "description": "超预算时的人类可读提示" }
+        "total_estimate_min": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_estimate_max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "priced_items": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "有价格数据的 POI 数"
+        },
+        "total_items": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "可参观 POI 总数"
+        },
+        "stale_items": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "价格超过 90 天未更新的 POI 数"
+        },
+        "budget_slot": {
+          "type": "string",
+          "description": "用户的预算档次，如 经济/适中/舒适"
+        },
+        "over_budget": {
+          "type": "boolean",
+          "description": "行程花费是否超出用户预算"
+        },
+        "over_budget_warning": {
+          "type": "string",
+          "description": "超预算时的人类可读提示"
+        }
       }
     }
   }

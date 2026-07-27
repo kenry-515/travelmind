@@ -1,0 +1,33 @@
+{
+  "date": "2026-07-26",
+  "total_pois": 2321,
+  "source_distribution": {
+    "wikidata+amap": 591,
+    "osm-overpass": 482,
+    "amap-food": 450,
+    "amap": 419,
+    "wikidata": 261,
+    "未知": 67,
+    "web-social+osm-overpass": 47,
+    "web-verified-coords": 4
+  },
+  "field_completeness": {
+    "lat/lon": 0.9931,
+    "tags": 1.0,
+    "price_range": 0.9035,
+    "popularity_score": 0.9711,
+    "name_normalized": 1.0,
+    "可追溯ID(amap/osm)": 0.8535
+  },
+  "indoor_ratio_global": 0.5842,
+  "low_coverage_cities": {
+    "深圳": {
+      "total": 37,
+      "indoor": 9
+    }
+  },
+  "priced_count": 2097,
+  "price_year_distribution": {
+    "2026": 2097
+  }
+}

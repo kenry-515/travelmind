@@ -51,6 +51,8 @@ class ItineraryDetailResponse(BaseModel):
     weather_snapshot: Optional[dict] = None
     created_at: str
     updated_at: str = ""
+    # Phase 8.2: Revalidation alerts when revalidate=true
+    revalidation_alerts: Optional[list[dict]] = None
 
 
 # ── Routes ────────────────────────────────────────────────
@@ -67,7 +69,17 @@ async def list_itineraries(
         return {"itineraries": [], "total": 0, "page": page, "page_size": page_size}
 
     if db is None:
-        return {"itineraries": [], "total": 0, "page": page, "page_size": page_size}
+        # PG 不可达 → 本地文件存储
+        from app.services import local_itinerary_store
+        summaries, total = local_itinerary_store.list_itineraries(
+            device_id, page=page, page_size=page_size
+        )
+        return {
+            "itineraries": summaries,
+            "total": total,
+            "page": page,
+            "page_size": page_size,
+        }
 
     user = await get_or_create_user(db, device_id)
 
@@ -87,10 +99,22 @@ async def get_itinerary_detail(
     itinerary_id: str,
     device_id: Optional[str] = Depends(get_device_id),
     db=Depends(get_db),
+    revalidate: bool = Query(False, description="重新运行POI存续校验，检测是否有景点已关闭"),
 ):
-    """Get a single itinerary by ID. Only the owner can access it."""
+    """Get a single itinerary by ID. Only the owner can access it.
+
+    With revalidate=true, re-runs POI existence checks against the current
+    known_closures list and returns any new alerts. The saved plan is NOT
+    modified — this is a read-only re-check.
+    """
     if db is None:
-        raise HTTPException(status_code=503, detail="历史记录服务暂不可用")
+        if not device_id:
+            raise HTTPException(status_code=400, detail="缺少设备标识")
+        from app.services import local_itinerary_store
+        detail = local_itinerary_store.get_itinerary(device_id, itinerary_id)
+        if detail is None:
+            raise HTTPException(status_code=404, detail="行程未找到")
+        return detail
 
     user_id = None
     if device_id:
@@ -102,7 +126,172 @@ async def get_itinerary_detail(
     if detail is None:
         raise HTTPException(status_code=404, detail="行程未找到")
 
+    # Phase 8.2: Revalidate POI status on demand
+    revalidation_alerts = None
+    if revalidate and isinstance(detail, dict) and detail.get("plan"):
+        try:
+            from app.agents.route_optimizer import _load_closures, _base_name, _is_visit
+            closures = _load_closures()
+            alerts = []
+            plan = detail["plan"]
+            seen = set()
+            for day in plan.get("days", []):
+                for item in day.get("items", []):
+                    poi = item.get("poi", "")
+                    if not _is_visit(poi):
+                        continue
+                    base = _base_name(poi)
+                    if base in seen:
+                        continue
+                    seen.add(base)
+                    if base in closures:
+                        closure = closures[base]
+                        alerts.append({
+                            "poi": poi,
+                            "day": day.get("day"),
+                            "status": "closed",
+                            "evidence": closure.get("evidence", ""),
+                            "suggested_replacement": closure.get("replacement_keyword", ""),
+                            "note": closure.get("replacement_note",
+                                f"该景点已确认关闭（{closure.get('closed_since', '未知')}）"),
+                        })
+            if alerts:
+                revalidation_alerts = alerts
+        except Exception as e:
+            logger.warning(f"Revalidation failed (non-fatal): {e}")
+
+    if revalidation_alerts:
+        detail["revalidation_alerts"] = revalidation_alerts
+
     return detail
+
+
+# ── 版本历史 (Phase 8.3) ────────────────────────────────
+
+
+class VersionSummary(BaseModel):
+    id: str
+    version_number: int
+    change_description: str
+    created_at: str
+
+
+class VersionListResponse(BaseModel):
+    versions: list[VersionSummary]
+
+
+class VersionDetailResponse(BaseModel):
+    id: str
+    version_number: int
+    plan: dict
+    change_description: str
+    created_at: str
+
+
+class RestoreResponse(BaseModel):
+    itinerary: dict
+    version: VersionSummary
+
+
+@router.get(
+    "/itineraries/{itinerary_id}/versions",
+    response_model=VersionListResponse,
+)
+async def list_versions(
+    itinerary_id: str,
+    device_id: Optional[str] = Depends(get_device_id),
+    db=Depends(get_db),
+):
+    """List all versions for an itinerary, newest first."""
+    if db is None:
+        raise HTTPException(status_code=503, detail="版本历史暂不可用")
+
+    from app.services import itinerary_version_service as ver_svc
+
+    # Verify ownership
+    detail = await itinerary_service.get_itinerary(
+        db, itinerary_id,
+        user_id=(await _get_user_id(db, device_id)) if device_id else None,
+    )
+    if detail is None:
+        raise HTTPException(status_code=404, detail="行程未找到")
+
+    versions = await ver_svc.list_versions(db, itinerary_id)
+    return {"versions": versions}
+
+
+@router.get(
+    "/itineraries/{itinerary_id}/versions/{version_id}",
+    response_model=VersionDetailResponse,
+)
+async def get_version_detail(
+    itinerary_id: str,
+    version_id: str,
+    device_id: Optional[str] = Depends(get_device_id),
+    db=Depends(get_db),
+):
+    """Get a specific version with its full plan."""
+    if db is None:
+        raise HTTPException(status_code=503, detail="版本历史暂不可用")
+
+    from app.services import itinerary_version_service as ver_svc
+
+    # Verify ownership
+    detail = await itinerary_service.get_itinerary(
+        db, itinerary_id,
+        user_id=(await _get_user_id(db, device_id)) if device_id else None,
+    )
+    if detail is None:
+        raise HTTPException(status_code=404, detail="行程未找到")
+
+    version = await ver_svc.get_version(db, itinerary_id, version_id)
+    if version is None:
+        raise HTTPException(status_code=404, detail="版本未找到")
+
+    return version
+
+
+@router.post(
+    "/itineraries/{itinerary_id}/restore/{version_id}",
+    response_model=RestoreResponse,
+)
+async def restore_version(
+    itinerary_id: str,
+    version_id: str,
+    device_id: Optional[str] = Depends(get_device_id),
+    db=Depends(get_db),
+):
+    """Restore an itinerary to a previous version (creates new version)."""
+    if db is None:
+        raise HTTPException(status_code=503, detail="版本历史暂不可用")
+
+    user_id = await _get_user_id(db, device_id) if device_id else None
+
+    # Verify ownership
+    detail = await itinerary_service.get_itinerary(db, itinerary_id, user_id=user_id)
+    if detail is None:
+        raise HTTPException(status_code=404, detail="行程未找到")
+
+    from app.services import itinerary_version_service as ver_svc
+
+    result = await ver_svc.restore_version(db, itinerary_id, version_id)
+    if result is None:
+        raise HTTPException(status_code=404, detail="版本未找到")
+
+    # Update the current itinerary plan
+    await itinerary_service.update_itinerary_plan(
+        db, itinerary_id, result["itinerary"]
+    )
+
+    return result
+
+
+async def _get_user_id(db, device_id: Optional[str]) -> Optional[str]:
+    """Helper: resolve device_id to user_id."""
+    if not device_id or db is None:
+        return None
+    user = await get_or_create_user(db, device_id)
+    return user.id if user else None
 
 
 @router.delete("/itineraries/{itinerary_id}")
@@ -113,7 +302,12 @@ async def delete_itinerary(
 ):
     """Delete an itinerary. Only the owner can delete it."""
     if db is None:
-        raise HTTPException(status_code=503, detail="历史记录服务暂不可用")
+        if not device_id:
+            raise HTTPException(status_code=400, detail="缺少设备标识")
+        from app.services import local_itinerary_store
+        if not local_itinerary_store.delete_itinerary(device_id, itinerary_id):
+            raise HTTPException(status_code=404, detail="行程未找到或无权删除")
+        return {"ok": True}
 
     if not device_id:
         raise HTTPException(status_code=400, detail="缺少设备标识")

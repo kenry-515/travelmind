@@ -1,19 +1,20 @@
 /**
  * TravelMind Agent — ScoreBar Component
  *
- * Visual bar chart showing the 6-factor recommendation score breakdown.
+ * Visual bar chart showing the 7-factor recommendation score breakdown.
  * Each factor is shown as a colored bar with label and 0.0-1.0 value.
  */
 
 import type { ScoreBreakdown } from '../lib/api'
 
 const FACTORS: { key: keyof ScoreBreakdown; label: string; color: string }[] = [
-  { key: 'preference_match', label: '偏好匹配', color: 'bg-blue-500' },
-  { key: 'trend_heat', label: '热度趋势', color: 'bg-orange-500' },
+  { key: 'preference_match', label: '偏好匹配', color: 'bg-brand-500' },
+  { key: 'trend_heat', label: '热度趋势', color: 'bg-amber-500' },
   { key: 'budget_match', label: '预算匹配', color: 'bg-green-500' },
-  { key: 'location_efficiency', label: '位置便利', color: 'bg-purple-500' },
-  { key: 'time_match', label: '时节匹配', color: 'bg-teal-500' },
-  { key: 'data_reliability', label: '数据可靠', color: 'bg-gray-400' },
+  { key: 'location_efficiency', label: '位置便利', color: 'bg-accent-500' },
+  { key: 'time_match', label: '时节匹配', color: 'bg-purple-500' },
+  { key: 'weather', label: '天气匹配', color: 'bg-sky-400' },
+  { key: 'data_reliability', label: '数据可靠', color: 'bg-slate-400' },
 ]
 
 interface ScoreBarProps {
@@ -30,7 +31,7 @@ export function ScoreBar({ breakdown, compact = false }: ScoreBarProps) {
       <div className="flex items-center gap-1.5">
         <div className="h-1.5 flex-1 rounded-full bg-slate-200">
           <div
-            className="h-1.5 rounded-full bg-blue-500 transition-all"
+            className="h-1.5 rounded-full bg-gradient-to-r from-brand-400 to-brand-600 transition-all"
             style={{ width: `${Math.round(weighted * 100)}%` }}
           />
         </div>

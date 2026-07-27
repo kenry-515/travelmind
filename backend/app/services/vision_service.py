@@ -24,14 +24,17 @@ logger = logging.getLogger(__name__)
 
 # Kimi JSON Mode requires the prompt to explicitly describe the expected
 # JSON fields and types, otherwise the output shape is not guaranteed.
-TRAVEL_IMAGE_ANALYSIS_PROMPT = """你是旅行场景图片分析助手。请分析这张旅行照片，并严格按下面的 JSON 格式输出，不要输出任何其他内容：
+TRAVEL_IMAGE_ANALYSIS_PROMPT = """你是中国旅行场景图片分析助手。请分析这张旅行照片，**优先判断是否为中国境内景点**，并严格按下面的 JSON 格式输出，不要输出任何其他内容：
 
 {
-  "location": "字符串，图片中最可能的地点或地标名称，无法判断则为空字符串",
-  "tags": ["字符串数组，从图片内容归纳的 3-6 个风格/氛围标签，如：古镇、自然、城市、美食、博物馆、夜景"],
-  "description": "字符串，对图片内容的一句话中文描述",
-  "confidence": "0~1 之间的小数，对 location 判断的置信度"
-}"""
+  "location": "字符串，图片中最可能的地点或地标名称（请优先考虑中国境内地点），无法判断则为空字符串",
+  "landmark_features": "字符串，画面中的地标特征简述（地貌类型、建筑风格等），无法判断则为空字符串",
+  "tags": ["字符串数组，从图片内容归纳的 3-6 个风格/氛围标签，如：古镇、自然、城市、美食、博物馆、夜景、瀑布、雪山"],
+  "description": "字符串，对图片内容的一句话中文描述（请提及地貌类型或建筑风格）",
+  "confidence": "0~1 之间的小数，对 location 判断的置信度，无法确定中国地点时请填小于 0.3 的值"
+}
+
+注意：这是一个中国旅行规划系统，请将识别范围限定在中国境内。如果无法确定具体中国景点，请在 landmark_features 中描述地貌特征（如"喀斯特地貌瀑布"、"雪山冰川"）。"""
 
 
 # ── Kimi Vision Provider ──────────────────────────────

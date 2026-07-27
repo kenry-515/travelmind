@@ -1,26 +1,187 @@
 @import "tailwindcss";
 
-/* TravelMind Agent — Global Styles */
-:root {
-  --travel-primary: #2563eb;
-  --travel-accent: #f59e0b;
-  --travel-bg: #f8fafc;
+/* ── TravelMind Design Tokens (Tailwind v4 @theme) ─────────
+   年轻化视觉体系：活力珊瑚橙主色 + 青碧辅助色，
+   大圆角、柔和阴影、玻璃拟态、细腻微动效。 */
+@theme {
+  /* Brand — 活力珊瑚橙：主 CTA、链接、激活态。
+     brand-600/700 与白色对比度 ≥ 4.5:1，可用于正文/按钮文字。 */
+  --color-brand-50: #fff4f0;
+  --color-brand-100: #ffe7df;
+  --color-brand-200: #ffcdbe;
+  --color-brand-300: #ffa88f;
+  --color-brand-400: #ff7a58;
+  --color-brand-500: #f75c36;
+  --color-brand-600: #d9371e;
+  --color-brand-700: #b02b17;
+  --color-brand-800: #8c2617;
+  --color-brand-900: #742417;
+
+  /* Accent — 青碧色：辅助信息、标签、次要强调 */
+  --color-accent-50: #f0fdfa;
+  --color-accent-100: #ccfbf1;
+  --color-accent-200: #99f6e4;
+  --color-accent-300: #5eead4;
+  --color-accent-400: #2dd4bf;
+  --color-accent-500: #14b8a6;
+  --color-accent-600: #0f766e;
+  --color-accent-700: #115e59;
+
+  /* Surface / background layers — 暖纸感底色 */
+  --color-surface: #ffffff;
+  --color-surface-secondary: #faf8f6;
+  --color-surface-tertiary: #f3efeb;
+
+  /* Ink — 正文墨色（白底对比度 > 12:1） */
+  --color-ink: #292524;
+  --color-ink-secondary: #57534e;
+  --color-ink-tertiary: #a8a29e;
+
+  /* Semantic status colors — consistent across all pages */
+  --color-success-50: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+  --color-danger-50: #fef2f2;
+  --color-danger-100: #fee2e2;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+  --color-warning-50: #fffbeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+
+  /* Border — 暖调边框 */
+  --color-border: #ece5df;
+  --color-border-light: #f5f0ec;
+
+  /* Border radius — consistent rounding tiers */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Shadows — 柔和分层投影 */
+  --shadow-card: 0 1px 2px 0 rgb(41 37 36 / 0.04), 0 4px 12px -2px rgb(41 37 36 / 0.06);
+  --shadow-card-hover: 0 4px 8px -2px rgb(41 37 36 / 0.08), 0 12px 28px -6px rgb(41 37 36 / 0.12);
+  --shadow-pop: 0 8px 30px -6px rgb(217 55 30 / 0.25);
 }
 
+/* ── Global Styles ────────────────────────────────────────── */
 body {
   margin: 0;
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    "PingFang SC",
+    "Hiragino Sans GB",
+    "Microsoft YaHei",
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--travel-bg);
-  color: #1e293b;
+  background-color: var(--color-surface-secondary);
+  color: var(--color-ink);
 }
 
 #root {
   min-height: 100vh;
 }
 
-/* Toast slide-in animation (replaces tailwindcss-animate plugin) */
+/* 中文排版优化：正文行高舒适 */
+p,
+li {
+  line-height: 1.75;
+}
+
+/* ── Reusable primitives ─────────────────────────────────── */
+
+/* 大圆角卡片 */
+.card {
+  border-radius: 1rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+/* 主按钮：珊瑚橙渐变 + 发光投影（白字对比度 ≥ 4.5:1 由 brand-600 基底保证） */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, var(--color-brand-500), var(--color-brand-600));
+  color: #ffffff;
+  font-weight: 500;
+  box-shadow: var(--shadow-pop);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 34px -6px rgb(217 55 30 / 0.35);
+}
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+}
+
+/* 次按钮：白底描边 */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-ink-secondary);
+  font-weight: 500;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--color-brand-300);
+  color: var(--color-brand-600);
+  transform: translateY(-1px);
+}
+
+/* 玻璃拟态 */
+.glass {
+  background-color: rgb(255 255 255 / 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* hover 浮起微动效 */
+.hover-lift {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* 渐变文字（标题点缀） */
+.text-gradient {
+  background: linear-gradient(120deg, var(--color-brand-500), var(--color-brand-600) 55%, var(--color-accent-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Animations ──────────────────────────────────────────── */
 @keyframes toast-in {
   from {
     opacity: 0;
@@ -34,4 +195,322 @@ body {
 
 .animate-toast-in {
   animation: toast-in 0.25s ease-out;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out both;
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.5rem);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 4s ease-in-out infinite;
+}
+
+/* 骨架屏微光扫过效果（叠加在 animate-pulse 之上更细腻） */
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    100deg,
+    var(--color-surface-tertiary) 40%,
+    #faf5f1 50%,
+    var(--color-surface-tertiary) 60%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+/* ── Mobile safe-area bottom padding (iOS notch / Android gesture bar) ── */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+}
+
+/* ── 视觉 2.0：惊艳层（Phase 12.24）───────────────────────── */
+
+/* 动态极光背景：三块渐变色斑缓慢漂移，纯 transform 动画（GPU 合成，不卡） */
+@keyframes aurora-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(6vw, 4vh) scale(1.15); }
+  66% { transform: translate(-3vw, 8vh) scale(0.95); }
+}
+@keyframes aurora-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-7vw, -5vh) scale(1.2); }
+}
+@keyframes aurora-drift-3 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(4vw, -6vh) rotate(12deg); }
+}
+
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.aurora > span {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(72px);
+  opacity: 0.55;
+  will-change: transform;
+}
+.aurora > span:nth-child(1) {
+  top: -12%; left: -8%;
+  width: 44vw; height: 44vw;
+  background: radial-gradient(circle, var(--color-brand-300), transparent 65%);
+  animation: aurora-drift-1 22s ease-in-out infinite;
+}
+.aurora > span:nth-child(2) {
+  bottom: -16%; right: -10%;
+  width: 48vw; height: 48vw;
+  background: radial-gradient(circle, var(--color-accent-300), transparent 65%);
+  animation: aurora-drift-2 26s ease-in-out infinite;
+}
+.aurora > span:nth-child(3) {
+  top: 30%; left: 55%;
+  width: 30vw; height: 30vw;
+  background: radial-gradient(circle, #fbbf24, transparent 65%);
+  opacity: 0.35;
+  animation: aurora-drift-3 30s ease-in-out infinite;
+}
+
+/* 工作页的弱化版极光（不抢内容注意力） */
+.aurora-soft > span {
+  opacity: 0.25;
+}
+
+/* 颗粒纹理（SVG 噪声，极低透明度，增加"质感"而不脏） */
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+/* Display 字体层级：大字重 + 紧字距 + 流式尺寸 */
+.display-xl {
+  font-size: clamp(2.75rem, 7vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.display-lg {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+/* 交错入场：容器加 .stagger，直接子元素依次浮入 */
+@keyframes stagger-in {
+  from { opacity: 0; transform: translateY(1rem) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.stagger > * {
+  animation: stagger-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 70ms; }
+.stagger > *:nth-child(3) { animation-delay: 140ms; }
+.stagger > *:nth-child(4) { animation-delay: 210ms; }
+.stagger > *:nth-child(5) { animation-delay: 280ms; }
+.stagger > *:nth-child(6) { animation-delay: 350ms; }
+
+/* 卡片光晕 hover：边框渐显 brand 色 + 彩色投影 */
+.card-glow {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.card-glow:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-brand-300);
+  box-shadow:
+    0 4px 12px -2px rgb(41 37 36 / 0.06),
+    0 16px 40px -8px rgb(247 92 54 / 0.18);
+}
+
+/* 搜索框聚焦光晕 */
+.focus-glow:focus-within {
+  box-shadow:
+    0 0 0 4px rgb(247 92 54 / 0.12),
+    0 12px 40px -8px rgb(247 92 54 / 0.25);
+}
+
+/* 尊重减少动效偏好（可达性） */
+@media (prefers-reduced-motion: reduce) {
+  .aurora > span,
+  .stagger > *,
+  .animate-float-slow {
+    animation: none !important;
+  }
+}
+
+/* ── Phase 12.28d: ThemeToggle Button ───────────────────── */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgb(148 163 184 / 0.3);
+  background: rgb(255 255 255 / 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--color-brand-600);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.theme-toggle:hover {
+  border-color: var(--color-brand-300);
+  box-shadow: 0 4px 12px rgb(247 92 54 / 0.15);
+  transform: scale(1.08);
+}
+
+/* ── Phase 12.28d: Dark Mode Overrides ──────────────────── */
+.dark {
+  color-scheme: dark;
+}
+.dark body,
+body:has(.dark) {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+/* Surface colors in dark mode */
+.dark .bg-surface-primary,
+.dark body:has(.dark) .bg-surface-primary {
+  background-color: #1e293b;
+}
+.dark .bg-surface-secondary,
+.dark body:has(.dark) .bg-surface-secondary {
+  background-color: #334155;
+}
+.dark .bg-surface-tertiary,
+.dark body:has(.dark) .bg-surface-tertiary {
+  background-color: #475569;
+}
+
+/* Cards in dark mode */
+.dark .card,
+.dark [class*="card"] {
+  background: rgb(30 41 59 / 0.9);
+  border-color: rgb(71 85 105 / 0.3);
+}
+.dark .card:hover,
+.dark [class*="card"]:hover {
+  border-color: var(--color-brand-400);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.3), 0 16px 40px rgb(247 92 54 / 0.1);
+}
+
+/* Text colors in dark mode */
+.dark .text-slate-700,
+.dark .text-slate-800,
+.dark .text-slate-900 {
+  color: #e2e8f0;
+}
+.dark .text-slate-500,
+.dark .text-slate-600 {
+  color: #94a3b8;
+}
+.dark .text-slate-400 {
+  color: #64748b;
+}
+.dark .text-slate-300 {
+  color: #475569;
+}
+
+/* Aurora dimming in dark mode */
+.dark .aurora > span {
+  opacity: 0.4;
+}
+.dark .aurora-soft {
+  opacity: 0.5;
+}
+
+/* Inputs and form elements in dark mode */
+.dark input,
+.dark textarea,
+.dark select {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: rgb(71 85 105 / 0.4);
+}
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748b;
+}
+
+/* Borders in dark mode */
+.dark .border-border,
+.dark .border-border-light {
+  border-color: rgb(71 85 105 / 0.3);
+}
+
+/* Shimmer skeleton in dark mode */
+.dark .skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgb(51 65 85 / 0.6) 25%,
+    rgb(71 85 105 / 0.3) 37%,
+    rgb(51 65 85 / 0.6) 63%
+  );
+  background-size: 400% 100%;
+}
+
+/* Page transitions (Phase 12.28d) */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-transition {
+  animation: page-enter 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }

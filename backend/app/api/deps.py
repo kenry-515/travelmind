@@ -6,6 +6,7 @@ These are injected into route handlers via Depends().
 """
 
 import logging
+import re
 from typing import AsyncGenerator, Optional
 
 from fastapi import Request
@@ -15,13 +16,23 @@ from app.database import connection as db_conn
 
 logger = logging.getLogger(__name__)
 
+# Phase 12.29: device_id 格式校验 — 只允许 1-64 字符的字母数字和连字符
+_DEVICE_ID_RE = re.compile(r"^[a-zA-Z0-9_-]{1,64}$")
+
 
 async def get_device_id(request: Request) -> Optional[str]:
     """Extract X-Device-ID from request header (set by frontend via localStorage).
 
-    Returns None if the header is missing — routes should degrade gracefully.
+    Returns None if the header is missing, empty, or fails format validation.
     """
-    return request.headers.get("X-Device-ID")
+    raw = request.headers.get("X-Device-ID")
+    if not raw:
+        return None
+    # Phase 12.29: validate format to prevent spoofing/path traversal
+    if not _DEVICE_ID_RE.match(raw):
+        logger.warning(f"Rejected invalid X-Device-ID: {raw[:32]}...")
+        return None
+    return raw
 
 
 async def get_db() -> AsyncGenerator[Optional[AsyncSession], None]:

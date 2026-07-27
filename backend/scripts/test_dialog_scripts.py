@@ -45,9 +45,16 @@ check("S1.1 模糊输入给组合建议", bool(d.get("suggestions")), str([s["la
 
 d = call("/dialog/message", {"session_id": sid, "text": "重庆 3 天"})
 check(
-    "S1.2 组合点击后进入确认",
-    d["stage"] == "confirming" and d["slots"]["city"] == "重庆" and d["slots"]["days"] == 3,
-    f"stage={d['stage']} slots={d['slots']['city']}/{d['slots']['days']}",
+    "S1.2 城市+天数后追问偏好（Phase 12.25：意图明确前不推卡片）",
+    d["stage"] == "collecting" and d["slots"]["city"] == "重庆" and d["slots"]["days"] == 3,
+    f"stage={d['stage']} slots={d['slots']['city']}/{d['slots']['days']} reply={d.get('reply','')[:30]}",
+)
+
+d = call("/dialog/message", {"session_id": sid, "text": "想吃美食看夜景"})
+check(
+    "S1.2b 回答偏好后进入确认",
+    d["stage"] == "confirming" and "美食" in d["slots"]["tags"],
+    f"stage={d['stage']} tags={d['slots']['tags']}",
 )
 
 d = call("/dialog/generate", {"session_id": sid})

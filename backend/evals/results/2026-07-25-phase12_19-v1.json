@@ -1,0 +1,8258 @@
+{
+  "version": "3.0.0",
+  "date": "2026-07-25",
+  "total_queries": 63,
+  "micro": 0.9636,
+  "macro": 0.8571,
+  "final_pass_rate": 0.8571,
+  "per_constraint": {
+    "schema_valid": {
+      "pass": 39,
+      "total": 40,
+      "rate": 0.975
+    },
+    "days_correct": {
+      "pass": 39,
+      "total": 40,
+      "rate": 0.975
+    },
+    "stats_place_count": {
+      "pass": 39,
+      "total": 40,
+      "rate": 0.975
+    },
+    "budget_consistent": {
+      "pass": 39,
+      "total": 40,
+      "rate": 0.975
+    },
+    "month_consistent": {
+      "pass": 39,
+      "total": 40,
+      "rate": 0.975
+    },
+    "poi_verified": {
+      "pass": 39,
+      "total": 40,
+      "rate": 0.975
+    },
+    "route_ok": {
+      "pass": 39,
+      "total": 40,
+      "rate": 0.975
+    },
+    "weather_fit": {
+      "pass": 35,
+      "total": 40,
+      "rate": 0.875
+    },
+    "weather_coverage": {
+      "pass": 39,
+      "total": 40,
+      "rate": 0.975
+    },
+    "name_normalized": {
+      "pass": 39,
+      "total": 40,
+      "rate": 0.975
+    },
+    "weather_tips": {
+      "pass": 39,
+      "total": 40,
+      "rate": 0.975
+    },
+    "price_enriched": {
+      "pass": 39,
+      "total": 40,
+      "rate": 0.975
+    },
+    "food_coverage": {
+      "pass": 10,
+      "total": 10,
+      "rate": 1.0
+    },
+    "food_diversity": {
+      "pass": 8,
+      "total": 10,
+      "rate": 0.8
+    },
+    "food_local_ratio": {
+      "pass": 10,
+      "total": 10,
+      "rate": 1.0
+    },
+    "cross_city_covered": {
+      "pass": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "multi_city_diversity": {
+      "pass": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "min_score_filter": {
+      "pass": 3,
+      "total": 5,
+      "rate": 0.6
+    },
+    "chat_reply_length": {
+      "pass": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "chat_topic_relevant": {
+      "pass": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "chat_not_slotfill": {
+      "pass": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "image_tag_relevance": {
+      "pass": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "image_tag_cross_city": {
+      "pass": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "image_tag_threshold": {
+      "pass": 3,
+      "total": 3,
+      "rate": 1.0
+    }
+  },
+  "per_category": {
+    "standard": {
+      "total": 30,
+      "pass": 26
+    },
+    "edge": {
+      "total": 5,
+      "pass": 4
+    },
+    "food": {
+      "total": 10,
+      "pass": 8
+    },
+    "chat": {
+      "total": 5,
+      "pass": 5
+    },
+    "multi-city": {
+      "total": 5,
+      "pass": 3
+    },
+    "extreme": {
+      "total": 5,
+      "pass": 5
+    },
+    "image-tag": {
+      "total": 3,
+      "pass": 3
+    }
+  },
+  "per_query": [
+    {
+      "id": "q01",
+      "input": "重庆3日游，喜欢夜景和美食，带父母",
+      "expect": {
+        "city": "重庆",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 58.4,
+      "http": 200,
+      "title": "盛夏重庆 · 家庭休闲三日游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=13 vs 实际=13"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "9/11 = 82%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=False, max_day_km=19（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "9/11 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q02",
+      "input": "成都看熊猫吃火锅，3天，带5岁孩子",
+      "expect": {
+        "city": "成都",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 21.0,
+      "http": 200,
+      "title": "成都亲子·夏日避暑三日游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=11 vs 实际=11"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "5/11 = 45%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=False, max_day_km=8（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=fair"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "5/11 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q03",
+      "input": "上海3日游，喜欢历史和艺术，情侣",
+      "expect": {
+        "city": "上海",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 109.2,
+      "http": 200,
+      "title": "盛夏上海 · 文艺情侣三日游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=15 vs 实际=15"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "11/15 = 73%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=17（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "无降雨预报，不适用"
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "11/15 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "无降雨预报，不适用"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q04",
+      "input": "北京4天历史文化之旅，喜欢博物馆",
+      "expect": {
+        "city": "北京",
+        "days": 4,
+        "category": "standard"
+      },
+      "elapsed_s": 31.7,
+      "http": 200,
+      "title": "盛夏北京 · 历史博物馆深度四日",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=4 vs 期望 4"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=17 vs 实际=17"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "17/17 = 100%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=False, max_day_km=72（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "17/17 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q05",
+      "input": "西安4日游，大学生穷游，喜欢历史和博物馆",
+      "expect": {
+        "city": "西安",
+        "days": 4,
+        "category": "standard"
+      },
+      "elapsed_s": 18.2,
+      "http": 200,
+      "title": "盛夏西安 · 四日历史美食之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=4 vs 期望 4"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=17 vs 实际=17"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "12/17 = 71%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=107（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "12/17 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q06",
+      "input": "杭州2日休闲游，喜欢西湖和茶",
+      "expect": {
+        "city": "杭州",
+        "days": 2,
+        "category": "standard"
+      },
+      "elapsed_s": 15.7,
+      "http": 200,
+      "title": "盛夏杭州 · 清凉休闲二日游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=2 vs 期望 2"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=11 vs 实际=11"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "6/10 = 60%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=18（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "无降雨预报，不适用"
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "6/10 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "无降雨预报，不适用"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q07",
+      "input": "三亚3日游，喜欢海滩和海岛，亲子游",
+      "expect": {
+        "city": "三亚",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 13.4,
+      "http": 200,
+      "title": "三亚夏日亲子 · 三日休闲行程",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=12 vs 实际=12"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "11/12 = 92%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=72（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "11/12 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q08",
+      "input": "桂林山水摄影5日游，一个人",
+      "expect": {
+        "city": "桂林",
+        "days": 5,
+        "category": "standard"
+      },
+      "elapsed_s": 19.6,
+      "http": 200,
+      "title": "盛夏桂林 · 五日山水人文之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=5 vs 期望 5"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=24 vs 实际=24"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "17/18 = 94%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=124（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": false,
+          "detail": "weather_fit=poor"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "17/18 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": false
+    },
+    {
+      "id": "q09",
+      "input": "苏州园林慢游2天，喜欢文艺",
+      "expect": {
+        "city": "苏州",
+        "days": 2,
+        "category": "standard"
+      },
+      "elapsed_s": 15.5,
+      "http": 200,
+      "title": "盛夏苏州 · 文艺古镇休闲二日",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=2 vs 期望 2"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=9 vs 实际=9"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "8/9 = 89%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=19（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "无降雨预报，不适用"
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "8/9 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "无降雨预报，不适用"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q10",
+      "input": "丽江古城3日游，和朋友一起",
+      "expect": {
+        "city": "丽江",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 15.4,
+      "http": 200,
+      "title": "丽江古城 · 文艺避暑三日游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=18 vs 实际=18"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "14/14 = 100%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=10（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "14/14 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q11",
+      "input": "张家界看山2日游，喜欢自然风光",
+      "expect": {
+        "city": "张家界",
+        "days": 2,
+        "category": "standard"
+      },
+      "elapsed_s": 13.0,
+      "http": 200,
+      "title": "张家界盛夏 · 两日避暑人文行程",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=2 vs 期望 2"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=10 vs 实际=10"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "10/10 = 100%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=7（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=fair"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "10/10 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q12",
+      "input": "长沙2日美食之旅，预算经济",
+      "expect": {
+        "city": "长沙",
+        "days": 2,
+        "category": "standard"
+      },
+      "elapsed_s": 14.3,
+      "http": 200,
+      "title": "盛夏长沙 · 美食寻味二日行程",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=2 vs 期望 2"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=10 vs 实际=10"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "7/10 = 70%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=False, max_day_km=32（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": false,
+          "detail": "weather_fit=poor"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "7/10 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": false
+    },
+    {
+      "id": "q13",
+      "input": "厦门3日游，喜欢海风和文艺街区，情侣",
+      "expect": {
+        "city": "厦门",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 18.0,
+      "http": 200,
+      "title": "夏日厦门 · 雷雨季文艺情侣三日游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=17 vs 实际=17"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "18/18 = 100%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=12（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": false,
+          "detail": "weather_fit=poor"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "18/18 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": false
+    },
+    {
+      "id": "q14",
+      "input": "大理4日慢生活之旅，一个人放空，预算舒适",
+      "expect": {
+        "city": "大理",
+        "days": 4,
+        "category": "standard"
+      },
+      "elapsed_s": 17.4,
+      "http": 200,
+      "title": "大理夏日·四日文艺休闲行程",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=4 vs 期望 4"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=22 vs 实际=22"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "13/13 = 100%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=74（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "13/13 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q15",
+      "input": "昆明3日游，喜欢花卉和自然，带父母",
+      "expect": {
+        "city": "昆明",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 15.3,
+      "http": 200,
+      "title": "昆明夏日慢游 · 三日家庭休闲行程",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=14 vs 实际=14"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "13/14 = 93%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=36（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "13/14 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q16",
+      "input": "青岛3天海边度假，亲子游，预算奢华",
+      "expect": {
+        "city": "青岛",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 14.0,
+      "http": 200,
+      "title": "盛夏青岛 · 亲子休闲三日游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=16 vs 实际=16"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "10/16 = 62%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=10（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "10/16 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q17",
+      "input": "大连2日周末游，看海吃海鲜，情侣",
+      "expect": {
+        "city": "大连",
+        "days": 2,
+        "category": "standard"
+      },
+      "elapsed_s": 14.4,
+      "http": 200,
+      "title": "大连夏日·避暑文艺双城记",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=2 vs 期望 2"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=12 vs 实际=12"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "10/10 = 100%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=34（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "10/10 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q18",
+      "input": "南京3日游，喜欢民国历史和美食，大学生",
+      "expect": {
+        "city": "南京",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 16.2,
+      "http": 200,
+      "title": "盛夏南京 · 三日深度游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=18 vs 实际=18"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "11/15 = 73%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=15（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "11/15 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q19",
+      "input": "武汉2日游，看樱花吃热干面，和朋友",
+      "expect": {
+        "city": "武汉",
+        "days": 2,
+        "category": "standard"
+      },
+      "elapsed_s": 23.6,
+      "http": 200,
+      "title": "武汉盛夏 · 双日室内文化美食之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=2 vs 期望 2"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=10 vs 实际=10"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "7/9 = 78%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=16（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": false,
+          "detail": "weather_fit=poor"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "7/9 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": false
+    },
+    {
+      "id": "q20",
+      "input": "广州3日美食之旅，喜欢早茶和岭南文化",
+      "expect": {
+        "city": "广州",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 17.9,
+      "http": 200,
+      "title": "盛夏广州 · 三日美食历史之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=18 vs 实际=18"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "13/18 = 72%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=26（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=fair"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "13/18 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q21",
+      "input": "深圳2日科技都市游，喜欢现代建筑和购物",
+      "expect": {
+        "city": "深圳",
+        "days": 2,
+        "category": "standard"
+      },
+      "elapsed_s": 24.5,
+      "http": 200,
+      "title": "深圳盛夏·购物打卡两日行程",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=2 vs 期望 2"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=10 vs 实际=10"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "9/10 = 90%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=49（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=fair"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "9/10 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q22",
+      "input": "天津2日周末游，喜欢近代建筑和曲艺，带父母",
+      "expect": {
+        "city": "天津",
+        "days": 2,
+        "category": "standard"
+      },
+      "elapsed_s": 14.5,
+      "http": 200,
+      "title": "夏日天津 · 家庭休闲两日游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=2 vs 期望 2"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=11 vs 实际=11"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "10/11 = 91%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=8（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=fair"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "10/11 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q23",
+      "input": "郑州3日游，看黄河和少林寺，喜欢历史文化",
+      "expect": {
+        "city": "郑州",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 17.0,
+      "http": 200,
+      "title": "盛夏郑州 · 文博历史三日行程",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=15 vs 实际=15"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "14/14 = 100%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=105（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "14/14 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q24",
+      "input": "福州2日休闲游，喜欢温泉和茉莉花茶",
+      "expect": {
+        "city": "福州",
+        "days": 2,
+        "category": "standard"
+      },
+      "elapsed_s": 12.9,
+      "http": 200,
+      "title": "福州盛夏 · 温泉休闲两日游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=2 vs 期望 2"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=10 vs 实际=10"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "10/10 = 100%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=22（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "10/10 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q25",
+      "input": "黄山3日登山摄影之旅，一个人，预算经济",
+      "expect": {
+        "city": "黄山",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 17.6,
+      "http": 200,
+      "title": "黄山盛夏 · 三日文化避暑之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=17 vs 实际=17"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "16/17 = 94%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=51（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "16/17 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q26",
+      "input": "贵阳3日游，喜欢喀斯特地貌和酸汤鱼，和朋友",
+      "expect": {
+        "city": "贵阳",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 12.9,
+      "http": 200,
+      "title": "贵阳夏日·三日美食自然之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=11 vs 实际=11"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "11/11 = 100%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=22（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "11/11 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q27",
+      "input": "南宁2日周末美食游，喜欢螺蛳粉和夜市",
+      "expect": {
+        "city": "南宁",
+        "days": 2,
+        "category": "standard"
+      },
+      "elapsed_s": 14.6,
+      "http": 200,
+      "title": "盛夏南宁 · 两日休闲之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=2 vs 期望 2"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=10 vs 实际=10"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "8/10 = 80%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=False, max_day_km=15（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "8/10 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q28",
+      "input": "拉萨6日高原朝圣之旅，一个人，喜欢藏文化和雪山",
+      "expect": {
+        "city": "拉萨",
+        "days": 6,
+        "category": "standard"
+      },
+      "elapsed_s": 28.6,
+      "http": 200,
+      "title": "盛夏拉萨 · 六日深度人文之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=6 vs 期望 6"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=28 vs 实际=28"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "18/18 = 100%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=122（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "18/18 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q29",
+      "input": "哈尔滨3日冰雪之旅，带父母看冰雕，预算舒适",
+      "expect": {
+        "city": "哈尔滨",
+        "days": 3,
+        "category": "standard"
+      },
+      "elapsed_s": 16.1,
+      "http": 200,
+      "title": "哈尔滨夏日慢游 · 三日家庭休闲行程",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=13 vs 实际=13"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "13/13 = 100%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=19（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=fair"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "13/13 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "q30",
+      "input": "香格里拉4日高原秘境之旅，喜欢自然和藏族文化",
+      "expect": {
+        "city": "香格里拉",
+        "days": 4,
+        "category": "standard"
+      },
+      "elapsed_s": 19.2,
+      "http": 200,
+      "title": "香格里拉 · 夏日秘境四日行程",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=4 vs 期望 4"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=21 vs 实际=21"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "11/12 = 92%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=5（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "11/12 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "standard",
+      "query_pass": true
+    },
+    {
+      "id": "e01",
+      "input": "重庆1日极速游，只要打卡洪崖洞和解放碑，预算经济",
+      "expect": {
+        "city": "重庆",
+        "days": 1,
+        "edge": "ultra-short",
+        "category": "edge"
+      },
+      "elapsed_s": 11.7,
+      "http": 200,
+      "title": "盛夏重庆 · 网红打卡一日游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=1 vs 期望 1"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=6 vs 实际=6"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "5/6 = 83%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=False, max_day_km=112（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "无降雨预报，不适用"
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "5/6 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "无降雨预报，不适用"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "edge",
+      "query_pass": true
+    },
+    {
+      "id": "e02",
+      "input": "北京7日深度游，喜欢胡同和博物馆，预算奢华，带老人慢节奏",
+      "expect": {
+        "city": "北京",
+        "days": 7,
+        "edge": "ultra-long",
+        "category": "edge"
+      },
+      "elapsed_s": 22.9,
+      "http": 200,
+      "title": "盛夏北京 · 七日深度慢游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=7 vs 期望 7"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=24 vs 实际=24"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "18/24 = 75%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=128（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "18/24 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "edge",
+      "query_pass": true
+    },
+    {
+      "id": "e03",
+      "input": "西安3日游，雷雨天很多，怎么安排？",
+      "expect": {
+        "city": "西安",
+        "days": 3,
+        "edge": "weather-aware",
+        "category": "edge"
+      },
+      "elapsed_s": 16.7,
+      "http": 200,
+      "title": "盛夏西安 · 三日历史美食之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=16 vs 实际=16"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "9/12 = 75%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=58（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=fair"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "9/12 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "edge",
+      "query_pass": true
+    },
+    {
+      "id": "e04",
+      "input": "重庆2日游，预算极度有限只有500元，大学生穷游",
+      "expect": {
+        "city": "重庆",
+        "days": 2,
+        "edge": "budget-extreme",
+        "category": "edge"
+      },
+      "elapsed_s": 36.8,
+      "http": 200,
+      "title": "",
+      "api_error": "planning: 行程生成失败（已达重试上限）",
+      "scores": {
+        "schema_valid": {
+          "pass": false,
+          "detail": "itinerary empty"
+        },
+        "days_correct": {
+          "pass": false,
+          "detail": "itinerary empty"
+        },
+        "stats_place_count": {
+          "pass": false,
+          "detail": "itinerary empty"
+        },
+        "budget_consistent": {
+          "pass": false,
+          "detail": "itinerary empty"
+        },
+        "month_consistent": {
+          "pass": false,
+          "detail": "itinerary empty"
+        },
+        "poi_verified": {
+          "pass": false,
+          "detail": "itinerary empty"
+        },
+        "route_ok": {
+          "pass": false,
+          "detail": "itinerary empty"
+        },
+        "weather_fit": {
+          "pass": false,
+          "detail": "itinerary empty"
+        },
+        "weather_coverage": {
+          "pass": false,
+          "detail": "itinerary empty"
+        },
+        "name_normalized": {
+          "pass": false,
+          "detail": "itinerary empty"
+        },
+        "weather_tips": {
+          "pass": false,
+          "detail": "itinerary empty"
+        },
+        "price_enriched": {
+          "pass": false,
+          "detail": "itinerary empty"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "edge",
+      "query_pass": false
+    },
+    {
+      "id": "e05",
+      "input": "杭州3日游，想避开人群去小众景点，喜欢徒步和自然",
+      "expect": {
+        "city": "杭州",
+        "days": 3,
+        "edge": "niche",
+        "category": "edge"
+      },
+      "elapsed_s": 19.4,
+      "http": 200,
+      "title": "盛夏杭州 · 小众自然深度三日游",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=15 vs 实际=15"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "10/14 = 71%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=62（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "无降雨预报，不适用"
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "10/14 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "无降雨预报，不适用"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "edge",
+      "query_pass": true
+    },
+    {
+      "id": "f01",
+      "input": "推荐重庆最好吃的火锅",
+      "expect": {
+        "city": "重庆",
+        "focus": "food",
+        "category": "food"
+      },
+      "elapsed_s": 1.4,
+      "http": 200,
+      "total_results": 20,
+      "city": "重庆",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "20/20 = 100%（阈值 30%）"
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "美食类型数=3: 中餐, 火锅, 美食（阈值 3）"
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "连锁品牌: 0/20, 本地: 100%（阈值 50%）"
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "food",
+      "query_pass": true
+    },
+    {
+      "id": "f02",
+      "input": "成都必吃美食有哪些？推荐一下",
+      "expect": {
+        "city": "成都",
+        "focus": "food",
+        "category": "food"
+      },
+      "elapsed_s": 1.5,
+      "http": 200,
+      "total_results": 20,
+      "city": "成都",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "20/20 = 100%（阈值 30%）"
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "美食类型数=5: 中餐, 小吃, 海鲜, 美食, 饮品甜点（阈值 3）"
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "连锁品牌: 0/20, 本地: 100%（阈值 50%）"
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "food",
+      "query_pass": true
+    },
+    {
+      "id": "f03",
+      "input": "想去广州吃早茶，有什么老字号推荐",
+      "expect": {
+        "city": "广州",
+        "focus": "food",
+        "category": "food"
+      },
+      "elapsed_s": 1.4,
+      "http": 200,
+      "total_results": 20,
+      "city": "广州",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "20/20 = 100%（阈值 30%）"
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "美食类型数=3: 中餐, 海鲜, 美食（阈值 3）"
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "连锁品牌: 0/20, 本地: 100%（阈值 50%）"
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "food",
+      "query_pass": true
+    },
+    {
+      "id": "f04",
+      "input": "西安回民街有什么必吃的小吃",
+      "expect": {
+        "city": "西安",
+        "focus": "food",
+        "category": "food"
+      },
+      "elapsed_s": 1.4,
+      "http": 200,
+      "total_results": 20,
+      "city": "西安",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "20/20 = 100%（阈值 30%）"
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "美食类型数=4: 中餐, 小吃, 美食, 饮品甜点（阈值 3）"
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "连锁品牌: 0/20, 本地: 100%（阈值 50%）"
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "food",
+      "query_pass": true
+    },
+    {
+      "id": "f05",
+      "input": "长沙夜宵推荐，想吃小龙虾和臭豆腐",
+      "expect": {
+        "city": "长沙",
+        "focus": "food",
+        "category": "food"
+      },
+      "elapsed_s": 1.4,
+      "http": 200,
+      "total_results": 20,
+      "city": "长沙",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "19/20 = 95%（阈值 30%）"
+        },
+        "food_diversity": {
+          "pass": false,
+          "detail": "美食类型数=2: 中餐, 美食（阈值 3）"
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "连锁品牌: 0/20, 本地: 100%（阈值 50%）"
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "food",
+      "query_pass": false
+    },
+    {
+      "id": "f06",
+      "input": "厦门海鲜哪里好吃又实惠",
+      "expect": {
+        "city": "厦门",
+        "focus": "food",
+        "category": "food"
+      },
+      "elapsed_s": 1.4,
+      "http": 200,
+      "total_results": 20,
+      "city": "厦门",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "20/20 = 100%（阈值 30%）"
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "美食类型数=3: 中餐, 海鲜, 美食（阈值 3）"
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "连锁品牌: 0/20, 本地: 100%（阈值 50%）"
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "food",
+      "query_pass": true
+    },
+    {
+      "id": "f07",
+      "input": "北京烤鸭哪家最正宗，推荐一下",
+      "expect": {
+        "city": "北京",
+        "focus": "food",
+        "category": "food"
+      },
+      "elapsed_s": 1.4,
+      "http": 200,
+      "total_results": 20,
+      "city": "北京",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "20/20 = 100%（阈值 30%）"
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "美食类型数=3: 中餐, 美食, 老字号（阈值 3）"
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "连锁品牌: 0/20, 本地: 100%（阈值 50%）"
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "food",
+      "query_pass": true
+    },
+    {
+      "id": "f08",
+      "input": "上海本帮菜推荐，想吃红烧肉和生煎",
+      "expect": {
+        "city": "上海",
+        "focus": "food",
+        "category": "food"
+      },
+      "elapsed_s": 1.4,
+      "http": 200,
+      "total_results": 20,
+      "city": "上海",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "20/20 = 100%（阈值 30%）"
+        },
+        "food_diversity": {
+          "pass": false,
+          "detail": "美食类型数=2: 中餐, 美食（阈值 3）"
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "连锁品牌: 0/20, 本地: 100%（阈值 50%）"
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "food",
+      "query_pass": false
+    },
+    {
+      "id": "f09",
+      "input": "重庆的江湖菜和串串，本地人爱吃的那种",
+      "expect": {
+        "city": "重庆",
+        "focus": "food",
+        "category": "food"
+      },
+      "elapsed_s": 1.3,
+      "http": 200,
+      "total_results": 20,
+      "city": "重庆",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "20/20 = 100%（阈值 30%）"
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "美食类型数=4: 中餐, 海鲜, 火锅, 美食（阈值 3）"
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "连锁品牌: 0/20, 本地: 100%（阈值 50%）"
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "food",
+      "query_pass": true
+    },
+    {
+      "id": "f10",
+      "input": "三亚吃海鲜怎么避坑，推荐靠谱的海鲜餐厅",
+      "expect": {
+        "city": "三亚",
+        "focus": "food",
+        "category": "food"
+      },
+      "elapsed_s": 1.5,
+      "http": 200,
+      "total_results": 20,
+      "city": "三亚",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "15/20 = 75%（阈值 30%）"
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "美食类型数=4: 中餐, 海鲜, 火锅, 美食（阈值 3）"
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "连锁品牌: 0/20, 本地: 100%（阈值 50%）"
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "food",
+      "query_pass": true
+    },
+    {
+      "id": "c01",
+      "input": "重庆那边这个季节天气怎么样，带什么衣服好",
+      "expect": {
+        "focus": "chat-weather",
+        "category": "chat"
+      },
+      "elapsed_s": 1.5,
+      "http": 200,
+      "reply": "现在重庆正值秋季，气温大约在15-25℃之间，早晚温差较大。建议带一件薄外套或风衣，搭配长袖T恤和牛仔裤，既舒适又方便应对天气变化。如果计划去南山或武隆等山区，最好再备一件稍厚的外套哦！",
+      "stage": "collecting",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "回复长度=93 字符（阈值 50）"
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "话题关键词匹配=是 (关键词: 天气, 气温, 温度)"
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "非槽位填充回复（标记数=0）"
+        }
+      },
+      "category": "chat",
+      "query_pass": true
+    },
+    {
+      "id": "c02",
+      "input": "想了解一下洪崖洞的历史，可以讲讲吗",
+      "expect": {
+        "focus": "chat-history",
+        "category": "chat"
+      },
+      "elapsed_s": 1.8,
+      "http": 200,
+      "reply": "洪崖洞的历史可以追溯到战国时期，它最初是巴国的军事要塞，后来在明清时期逐渐演变为繁华的码头和商业区。这里依山而建，吊脚楼建筑群极具特色，展现了重庆独特的山城风貌。2006年经过改造后，现在成为集观光、美食、文化于一体的热门景点。如果你去的话，晚上亮灯后特别美，建议顺便逛逛附近的千厮门大桥哦！",
+      "stage": "collecting",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "回复长度=146 字符（阈值 50）"
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "话题关键词匹配=是 (关键词: 历史, 建于, 建筑)"
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "非槽位填充回复（标记数=0）"
+        }
+      },
+      "category": "chat",
+      "query_pass": true
+    },
+    {
+      "id": "c03",
+      "input": "第一次去三亚，有什么需要注意的？给点建议",
+      "expect": {
+        "focus": "chat-tips",
+        "category": "chat"
+      },
+      "elapsed_s": 2.1,
+      "http": 200,
+      "reply": "第一次去三亚的话，有几点小建议给你：防晒是头等大事，三亚紫外线很强，记得带高倍防晒霜和墨镜、帽子。另外，去海边玩水要注意安全，尤其不要在不熟悉的野海滩下水。如果想避开人流，建议选淡季（5-6月或9-10月）去，酒店和机票会便宜不少。",
+      "stage": "collecting",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "回复长度=116 字符（阈值 50）"
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "话题关键词匹配=是 (关键词: 注意, 建议, 推荐)"
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "非槽位填充回复（标记数=0）"
+        }
+      },
+      "category": "chat",
+      "query_pass": true
+    },
+    {
+      "id": "c04",
+      "input": "成都和重庆哪个更值得去？帮我分析一下",
+      "expect": {
+        "focus": "chat-compare",
+        "category": "chat"
+      },
+      "elapsed_s": 1.7,
+      "http": 200,
+      "reply": "哈哈，这两个地方都超棒，但风格确实不同！成都更悠闲，有宽窄巷子、熊猫基地，适合慢慢逛吃火锅串串；重庆则魔幻8D，洪崖洞夜景、轻轨穿楼，山城步道超震撼。如果喜欢慢生活选成都，爱立体感和辣味江湖选重庆——当然，时间充裕的话，高铁1小时就能串游两地，完美！",
+      "stage": "collecting",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "回复长度=125 字符（阈值 50）"
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "话题关键词匹配=是 (关键词: 对比, 比较, 区别)"
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "非槽位填充回复（标记数=0）"
+        }
+      },
+      "category": "chat",
+      "query_pass": true
+    },
+    {
+      "id": "c05",
+      "input": "你好，请问你能帮我规划旅行吗？",
+      "expect": {
+        "focus": "chat-greeting",
+        "category": "chat"
+      },
+      "elapsed_s": 1.0,
+      "http": 200,
+      "reply": "当然可以！我是TravelMind，很高兴为你规划旅行。先告诉我你的目的地是哪里？比如重庆、成都、北京这些城市我都很熟悉。另外，你打算玩几天，预算大概是什么水平呢？",
+      "stage": "collecting",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "回复长度=82 字符（阈值 50）"
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "话题关键词匹配=是 (关键词: 可以, 能, 帮)"
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "非槽位填充回复（标记数=2）"
+        }
+      },
+      "category": "chat",
+      "query_pass": true
+    },
+    {
+      "id": "m01",
+      "input": "推荐美食",
+      "expect": {
+        "focus": "food",
+        "multi_city": true,
+        "category": "multi-city"
+      },
+      "elapsed_s": 1.3,
+      "http": 200,
+      "city": "多城市（三亚/上海/丽江/北京/南京等）",
+      "total_results": 20,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "城市数=15: 三亚, 上海, 丽江, 北京, 厦门, 大理, 广州, 张家界, 成都, 杭州, 桂林, 苏州, 西安, 重庆, 长沙（阈值 3）"
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "最集中城市占比=10%（阈值 ≤50%）"
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "score≥0.35: 20/20 = 100%（阈值 60%）"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "multi-city",
+      "query_pass": true
+    },
+    {
+      "id": "m02",
+      "input": "想看海，哪里比较好",
+      "expect": {
+        "focus": "nature",
+        "multi_city": true,
+        "category": "multi-city"
+      },
+      "elapsed_s": 1.4,
+      "http": 200,
+      "city": "多城市（三亚/上海/厦门/张家界/成都等）",
+      "total_results": 20,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "城市数=12: 三亚, 厦门, 张家界, 成都, 拉萨, 昆明, 杭州, 武汉, 福州, 贵阳, 长沙, 青岛（阈值 3）"
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "最集中城市占比=15%（阈值 ≤50%）"
+        },
+        "min_score_filter": {
+          "pass": false,
+          "detail": "score≥0.35: 10/20 = 50%（阈值 60%）"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "multi-city",
+      "query_pass": false
+    },
+    {
+      "id": "m03",
+      "input": "适合情侣去的浪漫旅行地",
+      "expect": {
+        "focus": "couple",
+        "multi_city": true,
+        "category": "multi-city"
+      },
+      "elapsed_s": 1.4,
+      "http": 200,
+      "city": "多城市（三亚/上海/丽江/北京/厦门等）",
+      "total_results": 20,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "城市数=11: 三亚, 上海, 丽江, 北京, 厦门, 广州, 成都, 杭州, 桂林, 苏州, 长沙（阈值 3）"
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "最集中城市占比=15%（阈值 ≤50%）"
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "score≥0.35: 18/20 = 90%（阈值 60%）"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "multi-city",
+      "query_pass": true
+    },
+    {
+      "id": "m04",
+      "input": "带3岁小孩去哪玩比较轻松",
+      "expect": {
+        "focus": "family",
+        "multi_city": true,
+        "category": "multi-city"
+      },
+      "elapsed_s": 1.5,
+      "http": 200,
+      "city": "多城市（三亚/上海/丽江/北京/南宁等）",
+      "total_results": 20,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "城市数=13: 三亚, 上海, 丽江, 北京, 厦门, 广州, 张家界, 成都, 杭州, 深圳, 苏州, 重庆, 长沙（阈值 3）"
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "最集中城市占比=10%（阈值 ≤50%）"
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "score≥0.35: 20/20 = 100%（阈值 60%）"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "multi-city",
+      "query_pass": true
+    },
+    {
+      "id": "m05",
+      "input": "历史爱好者必去的城市有哪些",
+      "expect": {
+        "focus": "history",
+        "multi_city": true,
+        "category": "multi-city"
+      },
+      "elapsed_s": 1.5,
+      "http": 200,
+      "city": "多城市（丽江/北京/南京/南宁/哈尔滨等）",
+      "total_results": 20,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "城市数=18: 丽江, 北京, 南宁, 大理, 大连, 天津, 成都, 昆明, 杭州, 桂林, 武汉, 深圳, 苏州, 贵阳, 郑州, 重庆, 青岛, 黄山（阈值 3）"
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "最集中城市占比=10%（阈值 ≤50%）"
+        },
+        "min_score_filter": {
+          "pass": false,
+          "detail": "score≥0.35: 10/20 = 50%（阈值 60%）"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "multi-city",
+      "query_pass": false
+    },
+    {
+      "id": "x01",
+      "input": "团队15人北京3日团建，需要团建活动和聚餐安排",
+      "expect": {
+        "city": "北京",
+        "days": 3,
+        "edge": "large-group",
+        "category": "extreme"
+      },
+      "elapsed_s": 26.3,
+      "http": 200,
+      "title": "北京盛夏 · 三日美食休闲团建之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=14 vs 实际=14"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "11/14 = 79%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=11（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=fair"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "11/14 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "extreme",
+      "query_pass": true
+    },
+    {
+      "id": "x02",
+      "input": "拉萨8日深度朝圣，预算无上限，包车豪华游",
+      "expect": {
+        "city": "拉萨",
+        "days": 8,
+        "edge": "luxury-deep",
+        "category": "extreme"
+      },
+      "elapsed_s": 27.5,
+      "http": 200,
+      "title": "夏日拉萨 · 八日深度朝圣之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=8 vs 期望 8"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=41 vs 实际=41"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "21/24 = 88%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=122（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "21/24 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "extreme",
+      "query_pass": true
+    },
+    {
+      "id": "x03",
+      "input": "桂林阳朔老年团5日慢游，70岁父母，需要无障碍设施",
+      "expect": {
+        "city": "桂林",
+        "days": 5,
+        "edge": "elderly",
+        "category": "extreme"
+      },
+      "elapsed_s": 19.7,
+      "http": 200,
+      "title": "桂林慢游 · 家庭休闲五日行",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=5 vs 期望 5"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=20 vs 实际=20"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "16/17 = 94%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=160（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=fair"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "16/17 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "extreme",
+      "query_pass": true
+    },
+    {
+      "id": "x04",
+      "input": "冬季去哈尔滨4天，零下30度，需要防寒建议",
+      "expect": {
+        "city": "哈尔滨",
+        "days": 4,
+        "edge": "extreme-weather",
+        "category": "extreme"
+      },
+      "elapsed_s": 17.5,
+      "http": 200,
+      "title": "哈尔滨盛夏 · 四日避暑文艺之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=4 vs 期望 4"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=17 vs 实际=17"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "16/16 = 100%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=True, max_day_km=18（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=good"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "16/16 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "extreme",
+      "query_pass": true
+    },
+    {
+      "id": "x05",
+      "input": "骑摩托车自驾川西7天，喜欢小众路线和露营",
+      "expect": {
+        "city": "成都",
+        "days": 7,
+        "edge": "adventure",
+        "category": "extreme"
+      },
+      "elapsed_s": 27.3,
+      "http": 200,
+      "title": "盛夏川西 · 七日深度探险之旅",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=7 vs 期望 7"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=31 vs 实际=31"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "15/21 = 71%（阈值 45%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=False, max_day_km=62（阈值 200km）"
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "weather_fit=fair"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "15/21 POI 名称可核实"
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "tips 数量=6, 包含天气建议=是"
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "price_summary 或 POI 价格字段存在"
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "extreme",
+      "query_pass": true
+    },
+    {
+      "id": "t01",
+      "input": "从图片识别：山水、瀑布、自然景观",
+      "expect": {
+        "tags": [
+          "山水",
+          "瀑布",
+          "自然"
+        ],
+        "category": "image-tag"
+      },
+      "elapsed_s": 0.0,
+      "http": 200,
+      "total_results": 20,
+      "filtered_results": 19,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "匹配: 3/3 = 100%（阈值 50%）; exact={'自然', '瀑布'}, synonym={'徒步', '自然风光', '摄影', '户外'}"
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "城市数=9: 大连, 张家界, 拉萨, 昆明, 福州, 贵阳, 重庆, 青岛, 黄山（阈值 2）"
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "score≥0.3: 19/19 = 100%（阈值 50%）"
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "image-tag",
+      "query_pass": true
+    },
+    {
+      "id": "t02",
+      "input": "从图片识别：海滩、日落、海岛",
+      "expect": {
+        "tags": [
+          "海滩",
+          "日落",
+          "海岛"
+        ],
+        "category": "image-tag"
+      },
+      "elapsed_s": 0.0,
+      "http": 200,
+      "total_results": 20,
+      "filtered_results": 7,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "匹配: 3/3 = 100%（阈值 50%）; exact={'海滩', '海岛', '日落'}, synonym={'自然', '潜水', '摄影'}"
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "城市数=4: 三亚, 厦门, 杭州, 重庆（阈值 2）"
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "score≥0.3: 7/7 = 100%（阈值 50%）"
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "image-tag",
+      "query_pass": true
+    },
+    {
+      "id": "t03",
+      "input": "从图片识别：古城、夜景、美食街",
+      "expect": {
+        "tags": [
+          "古城",
+          "夜景",
+          "美食街"
+        ],
+        "category": "image-tag"
+      },
+      "elapsed_s": 0.0,
+      "http": 200,
+      "total_results": 20,
+      "filtered_results": 2,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "匹配: 3/3 = 100%（阈值 50%）; exact=set(), synonym={'遗址', '摄影', '网红打卡', '夜生活', '建筑', '打卡', '历史'}"
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "城市数=2: 张家界, 重庆（阈值 2）"
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "score≥0.3: 2/2 = 100%（阈值 50%）"
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "image-tag",
+      "query_pass": true
+    }
+  ]
+}

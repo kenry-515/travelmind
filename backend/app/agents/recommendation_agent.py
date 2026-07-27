@@ -38,12 +38,124 @@ def _get_amap_service():
 
 # ── Scoring Weights ──────────────────────────────────────
 
+# Base weights (general travel)
 W_PREFERENCE = 0.35
 W_TREND = 0.25
 W_BUDGET = 0.15
 W_LOCATION = 0.10
 W_TIME = 0.10
 W_RELIABILITY = 0.05
+
+# Intent-specific weight overrides (Phase 12.2)
+# Food intent: preference match matters more, trend matters less
+# Nature intent: location efficiency + time match matter more
+INTENT_WEIGHTS = {
+    "food": {"W_PREFERENCE": 0.40, "W_TREND": 0.15, "W_BUDGET": 0.15,
+             "W_LOCATION": 0.10, "W_TIME": 0.10, "W_RELIABILITY": 0.10},
+    "nature": {"W_PREFERENCE": 0.30, "W_TREND": 0.20, "W_BUDGET": 0.15,
+               "W_LOCATION": 0.15, "W_TIME": 0.15, "W_RELIABILITY": 0.05},
+    "history": {"W_PREFERENCE": 0.35, "W_TREND": 0.20, "W_BUDGET": 0.15,
+                "W_LOCATION": 0.10, "W_TIME": 0.15, "W_RELIABILITY": 0.05},
+    "shopping": {"W_PREFERENCE": 0.35, "W_TREND": 0.30, "W_BUDGET": 0.15,
+                 "W_LOCATION": 0.10, "W_TIME": 0.05, "W_RELIABILITY": 0.05},
+}
+
+# Food-specific tags (used to detect food search intent)
+_FOOD_TAGS = {
+    "美食", "火锅", "小吃", "烧烤", "海鲜", "早茶", "川菜", "粤菜",
+    "面食", "夜市", "自助", "甜品", "奶茶", "咖啡",
+}
+
+# Nature-specific tags
+_NATURE_TAGS = {
+    "自然", "爬山", "湖泊", "森林", "海岛", "海滩", "瀑布",
+    "峡谷", "日出", "日落", "赏花", "红叶", "草原", "雪山",
+}
+
+# History/culture tags
+_HISTORY_TAGS = {
+    "历史", "博物馆", "古镇", "寺庙", "古迹", "园林",
+    "建筑", "文化", "传统",
+}
+
+# Shopping/urban tags
+_SHOPPING_TAGS = {
+    "购物", "打卡", "网红打卡", "城市", "文艺",
+    "夜生活", "酒吧",
+}
+
+
+def _detect_search_intent(tags: List[str], user_input: str = "") -> str:
+    """Detect the primary search intent from user tags and input text.
+
+    Returns one of: 'food', 'nature', 'history', 'shopping', 'general'.
+    """
+    tag_set = {t.lower() for t in tags}
+    text_lower = user_input.lower()
+
+    scores = {"food": 0, "nature": 0, "history": 0, "shopping": 0}
+
+    # Tag-based scoring
+    for tag in tag_set:
+        if tag in _FOOD_TAGS:
+            scores["food"] += 2
+        if tag in _NATURE_TAGS:
+            scores["nature"] += 2
+        if tag in _HISTORY_TAGS:
+            scores["history"] += 2
+        if tag in _SHOPPING_TAGS:
+            scores["shopping"] += 2
+
+    # Text-based scoring (user input keywords)
+    food_kw = ["吃", "美食", "火锅", "餐厅", "小吃", "海鲜", "烧烤", "早茶", "夜市", "好吃"]
+    nature_kw = ["山", "湖", "海", "瀑布", "自然", "森林", "徒步", "登", "日出", "日落"]
+    history_kw = ["历史", "博物馆", "古", "寺庙", "园林", "文化", "传统"]
+    shop_kw = ["购物", "逛街", "商场", "打卡", "网红", "酒吧", "夜生活"]
+
+    for kw in food_kw:
+        if kw in text_lower:
+            scores["food"] += 1
+    for kw in nature_kw:
+        if kw in text_lower:
+            scores["nature"] += 1
+    for kw in history_kw:
+        if kw in text_lower:
+            scores["history"] += 1
+    for kw in shop_kw:
+        if kw in text_lower:
+            scores["shopping"] += 1
+
+    # Determine primary intent (needs at least 2 points to activate)
+    best = max(scores, key=scores.get)  # type: ignore
+    if scores[best] >= 2:
+        return best
+    return "general"
+
+
+def _diversity_penalty(places: List[Dict[str, Any]], max_same_area: int = 2) -> List[float]:
+    """Apply diversity penalty to prevent too many POIs from the same area.
+
+    Returns a list of penalty multipliers (0.0-1.0) for each place.
+    Later places in the same area get progressively lower multipliers.
+    """
+    penalties = []
+    area_counts: Dict[str, int] = {}
+    for p in places:
+        # Phase 12.21: 兼容 RAG/Chroma 嵌套结构（name 在 metadata 里）。
+        # 旧代码 p.get("name") 对嵌套候选恒为 ""，所有候选共享 area_key，
+        # 从第 3 个起被统一 ×0.7 —— 多样性惩罚实际上从未按设计生效。
+        name = _extract_metadata(p)["name"]
+        # Extract base area from name (first 4 chars as rough area key)
+        area_key = name[:4] if len(name) >= 4 else name
+        count = area_counts.get(area_key, 0)
+        area_counts[area_key] = count + 1
+        if count >= max_same_area:
+            penalties.append(0.7)  # Penalize beyond diversity threshold
+        elif count >= 1:
+            penalties.append(0.9)  # Slight penalty for same area
+        else:
+            penalties.append(1.0)
+    return penalties
 
 # ── Budget mapping ───────────────────────────────────────
 
@@ -286,8 +398,11 @@ async def recommend(
     profile: Dict[str, Any],
     candidates: List[Dict[str, Any]],
     trends: Optional[List[Dict[str, Any]]] = None,
+    weather: Optional[Dict[str, Any]] = None,
 ) -> List[Dict[str, Any]]:
     """Score and rank candidate attractions using the 6-factor formula.
+
+    Phase 12.16: Added weather-aware indoor/outdoor scoring boost.
 
     Args:
         profile: User profile dict with keys:
@@ -296,6 +411,7 @@ async def recommend(
             - travel_month: 1-12 (optional)
         candidates: List of candidate attractions from RAG retrieval.
         trends: Optional pre-loaded trend data from trend_agent.
+        weather: Optional weather forecast (Phase 12.16, for indoor boost).
 
     Returns:
         Candidates sorted by total_score (descending), each with
@@ -305,13 +421,65 @@ async def recommend(
         logger.warning("No candidates to score")
         return []
 
+    # ── Phase 9: 过滤健康检查标记为 inactive 的 POI ─────
+    try:
+        from app.services.poi_health_service import _load_inactive_poi_names
+        from app.agents.route_optimizer import _normalize
+        inactive = _load_inactive_poi_names()
+        if inactive:
+            original = len(candidates)
+            candidates = [
+                c for c in candidates
+                if _normalize(_extract_metadata(c).get("name", "")) not in inactive
+            ]
+            filtered = original - len(candidates)
+            if filtered > 0:
+                logger.info(
+                    f"POI health filter: {filtered} inactive removed, "
+                    f"{len(candidates)} remaining"
+                )
+    except Exception as e:
+        logger.debug(f"POI health filter unavailable, skipping: {e}")
+
+    if not candidates:
+        logger.warning("No candidates after health filter")
+        return []
+
     # Extract user preferences
     user_tags = profile.get("tags", []) or []
     user_budget = profile.get("budget_level", "") or profile.get("budget", "") or ""
     travel_month = profile.get("travel_month", 0)
+    user_input = profile.get("user_input", "") or profile.get("_original_input", "")
 
-    # Build trend lookup dict for fast access
+    # Phase 12.2: Detect search intent and adjust scoring weights
+    search_intent = _detect_search_intent(user_tags, user_input)
+    intent_w = INTENT_WEIGHTS.get(search_intent)
+    if intent_w and search_intent != "general":
+        w_pref = intent_w["W_PREFERENCE"]
+        w_trend = intent_w["W_TREND"]
+        w_budget = intent_w["W_BUDGET"]
+        w_loc = intent_w["W_LOCATION"]
+        w_time = intent_w["W_TIME"]
+        w_rel = intent_w["W_RELIABILITY"]
+        logger.info(
+            f"Search intent={search_intent}, adaptive weights: "
+            f"pref={w_pref} trend={w_trend} budget={w_budget} "
+            f"loc={w_loc} time={w_time} rel={w_rel}"
+        )
+    else:
+        w_pref = W_PREFERENCE
+        w_trend = W_TREND
+        w_budget = W_BUDGET
+        w_loc = W_LOCATION
+        w_time = W_TIME
+        w_rel = W_RELIABILITY
+
+    # Phase 12.2: Apply diversity penalty
+    diversity_penalties = _diversity_penalty(candidates)
+
+    # Build trend lookup dict for fast access (index by both original and canonical names)
     trend_map: Dict[str, float] = {}
+    trend_src_map: Dict[str, str] = {}  # Phase 12.19: 热度来源（供前端徽章展示）
     if trends:
         for t in trends:
             name = t.get("place_name", "")
@@ -319,19 +487,33 @@ async def recommend(
                 # Use effective_score if available, otherwise normalized_score
                 score = t.get("effective_score", t.get("normalized_score", 0.5))
                 trend_map[name] = score
+                trend_src_map[name] = t.get("source", "")
+                # Also index by canonical name for cross-source matching
+                try:
+                    from app.services.name_normalizer import normalize_poi_name
+                    canonical = normalize_poi_name(name)
+                    if canonical != name:
+                        trend_map[canonical] = score
+                        trend_src_map[canonical] = t.get("source", "")
+                except ImportError:
+                    pass
 
     # ── Location Efficiency (Amap distance matrix) ─────
     # Compute real location efficiency scores via Amap routing.
     # Falls back to 0.5 if Amap is unavailable or coords are missing.
+    # Phase 12.21: 跨城模糊意图（profile["_multi_city"]）下"距市中心远近"
+    # 没有意义 —— 全国候选池的几何质心会让几乎所有 POI 系统性得 0.1，
+    # 保持中性 0.5 并跳过 amap 调用。
     location_scores: List[float] = [0.5] * len(candidates)
-    try:
-        amap_location = _get_amap_service()
-        if amap_location:
-            location_scores = await amap_location(candidates)
-        else:
-            logger.debug("Amap routing service not available — using neutral location scores")
-    except Exception as e:
-        logger.debug(f"Amap location scoring failed: {e} — using neutral scores")
+    if not profile.get("_multi_city"):
+        try:
+            amap_location = _get_amap_service()
+            if amap_location:
+                location_scores = await amap_location(candidates)
+            else:
+                logger.debug("Amap routing service not available — using neutral location scores")
+        except Exception as e:
+            logger.debug(f"Amap location scoring failed: {e} — using neutral scores")
 
     scored = []
     for i, c in enumerate(candidates):
@@ -343,8 +525,19 @@ async def recommend(
         pref = _score_preference(user_tags, place_tags)
 
         # Factor 2: Trend Heat
-        # Check trend_map first, then fuzzy match
+        # Check trend_map by name (canonical + original + fuzzy)
         trend = trend_map.get(place_name, None)
+        trend_source = trend_src_map.get(place_name, "")
+        if trend is None:
+            # Try canonical name from normalizer
+            try:
+                from app.services.name_normalizer import normalize_poi_name
+                canonical = normalize_poi_name(place_name)
+                if canonical != place_name:
+                    trend = trend_map.get(canonical, None)
+                    trend_source = trend_src_map.get(canonical, "")
+            except ImportError:
+                pass
         if trend is None and trends:
             from app.agents.trend_agent import get_trend_score
             trend = get_trend_score(place_name, place["city"], trends)
@@ -365,21 +558,55 @@ async def recommend(
         # Factor 6: Data Reliability
         reliability = _get_reliability(place["source"])
 
-        # Weighted total
+        # Weighted total (Phase 12.2: adaptive weights + diversity)
         total = (
-            W_PREFERENCE * pref +
-            W_TREND * trend +
-            W_BUDGET * budget +
-            W_LOCATION * location +
-            W_TIME * time_match +
-            W_RELIABILITY * reliability
+            w_pref * pref +
+            w_trend * trend +
+            w_budget * budget +
+            w_loc * location +
+            w_time * time_match +
+            w_rel * reliability
         )
+        # Apply diversity penalty
+        total *= diversity_penalties[i] if i < len(diversity_penalties) else 1.0
+
+        # Phase 12.16: Weather-aware indoor boost (same logic as RAG retriever)
+        weather_boost = 0.0
+        if weather:
+            # Compute rain_ratio once, cache in closure-like way via first iteration
+            if i == 0:
+                # Inline rain_ratio: how many days in forecast are rainy
+                daily = weather.get("daily") or []
+                rainy = sum(1 for d in daily if isinstance(d, dict) and (
+                    any(w in (d.get("weather_desc", "") or "") for w in ("雨", "雷", "雪", "阵雨", "暴雨"))
+                    or (d.get("precipitation", 0) or 0) > 0.5
+                    or (d.get("weather_code", 0) or 0) >= 50
+                ))
+                # Store on the weather dict as a transient cache (not persisted)
+                weather["_rain_ratio"] = rainy / len(daily) if daily else 0.0
+            rain_ratio = weather.get("_rain_ratio", 0.0)
+            if rain_ratio >= 0.2:
+                try:
+                    from app.agents.itinerary_contract import classify_poi_indoor
+                    poi_name = place.get("name", "") or ""
+                    poi_tags = place.get("tags", [])
+                    if isinstance(poi_tags, str):
+                        poi_tags = [t.strip() for t in poi_tags.split(",") if t.strip()]
+                    classification = classify_poi_indoor(poi_name, kb_tags=poi_tags if poi_tags else None)
+                    if classification in ("indoor", "semi"):
+                        weather_boost = 0.20 * rain_ratio
+                    else:
+                        weather_boost = -0.10 * rain_ratio
+                except ImportError:
+                    pass
+        total += weather_boost
 
         # Build enriched result from the NORMALIZED flat fields — NOT from
         # place["_original"], which keeps RAG candidates' nested Chroma shape
         # ({metadata: {...}}) and would blank out name/city/tags in API responses.
         result = {k: v for k, v in place.items() if k != "_original"}
         result["total_score"] = round(total, 4)
+        result["_trend_source"] = trend_source
         result["_score_breakdown"] = {
             "preference_match": round(pref, 3),
             "trend_heat": round(trend, 3),
@@ -387,6 +614,7 @@ async def recommend(
             "location_efficiency": round(location, 3),
             "time_match": round(time_match, 3),
             "data_reliability": round(reliability, 3),
+            "weather": round(weather_boost, 3),
         }
         scored.append(result)
 
@@ -395,11 +623,18 @@ async def recommend(
     # are added as supplementary recommendations (with reduced data quality).
     if trends:
         from app.agents.trend_agent import _fuzzy_match_name
-        scored_names = {r.get("name", "") for r in scored}
+        scored_names = {r.get("name", ""): r.get("tags", []) for r in scored}
         # Also check fuzzy matches against scored names
         def _already_covered(trend_name: str) -> bool:
-            for sname in scored_names:
+            for sname, stags in scored_names.items():
                 if _fuzzy_match_name(trend_name, sname):
+                    # Phase 12.20: 餐厅名含地标名（如"老甘家…(洪崖洞店)"）
+                    # 不算覆盖地标——否则洪崖洞永远被自家门口的餐厅抑制
+                    if sname != trend_name and isinstance(stags, list) and any(
+                        kw in t for t in stags
+                        for kw in ("美食", "中餐", "海鲜", "火锅", "小吃", "餐")
+                    ):
+                        continue
                     return True
             return False
 

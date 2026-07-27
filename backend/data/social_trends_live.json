@@ -1,0 +1,131 @@
+{
+  "source": "WebBridge social live",
+  "collected_at": "2026-07-26 16:20",
+  "cities": [
+    "武汉",
+    "郑州",
+    "天津"
+  ],
+  "trends": [
+    {
+      "city": "武汉",
+      "place_name": "武大万林博物馆",
+      "tag": "社交热议",
+      "heat_score": 47,
+      "rank": 0,
+      "source": "xiaohongshu",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5c2c3a000000001d022e33",
+      "likes": 2
+    },
+    {
+      "city": "武汉",
+      "place_name": "湖北省博物馆",
+      "tag": "社交热议",
+      "heat_score": 94,
+      "rank": 0,
+      "source": "douyin",
+      "source_url": "https://www.douyin.com/video/7636684204897900790",
+      "likes": 4045
+    },
+    {
+      "city": "武汉",
+      "place_name": "黄鹤楼",
+      "tag": "社交热议",
+      "heat_score": 70,
+      "rank": 0,
+      "source": "douyin",
+      "source_url": "https://www.douyin.com/video/7648791814930188608",
+      "likes": 115
+    },
+    {
+      "city": "武汉",
+      "place_name": "湖北省博物馆",
+      "tag": "社交热议",
+      "heat_score": 66,
+      "rank": 0,
+      "source": "xiaohongshu",
+      "source_url": "https://www.xiaohongshu.com/explore/6a51e0ad0000000017009fbe",
+      "likes": 62
+    },
+    {
+      "city": "武汉",
+      "place_name": "武汉博物馆",
+      "tag": "社交热议",
+      "heat_score": 65,
+      "rank": 0,
+      "source": "xiaohongshu",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5b1f1c000000000401dfa3",
+      "likes": 47
+    },
+    {
+      "city": "郑州",
+      "place_name": "郑州博物馆",
+      "tag": "社交热议",
+      "heat_score": 69,
+      "rank": 0,
+      "source": "xiaohongshu",
+      "source_url": "https://www.xiaohongshu.com/explore/697ad613000000000a0322ba",
+      "likes": 87
+    },
+    {
+      "city": "郑州",
+      "place_name": "河南博物院",
+      "tag": "社交热议",
+      "heat_score": 68,
+      "rank": 0,
+      "source": "xiaohongshu",
+      "source_url": "https://www.xiaohongshu.com/explore/68fcb86b0000000007015120",
+      "likes": 78
+    },
+    {
+      "city": "郑州",
+      "place_name": "正弘城",
+      "tag": "社交热议",
+      "heat_score": 84,
+      "rank": 0,
+      "source": "xiaohongshu",
+      "source_url": "https://www.xiaohongshu.com/explore/68aedb00000000001d02f5a8",
+      "likes": 936
+    },
+    {
+      "city": "郑州",
+      "place_name": "健康路夜市",
+      "tag": "社交热议",
+      "heat_score": 58,
+      "rank": 0,
+      "source": "xiaohongshu",
+      "source_url": "https://www.xiaohongshu.com/explore/68974f800000000004005740",
+      "likes": 15
+    },
+    {
+      "city": "天津",
+      "place_name": "天津博物馆",
+      "tag": "社交热议",
+      "heat_score": 57,
+      "rank": 0,
+      "source": "xiaohongshu",
+      "source_url": "https://www.xiaohongshu.com/explore/6a6554fb000000000f03f15d",
+      "likes": 13
+    },
+    {
+      "city": "天津",
+      "place_name": "姚村夜市",
+      "tag": "社交热议",
+      "heat_score": 82,
+      "rank": 0,
+      "source": "xiaohongshu",
+      "source_url": "https://www.xiaohongshu.com/explore/6a4c728d000000002103e19f",
+      "likes": 688
+    },
+    {
+      "city": "天津",
+      "place_name": "西青大学城的姚村夜市",
+      "tag": "社交热议",
+      "heat_score": 52,
+      "rank": 0,
+      "source": "xiaohongshu",
+      "source_url": "https://www.xiaohongshu.com/explore/6a647b24000000001c00cece",
+      "likes": 6
+    }
+  ]
+}

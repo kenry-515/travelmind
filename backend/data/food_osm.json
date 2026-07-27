@@ -1,0 +1,327 @@
+{
+  "source": "OpenStreetMap Overpass API (ODbL)",
+  "enrich_date": "2026-07-26",
+  "total": 14,
+  "cities_covered": 1,
+  "indoor_pois": [
+    {
+      "name": "飞虎西餐厅",
+      "city": "香格里拉",
+      "lat": 27.8143463,
+      "lon": 99.7042584,
+      "address": "hongxue gallery",
+      "osm_id": "node/3758670738",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "饮品甜点"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "饮品甜点"
+    },
+    {
+      "name": "雾境咖啡",
+      "city": "香格里拉",
+      "lat": 27.8152873,
+      "lon": 99.7091455,
+      "address": "",
+      "osm_id": "node/4319864591",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "饮品甜点"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "饮品甜点"
+    },
+    {
+      "name": "下一站奶茶",
+      "city": "香格里拉",
+      "lat": 27.8267839,
+      "lon": 99.7088723,
+      "address": "",
+      "osm_id": "node/4351058395",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "饮品甜点"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "饮品甜点"
+    },
+    {
+      "name": "韩府名苑韩国料理",
+      "city": "香格里拉",
+      "lat": 27.8177213,
+      "lon": 99.7047702,
+      "address": "",
+      "osm_id": "node/4693446356",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "国际美食"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "国际美食"
+    },
+    {
+      "name": "小菜咖啡",
+      "city": "香格里拉",
+      "lat": 27.8152756,
+      "lon": 99.7059364,
+      "address": "",
+      "osm_id": "node/5249803222",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "饮品甜点"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "饮品甜点"
+    },
+    {
+      "name": "拿姆卡咖啡",
+      "city": "香格里拉",
+      "lat": 27.8132827,
+      "lon": 99.7051246,
+      "address": "",
+      "osm_id": "node/5735319021",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "早点"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "经济",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "早点"
+    },
+    {
+      "name": "Xiaguang Yang Kee 1",
+      "city": "香格里拉",
+      "lat": 27.8369416,
+      "lon": 99.7052709,
+      "address": "",
+      "osm_id": "node/5965636886",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "面馆"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "经济",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "面馆"
+    },
+    {
+      "name": "钗琴藏家特色火锅",
+      "city": "香格里拉",
+      "lat": 27.8137791,
+      "lon": 99.706299,
+      "address": "",
+      "osm_id": "node/6174530886",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "火锅"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "火锅"
+    },
+    {
+      "name": "鑫乔小吃",
+      "city": "香格里拉",
+      "lat": 27.8177148,
+      "lon": 99.7078772,
+      "address": "",
+      "osm_id": "node/6650197485",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "小吃"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "经济",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "小吃"
+    },
+    {
+      "name": "红心小吃",
+      "city": "香格里拉",
+      "lat": 27.8231285,
+      "lon": 99.7038432,
+      "address": "",
+      "osm_id": "node/6761110986",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "小吃"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "经济",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "小吃"
+    },
+    {
+      "name": "银同牛肉火锅店",
+      "city": "香格里拉",
+      "lat": 27.8161323,
+      "lon": 99.7041746,
+      "address": "",
+      "osm_id": "node/6857877826",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "火锅"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "火锅"
+    },
+    {
+      "name": "海伦披萨屋",
+      "city": "香格里拉",
+      "lat": 27.8173233,
+      "lon": 99.7008095,
+      "address": "",
+      "osm_id": "node/10860027005",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "国际美食"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "国际美食"
+    },
+    {
+      "name": "滇三剁烧肉米线",
+      "city": "香格里拉",
+      "lat": 27.8136536,
+      "lon": 99.7071317,
+      "address": "",
+      "osm_id": "node/13584921082",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "面馆"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "经济",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "面馆"
+    },
+    {
+      "name": "Aguo的厨房",
+      "city": "香格里拉",
+      "lat": 27.8157658,
+      "lon": 99.7029166,
+      "address": "措廊",
+      "osm_id": "node/14034499301",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "早点"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "经济",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "早点"
+    }
+  ],
+  "city_stats": {
+    "香格里拉": 14
+  },
+  "type_stats": {
+    "饮品甜点": 4,
+    "国际美食": 2,
+    "早点": 2,
+    "面馆": 2,
+    "火锅": 2,
+    "小吃": 2
+  }
+}

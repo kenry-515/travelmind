@@ -281,6 +281,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -295,6 +314,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -309,6 +347,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             }
           ]
         | [
@@ -325,6 +382,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -339,6 +415,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -353,6 +448,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -367,6 +481,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             }
           ]
         | [
@@ -383,6 +516,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -397,6 +549,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -411,6 +582,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -425,6 +615,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -439,6 +648,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             }
           ]
         | [
@@ -455,6 +683,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -469,6 +716,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -483,6 +749,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -497,6 +782,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -511,6 +815,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -525,6 +848,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             }
           ]
         | [
@@ -541,6 +883,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -555,6 +916,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -569,6 +949,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -583,6 +982,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -597,6 +1015,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -611,6 +1048,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -625,6 +1081,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             }
           ]
         | [
@@ -641,6 +1116,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -655,6 +1149,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -669,6 +1182,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -683,6 +1215,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -697,6 +1248,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -711,6 +1281,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -725,6 +1314,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -739,12 +1347,35 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             }
           ];
       /**
-       * 每日一味：具体餐厅 + 招牌菜，如「豫园『南翔馒头店』蟹粉小笼」
+       * 今日餐饮：KB 真实餐厅推荐（系统挂载，格式：午餐「X」· 晚餐「Y」）
        */
       eat: string;
+      /**
+       * 建议住宿：真实酒店/民宿名称（可含区域说明），如「桂林香格里拉大酒店」
+       */
+      stay?: string;
     },
     ...{
       day: number;
@@ -775,6 +1406,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -789,6 +1439,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -803,6 +1472,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             }
           ]
         | [
@@ -819,6 +1507,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -833,6 +1540,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -847,6 +1573,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -861,6 +1606,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             }
           ]
         | [
@@ -877,6 +1641,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -891,6 +1674,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -905,6 +1707,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -919,6 +1740,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -933,6 +1773,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             }
           ]
         | [
@@ -949,6 +1808,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -963,6 +1841,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -977,6 +1874,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -991,6 +1907,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1005,6 +1940,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1019,6 +1973,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             }
           ]
         | [
@@ -1035,6 +2008,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1049,6 +2041,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1063,6 +2074,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1077,6 +2107,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1091,6 +2140,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1105,6 +2173,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1119,6 +2206,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             }
           ]
         | [
@@ -1135,6 +2241,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1149,6 +2274,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1163,6 +2307,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1177,6 +2340,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1191,6 +2373,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1205,6 +2406,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1219,6 +2439,25 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             },
             {
               /**
@@ -1233,12 +2472,35 @@ export interface TravelItinerary {
                * 一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）
                */
               note: string;
+              /**
+               * 门票价格区间，后端从知识库注入，非模型输出
+               */
+              price_range?: {
+                min?: number;
+                max?: number;
+              };
+              /**
+               * 价格数据来源，如'高德POI'或'估算（基于价格等级）'
+               */
+              price_source?: string;
+              /**
+               * 价格数据更新时间 ISO 日期，如'2026-07-21'
+               */
+              price_updated_at?: string;
+              /**
+               * 预订/查看实时价格跳转链接
+               */
+              booking_url?: string;
             }
           ];
       /**
-       * 每日一味：具体餐厅 + 招牌菜，如「豫园『南翔馒头店』蟹粉小笼」
+       * 今日餐饮：KB 真实餐厅推荐（系统挂载，格式：午餐「X」· 晚餐「Y」）
        */
       eat: string;
+      /**
+       * 建议住宿：真实酒店/民宿名称（可含区域说明），如「桂林香格里拉大酒店」
+       */
+      stay?: string;
     }[]
   ];
   /**
@@ -2040,5 +3302,36 @@ export interface TravelItinerary {
      * 校验日期，如 2026-07-21
      */
     checked_at: string;
+  };
+  /**
+   * 价格汇总，后端注入，非模型输出。用于前端预算对比与价格新鲜度提示。
+   */
+  price_summary?: {
+    total_estimate_min?: number;
+    total_estimate_max?: number;
+    /**
+     * 有价格数据的 POI 数
+     */
+    priced_items?: number;
+    /**
+     * 可参观 POI 总数
+     */
+    total_items?: number;
+    /**
+     * 价格超过 90 天未更新的 POI 数
+     */
+    stale_items?: number;
+    /**
+     * 用户的预算档次，如 经济/适中/舒适
+     */
+    budget_slot?: string;
+    /**
+     * 行程花费是否超出用户预算
+     */
+    over_budget?: boolean;
+    /**
+     * 超预算时的人类可读提示
+     */
+    over_budget_warning?: string;
   };
 }

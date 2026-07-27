@@ -1,4 +1,5 @@
 import { Component, type ReactNode } from 'react'
+import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
 
 interface Props {
   children: ReactNode
@@ -11,7 +12,7 @@ interface State {
 
 /**
  * React Error Boundary — catches rendering errors anywhere in the tree
- * and shows a fallback UI instead of a blank white page.
+ * and shows a helpful fallback UI with retry and navigation options.
  */
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
@@ -31,20 +32,35 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-4 text-center">
-          <div className="max-w-md rounded-2xl bg-white p-8 shadow-lg">
-            <h2 className="mb-4 text-2xl font-bold text-red-600">页面出错了</h2>
-            <p className="mb-4 text-slate-600">
-              应用遇到了一个意外错误。请刷新页面重试。
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg sm:p-8">
+            <AlertTriangle size={48} className="mx-auto mb-4 text-red-400" />
+            <h2 className="mb-2 text-xl font-bold text-slate-800 sm:text-2xl">
+              页面出错了
+            </h2>
+            <p className="mb-4 text-sm text-slate-500 sm:text-base">
+              应用遇到了一个意外错误。请尝试刷新页面。
             </p>
-            <p className="mb-6 text-xs text-slate-400 break-all">
-              {this.state.error?.message}
-            </p>
-            <button
-              onClick={() => window.location.reload()}
-              className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
-            >
-              刷新页面
-            </button>
+            {this.state.error?.message && (
+              <p className="mb-6 rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-400 break-all font-mono">
+                {this.state.error.message}
+              </p>
+            )}
+            <div className="flex items-center justify-center gap-3">
+              <a
+                href="/"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50"
+              >
+                <Home size={16} />
+                返回首页
+              </a>
+              <button
+                onClick={() => window.location.reload()}
+                className="btn-primary inline-flex items-center gap-1.5 px-4 py-2.5 text-sm"
+              >
+                <RefreshCw size={16} />
+                刷新页面
+              </button>
+            </div>
           </div>
         </div>
       )

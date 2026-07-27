@@ -53,6 +53,17 @@ async def save_itinerary(
         await db.commit()
         await db.refresh(obj)
         logger.info(f"Itinerary saved: {obj.id} (user={user_id[:8]}...)")
+
+        # Phase 8.3: Auto-create version 1 (initial snapshot)
+        try:
+            from app.services.itinerary_version_service import create_version
+            await create_version(
+                db, obj.id, itinerary,
+                change_description="初始生成",
+            )
+        except Exception as e:
+            logger.warning(f"Version v1 creation skipped (non-fatal): {e}")
+
         return obj
     except Exception as e:
         await db.rollback()
@@ -152,6 +163,41 @@ async def get_itinerary(
     except Exception as e:
         logger.error(f"Failed to get itinerary {itinerary_id}: {e}")
         return None
+
+
+async def update_itinerary_plan(
+    db: AsyncSession,
+    itinerary_id: str,
+    plan: Dict[str, Any],
+) -> bool:
+    """Update just the plan (+ days, title) of an existing itinerary.
+
+    Used by version restore. Does NOT create a new version — the caller
+    should have already created the restore version.
+    """
+    if db is None:
+        return False
+
+    try:
+        result = await db.execute(
+            select(Itinerary).where(Itinerary.id == itinerary_id)
+        )
+        row = result.scalar_one_or_none()
+        if row is None:
+            return False
+
+        trip = plan.get("trip", {})
+        row.title = trip.get("title", row.title)
+        row.days = trip.get("daysCount", len(plan.get("days", [])))
+        row.plan = plan
+        row.validation_report = plan.get("validation_report", row.validation_report)
+
+        await db.commit()
+        return True
+    except Exception as e:
+        await db.rollback()
+        logger.error(f"Failed to update itinerary plan {itinerary_id}: {e}")
+        return False
 
 
 async def delete_itinerary(

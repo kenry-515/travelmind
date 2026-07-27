@@ -16,6 +16,7 @@ from sqlalchemy import (
     String,
     Text,
     DateTime,
+    UniqueConstraint,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
@@ -157,6 +158,34 @@ class Itinerary(Base):
     updated_at = Column(DateTime, default=now_utc, onupdate=now_utc)
 
     user = relationship("User", back_populates="itineraries")
+
+
+# ── ItineraryVersion (Phase 8.3) ──────────────────────
+
+class ItineraryVersion(Base):
+    """Snapshot version chain for itinerary changes.
+
+    Each time an itinerary is regenerated (day-level or full), a new version
+    is created with the full plan JSON at that point. Restore creates a NEW
+    version (copy-on-restore).
+    """
+    __tablename__ = "itinerary_versions"
+
+    id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
+    itinerary_id = Column(
+        UUID(as_uuid=False),
+        ForeignKey("itineraries.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    version_number = Column(Integer, nullable=False)
+    plan = Column(JSON, nullable=False)                              # full TravelItinerary snapshot
+    change_description = Column(String(500), nullable=True)          # e.g. "重新安排第2天：太赶了"
+    created_at = Column(DateTime, default=now_utc)
+
+    __table_args__ = (
+        UniqueConstraint("itinerary_id", "version_number", name="uq_version_per_itinerary"),
+    )
 
 
 # ── Feedback ──────────────────────────────────────────

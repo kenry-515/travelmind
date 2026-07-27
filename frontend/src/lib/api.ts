@@ -40,6 +40,7 @@ export interface ScoreBreakdown {
   location_efficiency: number
   time_match: number
   data_reliability: number
+  weather: number  // Phase 12.28c: 天气感知 boost（Phase 12.16 起后端已返回）
 }
 
 export interface PlaceItem {
@@ -131,6 +132,7 @@ export interface PlanResponse {
   weather: WeatherForecast | null
   current_step: string
   error: string | null
+  itinerary_id?: string | null
 }
 
 export interface DailyWeather {
@@ -201,6 +203,27 @@ export async function fetchQuickRecommendations(params: {
     budget: params.budget || '适中',
     travel_month: params.travel_month || 0,
     top_k: params.top_k || 20,
+  })
+  return data
+}
+
+/** Cross-city similar place search using image-recognized tags (Phase 12). */
+export interface ByTagsResponse {
+  total_results: number
+  filtered_results: number
+  cities_covered: string[]
+  places: PlaceItem[]
+}
+
+export async function fetchByTags(params: {
+  tags: string[]
+  top_k?: number
+  min_score?: number
+}): Promise<ByTagsResponse> {
+  const { data } = await api.post<ByTagsResponse>('/recommend/by-tags', {
+    tags: params.tags,
+    top_k: params.top_k || 20,
+    min_score: params.min_score || 0.4,
   })
   return data
 }
@@ -307,7 +330,7 @@ export interface DialogSuggestion {
   days?: string
 }
 
-export type DialogStage = 'collecting' | 'confirming' | 'generating' | 'delivered'
+export type DialogStage = 'collecting' | 'confirming' | 'generating' | 'delivered' | 'refused'
 
 export interface DialogResponse {
   session_id: string
@@ -318,7 +341,12 @@ export interface DialogResponse {
   suggestions?: DialogSuggestion[] | null
   confirm: boolean
   itinerary?: TravelItinerary | null
+  itinerary_id?: string | null
   queued: number
+  // Phase 8.1: Refusal / coverage warning fields
+  refused?: boolean
+  refuse_reason?: string | null
+  coverage_warning?: string | null
 }
 
 /** Send a message (or slot override) to the conversational planner. */
@@ -436,4 +464,55 @@ export async function addFavorite(
 /** Remove a favorite. */
 export async function removeFavorite(id: string): Promise<void> {
   await api.delete(`/favorites/${id}`)
+}
+
+
+// ── Itinerary Versioning (Phase 8.3) ──────────────────────
+
+export interface VersionSummary {
+  id: string
+  version_number: number
+  change_description: string
+  created_at: string
+}
+
+export interface VersionDetail extends VersionSummary {
+  plan: TravelItinerary
+}
+
+export interface VersionListResponse {
+  versions: VersionSummary[]
+}
+
+/** List all versions for an itinerary, newest first. */
+export async function fetchVersions(
+  itineraryId: string
+): Promise<VersionSummary[]> {
+  const { data } = await api.get<VersionListResponse>(
+    `/itineraries/${itineraryId}/versions`
+  )
+  return data.versions
+}
+
+/** Get a specific version with full plan. */
+export async function fetchVersionDetail(
+  itineraryId: string,
+  versionId: string
+): Promise<VersionDetail> {
+  const { data } = await api.get<VersionDetail>(
+    `/itineraries/${itineraryId}/versions/${versionId}`
+  )
+  return data
+}
+
+/** Restore itinerary to a previous version. */
+export async function restoreVersion(
+  itineraryId: string,
+  versionId: string
+): Promise<{ itinerary: TravelItinerary; version: VersionSummary }> {
+  const { data } = await api.post<{
+    itinerary: TravelItinerary
+    version: VersionSummary
+  }>(`/itineraries/${itineraryId}/restore/${versionId}`)
+  return data
 }

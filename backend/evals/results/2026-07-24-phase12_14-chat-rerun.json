@@ -1,0 +1,803 @@
+{
+  "version": "3.0.0",
+  "date": "2026-07-24",
+  "total_queries": 5,
+  "micro": 0.9333,
+  "macro": 0.8,
+  "final_pass_rate": 0.8,
+  "per_constraint": {
+    "schema_valid": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "days_correct": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "stats_place_count": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "budget_consistent": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "month_consistent": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "poi_verified": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "route_ok": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "weather_fit": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "weather_coverage": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "name_normalized": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "weather_tips": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "price_enriched": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "food_coverage": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "food_diversity": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "food_local_ratio": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "cross_city_covered": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "multi_city_diversity": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "min_score_filter": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "chat_reply_length": {
+      "pass": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "chat_topic_relevant": {
+      "pass": 4,
+      "total": 5,
+      "rate": 0.8
+    },
+    "chat_not_slotfill": {
+      "pass": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "image_tag_relevance": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "image_tag_cross_city": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "image_tag_threshold": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    }
+  },
+  "per_category": {
+    "chat": {
+      "total": 5,
+      "pass": 4
+    }
+  },
+  "per_query": [
+    {
+      "id": "c01",
+      "input": "重庆那边这个季节天气怎么样，带什么衣服好",
+      "expect": {
+        "focus": "chat-weather",
+        "category": "chat"
+      },
+      "elapsed_s": 1.9,
+      "http": 200,
+      "reply": "重庆这个季节气温一般在20-30℃之间，比较湿热，偶尔有阵雨。建议带短袖、薄长裤和一件轻便外套，另外一定要备好雨伞或雨衣。如果去山区比如武隆，早晚会凉一些，带件薄夹克就够啦！",
+      "stage": "collecting",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "回复长度=87 字符（阈值 50）"
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "话题关键词匹配=是 (关键词: 天气, 气温, 温度)"
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "非槽位填充回复（标记数=0）"
+        }
+      },
+      "category": "chat",
+      "query_pass": true
+    },
+    {
+      "id": "c02",
+      "input": "想了解一下洪崖洞的历史，可以讲讲吗",
+      "expect": {
+        "focus": "chat-history",
+        "category": "chat"
+      },
+      "elapsed_s": 2.2,
+      "http": 200,
+      "reply": "洪崖洞的历史其实挺有意思的！它最早可以追溯到战国时期，当时是巴国的军事要塞，后来在明朝和清朝逐渐演变为商业码头和民居聚集地。现在的洪崖洞是2006年重建的，以巴渝传统“吊脚楼”建筑风格为主，完美还原了老重庆的山城风貌，晚上灯光一亮特别壮观，像《千与千寻》里的场景。如果你感兴趣，建议傍晚去，既能看江景又能拍夜景，还能逛逛里面的小吃街哦！",
+      "stage": "collecting",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "回复长度=168 字符（阈值 50）"
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "话题关键词匹配=是 (关键词: 历史, 建于, 建筑)"
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "非槽位填充回复（标记数=0）"
+        }
+      },
+      "category": "chat",
+      "query_pass": true
+    },
+    {
+      "id": "c03",
+      "input": "第一次去三亚，有什么需要注意的？给点建议",
+      "expect": {
+        "focus": "chat-tips",
+        "category": "chat"
+      },
+      "elapsed_s": 2.0,
+      "http": 200,
+      "reply": "第一次去三亚的话，有几点建议给你：首先是防晒和补水，三亚阳光很足，SPF50+的防晒霜、帽子和墨镜必备，随身带水避免中暑。另外，吃海鲜别贪便宜去路边摊，推荐去第一市场或春园广场，选明码标价的店，记得别被“拉客”的忽悠哦！如果想省心，可以告诉我你的预算和天数，我用「对话规划」帮你生成详细行程～",
+      "stage": "collecting",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "回复长度=146 字符（阈值 50）"
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "话题关键词匹配=是 (关键词: 注意, 建议, 推荐)"
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "非槽位填充回复（标记数=1）"
+        }
+      },
+      "category": "chat",
+      "query_pass": true
+    },
+    {
+      "id": "c04",
+      "input": "成都和重庆哪个更值得去？帮我分析一下",
+      "expect": {
+        "focus": "chat-compare",
+        "category": "chat"
+      },
+      "elapsed_s": 2.1,
+      "http": 200,
+      "reply": "哈哈，这两个城市我都超爱，但风格确实不一样！成都更悠闲，适合慢慢逛、吃火锅、看熊猫，生活节奏慢得像在喝下午茶；重庆则像过山车，魔幻的山城地形、洪崖洞夜景和火辣辣的江湖菜，适合喜欢刺激和拍照的朋友。如果时间充裕，建议两个都去，毕竟高铁才1小时多，不过现在你得先告诉我：你更喜欢悠闲逛吃还是冒险打卡？",
+      "stage": "collecting",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "回复长度=148 字符（阈值 50）"
+        },
+        "chat_topic_relevant": {
+          "pass": false,
+          "detail": "话题关键词匹配=否 (关键词: 对比, 比较, 区别)"
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "非槽位填充回复（标记数=1）"
+        }
+      },
+      "category": "chat",
+      "query_pass": false
+    },
+    {
+      "id": "c05",
+      "input": "你好，请问你能帮我规划旅行吗？",
+      "expect": {
+        "focus": "chat-greeting",
+        "category": "chat"
+      },
+      "elapsed_s": 1.6,
+      "http": 200,
+      "reply": "当然可以！我覆盖了中国15个热门旅游城市，像重庆、成都、北京、上海这些地方我都很熟。😊 如果你有具体的目的地、天数或预算想法，不妨告诉我，我可以帮你推荐景点和美食～或者，你也可以用「对话规划」功能，让我为你生成一份详细的行程安排！",
+      "stage": "collecting",
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_threshold": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "回复长度=115 字符（阈值 50）"
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "话题关键词匹配=是 (关键词: 可以, 能, 帮)"
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "非槽位填充回复（标记数=1）"
+        }
+      },
+      "category": "chat",
+      "query_pass": true
+    }
+  ]
+}

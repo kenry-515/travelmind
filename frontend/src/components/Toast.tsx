@@ -8,29 +8,34 @@ interface ToastItem {
 }
 
 let nextId = 0
-let addToastFn: ((message: ReactNode, type?: ToastItem['type']) => void) | null = null
+let addToastFn: ((message: ReactNode, type?: ToastItem['type'], duration?: number) => void) | null = null
+
+interface ToastOptions {
+  duration?: number
+}
 
 /**
  * Programmatic toast helper — call from anywhere without React context.
  * Usage: toast('消息内容')  or  toast.error('错误信息')
+ *        toast.success('已保存', { duration: 4000 })
  */
-export const toast = (message: ReactNode, type: ToastItem['type'] = 'info') => {
-  addToastFn?.(message, type)
+export const toast = (message: ReactNode, type: ToastItem['type'] = 'info', opts?: ToastOptions) => {
+  addToastFn?.(message, type, opts?.duration)
 }
-toast.info = (m: ReactNode) => toast(m, 'info')
-toast.success = (m: ReactNode) => toast(m, 'success')
-toast.warning = (m: ReactNode) => toast(m, 'warning')
-toast.error = (m: ReactNode) => toast(m, 'error')
+toast.info = (m: ReactNode, opts?: ToastOptions) => toast(m, 'info', opts)
+toast.success = (m: ReactNode, opts?: ToastOptions) => toast(m, 'success', opts)
+toast.warning = (m: ReactNode, opts?: ToastOptions) => toast(m, 'warning', opts)
+toast.error = (m: ReactNode, opts?: ToastOptions) => toast(m, 'error', opts)
 
 export function ToastContainer() {
   const [toasts, setToasts] = useState<ToastItem[]>([])
 
-  const addToast = useCallback((message: ReactNode, type: ToastItem['type'] = 'info') => {
+  const addToast = useCallback((message: ReactNode, type: ToastItem['type'] = 'info', duration?: number) => {
     const id = nextId++
     setToasts((prev) => [...prev, { id, message, type }])
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id))
-    }, 3500)
+    }, duration ?? 3500)
   }, [])
 
   useEffect(() => {
@@ -54,7 +59,7 @@ export function ToastContainer() {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className={`flex items-center gap-3 rounded-lg px-4 py-3 shadow-lg animate-toast-in ${colors[t.type]} min-w-[280px] max-w-md`}
+          className={`flex items-center gap-3 rounded-2xl px-4 py-3 shadow-lg animate-toast-in ${colors[t.type]} min-w-[280px] max-w-md`}
         >
           <span className="flex-1 text-sm">{t.message}</span>
           <button

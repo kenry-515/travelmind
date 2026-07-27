@@ -59,9 +59,9 @@ def main() -> int:
     try:
         r = httpx.get(f"{BASE}/weather/cities", timeout=10, trust_env=False)
         cities = r.json().get("cities", [])
-        check("weather/cities: 15 城", len(cities) == 15, f"got {len(cities)}")
+        check("weather/cities: ≥15 城", len(cities) >= 15, f"got {len(cities)}")
     except Exception as e:
-        check("weather/cities: 15 城", False, str(e))
+        check("weather/cities: ≥15 城", False, str(e))
 
     try:
         r = httpx.get(f"{BASE}/weather/三亚", params={"days": 3}, timeout=15, trust_env=False)

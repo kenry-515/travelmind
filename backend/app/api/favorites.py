@@ -85,8 +85,11 @@ async def add_favorite(
         db, user.id, body.target_type, body.target_id
     )
     if fav is None:
-        # Could be duplicate or DB error — in either case, return success
-        # since the desired state (favorited) is already achieved
+        # Could be duplicate or DB error — in either case, try to find existing
+        items = await favorite_service.list_favorites(db, user.id, target_type=body.target_type)
+        existing = next((f for f in items if f["target_id"] == body.target_id), None)
+        if existing:
+            return {"ok": True, "favorite": existing}
         return {"ok": True, "detail": "已收藏或服务暂不可用"}
 
     return {

@@ -76,12 +76,40 @@ class TestNextAction:
         assert action["type"] == "ask"
         assert "几天" in action["reply"]
 
-    def test_ready_goes_confirming(self):
+    def test_city_days_asks_preferences(self):
+        """Phase 12.25 核心：只有城市+天数时不得推卡片，先问偏好。"""
         st = _state()
-        st["slots"].update({"city": "重庆", "days": 3})
+        st["slots"].update({"city": "南宁", "days": 3})
+        action = next_action(st)
+        assert action["type"] == "ask"
+        assert "怎么玩" in action["reply"] or "偏好" in action["reply"]
+        assert st["stage"] == "collecting"  # 不进入 confirming
+
+    def test_full_slots_confirm(self):
+        st = _state()
+        st["slots"].update({"city": "重庆", "days": 3, "tags": ["美食"]})
         action = next_action(st)
         assert action["type"] == "confirm"
         assert st["stage"] == "confirming"
+
+    def test_defer_phrase_confirms_with_defaults(self):
+        """放权语「随便你看着办」→ 跳过剩余追问，默认值明示后确认。"""
+        st = _state()
+        st["slots"]["city"] = "南宁"
+        action = next_action(st, text="随便，你看着办吧")
+        assert action["type"] == "confirm"
+        assert st["slots"]["days"] == 3
+        assert "默认值" in action["reply"]
+
+    def test_each_slot_asked_only_once(self):
+        """同一槽位不重复追问：忽略天数问题 → 下一轮问偏好而非再问天数。"""
+        st = _state()
+        st["slots"]["city"] = "南宁"
+        a1 = next_action(st)
+        assert a1["type"] == "ask" and "几天" in a1["reply"]
+        # 用户答非所问，天数仍空 → 不应再问天数
+        a2 = next_action(st)
+        assert not (a2["type"] == "ask" and "几天" in a2["reply"])
 
     def test_followup_cap_then_defaults(self):
         st = _state()
@@ -97,6 +125,106 @@ class TestNextAction:
         next_action(st)
         next_action(st)
         assert st["followups_used"] == 2
+
+
+class TestTryRemoveItem:
+    """Phase 12.27：delivered 态单项确定性删除（"去掉 XX"）。"""
+
+    def _it(self):
+        return {
+            "trip": {"city": "重庆", "daysCount": 2, "stats": []},
+            "days": [
+                {"day": 1, "items": [
+                    {"poi": "洪崖洞", "time": "09:00", "note": ""},
+                    {"poi": "解放碑", "time": "14:00", "note": ""},
+                ]},
+                {"day": 2, "items": [
+                    {"poi": "磁器口古镇", "time": "09:00", "note": ""},
+                ]},
+            ],
+        }
+
+    def test_remove_named_item(self):
+        from app.agents.dialog_manager import try_remove_item
+        it = self._it()
+        r = try_remove_item(it, "把洪崖洞去掉")
+        assert r == ("洪崖洞", 1)
+        pois = [i["poi"] for i in it["days"][0]["items"]]
+        assert pois == ["解放碑"]
+
+    def test_remove_by_normalized_name(self):
+        from app.agents.dialog_manager import try_remove_item
+        it = self._it()
+        # 磁器口古镇移到第 1 天（2 项），验证核心名匹配且不受空天保护影响
+        it["days"][0]["items"].append(it["days"][1]["items"].pop(0))
+        r = try_remove_item(it, "磁器口不想去了")
+        assert r == ("磁器口古镇", 1)
+
+    def test_no_match_returns_none(self):
+        from app.agents.dialog_manager import try_remove_item
+        it = self._it()
+        assert try_remove_item(it, "去掉大熊猫基地") is None
+        assert try_remove_item(it, "今天天气怎么样") is None
+
+    def test_day_would_empty_guard(self):
+        from app.agents.dialog_manager import try_remove_item
+        it = self._it()
+        r = try_remove_item(it, "把磁器口古镇删掉")
+        assert r and r[0] == "__day_would_empty__"
+        assert len(it["days"][1]["items"]) == 1  # 未删
+
+    def test_stats_recomputed(self):
+        from app.agents.dialog_manager import try_remove_item
+        it = self._it()
+        try_remove_item(it, "去掉洪崖洞")
+        stats = {s["label"]: s["value"] for s in it["trip"]["stats"]}
+        assert stats.get("计划地点") == "2 个"  # 3 项游览删 1 → 2
+
+
+class TestGroundExtraction:
+    """Phase 12.25 接地校验：LLM 提取值必须有原文依据。
+
+    根因回归：「我想去惠州玩」被 extract_profile 补出 days=3、
+    tags=["休闲","自然"]，槽位假满 → 直接推生成卡片。"""
+
+    def test_fabricated_days_and_tags_dropped(self):
+        from app.agents.dialog_manager import ground_extraction
+        out = ground_extraction(
+            {"destination": "惠州", "days": 3, "tags": ["休闲", "自然"]},
+            "我想去惠州玩",
+        )
+        assert out["days"] is None
+        assert out["tags"] == []
+        assert out["destination"] == "惠州"  # 城市放行（覆盖校验兜底）
+
+    def test_days_with_cue_kept(self):
+        from app.agents.dialog_manager import ground_extraction
+        out = ground_extraction({"days": 3, "tags": []}, "重庆3日游")
+        assert out["days"] == 3
+
+    def test_tag_synonym_cues(self):
+        from app.agents.dialog_manager import ground_extraction
+        out = ground_extraction({"tags": ["美食", "休闲"]}, "想吃粉")
+        assert out["tags"] == ["美食"]  # 吃→美食 放行；休闲 无依据丢弃
+
+    def test_tag_literal_kept(self):
+        from app.agents.dialog_manager import ground_extraction
+        out = ground_extraction({"tags": ["网红打卡"]}, "想去网红打卡地")
+        assert out["tags"] == ["网红打卡"]
+
+    def test_companions_cue(self):
+        from app.agents.dialog_manager import ground_extraction
+        out = ground_extraction({"companions": "家庭"}, "想带爸妈出去玩")
+        assert out["companions"] == "家庭"
+        out2 = ground_extraction({"companions": "家庭"}, "想去南宁")
+        assert out2["companions"] is None
+
+    def test_budget_and_pace_cues(self):
+        from app.agents.dialog_manager import ground_extraction
+        out = ground_extraction(
+            {"budget_level": "经济", "travel_style": "休闲"}, "预算有限，想穷游")
+        assert out["budget_level"] == "经济"
+        assert out["travel_style"] is None  # 无节奏线索
 
 
 class TestComboSuggestions:

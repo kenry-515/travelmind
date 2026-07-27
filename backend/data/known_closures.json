@@ -1,0 +1,15 @@
+{
+  "updated_at": "2026-07-21",
+  "description": "人工核实的停业/搬迁 POI 清单，用于行程生成时自动替换。高德 POI 数据对停业景点可能滞后，此清单经人工核实。",
+  "closures": [
+    {
+      "name": "美心洋人街",
+      "city": "重庆",
+      "status": "closed",
+      "closed_since": "2024",
+      "evidence": "原址（南岸区）已停业搬迁至涪陵美心红酒小镇",
+      "replacement_keyword": "弹子石老街",
+      "replacement_note": "已确认关闭（2024），临时为您替换为弹子石老街"
+    }
+  ]
+}

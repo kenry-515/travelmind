@@ -2,101 +2,3122 @@
   "description": "TravelMind 热门趋势数据 — 人工维护的初始基准数据，后续可替换为实时 API",
   "version": "1.0.0",
   "updated": "2026-07-18",
-  "source": "Manual curation from public hot lists (Ctrip, Mafengwo, Xiaohongshu, Douyin)",
+  "source": "Manual curation from public hot lists (Ctrip, Mafengwo, Xiaohongshu, Douyin) + Social Media + Social Media",
   "notes": "Heat score 0-100. Higher = more trending. Updated monthly.",
   "trends": [
-    {"city": "重庆", "place_name": "洪崖洞", "tag": "夜景", "heat_score": 98, "rank": 1, "source": "douyin_hot"},
-    {"city": "重庆", "place_name": "李子坝轻轨站", "tag": "网红打卡", "heat_score": 92, "rank": 2, "source": "douyin_hot"},
-    {"city": "重庆", "place_name": "长江索道", "tag": "夜景", "heat_score": 88, "rank": 3, "source": "xiaohongshu"},
-    {"city": "重庆", "place_name": "磁器口古镇", "tag": "古镇", "heat_score": 85, "rank": 4, "source": "ctrip_hot"},
-    {"city": "重庆", "place_name": "解放碑", "tag": "购物", "heat_score": 80, "rank": 5, "source": "ctrip_hot"},
-    {"city": "重庆", "place_name": "南山一棵树", "tag": "夜景", "heat_score": 78, "rank": 6, "source": "xiaohongshu"},
-    {"city": "重庆", "place_name": "武隆天生三桥", "tag": "自然", "heat_score": 75, "rank": 7, "source": "ctrip_hot"},
-    {"city": "重庆", "place_name": "鹅岭二厂", "tag": "文艺", "heat_score": 72, "rank": 8, "source": "xiaohongshu"},
-
-    {"city": "成都", "place_name": "大熊猫繁育研究基地", "tag": "亲子", "heat_score": 96, "rank": 1, "source": "ctrip_hot"},
-    {"city": "成都", "place_name": "宽窄巷子", "tag": "美食", "heat_score": 90, "rank": 2, "source": "douyin_hot"},
-    {"city": "成都", "place_name": "锦里古街", "tag": "古镇", "heat_score": 85, "rank": 3, "source": "ctrip_hot"},
-    {"city": "成都", "place_name": "武侯祠", "tag": "历史", "heat_score": 82, "rank": 4, "source": "ctrip_hot"},
-    {"city": "成都", "place_name": "太古里", "tag": "购物", "heat_score": 88, "rank": 5, "source": "douyin_hot"},
-    {"city": "成都", "place_name": "青城山", "tag": "自然", "heat_score": 78, "rank": 6, "source": "ctrip_hot"},
-    {"city": "成都", "place_name": "都江堰", "tag": "历史", "heat_score": 76, "rank": 7, "source": "ctrip_hot"},
-
-    {"city": "广州", "place_name": "广州塔", "tag": "夜景", "heat_score": 92, "rank": 1, "source": "douyin_hot"},
-    {"city": "广州", "place_name": "长隆欢乐世界", "tag": "亲子", "heat_score": 90, "rank": 2, "source": "ctrip_hot"},
-    {"city": "广州", "place_name": "白云山", "tag": "自然", "heat_score": 82, "rank": 3, "source": "ctrip_hot"},
-    {"city": "广州", "place_name": "沙面", "tag": "摄影", "heat_score": 80, "rank": 4, "source": "xiaohongshu"},
-    {"city": "广州", "place_name": "陈家祠", "tag": "历史", "heat_score": 78, "rank": 5, "source": "ctrip_hot"},
-
-    {"city": "北京", "place_name": "故宫", "tag": "历史", "heat_score": 98, "rank": 1, "source": "ctrip_hot"},
-    {"city": "北京", "place_name": "环球影城", "tag": "亲子", "heat_score": 95, "rank": 2, "source": "douyin_hot"},
-    {"city": "北京", "place_name": "长城", "tag": "历史", "heat_score": 93, "rank": 3, "source": "ctrip_hot"},
-    {"city": "北京", "place_name": "南锣鼓巷", "tag": "美食", "heat_score": 85, "rank": 4, "source": "xiaohongshu"},
-    {"city": "北京", "place_name": "颐和园", "tag": "自然", "heat_score": 82, "rank": 5, "source": "ctrip_hot"},
-    {"city": "北京", "place_name": "798艺术区", "tag": "文艺", "heat_score": 80, "rank": 6, "source": "xiaohongshu"},
-
-    {"city": "上海", "place_name": "外滩", "tag": "夜景", "heat_score": 97, "rank": 1, "source": "douyin_hot"},
-    {"city": "上海", "place_name": "迪士尼乐园", "tag": "亲子", "heat_score": 96, "rank": 2, "source": "ctrip_hot"},
-    {"city": "上海", "place_name": "南京路步行街", "tag": "购物", "heat_score": 88, "rank": 3, "source": "ctrip_hot"},
-    {"city": "上海", "place_name": "豫园", "tag": "古镇", "heat_score": 84, "rank": 4, "source": "ctrip_hot"},
-    {"city": "上海", "place_name": "武康路", "tag": "文艺", "heat_score": 82, "rank": 5, "source": "xiaohongshu"},
-
-    {"city": "西安", "place_name": "兵马俑", "tag": "历史", "heat_score": 99, "rank": 1, "source": "ctrip_hot"},
-    {"city": "西安", "place_name": "大唐不夜城", "tag": "夜景", "heat_score": 95, "rank": 2, "source": "douyin_hot"},
-    {"city": "西安", "place_name": "回民街", "tag": "美食", "heat_score": 88, "rank": 3, "source": "ctrip_hot"},
-    {"city": "西安", "place_name": "大雁塔", "tag": "历史", "heat_score": 85, "rank": 4, "source": "ctrip_hot"},
-    {"city": "西安", "place_name": "西安城墙", "tag": "历史", "heat_score": 82, "rank": 5, "source": "ctrip_hot"},
-
-    {"city": "杭州", "place_name": "西湖", "tag": "自然", "heat_score": 98, "rank": 1, "source": "ctrip_hot"},
-    {"city": "杭州", "place_name": "灵隐寺", "tag": "寺庙", "heat_score": 90, "rank": 2, "source": "ctrip_hot"},
-    {"city": "杭州", "place_name": "法喜寺", "tag": "寺庙", "heat_score": 85, "rank": 3, "source": "xiaohongshu"},
-    {"city": "杭州", "place_name": "宋城", "tag": "打卡", "heat_score": 82, "rank": 4, "source": "ctrip_hot"},
-    {"city": "杭州", "place_name": "龙井村", "tag": "自然", "heat_score": 78, "rank": 5, "source": "xiaohongshu"},
-
-    {"city": "长沙", "place_name": "橘子洲头", "tag": "网红打卡", "heat_score": 95, "rank": 1, "source": "douyin_hot"},
-    {"city": "长沙", "place_name": "太平街", "tag": "美食", "heat_score": 90, "rank": 2, "source": "xiaohongshu"},
-    {"city": "长沙", "place_name": "岳麓山", "tag": "自然", "heat_score": 85, "rank": 3, "source": "ctrip_hot"},
-    {"city": "长沙", "place_name": "茶颜悦色", "tag": "美食", "heat_score": 92, "rank": 4, "source": "douyin_hot"},
-    {"city": "长沙", "place_name": "湖南省博物馆", "tag": "博物馆", "heat_score": 80, "rank": 5, "source": "ctrip_hot"},
-
-    {"city": "厦门", "place_name": "鼓浪屿", "tag": "海岛", "heat_score": 96, "rank": 1, "source": "ctrip_hot"},
-    {"city": "厦门", "place_name": "曾厝垵", "tag": "美食", "heat_score": 85, "rank": 2, "source": "xiaohongshu"},
-    {"city": "厦门", "place_name": "环岛路", "tag": "骑行", "heat_score": 82, "rank": 3, "source": "xiaohongshu"},
-    {"city": "厦门", "place_name": "南普陀寺", "tag": "寺庙", "heat_score": 78, "rank": 4, "source": "ctrip_hot"},
-    {"city": "厦门", "place_name": "厦门大学", "tag": "摄影", "heat_score": 80, "rank": 5, "source": "xiaohongshu"},
-
-    {"city": "大理", "place_name": "洱海", "tag": "自然", "heat_score": 95, "rank": 1, "source": "xiaohongshu"},
-    {"city": "大理", "place_name": "大理古城", "tag": "古镇", "heat_score": 92, "rank": 2, "source": "ctrip_hot"},
-    {"city": "大理", "place_name": "苍山", "tag": "爬山", "heat_score": 85, "rank": 3, "source": "ctrip_hot"},
-    {"city": "大理", "place_name": "喜洲古镇", "tag": "古镇", "heat_score": 82, "rank": 4, "source": "xiaohongshu"},
-    {"city": "大理", "place_name": "双廊", "tag": "摄影", "heat_score": 80, "rank": 5, "source": "xiaohongshu"},
-    {"city": "三亚", "place_name": "亚龙湾", "tag": "海滩", "heat_score": 95, "rank": 1, "source": "ctrip_hot"},
-    {"city": "三亚", "place_name": "蜈支洲岛", "tag": "海岛", "heat_score": 93, "rank": 2, "source": "douyin_hot"},
-    {"city": "三亚", "place_name": "天涯海角", "tag": "网红打卡", "heat_score": 90, "rank": 3, "source": "ctrip_hot"},
-    {"city": "三亚", "place_name": "南山文化旅游区", "tag": "寺庙", "heat_score": 85, "rank": 4, "source": "mafengwo"},
-    {"city": "三亚", "place_name": "亚特兰蒂斯水世界", "tag": "亲子", "heat_score": 82, "rank": 5, "source": "xiaohongshu"},
-    {"city": "三亚", "place_name": "大东海", "tag": "海滩", "heat_score": 80, "rank": 6, "source": "ctrip_hot"},
-    {"city": "桂林", "place_name": "漓江", "tag": "自然", "heat_score": 96, "rank": 1, "source": "ctrip_hot"},
-    {"city": "桂林", "place_name": "龙脊梯田", "tag": "自然", "heat_score": 91, "rank": 2, "source": "xiaohongshu"},
-    {"city": "桂林", "place_name": "象鼻山", "tag": "网红打卡", "heat_score": 90, "rank": 3, "source": "ctrip_hot"},
-    {"city": "桂林", "place_name": "阳朔西街", "tag": "夜生活", "heat_score": 88, "rank": 4, "source": "douyin_hot"},
-    {"city": "桂林", "place_name": "两江四湖", "tag": "夜景", "heat_score": 84, "rank": 5, "source": "ctrip_hot"},
-    {"city": "桂林", "place_name": "遇龙河", "tag": "自然", "heat_score": 82, "rank": 6, "source": "mafengwo"},
-    {"city": "苏州", "place_name": "拙政园", "tag": "历史", "heat_score": 95, "rank": 1, "source": "ctrip_hot"},
-    {"city": "苏州", "place_name": "苏州博物馆", "tag": "博物馆", "heat_score": 92, "rank": 2, "source": "xiaohongshu"},
-    {"city": "苏州", "place_name": "平江路", "tag": "古镇", "heat_score": 90, "rank": 3, "source": "douyin_hot"},
-    {"city": "苏州", "place_name": "周庄古镇", "tag": "古镇", "heat_score": 89, "rank": 4, "source": "ctrip_hot"},
-    {"city": "苏州", "place_name": "狮子林", "tag": "历史", "heat_score": 85, "rank": 5, "source": "mafengwo"},
-    {"city": "苏州", "place_name": "金鸡湖", "tag": "夜景", "heat_score": 82, "rank": 6, "source": "xiaohongshu"},
-    {"city": "张家界", "place_name": "张家界国家森林公园", "tag": "自然", "heat_score": 98, "rank": 1, "source": "ctrip_hot"},
-    {"city": "张家界", "place_name": "天门山国家森林公园", "tag": "自然", "heat_score": 95, "rank": 2, "source": "douyin_hot"},
-    {"city": "张家界", "place_name": "大峡谷玻璃桥", "tag": "网红打卡", "heat_score": 90, "rank": 3, "source": "douyin_hot"},
-    {"city": "张家界", "place_name": "黄龙洞", "tag": "溶洞", "heat_score": 82, "rank": 4, "source": "mafengwo"},
-    {"city": "张家界", "place_name": "宝峰湖", "tag": "湖泊", "heat_score": 78, "rank": 5, "source": "ctrip_hot"},
-    {"city": "丽江", "place_name": "丽江古城", "tag": "古镇", "heat_score": 96, "rank": 1, "source": "ctrip_hot"},
-    {"city": "丽江", "place_name": "玉龙雪山", "tag": "自然", "heat_score": 95, "rank": 2, "source": "ctrip_hot"},
-    {"city": "丽江", "place_name": "蓝月谷", "tag": "自然", "heat_score": 90, "rank": 3, "source": "xiaohongshu"},
-    {"city": "丽江", "place_name": "束河古镇", "tag": "古镇", "heat_score": 86, "rank": 4, "source": "mafengwo"},
-    {"city": "丽江", "place_name": "泸沽湖", "tag": "湖泊", "heat_score": 85, "rank": 5, "source": "ctrip_hot"}
-  ]
+    {
+      "city": "重庆",
+      "place_name": "洪崖洞",
+      "tag": "夜景",
+      "heat_score": 98,
+      "rank": 1,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "重庆",
+      "place_name": "李子坝轻轨站",
+      "tag": "网红打卡",
+      "heat_score": 92,
+      "rank": 2,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "重庆",
+      "place_name": "长江索道",
+      "tag": "夜景",
+      "heat_score": 88,
+      "rank": 3,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "重庆",
+      "place_name": "磁器口古镇",
+      "tag": "古镇",
+      "heat_score": 85,
+      "rank": 4,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "重庆",
+      "place_name": "解放碑",
+      "tag": "购物",
+      "heat_score": 80,
+      "rank": 5,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "重庆",
+      "place_name": "南山一棵树",
+      "tag": "夜景",
+      "heat_score": 78,
+      "rank": 6,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "重庆",
+      "place_name": "武隆天生三桥",
+      "tag": "自然",
+      "heat_score": 75,
+      "rank": 7,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "重庆",
+      "place_name": "鹅岭二厂",
+      "tag": "文艺",
+      "heat_score": 72,
+      "rank": 8,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "成都",
+      "place_name": "大熊猫繁育研究基地",
+      "tag": "亲子",
+      "heat_score": 96,
+      "rank": 1,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "成都",
+      "place_name": "宽窄巷子",
+      "tag": "美食",
+      "heat_score": 90,
+      "rank": 2,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "成都",
+      "place_name": "锦里古街",
+      "tag": "古镇",
+      "heat_score": 85,
+      "rank": 3,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "成都",
+      "place_name": "武侯祠",
+      "tag": "历史",
+      "heat_score": 82,
+      "rank": 4,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "成都",
+      "place_name": "太古里",
+      "tag": "购物",
+      "heat_score": 88,
+      "rank": 5,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "成都",
+      "place_name": "青城山",
+      "tag": "自然",
+      "heat_score": 78,
+      "rank": 6,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "成都",
+      "place_name": "都江堰",
+      "tag": "历史",
+      "heat_score": 76,
+      "rank": 7,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "广州",
+      "place_name": "广州塔",
+      "tag": "夜景",
+      "heat_score": 92,
+      "rank": 1,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "广州",
+      "place_name": "长隆欢乐世界",
+      "tag": "亲子",
+      "heat_score": 90,
+      "rank": 2,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "广州",
+      "place_name": "白云山",
+      "tag": "自然",
+      "heat_score": 82,
+      "rank": 3,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "广州",
+      "place_name": "沙面",
+      "tag": "摄影",
+      "heat_score": 80,
+      "rank": 4,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "广州",
+      "place_name": "陈家祠",
+      "tag": "历史",
+      "heat_score": 78,
+      "rank": 5,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "北京",
+      "place_name": "故宫",
+      "tag": "历史",
+      "heat_score": 98,
+      "rank": 1,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "北京",
+      "place_name": "环球影城",
+      "tag": "亲子",
+      "heat_score": 95,
+      "rank": 2,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "北京",
+      "place_name": "长城",
+      "tag": "历史",
+      "heat_score": 93,
+      "rank": 3,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "北京",
+      "place_name": "南锣鼓巷",
+      "tag": "美食",
+      "heat_score": 85,
+      "rank": 4,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "北京",
+      "place_name": "颐和园",
+      "tag": "自然",
+      "heat_score": 82,
+      "rank": 5,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "北京",
+      "place_name": "798艺术区",
+      "tag": "文艺",
+      "heat_score": 80,
+      "rank": 6,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "上海",
+      "place_name": "外滩",
+      "tag": "夜景",
+      "heat_score": 97,
+      "rank": 1,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "上海",
+      "place_name": "迪士尼乐园",
+      "tag": "亲子",
+      "heat_score": 96,
+      "rank": 2,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "上海",
+      "place_name": "南京路步行街",
+      "tag": "购物",
+      "heat_score": 88,
+      "rank": 3,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "上海",
+      "place_name": "豫园",
+      "tag": "古镇",
+      "heat_score": 84,
+      "rank": 4,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "上海",
+      "place_name": "武康路",
+      "tag": "文艺",
+      "heat_score": 82,
+      "rank": 5,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "西安",
+      "place_name": "兵马俑",
+      "tag": "历史",
+      "heat_score": 99,
+      "rank": 1,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "西安",
+      "place_name": "大唐不夜城",
+      "tag": "夜景",
+      "heat_score": 95,
+      "rank": 2,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "西安",
+      "place_name": "回民街",
+      "tag": "美食",
+      "heat_score": 88,
+      "rank": 3,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "西安",
+      "place_name": "大雁塔",
+      "tag": "历史",
+      "heat_score": 85,
+      "rank": 4,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "西安",
+      "place_name": "西安城墙",
+      "tag": "历史",
+      "heat_score": 82,
+      "rank": 5,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "杭州",
+      "place_name": "西湖",
+      "tag": "自然",
+      "heat_score": 98,
+      "rank": 1,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "杭州",
+      "place_name": "灵隐寺",
+      "tag": "寺庙",
+      "heat_score": 90,
+      "rank": 2,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "杭州",
+      "place_name": "法喜寺",
+      "tag": "寺庙",
+      "heat_score": 85,
+      "rank": 3,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "杭州",
+      "place_name": "宋城",
+      "tag": "打卡",
+      "heat_score": 82,
+      "rank": 4,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "杭州",
+      "place_name": "龙井村",
+      "tag": "自然",
+      "heat_score": 78,
+      "rank": 5,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "长沙",
+      "place_name": "橘子洲头",
+      "tag": "网红打卡",
+      "heat_score": 95,
+      "rank": 1,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "长沙",
+      "place_name": "太平街",
+      "tag": "美食",
+      "heat_score": 90,
+      "rank": 2,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "长沙",
+      "place_name": "岳麓山",
+      "tag": "自然",
+      "heat_score": 85,
+      "rank": 3,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "长沙",
+      "place_name": "茶颜悦色",
+      "tag": "美食",
+      "heat_score": 92,
+      "rank": 4,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "长沙",
+      "place_name": "湖南省博物馆",
+      "tag": "博物馆",
+      "heat_score": 80,
+      "rank": 5,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "厦门",
+      "place_name": "鼓浪屿",
+      "tag": "海岛",
+      "heat_score": 96,
+      "rank": 1,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "厦门",
+      "place_name": "曾厝垵",
+      "tag": "美食",
+      "heat_score": 85,
+      "rank": 2,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "厦门",
+      "place_name": "环岛路",
+      "tag": "骑行",
+      "heat_score": 82,
+      "rank": 3,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "厦门",
+      "place_name": "南普陀寺",
+      "tag": "寺庙",
+      "heat_score": 78,
+      "rank": 4,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "厦门",
+      "place_name": "厦门大学",
+      "tag": "摄影",
+      "heat_score": 80,
+      "rank": 5,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "大理",
+      "place_name": "洱海",
+      "tag": "自然",
+      "heat_score": 95,
+      "rank": 1,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "大理",
+      "place_name": "大理古城",
+      "tag": "古镇",
+      "heat_score": 92,
+      "rank": 2,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "大理",
+      "place_name": "苍山",
+      "tag": "爬山",
+      "heat_score": 85,
+      "rank": 3,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "大理",
+      "place_name": "喜洲古镇",
+      "tag": "古镇",
+      "heat_score": 82,
+      "rank": 4,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "大理",
+      "place_name": "双廊",
+      "tag": "摄影",
+      "heat_score": 80,
+      "rank": 5,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "三亚",
+      "place_name": "亚龙湾",
+      "tag": "海滩",
+      "heat_score": 95,
+      "rank": 1,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "三亚",
+      "place_name": "蜈支洲岛",
+      "tag": "海岛",
+      "heat_score": 93,
+      "rank": 2,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "三亚",
+      "place_name": "天涯海角",
+      "tag": "网红打卡",
+      "heat_score": 90,
+      "rank": 3,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "三亚",
+      "place_name": "南山文化旅游区",
+      "tag": "寺庙",
+      "heat_score": 85,
+      "rank": 4,
+      "source": "mafengwo"
+    },
+    {
+      "city": "三亚",
+      "place_name": "亚特兰蒂斯水世界",
+      "tag": "亲子",
+      "heat_score": 82,
+      "rank": 5,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "三亚",
+      "place_name": "大东海",
+      "tag": "海滩",
+      "heat_score": 80,
+      "rank": 6,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "桂林",
+      "place_name": "漓江",
+      "tag": "自然",
+      "heat_score": 96,
+      "rank": 1,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "桂林",
+      "place_name": "龙脊梯田",
+      "tag": "自然",
+      "heat_score": 91,
+      "rank": 2,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "桂林",
+      "place_name": "象鼻山",
+      "tag": "网红打卡",
+      "heat_score": 90,
+      "rank": 3,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "桂林",
+      "place_name": "阳朔西街",
+      "tag": "夜生活",
+      "heat_score": 88,
+      "rank": 4,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "桂林",
+      "place_name": "两江四湖",
+      "tag": "夜景",
+      "heat_score": 84,
+      "rank": 5,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "桂林",
+      "place_name": "遇龙河",
+      "tag": "自然",
+      "heat_score": 82,
+      "rank": 6,
+      "source": "mafengwo"
+    },
+    {
+      "city": "苏州",
+      "place_name": "拙政园",
+      "tag": "历史",
+      "heat_score": 95,
+      "rank": 1,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "苏州",
+      "place_name": "苏州博物馆",
+      "tag": "博物馆",
+      "heat_score": 92,
+      "rank": 2,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "苏州",
+      "place_name": "平江路",
+      "tag": "古镇",
+      "heat_score": 90,
+      "rank": 3,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "苏州",
+      "place_name": "周庄古镇",
+      "tag": "古镇",
+      "heat_score": 89,
+      "rank": 4,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "苏州",
+      "place_name": "狮子林",
+      "tag": "历史",
+      "heat_score": 85,
+      "rank": 5,
+      "source": "mafengwo"
+    },
+    {
+      "city": "苏州",
+      "place_name": "金鸡湖",
+      "tag": "夜景",
+      "heat_score": 82,
+      "rank": 6,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "张家界",
+      "place_name": "张家界国家森林公园",
+      "tag": "自然",
+      "heat_score": 98,
+      "rank": 1,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "张家界",
+      "place_name": "天门山国家森林公园",
+      "tag": "自然",
+      "heat_score": 95,
+      "rank": 2,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "张家界",
+      "place_name": "大峡谷玻璃桥",
+      "tag": "网红打卡",
+      "heat_score": 90,
+      "rank": 3,
+      "source": "douyin_hot"
+    },
+    {
+      "city": "张家界",
+      "place_name": "黄龙洞",
+      "tag": "溶洞",
+      "heat_score": 82,
+      "rank": 4,
+      "source": "mafengwo"
+    },
+    {
+      "city": "张家界",
+      "place_name": "宝峰湖",
+      "tag": "湖泊",
+      "heat_score": 78,
+      "rank": 5,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "丽江",
+      "place_name": "丽江古城",
+      "tag": "古镇",
+      "heat_score": 96,
+      "rank": 1,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "丽江",
+      "place_name": "玉龙雪山",
+      "tag": "自然",
+      "heat_score": 95,
+      "rank": 2,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "丽江",
+      "place_name": "蓝月谷",
+      "tag": "自然",
+      "heat_score": 90,
+      "rank": 3,
+      "source": "xiaohongshu"
+    },
+    {
+      "city": "丽江",
+      "place_name": "束河古镇",
+      "tag": "古镇",
+      "heat_score": 86,
+      "rank": 4,
+      "source": "mafengwo"
+    },
+    {
+      "city": "丽江",
+      "place_name": "泸沽湖",
+      "tag": "湖泊",
+      "heat_score": 85,
+      "rank": 5,
+      "source": "ctrip_hot"
+    },
+    {
+      "city": "重庆",
+      "place_name": "解放碑八一路好吃街",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 92,
+      "trend": "上升"
+    },
+    {
+      "city": "重庆",
+      "place_name": "南滨路夜景",
+      "tag": "夜景",
+      "source": "xiaohongshu",
+      "heat": 82,
+      "trend": "上升"
+    },
+    {
+      "city": "重庆",
+      "place_name": "山城步道",
+      "tag": "小众",
+      "source": "xiaohongshu",
+      "heat": 70,
+      "trend": "上升"
+    },
+    {
+      "city": "重庆",
+      "place_name": "白象居",
+      "tag": "拍照",
+      "source": "douyin",
+      "heat": 80,
+      "trend": "稳定"
+    },
+    {
+      "city": "重庆",
+      "place_name": "枇杷园火锅",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 85,
+      "trend": "稳定"
+    },
+    {
+      "city": "成都",
+      "place_name": "大熊猫繁育基地",
+      "tag": "亲子",
+      "source": "douyin",
+      "heat": 95,
+      "trend": "上升"
+    },
+    {
+      "city": "成都",
+      "place_name": "人民公园鹤鸣茶社",
+      "tag": "体验",
+      "source": "xiaohongshu",
+      "heat": 78,
+      "trend": "上升"
+    },
+    {
+      "city": "成都",
+      "place_name": "玉林路小酒馆",
+      "tag": "文艺",
+      "source": "douyin",
+      "heat": 75,
+      "trend": "下降"
+    },
+    {
+      "city": "成都",
+      "place_name": "建设路小吃街",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 88,
+      "trend": "上升"
+    },
+    {
+      "city": "成都",
+      "place_name": "东郊记忆",
+      "tag": "拍照",
+      "source": "douyin",
+      "heat": 72,
+      "trend": "上升"
+    },
+    {
+      "city": "北京",
+      "place_name": "故宫博物院",
+      "tag": "历史",
+      "source": "xiaohongshu",
+      "heat": 98,
+      "trend": "稳定"
+    },
+    {
+      "city": "北京",
+      "place_name": "簋街",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 80,
+      "trend": "稳定"
+    },
+    {
+      "city": "北京",
+      "place_name": "四季民福烤鸭",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 88,
+      "trend": "上升"
+    },
+    {
+      "city": "北京",
+      "place_name": "古北水镇",
+      "tag": "古镇",
+      "source": "douyin",
+      "heat": 75,
+      "trend": "上升"
+    },
+    {
+      "city": "上海",
+      "place_name": "田子坊",
+      "tag": "文艺",
+      "source": "xiaohongshu",
+      "heat": 74,
+      "trend": "下降"
+    },
+    {
+      "city": "上海",
+      "place_name": "新天地",
+      "tag": "时尚",
+      "source": "douyin",
+      "heat": 80,
+      "trend": "稳定"
+    },
+    {
+      "city": "上海",
+      "place_name": "老场坊1933",
+      "tag": "拍照",
+      "source": "xiaohongshu",
+      "heat": 68,
+      "trend": "稳定"
+    },
+    {
+      "city": "杭州",
+      "place_name": "小河直街",
+      "tag": "文艺",
+      "source": "xiaohongshu",
+      "heat": 72,
+      "trend": "上升"
+    },
+    {
+      "city": "杭州",
+      "place_name": "知味观",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 80,
+      "trend": "稳定"
+    },
+    {
+      "city": "西安",
+      "place_name": "长安十二时辰",
+      "tag": "体验",
+      "source": "douyin",
+      "heat": 88,
+      "trend": "上升"
+    },
+    {
+      "city": "西安",
+      "place_name": "城墙骑行",
+      "tag": "体验",
+      "source": "xiaohongshu",
+      "heat": 78,
+      "trend": "稳定"
+    },
+    {
+      "city": "西安",
+      "place_name": "永兴坊",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 75,
+      "trend": "上升"
+    },
+    {
+      "city": "西安",
+      "place_name": "钟楼",
+      "tag": "历史",
+      "source": "xiaohongshu",
+      "heat": 82,
+      "trend": "稳定"
+    },
+    {
+      "city": "三亚",
+      "place_name": "免税店",
+      "tag": "购物",
+      "source": "xiaohongshu",
+      "heat": 88,
+      "trend": "上升"
+    },
+    {
+      "city": "三亚",
+      "place_name": "第一市场",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 72,
+      "trend": "下降"
+    },
+    {
+      "city": "三亚",
+      "place_name": "后海村",
+      "tag": "小众",
+      "source": "douyin",
+      "heat": 75,
+      "trend": "上升"
+    },
+    {
+      "city": "长沙",
+      "place_name": "超级文和友",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 90,
+      "trend": "上升"
+    },
+    {
+      "city": "长沙",
+      "place_name": "太平老街",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 82,
+      "trend": "稳定"
+    },
+    {
+      "city": "长沙",
+      "place_name": "IFS国金中心",
+      "tag": "购物",
+      "source": "xiaohongshu",
+      "heat": 76,
+      "trend": "上升"
+    },
+    {
+      "city": "长沙",
+      "place_name": "坡子街",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 80,
+      "trend": "稳定"
+    },
+    {
+      "city": "广州",
+      "place_name": "长隆野生动物园",
+      "tag": "亲子",
+      "source": "xiaohongshu",
+      "heat": 88,
+      "trend": "稳定"
+    },
+    {
+      "city": "广州",
+      "place_name": "沙面岛",
+      "tag": "拍照",
+      "source": "xiaohongshu",
+      "heat": 78,
+      "trend": "上升"
+    },
+    {
+      "city": "广州",
+      "place_name": "上下九步行街",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 72,
+      "trend": "下降"
+    },
+    {
+      "city": "广州",
+      "place_name": "点都德",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 85,
+      "trend": "稳定"
+    },
+    {
+      "city": "广州",
+      "place_name": "永庆坊",
+      "tag": "文艺",
+      "source": "xiaohongshu",
+      "heat": 74,
+      "trend": "上升"
+    },
+    {
+      "city": "厦门",
+      "place_name": "沙坡尾",
+      "tag": "拍照",
+      "source": "douyin",
+      "heat": 82,
+      "trend": "上升"
+    },
+    {
+      "city": "厦门",
+      "place_name": "第八市场",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 75,
+      "trend": "上升"
+    },
+    {
+      "city": "厦门",
+      "place_name": "植物园",
+      "tag": "自然",
+      "source": "xiaohongshu",
+      "heat": 72,
+      "trend": "稳定"
+    },
+    {
+      "city": "丽江",
+      "place_name": "白沙古镇",
+      "tag": "小众",
+      "source": "douyin",
+      "heat": 75,
+      "trend": "上升"
+    },
+    {
+      "city": "桂林",
+      "place_name": "遇龙河漂流",
+      "tag": "体验",
+      "source": "douyin",
+      "heat": 78,
+      "trend": "上升"
+    },
+    {
+      "city": "桂林",
+      "place_name": "二十元人民币背景",
+      "tag": "拍照",
+      "source": "xiaohongshu",
+      "heat": 76,
+      "trend": "稳定"
+    },
+    {
+      "city": "苏州",
+      "place_name": "山塘街",
+      "tag": "夜景",
+      "source": "xiaohongshu",
+      "heat": 78,
+      "trend": "稳定"
+    },
+    {
+      "city": "苏州",
+      "place_name": "同里古镇",
+      "tag": "古镇",
+      "source": "xiaohongshu",
+      "heat": 70,
+      "trend": "稳定"
+    },
+    {
+      "city": "大理",
+      "place_name": "双廊古镇",
+      "tag": "文艺",
+      "source": "xiaohongshu",
+      "heat": 80,
+      "trend": "上升"
+    },
+    {
+      "city": "大理",
+      "place_name": "理想邦",
+      "tag": "拍照",
+      "source": "xiaohongshu",
+      "heat": 72,
+      "trend": "上升"
+    },
+    {
+      "city": "张家界",
+      "place_name": "天门山",
+      "tag": "自然",
+      "source": "xiaohongshu",
+      "heat": 88,
+      "trend": "上升"
+    },
+    {
+      "city": "张家界",
+      "place_name": "玻璃栈道",
+      "tag": "体验",
+      "source": "douyin",
+      "heat": 85,
+      "trend": "稳定"
+    },
+    {
+      "city": "张家界",
+      "place_name": "大峡谷",
+      "tag": "自然",
+      "source": "xiaohongshu",
+      "heat": 72,
+      "trend": "稳定"
+    },
+    {
+      "city": "贵阳",
+      "place_name": "黔灵山公园",
+      "tag": "自然",
+      "source": "xiaohongshu",
+      "heat": 70,
+      "trend": "上升"
+    },
+    {
+      "city": "贵阳",
+      "place_name": "花溪夜郎谷",
+      "tag": "小众",
+      "source": "douyin",
+      "heat": 75,
+      "trend": "上升"
+    },
+    {
+      "city": "贵阳",
+      "place_name": "青岩古镇",
+      "tag": "古镇",
+      "source": "xiaohongshu",
+      "heat": 72,
+      "trend": "稳定"
+    },
+    {
+      "city": "贵阳",
+      "place_name": "二七路小吃街",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 78,
+      "trend": "稳定"
+    },
+    {
+      "city": "南宁",
+      "place_name": "青秀山",
+      "tag": "自然",
+      "source": "xiaohongshu",
+      "heat": 68,
+      "trend": "稳定"
+    },
+    {
+      "city": "南宁",
+      "place_name": "中山路夜市",
+      "tag": "美食",
+      "source": "dianping",
+      "heat": 82,
+      "trend": "上升"
+    },
+    {
+      "city": "南宁",
+      "place_name": "三街两巷",
+      "tag": "文艺",
+      "source": "douyin",
+      "heat": 70,
+      "trend": "上升"
+    },
+    {
+      "city": "黄山",
+      "place_name": "黄山风景区",
+      "tag": "自然",
+      "source": "xiaohongshu",
+      "heat": 90,
+      "trend": "稳定"
+    },
+    {
+      "city": "黄山",
+      "place_name": "宏村",
+      "tag": "古镇",
+      "source": "douyin",
+      "heat": 85,
+      "trend": "上升"
+    },
+    {
+      "city": "黄山",
+      "place_name": "西递",
+      "tag": "古镇",
+      "source": "xiaohongshu",
+      "heat": 72,
+      "trend": "稳定"
+    },
+    {
+      "city": "哈尔滨",
+      "place_name": "冰雪大世界",
+      "tag": "体验",
+      "source": "douyin",
+      "heat": 95,
+      "trend": "上升"
+    },
+    {
+      "city": "哈尔滨",
+      "place_name": "中央大街",
+      "tag": "历史",
+      "source": "xiaohongshu",
+      "heat": 82,
+      "trend": "稳定"
+    },
+    {
+      "city": "哈尔滨",
+      "place_name": "索菲亚教堂",
+      "tag": "拍照",
+      "source": "xiaohongshu",
+      "heat": 78,
+      "trend": "上升"
+    },
+    {
+      "city": "拉萨",
+      "place_name": "布达拉宫",
+      "tag": "历史",
+      "source": "douyin",
+      "heat": 96,
+      "trend": "稳定"
+    },
+    {
+      "city": "拉萨",
+      "place_name": "大昭寺",
+      "tag": "寺庙",
+      "source": "xiaohongshu",
+      "heat": 85,
+      "trend": "稳定"
+    },
+    {
+      "city": "拉萨",
+      "place_name": "纳木错",
+      "tag": "自然",
+      "source": "xiaohongshu",
+      "heat": 80,
+      "trend": "稳定"
+    },
+    {
+      "city": "香格里拉",
+      "place_name": "普达措国家公园",
+      "tag": "自然",
+      "source": "xiaohongshu",
+      "heat": 78,
+      "trend": "上升"
+    },
+    {
+      "city": "香格里拉",
+      "place_name": "松赞林寺",
+      "tag": "寺庙",
+      "source": "douyin",
+      "heat": 75,
+      "trend": "稳定"
+    },
+    {
+      "city": "香格里拉",
+      "place_name": "独克宗古城",
+      "tag": "古镇",
+      "source": "xiaohongshu",
+      "heat": 70,
+      "trend": "稳定"
+    },
+    {
+      "city": "重庆",
+      "place_name": "李子坝轻轨穿楼",
+      "tag": "网红打卡",
+      "source": "public",
+      "heat_score": 81,
+      "tier": 2
+    },
+    {
+      "city": "重庆",
+      "place_name": "南山一棵树观景台",
+      "tag": "夜景",
+      "source": "public",
+      "heat_score": 73,
+      "tier": 3
+    },
+    {
+      "city": "重庆",
+      "place_name": "重庆火锅",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 90,
+      "tier": 2
+    },
+    {
+      "city": "重庆",
+      "place_name": "重庆小面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 82,
+      "tier": 2
+    },
+    {
+      "city": "重庆",
+      "place_name": "酸辣粉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 73,
+      "tier": 3
+    },
+    {
+      "city": "重庆",
+      "place_name": "毛血旺",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 70,
+      "tier": 3
+    },
+    {
+      "city": "重庆",
+      "place_name": "八一好吃街",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 78,
+      "tier": 3
+    },
+    {
+      "city": "成都",
+      "place_name": "杜甫草堂",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 75,
+      "tier": 3
+    },
+    {
+      "city": "成都",
+      "place_name": "串串香",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 92,
+      "tier": 2
+    },
+    {
+      "city": "成都",
+      "place_name": "担担面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 74,
+      "tier": 3
+    },
+    {
+      "city": "成都",
+      "place_name": "龙抄手",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 74,
+      "tier": 3
+    },
+    {
+      "city": "成都",
+      "place_name": "钵钵鸡",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "成都",
+      "place_name": "兔头",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 53,
+      "tier": 4
+    },
+    {
+      "city": "北京",
+      "place_name": "天坛公园",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 89,
+      "tier": 2
+    },
+    {
+      "city": "北京",
+      "place_name": "什刹海",
+      "tag": "夜景",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "北京",
+      "place_name": "北京烤鸭",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 100,
+      "tier": 1
+    },
+    {
+      "city": "北京",
+      "place_name": "炸酱面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 71,
+      "tier": 3
+    },
+    {
+      "city": "北京",
+      "place_name": "铜锅涮肉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 91,
+      "tier": 2
+    },
+    {
+      "city": "北京",
+      "place_name": "豆汁儿焦圈",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 53,
+      "tier": 4
+    },
+    {
+      "city": "北京",
+      "place_name": "卤煮火烧",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 50,
+      "tier": 4
+    },
+    {
+      "city": "北京",
+      "place_name": "护国寺小吃",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 76,
+      "tier": 3
+    },
+    {
+      "city": "上海",
+      "place_name": "上海迪士尼乐园",
+      "tag": "亲子",
+      "source": "public",
+      "heat_score": 97,
+      "tier": 1
+    },
+    {
+      "city": "上海",
+      "place_name": "东方明珠",
+      "tag": "地标",
+      "source": "public",
+      "heat_score": 88,
+      "tier": 2
+    },
+    {
+      "city": "上海",
+      "place_name": "城隍庙",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 69,
+      "tier": 3
+    },
+    {
+      "city": "上海",
+      "place_name": "生煎包",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 83,
+      "tier": 2
+    },
+    {
+      "city": "上海",
+      "place_name": "小笼包",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 88,
+      "tier": 2
+    },
+    {
+      "city": "上海",
+      "place_name": "蟹粉面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 79,
+      "tier": 3
+    },
+    {
+      "city": "上海",
+      "place_name": "排骨年糕",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 68,
+      "tier": 3
+    },
+    {
+      "city": "上海",
+      "place_name": "本帮菜",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "上海",
+      "place_name": "云南南路美食街",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 79,
+      "tier": 3
+    },
+    {
+      "city": "杭州",
+      "place_name": "西溪湿地",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 85,
+      "tier": 2
+    },
+    {
+      "city": "杭州",
+      "place_name": "千岛湖",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 93,
+      "tier": 2
+    },
+    {
+      "city": "杭州",
+      "place_name": "东坡肉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 94,
+      "tier": 2
+    },
+    {
+      "city": "杭州",
+      "place_name": "西湖醋鱼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 69,
+      "tier": 3
+    },
+    {
+      "city": "杭州",
+      "place_name": "片儿川",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "杭州",
+      "place_name": "叫花鸡",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 72,
+      "tier": 3
+    },
+    {
+      "city": "杭州",
+      "place_name": "龙井虾仁",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 65,
+      "tier": 3
+    },
+    {
+      "city": "杭州",
+      "place_name": "河坊街",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 68,
+      "tier": 3
+    },
+    {
+      "city": "西安",
+      "place_name": "钟鼓楼",
+      "tag": "地标",
+      "source": "public",
+      "heat_score": 88,
+      "tier": 2
+    },
+    {
+      "city": "西安",
+      "place_name": "华清宫",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 92,
+      "tier": 2
+    },
+    {
+      "city": "西安",
+      "place_name": "长安十二时辰主题街区",
+      "tag": "体验",
+      "source": "public",
+      "heat_score": 78,
+      "tier": 3
+    },
+    {
+      "city": "西安",
+      "place_name": "肉夹馍",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 85,
+      "tier": 2
+    },
+    {
+      "city": "西安",
+      "place_name": "羊肉泡馍",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 85,
+      "tier": 2
+    },
+    {
+      "city": "西安",
+      "place_name": "凉皮",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 69,
+      "tier": 3
+    },
+    {
+      "city": "西安",
+      "place_name": "biangbiang面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "西安",
+      "place_name": "甑糕",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 65,
+      "tier": 3
+    },
+    {
+      "city": "西安",
+      "place_name": "葫芦头泡馍",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 59,
+      "tier": 4
+    },
+    {
+      "city": "西安",
+      "place_name": "大唐芙蓉园",
+      "tag": "夜景",
+      "source": "public",
+      "heat_score": 77,
+      "tier": 3
+    },
+    {
+      "city": "长沙",
+      "place_name": "臭豆腐",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 88,
+      "tier": 2
+    },
+    {
+      "city": "长沙",
+      "place_name": "口味虾",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 68,
+      "tier": 3
+    },
+    {
+      "city": "长沙",
+      "place_name": "糖油粑粑",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "长沙",
+      "place_name": "辣椒炒肉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 74,
+      "tier": 3
+    },
+    {
+      "city": "长沙",
+      "place_name": "岳麓书院",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 89,
+      "tier": 2
+    },
+    {
+      "city": "长沙",
+      "place_name": "火宫殿",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 68,
+      "tier": 3
+    },
+    {
+      "city": "广州",
+      "place_name": "长隆旅游度假区",
+      "tag": "亲子",
+      "source": "public",
+      "heat_score": 98,
+      "tier": 1
+    },
+    {
+      "city": "广州",
+      "place_name": "珠江夜游",
+      "tag": "夜景",
+      "source": "public",
+      "heat_score": 89,
+      "tier": 2
+    },
+    {
+      "city": "广州",
+      "place_name": "北京路步行街",
+      "tag": "购物",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "广州",
+      "place_name": "早茶",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 99,
+      "tier": 1
+    },
+    {
+      "city": "广州",
+      "place_name": "肠粉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 83,
+      "tier": 2
+    },
+    {
+      "city": "广州",
+      "place_name": "煲仔饭",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 74,
+      "tier": 3
+    },
+    {
+      "city": "广州",
+      "place_name": "烧鹅",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 80,
+      "tier": 2
+    },
+    {
+      "city": "广州",
+      "place_name": "双皮奶",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 72,
+      "tier": 3
+    },
+    {
+      "city": "广州",
+      "place_name": "泮塘路",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 54,
+      "tier": 4
+    },
+    {
+      "city": "深圳",
+      "place_name": "世界之窗",
+      "tag": "娱乐",
+      "source": "public",
+      "heat_score": 87,
+      "tier": 2
+    },
+    {
+      "city": "深圳",
+      "place_name": "欢乐谷",
+      "tag": "娱乐",
+      "source": "public",
+      "heat_score": 84,
+      "tier": 2
+    },
+    {
+      "city": "深圳",
+      "place_name": "大梅沙海滨公园",
+      "tag": "海滩",
+      "source": "public",
+      "heat_score": 82,
+      "tier": 2
+    },
+    {
+      "city": "深圳",
+      "place_name": "深圳湾公园",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 69,
+      "tier": 3
+    },
+    {
+      "city": "深圳",
+      "place_name": "东部华侨城",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 77,
+      "tier": 3
+    },
+    {
+      "city": "深圳",
+      "place_name": "华强北",
+      "tag": "购物",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "深圳",
+      "place_name": "椰子鸡",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 70,
+      "tier": 3
+    },
+    {
+      "city": "深圳",
+      "place_name": "沙井蚝",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 60,
+      "tier": 4
+    },
+    {
+      "city": "深圳",
+      "place_name": "光明乳鸽",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "深圳",
+      "place_name": "东门老街",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 76,
+      "tier": 3
+    },
+    {
+      "city": "武汉",
+      "place_name": "黄鹤楼",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 99,
+      "tier": 1
+    },
+    {
+      "city": "武汉",
+      "place_name": "东湖",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 82,
+      "tier": 2
+    },
+    {
+      "city": "武汉",
+      "place_name": "武汉大学",
+      "tag": "拍照",
+      "source": "public",
+      "heat_score": 94,
+      "tier": 2
+    },
+    {
+      "city": "武汉",
+      "place_name": "湖北省博物馆",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 87,
+      "tier": 2
+    },
+    {
+      "city": "武汉",
+      "place_name": "户部巷",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "武汉",
+      "place_name": "昙华林",
+      "tag": "文艺",
+      "source": "public",
+      "heat_score": 65,
+      "tier": 3
+    },
+    {
+      "city": "武汉",
+      "place_name": "长江大桥",
+      "tag": "地标",
+      "source": "public",
+      "heat_score": 90,
+      "tier": 2
+    },
+    {
+      "city": "武汉",
+      "place_name": "热干面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 98,
+      "tier": 1
+    },
+    {
+      "city": "武汉",
+      "place_name": "鸭脖",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 82,
+      "tier": 2
+    },
+    {
+      "city": "武汉",
+      "place_name": "三鲜豆皮",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 78,
+      "tier": 3
+    },
+    {
+      "city": "武汉",
+      "place_name": "面窝",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "武汉",
+      "place_name": "武昌鱼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "武汉",
+      "place_name": "吉庆街",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "南京",
+      "place_name": "中山陵",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 95,
+      "tier": 1
+    },
+    {
+      "city": "南京",
+      "place_name": "夫子庙",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 92,
+      "tier": 2
+    },
+    {
+      "city": "南京",
+      "place_name": "秦淮河",
+      "tag": "夜景",
+      "source": "public",
+      "heat_score": 82,
+      "tier": 2
+    },
+    {
+      "city": "南京",
+      "place_name": "南京博物院",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 83,
+      "tier": 2
+    },
+    {
+      "city": "南京",
+      "place_name": "总统府",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 83,
+      "tier": 2
+    },
+    {
+      "city": "南京",
+      "place_name": "玄武湖",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 68,
+      "tier": 3
+    },
+    {
+      "city": "南京",
+      "place_name": "鸡鸣寺",
+      "tag": "寺庙",
+      "source": "public",
+      "heat_score": 78,
+      "tier": 3
+    },
+    {
+      "city": "南京",
+      "place_name": "鸭血粉丝汤",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 90,
+      "tier": 2
+    },
+    {
+      "city": "南京",
+      "place_name": "盐水鸭",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 91,
+      "tier": 2
+    },
+    {
+      "city": "南京",
+      "place_name": "小笼包",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 65,
+      "tier": 3
+    },
+    {
+      "city": "南京",
+      "place_name": "牛肉锅贴",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 79,
+      "tier": 3
+    },
+    {
+      "city": "南京",
+      "place_name": "皮肚面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 58,
+      "tier": 4
+    },
+    {
+      "city": "南京",
+      "place_name": "老门东",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 74,
+      "tier": 3
+    },
+    {
+      "city": "天津",
+      "place_name": "天津之眼",
+      "tag": "夜景",
+      "source": "public",
+      "heat_score": 85,
+      "tier": 2
+    },
+    {
+      "city": "天津",
+      "place_name": "五大道",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 81,
+      "tier": 2
+    },
+    {
+      "city": "天津",
+      "place_name": "古文化街",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 75,
+      "tier": 3
+    },
+    {
+      "city": "天津",
+      "place_name": "意式风情区",
+      "tag": "文艺",
+      "source": "public",
+      "heat_score": 78,
+      "tier": 3
+    },
+    {
+      "city": "天津",
+      "place_name": "狗不理包子",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 86,
+      "tier": 2
+    },
+    {
+      "city": "天津",
+      "place_name": "煎饼果子",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 80,
+      "tier": 2
+    },
+    {
+      "city": "天津",
+      "place_name": "耳朵眼炸糕",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 70,
+      "tier": 3
+    },
+    {
+      "city": "天津",
+      "place_name": "十八街麻花",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 70,
+      "tier": 3
+    },
+    {
+      "city": "天津",
+      "place_name": "锅巴菜",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 62,
+      "tier": 4
+    },
+    {
+      "city": "天津",
+      "place_name": "西北角",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 72,
+      "tier": 3
+    },
+    {
+      "city": "苏州",
+      "place_name": "虎丘",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 80,
+      "tier": 2
+    },
+    {
+      "city": "苏州",
+      "place_name": "松鼠桂鱼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 87,
+      "tier": 2
+    },
+    {
+      "city": "苏州",
+      "place_name": "苏式汤面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "苏州",
+      "place_name": "蟹壳黄",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "苏州",
+      "place_name": "哑巴生煎",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 70,
+      "tier": 3
+    },
+    {
+      "city": "青岛",
+      "place_name": "栈桥",
+      "tag": "地标",
+      "source": "public",
+      "heat_score": 87,
+      "tier": 2
+    },
+    {
+      "city": "青岛",
+      "place_name": "八大关",
+      "tag": "拍照",
+      "source": "public",
+      "heat_score": 94,
+      "tier": 2
+    },
+    {
+      "city": "青岛",
+      "place_name": "崂山",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 97,
+      "tier": 1
+    },
+    {
+      "city": "青岛",
+      "place_name": "金沙滩",
+      "tag": "海滩",
+      "source": "public",
+      "heat_score": 92,
+      "tier": 2
+    },
+    {
+      "city": "青岛",
+      "place_name": "五四广场",
+      "tag": "地标",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "青岛",
+      "place_name": "青岛啤酒",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 99,
+      "tier": 1
+    },
+    {
+      "city": "青岛",
+      "place_name": "海鲜大咖",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 86,
+      "tier": 2
+    },
+    {
+      "city": "青岛",
+      "place_name": "辣炒蛤蜊",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 73,
+      "tier": 3
+    },
+    {
+      "city": "青岛",
+      "place_name": "排骨米饭",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "青岛",
+      "place_name": "台东步行街",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "厦门",
+      "place_name": "沙茶面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 92,
+      "tier": 2
+    },
+    {
+      "city": "厦门",
+      "place_name": "海蛎煎",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 68,
+      "tier": 3
+    },
+    {
+      "city": "厦门",
+      "place_name": "花生汤",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 77,
+      "tier": 3
+    },
+    {
+      "city": "厦门",
+      "place_name": "土笋冻",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 54,
+      "tier": 4
+    },
+    {
+      "city": "厦门",
+      "place_name": "八市",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 72,
+      "tier": 3
+    },
+    {
+      "city": "丽江",
+      "place_name": "腊排骨火锅",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 74,
+      "tier": 3
+    },
+    {
+      "city": "丽江",
+      "place_name": "鸡豆凉粉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 78,
+      "tier": 3
+    },
+    {
+      "city": "丽江",
+      "place_name": "纳西烤鱼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 79,
+      "tier": 3
+    },
+    {
+      "city": "丽江",
+      "place_name": "黑山羊火锅",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 57,
+      "tier": 4
+    },
+    {
+      "city": "丽江",
+      "place_name": "樱花餐厅",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 70,
+      "tier": 3
+    },
+    {
+      "city": "大理",
+      "place_name": "乳扇",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 75,
+      "tier": 3
+    },
+    {
+      "city": "大理",
+      "place_name": "喜洲粑粑",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 79,
+      "tier": 3
+    },
+    {
+      "city": "大理",
+      "place_name": "酸辣鱼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 78,
+      "tier": 3
+    },
+    {
+      "city": "大理",
+      "place_name": "生皮",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 50,
+      "tier": 4
+    },
+    {
+      "city": "大理",
+      "place_name": "人民路",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 73,
+      "tier": 3
+    },
+    {
+      "city": "桂林",
+      "place_name": "桂林米粉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 98,
+      "tier": 1
+    },
+    {
+      "city": "桂林",
+      "place_name": "啤酒鱼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 69,
+      "tier": 3
+    },
+    {
+      "city": "桂林",
+      "place_name": "田螺酿",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 71,
+      "tier": 3
+    },
+    {
+      "city": "桂林",
+      "place_name": "油茶",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 50,
+      "tier": 4
+    },
+    {
+      "city": "桂林",
+      "place_name": "正阳步行街",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 79,
+      "tier": 3
+    },
+    {
+      "city": "三亚",
+      "place_name": "椰子鸡",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 87,
+      "tier": 2
+    },
+    {
+      "city": "三亚",
+      "place_name": "清补凉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "三亚",
+      "place_name": "抱罗粉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 79,
+      "tier": 3
+    },
+    {
+      "city": "三亚",
+      "place_name": "海鲜",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 86,
+      "tier": 2
+    },
+    {
+      "city": "昆明",
+      "place_name": "石林",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 99,
+      "tier": 1
+    },
+    {
+      "city": "昆明",
+      "place_name": "滇池",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 94,
+      "tier": 2
+    },
+    {
+      "city": "昆明",
+      "place_name": "云南民族村",
+      "tag": "体验",
+      "source": "public",
+      "heat_score": 74,
+      "tier": 3
+    },
+    {
+      "city": "昆明",
+      "place_name": "翠湖公园",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "昆明",
+      "place_name": "过桥米线",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 100,
+      "tier": 1
+    },
+    {
+      "city": "昆明",
+      "place_name": "汽锅鸡",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 84,
+      "tier": 2
+    },
+    {
+      "city": "昆明",
+      "place_name": "鲜花饼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 78,
+      "tier": 3
+    },
+    {
+      "city": "昆明",
+      "place_name": "烤乳扇",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 69,
+      "tier": 3
+    },
+    {
+      "city": "昆明",
+      "place_name": "野生菌火锅",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 84,
+      "tier": 2
+    },
+    {
+      "city": "昆明",
+      "place_name": "南屏街",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 70,
+      "tier": 3
+    },
+    {
+      "city": "哈尔滨",
+      "place_name": "太阳岛",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 65,
+      "tier": 3
+    },
+    {
+      "city": "哈尔滨",
+      "place_name": "锅包肉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 91,
+      "tier": 2
+    },
+    {
+      "city": "哈尔滨",
+      "place_name": "红肠",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 80,
+      "tier": 2
+    },
+    {
+      "city": "哈尔滨",
+      "place_name": "马迭尔冰棍",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "哈尔滨",
+      "place_name": "格瓦斯",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 51,
+      "tier": 4
+    },
+    {
+      "city": "哈尔滨",
+      "place_name": "俄式西餐",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 73,
+      "tier": 3
+    },
+    {
+      "city": "哈尔滨",
+      "place_name": "师大夜市",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "拉萨",
+      "place_name": "八廓街",
+      "tag": "体验",
+      "source": "public",
+      "heat_score": 85,
+      "tier": 2
+    },
+    {
+      "city": "拉萨",
+      "place_name": "酥油茶",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "拉萨",
+      "place_name": "糌粑",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 78,
+      "tier": 3
+    },
+    {
+      "city": "拉萨",
+      "place_name": "牦牛肉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 70,
+      "tier": 3
+    },
+    {
+      "city": "拉萨",
+      "place_name": "甜茶",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 69,
+      "tier": 3
+    },
+    {
+      "city": "拉萨",
+      "place_name": "藏面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 68,
+      "tier": 3
+    },
+    {
+      "city": "拉萨",
+      "place_name": "光明港琼甜茶馆",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 65,
+      "tier": 3
+    },
+    {
+      "city": "张家界",
+      "place_name": "百龙天梯",
+      "tag": "体验",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "张家界",
+      "place_name": "三下锅",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "张家界",
+      "place_name": "土家腊肉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 71,
+      "tier": 3
+    },
+    {
+      "city": "张家界",
+      "place_name": "葛根粉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 57,
+      "tier": 4
+    },
+    {
+      "city": "张家界",
+      "place_name": "娃娃鱼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 55,
+      "tier": 4
+    },
+    {
+      "city": "黄山",
+      "place_name": "屯溪老街",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 65,
+      "tier": 3
+    },
+    {
+      "city": "黄山",
+      "place_name": "臭鳜鱼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 82,
+      "tier": 2
+    },
+    {
+      "city": "黄山",
+      "place_name": "毛豆腐",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 71,
+      "tier": 3
+    },
+    {
+      "city": "黄山",
+      "place_name": "黄山烧饼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 68,
+      "tier": 3
+    },
+    {
+      "city": "黄山",
+      "place_name": "一品锅",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 72,
+      "tier": 3
+    },
+    {
+      "city": "郑州",
+      "place_name": "少林寺",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 97,
+      "tier": 1
+    },
+    {
+      "city": "郑州",
+      "place_name": "河南博物院",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 86,
+      "tier": 2
+    },
+    {
+      "city": "郑州",
+      "place_name": "二七广场",
+      "tag": "地标",
+      "source": "public",
+      "heat_score": 65,
+      "tier": 3
+    },
+    {
+      "city": "郑州",
+      "place_name": "烩面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 97,
+      "tier": 1
+    },
+    {
+      "city": "郑州",
+      "place_name": "胡辣汤",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 86,
+      "tier": 2
+    },
+    {
+      "city": "郑州",
+      "place_name": "道口烧鸡",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "郑州",
+      "place_name": "黄河大鲤鱼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 74,
+      "tier": 3
+    },
+    {
+      "city": "郑州",
+      "place_name": "合记烩面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 90,
+      "tier": 2
+    },
+    {
+      "city": "兰州",
+      "place_name": "黄河铁桥",
+      "tag": "地标",
+      "source": "public",
+      "heat_score": 93,
+      "tier": 2
+    },
+    {
+      "city": "兰州",
+      "place_name": "甘肃省博物馆",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 86,
+      "tier": 2
+    },
+    {
+      "city": "兰州",
+      "place_name": "白塔山",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 78,
+      "tier": 3
+    },
+    {
+      "city": "兰州",
+      "place_name": "兰州牛肉面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 97,
+      "tier": 1
+    },
+    {
+      "city": "兰州",
+      "place_name": "牛奶鸡蛋醪糟",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "兰州",
+      "place_name": "酿皮",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 73,
+      "tier": 3
+    },
+    {
+      "city": "兰州",
+      "place_name": "甜胚子",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 73,
+      "tier": 3
+    },
+    {
+      "city": "兰州",
+      "place_name": "正宁路夜市",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "乌鲁木齐",
+      "place_name": "天山天池",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 98,
+      "tier": 1
+    },
+    {
+      "city": "乌鲁木齐",
+      "place_name": "新疆国际大巴扎",
+      "tag": "体验",
+      "source": "public",
+      "heat_score": 93,
+      "tier": 2
+    },
+    {
+      "city": "乌鲁木齐",
+      "place_name": "红山公园",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 75,
+      "tier": 3
+    },
+    {
+      "city": "乌鲁木齐",
+      "place_name": "大盘鸡",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 100,
+      "tier": 1
+    },
+    {
+      "city": "乌鲁木齐",
+      "place_name": "烤羊肉串",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 93,
+      "tier": 2
+    },
+    {
+      "city": "乌鲁木齐",
+      "place_name": "手抓饭",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 91,
+      "tier": 2
+    },
+    {
+      "city": "乌鲁木齐",
+      "place_name": "烤包子",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 72,
+      "tier": 3
+    },
+    {
+      "city": "乌鲁木齐",
+      "place_name": "酸奶",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 73,
+      "tier": 3
+    },
+    {
+      "city": "西双版纳",
+      "place_name": "中科院植物园",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 95,
+      "tier": 1
+    },
+    {
+      "city": "西双版纳",
+      "place_name": "野象谷",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 88,
+      "tier": 2
+    },
+    {
+      "city": "西双版纳",
+      "place_name": "曼听公园",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 70,
+      "tier": 3
+    },
+    {
+      "city": "西双版纳",
+      "place_name": "傣味烧烤",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 81,
+      "tier": 2
+    },
+    {
+      "city": "西双版纳",
+      "place_name": "菠萝饭",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 73,
+      "tier": 3
+    },
+    {
+      "city": "西双版纳",
+      "place_name": "香茅草烤鱼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "西双版纳",
+      "place_name": "泡鲁达",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "西双版纳",
+      "place_name": "告庄西双景",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "敦煌",
+      "place_name": "莫高窟",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 97,
+      "tier": 1
+    },
+    {
+      "city": "敦煌",
+      "place_name": "鸣沙山月牙泉",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 100,
+      "tier": 1
+    },
+    {
+      "city": "敦煌",
+      "place_name": "雅丹地质公园",
+      "tag": "自然",
+      "source": "public",
+      "heat_score": 80,
+      "tier": 2
+    },
+    {
+      "city": "敦煌",
+      "place_name": "驴肉黄面",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 66,
+      "tier": 3
+    },
+    {
+      "city": "敦煌",
+      "place_name": "杏皮水",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 65,
+      "tier": 3
+    },
+    {
+      "city": "敦煌",
+      "place_name": "泡儿油糕",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 52,
+      "tier": 4
+    },
+    {
+      "city": "敦煌",
+      "place_name": "胡杨焖饼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 74,
+      "tier": 3
+    },
+    {
+      "city": "敦煌",
+      "place_name": "沙洲夜市",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 67,
+      "tier": 3
+    },
+    {
+      "city": "景德镇",
+      "place_name": "景德镇古窑民俗博览区",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 82,
+      "tier": 2
+    },
+    {
+      "city": "景德镇",
+      "place_name": "陶溪川",
+      "tag": "文艺",
+      "source": "public",
+      "heat_score": 77,
+      "tier": 3
+    },
+    {
+      "city": "景德镇",
+      "place_name": "瑶里古镇",
+      "tag": "古镇",
+      "source": "public",
+      "heat_score": 77,
+      "tier": 3
+    },
+    {
+      "city": "景德镇",
+      "place_name": "冷粉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 68,
+      "tier": 3
+    },
+    {
+      "city": "景德镇",
+      "place_name": "饺子粑",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 79,
+      "tier": 3
+    },
+    {
+      "city": "景德镇",
+      "place_name": "碱水粑",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 79,
+      "tier": 3
+    },
+    {
+      "city": "景德镇",
+      "place_name": "牛骨粉",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 65,
+      "tier": 3
+    },
+    {
+      "city": "景德镇",
+      "place_name": "抚州弄",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 77,
+      "tier": 3
+    },
+    {
+      "city": "凤凰古城",
+      "place_name": "沱江泛舟",
+      "tag": "体验",
+      "source": "public",
+      "heat_score": 80,
+      "tier": 2
+    },
+    {
+      "city": "凤凰古城",
+      "place_name": "虹桥",
+      "tag": "地标",
+      "source": "public",
+      "heat_score": 72,
+      "tier": 3
+    },
+    {
+      "city": "凤凰古城",
+      "place_name": "沈从文故居",
+      "tag": "历史",
+      "source": "public",
+      "heat_score": 79,
+      "tier": 3
+    },
+    {
+      "city": "凤凰古城",
+      "place_name": "血粑鸭",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 68,
+      "tier": 3
+    },
+    {
+      "city": "凤凰古城",
+      "place_name": "酸汤鱼",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 73,
+      "tier": 3
+    },
+    {
+      "city": "凤凰古城",
+      "place_name": "姜糖",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 65,
+      "tier": 3
+    },
+    {
+      "city": "凤凰古城",
+      "place_name": "苗家酸菜",
+      "tag": "美食",
+      "source": "public",
+      "heat_score": 56,
+      "tier": 4
+    },
+    {
+      "city": "凤凰古城",
+      "place_name": "夜市烧烤",
+      "tag": "美食街",
+      "source": "public",
+      "heat_score": 65,
+      "tier": 3
+    }
+  ],
+  "total": 389,
+  "enrich_date": "2026-07-24"
 }

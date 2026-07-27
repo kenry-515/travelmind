@@ -1,0 +1,549 @@
+{
+  "version": "3.0.0",
+  "date": "2026-07-24",
+  "total_queries": 3,
+  "micro": 0.4444,
+  "macro": 0.0,
+  "final_pass_rate": 0.0,
+  "per_constraint": {
+    "schema_valid": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "days_correct": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "stats_place_count": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "budget_consistent": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "month_consistent": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "poi_verified": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "route_ok": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "weather_fit": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "weather_coverage": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "name_normalized": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "weather_tips": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "price_enriched": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "food_coverage": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "food_diversity": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "food_local_ratio": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "cross_city_covered": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "multi_city_diversity": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "min_score_filter": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "chat_reply_length": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "chat_topic_relevant": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "chat_not_slotfill": {
+      "pass": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "image_tag_relevance": {
+      "pass": 1,
+      "total": 3,
+      "rate": 0.333
+    },
+    "image_tag_cross_city": {
+      "pass": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "image_tag_threshold": {
+      "pass": 0,
+      "total": 3,
+      "rate": 0.0
+    }
+  },
+  "per_category": {
+    "image-tag": {
+      "total": 3,
+      "pass": 0
+    }
+  },
+  "per_query": [
+    {
+      "id": "t01",
+      "input": "从图片识别：山水、瀑布、自然景观",
+      "expect": {
+        "tags": [
+          "山水",
+          "瀑布",
+          "自然"
+        ],
+        "category": "image-tag"
+      },
+      "elapsed_s": 0.4,
+      "http": 200,
+      "total_results": 20,
+      "filtered_results": 20,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": false,
+          "detail": "匹配: 1/3 = 33%（阈值 50%）"
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "城市数=9: 天津, 拉萨, 昆明, 武汉, 深圳, 福州, 贵阳, 郑州, 青岛（阈值 2）"
+        },
+        "image_tag_threshold": {
+          "pass": false,
+          "detail": "score≥0.4: 2/20 = 10%（阈值 50%）"
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "image-tag",
+      "query_pass": false
+    },
+    {
+      "id": "t02",
+      "input": "从图片识别：海滩、日落、海岛",
+      "expect": {
+        "tags": [
+          "海滩",
+          "日落",
+          "海岛"
+        ],
+        "category": "image-tag"
+      },
+      "elapsed_s": 0.1,
+      "http": 200,
+      "total_results": 20,
+      "filtered_results": 7,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": true,
+          "detail": "匹配: 3/3 = 100%（阈值 50%）"
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "城市数=4: 三亚, 厦门, 杭州, 重庆（阈值 2）"
+        },
+        "image_tag_threshold": {
+          "pass": false,
+          "detail": "score≥0.4: 3/7 = 43%（阈值 50%）"
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "image-tag",
+      "query_pass": false
+    },
+    {
+      "id": "t03",
+      "input": "从图片识别：古城、夜景、美食街",
+      "expect": {
+        "tags": [
+          "古城",
+          "夜景",
+          "美食街"
+        ],
+        "category": "image-tag"
+      },
+      "elapsed_s": 0.1,
+      "http": 200,
+      "total_results": 20,
+      "filtered_results": 2,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "poi_verified": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_fit": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "name_normalized": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "weather_tips": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "price_enriched": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_coverage": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "food_local_ratio": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_reply_length": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_topic_relevant": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "chat_not_slotfill": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "image_tag_relevance": {
+          "pass": false,
+          "detail": "匹配: 0/3 = 0%（阈值 50%）"
+        },
+        "image_tag_cross_city": {
+          "pass": true,
+          "detail": "城市数=2: 张家界, 重庆（阈值 2）"
+        },
+        "image_tag_threshold": {
+          "pass": false,
+          "detail": "score≥0.4: 0/2 = 0%（阈值 50%）"
+        },
+        "cross_city_covered": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "multi_city_diversity": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        },
+        "min_score_filter": {
+          "pass": true,
+          "detail": "不适用",
+          "na": true
+        }
+      },
+      "category": "image-tag",
+      "query_pass": false
+    }
+  ]
+}

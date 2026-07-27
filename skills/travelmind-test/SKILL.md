@@ -1,10 +1,11 @@
 ---
 name: travelmind-test
 description: |
-  TravelMind Agent 的固定化测试工作流：全栈冒烟、行程契约回归、浏览器页面 E2E。
+  TravelMind Agent 的固定化测试工作流：全栈冒烟、行程契约回归、浏览器页面 E2E、
+  多轮对话剧本、UI 截图走查。
   当用户要求"跑测试 / 冒烟 / 回归 / 验证系统"或提交前检查时使用本技能。
-  原则（来自 CLI+Skill 模式）：脚本能跑的绝不调模型——冒烟与 E2E 零 LLM 成本；
-  只有契约回归消耗少量 DeepSeek/Kimi token。
+  原则（来自 CLI+Skill 模式）：脚本能跑的绝不调模型——冒烟/E2E/截图走查零 LLM 成本；
+  契约回归与对话剧本消耗少量 DeepSeek/Kimi token。
 ---
 
 # TravelMind Test Workflows
@@ -44,7 +45,7 @@ cd backend && python -X utf8 scripts/e2e_pages.py
 ```
 
 通过 WebBridge daemon 打开 5 个页面断言关键元素：首页(4 入口) /
-推荐页(搜索框) / 行程页(fixture 预览 5 区块) / 图片页(上传区) /
+推荐页(搜索框) / 行程页(空状态) / 图片页(上传区) /
 对话页(意图状态条)。WebBridge 调用一律走 `scripts/wb.py` 封装
 （临时 JSON 文件 + curl.exe，禁止 shell 内联中文）。
 
@@ -54,11 +55,33 @@ cd backend && python -X utf8 scripts/e2e_pages.py
 cd backend && python -X utf8 -m evals.run_evals [--limit N]
 ```
 
-对 `backend/evals/queries.json`（12 条，可扩充）逐条真实生成，
+对 `backend/evals/queries.json`（63 条 × 24 约束，可扩充）逐条真实生成，
 再用确定性打分器输出 **Micro / Macro / Final Pass Rate** 三级指标，
 结果落盘 `backend/evals/results/YYYY-MM-DD.json`。
 指标含义与当前基线见 `docs/BASELINE.md` 和 README「质量评测」。
 不并入每小时冒烟（有成本）；需要提升通过率时逐项看 `per_constraint`。
+
+## 5. 多轮对话剧本评测（Phase 12.26，少量 LLM 成本）
+
+```bash
+cd backend && python -X utf8 scripts/dialog_scenarios.py                  # 全量（含 2 次真实生成）
+cd backend && python -X utf8 scripts/dialog_scenarios.py --skip-generate  # 快速回归（零生成）
+```
+
+9 个真实场景剧本（27 项确定性断言，零 LLM 评判）：模糊收敛全流程 /
+KB 外城市恢复（惠州→南宁不推卡片）/ 中途改主意 / 放权流 / 生成后修改 /
+一轮确认 / 重复发送幂等 / 生成中留言排队 / 9 类对抗输入（空/长文/emoji/
+英文/prompt injection/SQL 注入/乱码——不崩不漏）。
+
+## 6. UI 截图走查（Phase 12.26，零 LLM 成本）
+
+```bash
+cd backend && python -X utf8 scripts/ui_walkthrough.py [--only desktop|mobile]
+```
+
+WebBridge 截 6 页桌面图 + iframe 390px 移动图（无视口模拟的替代方案），
+产出 `docs/images/walkthrough/`，单页失败不阻断。前端视觉改动后必跑，
+截图用 ReadMediaFile 逐张目检（重叠/错位/溢出/不可读）。
 
 ## 定时巡检（cron）
 

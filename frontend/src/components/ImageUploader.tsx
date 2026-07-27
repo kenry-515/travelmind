@@ -87,13 +87,15 @@ export function ImageUploader({ onAnalyze, loading }: ImageUploaderProps) {
           }}
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
-          className={`flex h-56 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed transition-colors ${
+          className={`flex h-56 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed transition-all ${
             dragOver
-              ? 'border-blue-400 bg-blue-50'
-              : 'border-slate-300 bg-white hover:border-blue-300 hover:bg-slate-50'
+              ? 'border-brand-400 bg-brand-50 scale-[1.01]'
+              : 'border-slate-300 bg-white hover:border-brand-300 hover:bg-brand-50/40'
           }`}
         >
-          <ImagePlus size={40} className="text-slate-400" />
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100">
+            <ImagePlus size={32} className="text-brand-500" />
+          </div>
           <p className="text-sm font-medium text-slate-600">
             拖拽图片到这里，或点击选择
           </p>
@@ -102,8 +104,8 @@ export function ImageUploader({ onAnalyze, loading }: ImageUploaderProps) {
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="relative flex items-center justify-center bg-slate-100 p-4">
+        <div className="card overflow-hidden rounded-2xl">
+          <div className="relative flex items-center justify-center bg-surface-tertiary p-4">
             <img
               src={previewUrl}
               alt="待分析图片预览"
@@ -126,7 +128,7 @@ export function ImageUploader({ onAnalyze, loading }: ImageUploaderProps) {
             <button
               onClick={() => file && onAnalyze(file)}
               disabled={loading || !file}
-              className="flex shrink-0 items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 disabled:opacity-50"
+              className="btn-primary flex shrink-0 items-center gap-2 rounded-xl px-5 py-2.5 text-sm"
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
               {loading ? '识别中...' : '开始识别'}

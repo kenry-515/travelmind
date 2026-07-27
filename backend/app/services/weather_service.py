@@ -12,6 +12,7 @@ Usage:
     advice = get_travel_weather_advice(forecast)
 """
 
+import json
 import logging
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
@@ -22,7 +23,7 @@ import httpx
 logger = logging.getLogger(__name__)
 
 # ── City Coordinate Mapping ───────────────────────────────
-# Center coordinates for all 10 supported cities.
+# Center coordinates for all 30 supported cities (Phase 12.10: synced with KB).
 
 CITY_COORDS: Dict[str, tuple[float, float]] = {
     "重庆": (29.5630, 106.5516),
@@ -35,12 +36,79 @@ CITY_COORDS: Dict[str, tuple[float, float]] = {
     "长沙": (28.2282, 112.9388),
     "厦门": (24.4798, 118.0894),
     "大理": (25.5894, 100.2253),
-    # ── Phase 6 expansion cities ──
     "三亚": (18.2528, 109.5119),
     "桂林": (25.2736, 110.2900),
     "苏州": (31.2989, 120.5853),
     "张家界": (29.1167, 110.4792),
     "丽江": (26.8750, 100.2296),
+    # ── Phase 12.10: Remaining 15 cities synced from route_optimizer _CITY_CENTERS ──
+    "南京": (32.0646, 118.8171),
+    "南宁": (22.7895, 108.3813),
+    "哈尔滨": (45.7921, 126.5549),
+    "大连": (38.8893, 121.6079),
+    "天津": (39.0755, 117.1865),
+    "拉萨": (29.6963, 91.1132),
+    "昆明": (24.8661, 102.8002),
+    "武汉": (30.5747, 114.3238),
+    "深圳": (22.5511, 114.047),
+    "福州": (26.0924, 119.3),
+    "贵阳": (26.6251, 106.6297),
+    "郑州": (34.7672, 113.6357),
+    "青岛": (36.0631, 120.3752),
+    "香格里拉": (27.8302, 99.6928),
+    "黄山": (29.7143, 118.3229),
+}
+
+# ── City Aliases (Phase 12.10) ────────────────────────────
+# Non-standard / regional destinations → nearest KB-supported city.
+# Used for weather lookup and KB POI search fallback.
+# The *original* destination name is preserved in the profile for the
+# planning prompt so the LLM can note it in the trip title/description.
+
+CITY_ALIASES: Dict[str, str] = {
+    # Western Sichuan → Chengdu
+    "川西": "成都",
+    "甘孜": "成都",
+    "阿坝": "成都",
+    "康定": "成都",
+    "四姑娘山": "成都",
+    "稻城": "成都",
+    "色达": "成都",
+    # Sichuan-Tibet highway → Chengdu (or Lhasa depending on direction)
+    "川藏线": "成都",
+    "川藏": "成都",
+    "318国道": "成都",
+    # Northernmost China → Harbin
+    "漠河": "哈尔滨",
+    "北极村": "哈尔滨",
+    "大兴安岭": "哈尔滨",
+    # Tibet region (beyond Lhasa) → Lhasa
+    "青藏线": "拉萨",
+    "青藏": "拉萨",
+    "林芝": "拉萨",
+    "日喀则": "拉萨",
+    "纳木错": "拉萨",
+    "珠峰": "拉萨",
+    # Western China / Silk Road → Xi'an
+    "河西走廊": "西安",
+    "敦煌": "西安",
+    "丝绸之路": "西安",
+    # Inner Mongolia → Beijing
+    "呼伦贝尔": "北京",
+    "呼和浩特": "北京",
+    "鄂尔多斯": "北京",
+    # Xinjiang → Urumqi not in KB, use Xi'an as nearest
+    "乌鲁木齐": "西安",
+    "喀纳斯": "西安",
+    # Other regional descriptors
+    "江南": "苏州",
+    "徽州": "黄山",
+    "皖南": "黄山",
+    "黔东南": "贵阳",
+    "黔南": "贵阳",
+    "滇西北": "丽江",
+    "滇南": "昆明",
+    "闽南": "厦门",
 }
 
 # ── Open-Meteo API ────────────────────────────────────────
@@ -139,13 +207,35 @@ def _get_client() -> httpx.AsyncClient:
 # ── Helpers ───────────────────────────────────────────────
 
 
+def resolve_city_alias(city: str) -> Optional[str]:
+    """Map a non-standard destination to the nearest KB-supported city.
+
+    Returns the canonical city name if an alias is found, None otherwise.
+    The original city name is preserved for display purposes.
+    """
+    if not city:
+        return None
+    # Exact alias match
+    if city in CITY_ALIASES:
+        return CITY_ALIASES[city]
+    # Prefix/substring match (e.g. "川西自驾" contains "川西")
+    for alias, canonical in CITY_ALIASES.items():
+        if alias in city or city in alias:
+            return canonical
+    return None
+
+
 def _resolve_city(city: str) -> Optional[tuple[float, float]]:
-    """Resolve city name to (lat, lon). Supports fuzzy prefix matching."""
+    """Resolve city name to (lat, lon). Supports aliases and fuzzy matching."""
     if not city:
         return None
     # Exact match
     if city in CITY_COORDS:
         return CITY_COORDS[city]
+    # Phase 12.10: Check aliases first (non-standard → canonical)
+    canonical = resolve_city_alias(city)
+    if canonical and canonical in CITY_COORDS:
+        return CITY_COORDS[canonical]
     # Prefix match (e.g. "重庆" in "重庆市")
     for name, coords in CITY_COORDS.items():
         if name in city or city in name:
@@ -273,6 +363,49 @@ async def get_weather_forecast(
     lat, lon = coords
     days = max(1, min(7, days))  # Open-Meteo free tier: 7 days
 
+    # Phase 10 & 12.28c: Two-tier cache — fast memory TTL (30min) + persistent (2h)
+    cache_key = f"weather:{city}:{days}"
+    if start_date:
+        cache_key += f":{start_date}"
+
+    # Level 1: Fast memory cache (WeatherCache, Phase 12.28c)
+    try:
+        from app.services.weather_cache import get_weather_cache as _get_wcache
+        wcache = _get_wcache()
+        cached = wcache.get((city, days))
+        if cached is not None:
+            logger.debug("WeatherCache L1 HIT for %s (%dd)", city, days)
+            return cached
+    except Exception:
+        pass
+
+    cache = None
+    try:
+        from app.services.cache_service import get_cache
+        cache = get_cache()
+        # Level 2: Persistent cache
+        cached = await cache.get(cache_key)
+        if cached:
+            data = json.loads(cached)
+            forecast = WeatherForecast(
+                city=data["city"],
+                lat=data["lat"],
+                lon=data["lon"],
+                overall_score=data.get("overall_score", 1.0),
+                advice=data.get("advice", ""),
+                daily=[DailyForecast(**d) for d in data.get("daily", [])],
+            )
+            logger.debug("WeatherCache L2 HIT for %s (%dd)", city, days)
+            # Backfill L1
+            try:
+                from app.services.weather_cache import get_weather_cache as _get_wcache2
+                _get_wcache2().set((city, days), forecast)
+            except Exception:
+                pass
+            return forecast
+    except Exception as e:
+        logger.debug("Weather cache L2 read failed (non-fatal): %s", e)
+
     params: Dict[str, Any] = {
         "latitude": lat,
         "longitude": lon,
@@ -332,6 +465,20 @@ async def get_weather_forecast(
             f"Weather fetched for {city}: {len(forecast.daily)} days, "
             f"overall_score={forecast.overall_score:.2f}"
         )
+
+        # Phase 10 & 12.28c: Write to both cache tiers
+        # Level 1: Fast memory cache (Phase 12.28c)
+        try:
+            from app.services.weather_cache import get_weather_cache as _get_wcache3
+            _get_wcache3().set((city, days), forecast)
+        except Exception:
+            pass
+        # Level 2: Persistent cache
+        if cache is not None:
+            try:
+                await cache.set(cache_key, json.dumps(forecast.to_dict(), ensure_ascii=False), ttl=7200)
+            except Exception:
+                pass  # cache write failure is non-fatal
 
     except httpx.TimeoutException:
         logger.warning(f"Open-Meteo timeout for {city}")

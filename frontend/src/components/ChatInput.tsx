@@ -47,7 +47,7 @@ export function ChatInput({ onSend, disabled, placeholder }: ChatInputProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-end gap-2 border-t border-slate-200 bg-white px-4 py-3"
+      className="glass flex items-end gap-2 border-t border-border-light px-4 py-3 pb-16 sm:pb-3"
     >
       <textarea
         ref={textareaRef}
@@ -58,14 +58,14 @@ export function ChatInput({ onSend, disabled, placeholder }: ChatInputProps) {
         disabled={disabled}
         rows={1}
         placeholder={placeholder || '输入你的旅行需求... (Shift+Enter 换行)'}
-        className="flex-1 resize-none rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 disabled:opacity-50"
+        className="flex-1 resize-none rounded-2xl border border-border bg-surface-secondary px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 transition-all focus:border-brand-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-100 disabled:opacity-50"
         aria-label="输入消息"
       />
       <button
         type="submit"
         disabled={disabled || !value.trim()}
         aria-label="发送"
-        className="shrink-0 rounded-lg bg-blue-600 p-2.5 text-white transition-colors hover:bg-blue-700 disabled:opacity-40"
+        className="btn-primary shrink-0 rounded-2xl p-2.5"
       >
         <Send size={18} />
       </button>

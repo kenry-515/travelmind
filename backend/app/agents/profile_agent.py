@@ -7,11 +7,26 @@ Uses DeepSeek chat_structured() to parse user intent into JSON with fields:
 """
 
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, List, Optional
 
 from app.services.llm_service import get_llm_provider
 
 logger = logging.getLogger(__name__)
+
+# Phase 12.10: City alias resolver for normalizing non-standard destinations
+_resolve_city_alias = None
+
+
+def _get_city_alias_resolver():
+    """Lazy-load the city alias resolver to avoid circular imports."""
+    global _resolve_city_alias
+    if _resolve_city_alias is None:
+        try:
+            from app.services.weather_service import resolve_city_alias
+            _resolve_city_alias = resolve_city_alias
+        except ImportError:
+            _resolve_city_alias = lambda c: None  # noqa: E731
+    return _resolve_city_alias
 
 # ── Output Schema for chat_structured() ──────────────────
 
@@ -68,6 +83,16 @@ PROFILE_SCHEMA = {
         "departure_city": {
             "type": "string",
             "description": "Departure city if mentioned, e.g. '广州'",
+        },
+        "search_intent": {
+            "type": "string",
+            "enum": ["food", "nature", "history", "shopping", "general"],
+            "description": (
+                "Inferred primary search intent from user input. "
+                "Detect from keywords: food/美食/吃→food, "
+                "nature/山/海/自然/户外→nature, history/博物馆/古/文化→history, "
+                "shopping/购物/打卡/网红→shopping. Default: general."
+            ),
         },
     },
     "required": ["destination", "days", "tags"],
@@ -134,7 +159,88 @@ def _clean_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
     if profile.get("days") is None:
         profile["days"] = 3
 
+    # Phase 12.2: Ensure search_intent is populated — infer from tags + user input
+    if not profile.get("search_intent") or profile.get("search_intent") == "general":
+        profile["search_intent"] = _infer_search_intent(
+            profile.get("tags", []),
+            profile.get("constraints", []),
+        )
+
+    # Phase 12.10: Normalize non-standard destinations to nearest KB city.
+    # The original destination is preserved in original_destination for the
+    # planning prompt, while destination is set to the canonical city for
+    # weather lookup and POI search.
+    dest = profile.get("destination", "")
+    if dest:
+        resolver = _get_city_alias_resolver()
+        canonical = resolver(dest)
+        if canonical and canonical != dest:
+            logger.info(
+                f"City alias: '{dest}' → '{canonical}' (weather/POI base)"
+            )
+            profile["original_destination"] = dest
+            profile["destination"] = canonical
+            # Also add canonical as secondary if not already present
+            sec = profile.get("secondary_destinations") or []
+            if canonical not in sec:
+                sec.append(canonical)
+                profile["secondary_destinations"] = sec
+
     return profile
+
+
+# ── Search intent inference ────────────────────────────────
+
+_FOOD_INTENT_KW = {"美食", "火锅", "小吃", "烧烤", "海鲜", "早茶", "川菜", "粤菜",
+                   "面食", "夜市", "自助", "甜品", "奶茶", "咖啡", "吃"}
+_NATURE_INTENT_KW = {"自然", "爬山", "湖泊", "森林", "海岛", "海滩", "瀑布", "峡谷",
+                     "日出", "日落", "草原", "雪山", "温泉", "赏花", "红叶"}
+_HISTORY_INTENT_KW = {"历史", "博物馆", "古镇", "寺庙", "古迹", "园林", "建筑", "文化", "传统"}
+_SHOPPING_INTENT_KW = {"购物", "打卡", "网红打卡", "城市", "文艺", "夜生活", "酒吧"}
+
+
+def _infer_search_intent(
+    tags: List[str],
+    constraints: List[str] = None,
+) -> str:
+    """Infer primary search intent from user tags and constraints.
+
+    Returns one of: food, nature, history, shopping, general.
+    """
+    tag_set = {t for t in tags}
+    scores = {"food": 0, "nature": 0, "history": 0, "shopping": 0}
+
+    for tag in tag_set:
+        if tag in _FOOD_INTENT_KW:
+            scores["food"] += 2
+        if tag in _NATURE_INTENT_KW:
+            scores["nature"] += 2
+        if tag in _HISTORY_INTENT_KW:
+            scores["history"] += 2
+        if tag in _SHOPPING_INTENT_KW:
+            scores["shopping"] += 2
+
+    # Also check constraints for intent keywords
+    if constraints:
+        constraint_text = " ".join(str(c) for c in constraints)
+        for kw in _FOOD_INTENT_KW:
+            if kw in constraint_text:
+                scores["food"] += 1
+        for kw in _NATURE_INTENT_KW:
+            if kw in constraint_text:
+                scores["nature"] += 1
+        for kw in _HISTORY_INTENT_KW:
+            if kw in constraint_text:
+                scores["history"] += 1
+        for kw in _SHOPPING_INTENT_KW:
+            if kw in constraint_text:
+                scores["shopping"] += 1
+
+    best = max(scores, key=scores.get)
+    if scores[best] >= 2:
+        logger.debug(f"Inferred search_intent={best} from tags={tags}, scores={scores}")
+        return best
+    return "general"
 
 
 # ── Public API ──────────────────────────────────────────

@@ -21,47 +21,19 @@ from urllib.parse import quote
 
 logger = logging.getLogger(__name__)
 
+from app.agents.route_optimizer import _normalize, _core_name, _name_matches
+
 # ── Constants ──────────────────────────────────────────────
 
 _STALE_DAYS = 90  # prices older than this are flagged as potentially stale
 
-_GENERIC_SUFFIXES = [
+# price_enricher uses a different suffix list than route_optimizer
+# for matching POI names to knowledge-base entries
+_PRICE_GENERIC_SUFFIXES = (
     "景区", "风景区", "旅游区", "公园", "广场", "步行街",
     "博物馆", "纪念馆", "故居", "寺庙", "道观", "教堂",
     "古镇", "古村", "老街", "遗址", "故城",
-]
-
-
-# ── Name matching (reuses route_optimizer pattern) ──────────
-
-
-def _normalize(name: str) -> str:
-    """Normalize for comparison: strip punctuation/whitespace."""
-    return re.sub(r"[（）()·\s]", "", name).replace("贰", "二")
-
-
-def _core_name(name: str) -> str:
-    """Extract core name by stripping generic suffixes."""
-    core = name.strip()
-    changed = True
-    while changed:
-        changed = False
-        for suf in _GENERIC_SUFFIXES:
-            if core.endswith(suf) and len(core) > len(suf) + 1:
-                core = core[: -len(suf)]
-                changed = True
-    return core
-
-
-def _name_matches(query: str, hit_name: str) -> bool:
-    """Fuzzy match a POI name against a knowledge-base entry name."""
-    q, h = _normalize(query), _normalize(hit_name)
-    if not q or not h:
-        return False
-    if q in h or h in q:
-        return True
-    core = _core_name(q)
-    return len(core) >= 2 and core in h
+)
 
 
 # ── Booking URL generation ─────────────────────────────────
@@ -101,7 +73,7 @@ def _build_lookup(
         norm = _normalize(name)
         if norm not in lookup:
             lookup[norm] = attr
-        core = _core_name(norm)
+        core = _core_name(norm, suffixes=_PRICE_GENERIC_SUFFIXES)
         if core and core not in lookup:
             lookup[core] = attr
     return lookup

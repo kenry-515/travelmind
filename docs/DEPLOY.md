@@ -78,3 +78,59 @@ docker compose up --build -d backend  # 只重建后端（改代码后）
 Docker 部署与本地直跑（`uvicorn` + `npm run dev`）完全等价：
 同一套代码、同一套 `.env` 语义。CI/冒烟/契约回归脚本在两种模式下通用
 （只要 `:8000` 有健康后端即可）。
+
+## 8. POI 存续巡检
+
+知识库中的 POI 数据可能随时间过时（景点关闭、搬迁、改名）。`poi_health_check.py`
+脚本通过高德 POI 搜索 API 逐条验证全部 KB POI 的当前存续状态。
+
+### 运行
+
+```bash
+cd backend
+python scripts/poi_health_check.py
+```
+
+- 读取 `backend/data/attractions.json` 中全部 POI（零硬编码列表）
+- 对有高德 ID 的 POI 逐条调用高德 POI 搜索 API 验证存续状态
+- 并发数 5，远低于免费配额（30 QPS / 5000 calls/day），约 2-3 分钟完成
+- 报告输出到 `backend/data/poi_health_YYYY-MM-DD.json`
+
+### 报告内容
+
+```json
+{
+  "checked_at": "2026-07-21T10:00:00Z",
+  "summary": {
+    "total_checked": 627,
+    "active": 600,
+    "inactive": 12,
+    "uncertain": 8,
+    "unverified": 269,
+    "api_errors": 2
+  },
+  "inactive_pois": [
+    {"name": "某关闭景点", "city": "重庆", "status": "inactive",
+     "reason": "高德搜索无名称匹配结果"}
+  ]
+}
+```
+
+- **active**：高德确认存续
+- **inactive**：高德搜索无匹配 → 推荐管线自动排除该 POI
+- **uncertain**：API 调用失败，无法确认
+- **unverified**：POI 缺少高德 ID，跳过验证
+
+### 定时巡检（Cron）
+
+建议每周运行一次（非高峰时段），保持 POI 数据与高德地图同步：
+
+```bash
+# 每周日凌晨 3 点运行 POI 存续巡检
+0 3 * * 0 cd /path/to/TravelMindAgent/backend && python scripts/poi_health_check.py >> logs/poi_health.log 2>&1
+```
+
+**注意**：
+- 需要配置 `AMAP_API_KEY`（从 `.env` 读取）
+- 建议在低流量时段运行，避免与正常请求竞争 API 配额
+- `inactive` POI 在运行后自动被推荐管线排除，无需重启服务

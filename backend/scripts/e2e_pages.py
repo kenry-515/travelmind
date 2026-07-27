@@ -27,7 +27,7 @@ RESULTS = []
 PAGE_CHECKS = [
     ("/", "首页", "text.includes('TravelMind') && text.includes('智能推荐') && text.includes('图片识别')"),
     ("/recommend", "推荐页", "!!document.querySelector('input[type=text]') && text.includes('智能推荐')"),
-    ("/itinerary", "行程页(fixture 预览)", "text.includes('预算分配') && text.includes('行前清单') && text.includes('实用提示') && text.includes('示例数据预览')"),
+    ("/itinerary", "行程页(空状态)", "text.includes('尚未生成行程') && text.includes('对话规划')"),
     ("/image", "图片页", "text.includes('图片识别') && text.includes('拖拽图片到这里')"),
     ("/chat", "对话式规划页", "text.includes('意图') && text.includes('目的地') && text.includes('对话式规划')"),
 ]

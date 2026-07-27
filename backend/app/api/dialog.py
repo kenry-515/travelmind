@@ -1,30 +1,36 @@
 """
 TravelMind Agent — Dialog API (对话式规划 · 意图层)
 
-POST /api/v1/dialog/message   — 多轮对话（槽位收敛 / 修改分流）
-POST /api/v1/dialog/generate  — 确认后触发生成（复用生成管线，零改动）
+POST /api/v1/dialog/message          — 多轮对话（槽位收敛 / 修改分流）
+POST /api/v1/dialog/generate         — 确认后触发生成（阻塞式）
+POST /api/v1/dialog/generate/stream  — 确认后触发生成（SSE 真实阶段进度，Phase 12.24）
 
 只做意图层：槽位、状态机、分流判定；生成能力全部复用
 （run_travel_workflow / regenerate_day / itinerary_contract）。
 """
 
+import json
 import logging
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from app.agents.dialog_manager import (
     apply_slot_override,
     build_summary,
+    classify_intent,
     classify_modification,
     get_session,
+    ground_extraction,
     merge_slots,
     next_action,
     save_session,
     synthesize_input,
+    try_remove_item,
 )
-from app.agents.orchestrator import run_travel_workflow
+from app.agents.orchestrator import run_travel_workflow, run_travel_workflow_stream
 from app.agents.planning_agent import regenerate_day
 from app.agents.profile_agent import extract_profile
 from app.api.deps import get_device_id
@@ -64,6 +70,10 @@ class DialogResponse(BaseModel):
     itinerary: Optional[Dict[str, Any]] = None
     itinerary_id: Optional[str] = None
     queued: int = 0
+    # Phase 8.1: 拒答 / 降级字段
+    refused: bool = False
+    refuse_reason: Optional[str] = None
+    coverage_warning: Optional[str] = None
 
 
 # ── Helpers ──────────────────────────────────────────────
@@ -90,6 +100,47 @@ def _slots_context(slots: Dict[str, Any]) -> str:
     if slots.get("tags"):
         known.append(f"偏好={','.join(slots['tags'])}")
     return "；".join(known)
+
+
+async def _naturalize_reply(action: Dict[str, Any], state: Dict[str, Any], user_text: str) -> str:
+    """把状态机的模板回复润色成自然、每次不同的对话语气（LLM，失败回退模板）。
+
+    Phase 12.20: 用户反馈"AI 只会机械重复询问意图要素"——状态机决定
+    做什么（追问/建议/确认），LLM 负责怎么说得像朋友。
+    """
+    template = action.get("reply", "")
+    if not template:
+        return template
+    try:
+        from app.agents.dialog_manager import required_missing
+        slots = state["slots"]
+        known = _slots_context(slots) or "（还没有已知信息）"
+        missing = "、".join(required_missing(slots)) or "无"
+        suggestions_text = ""
+        if action.get("suggestions"):
+            suggestions_text = "、".join(s.get("label", "") for s in action["suggestions"])
+        prompt = (
+            f"用户说：「{user_text}」\n"
+            f"当前已知：{known}\n"
+            f"还缺的信息：{missing}\n"
+            f"可选建议：{suggestions_text or '无'}\n"
+            f"参考意思（请用自己的话重写，别照抄）：{template}\n\n"
+            "要求：像朋友聊天一样回复 1-3 句；自然承接用户说的话；"
+            "如果需要追问，把问题融进对话里而不是生硬审问；"
+            "不要输出「我在听」「说说你的想法」这类空话；每次措辞都要不一样。"
+        )
+        reply = await get_llm_provider().chat(
+            messages=[{"role": "user", "content": prompt}],
+            system_prompt="你是用户贴心的旅行搭子「小游」，说话自然、真诚、简洁，像好朋友一样帮用户规划旅行。",
+            temperature=0.9,
+            max_tokens=200,
+        )
+        reply = (reply or "").strip()
+        if len(reply) >= 4:
+            return reply
+    except Exception as e:
+        logger.debug(f"Reply naturalize failed, using template: {e}")
+    return template
 
 
 async def _classify_with_llm(text: str) -> Dict[str, Any]:
@@ -136,6 +187,62 @@ async def _classify_with_llm(text: str) -> Dict[str, Any]:
 
 # ── Routes ───────────────────────────────────────────────
 
+_SSE_HEADERS = {
+    "Cache-Control": "no-cache",
+    "Connection": "keep-alive",
+    "X-Accel-Buffering": "no",
+}
+
+
+async def _auto_save_itinerary(
+    state: Dict[str, Any],
+    itinerary: Dict[str, Any],
+    result: Dict[str, Any],
+    user_input: str,
+    device_id: Optional[str],
+) -> Optional[str]:
+    """行程自动保存（best-effort）：PG 优先，PG 不可达时本地文件回退。
+
+    dialog_generate 与 dialog_generate_stream 共用（Phase 12.24 抽取）。
+    """
+    saved_id: Optional[str] = None
+    if itinerary and device_id and not db_conn.DB_HEALTHY:
+        # PG 不可达 → 本地文件存储回退
+        try:
+            from app.services import local_itinerary_store
+            saved_id = local_itinerary_store.save_itinerary(
+                device_id=device_id,
+                itinerary=itinerary,
+                validation_report=itinerary.get("validation_report"),
+                profile_snapshot={
+                    "slots": state.get("slots", {}),
+                    "user_input": user_input,
+                },
+                weather_snapshot=result.get("weather"),
+            )
+        except Exception as e:
+            logger.warning(f"Local itinerary save failed (non-fatal): {e}")
+    if db_conn.DB_HEALTHY and itinerary and device_id:
+        try:
+            async with db_conn.async_session() as db:
+                user = await get_or_create_user(db, device_id)
+                saved = await itinerary_service.save_itinerary(
+                    db=db,
+                    user_id=user.id,
+                    itinerary=itinerary,
+                    validation_report=itinerary.get("validation_report"),
+                    profile_snapshot={
+                        "slots": state.get("slots", {}),
+                        "user_input": user_input,
+                    },
+                    weather_snapshot=result.get("weather"),
+                )
+                if saved:
+                    saved_id = saved.id
+        except Exception as e:
+            logger.warning(f"Auto-save itinerary skipped (non-fatal): {e}")
+    return saved_id
+
 @router.post("/dialog/message", response_model=DialogResponse)
 async def dialog_message(request: DialogMessageRequest):
     """多轮对话：槽位收敛、组合建议、确认摘要、生成后修改分流。"""
@@ -164,6 +271,26 @@ async def dialog_message(request: DialogMessageRequest):
     if not text:
         return _resp(sid, state, "我在听，说说你的想法～")
 
+    # ── Phase 12.1: 自由对话意图检测 ──
+    # Phase 12.9: Allow chat in any stage — user can ask questions at any
+    # point in the conversation, including the initial greeting.
+    intent = classify_intent(text)
+    if intent == "chat":
+        # Free-form chat — don't extract slots, just have a conversation
+        try:
+            from app.agents.chat_agent import free_chat
+            reply = await free_chat(
+                user_text=text,
+                slots_context=state["slots"],
+                history=None,
+            )
+        except Exception as e:
+            logger.warning(f"Free chat failed, falling back to slot fill: {e}")
+            reply = "好问题！要不我们先继续规划行程？告诉我你想去的城市和天数吧～"
+
+        await save_session(sid, state)  # Keep TTL alive
+        return _resp(sid, state, reply)
+
     # ── DELIVERED 后的修改分流 ──
     if state["stage"] == "delivered":
         return await _handle_modification(sid, state, text)
@@ -177,10 +304,21 @@ async def dialog_message(request: DialogMessageRequest):
         logger.error(f"Dialog profile extraction failed: {e}")
         return _resp(sid, state, "理解你的意思时出了点问题，能换个说法吗？")
 
-    merge_slots(state, extracted)
-    action = next_action(state)
+    merge_slots(state, ground_extraction(extracted, text))
+    action = next_action(state, text)
+    # Phase 12.20: 状态机定动作，LLM 定语气——自然回复替代模板
+    action["reply"] = await _naturalize_reply(action, state, text)
     await save_session(sid, state)
 
+    if action["type"] == "refuse":
+        state["stage"] = "refused"
+        await save_session(sid, state)
+        return _resp(
+            sid, state, action["reply"],
+            suggestions=action.get("suggestions"),
+            refused=True,
+            refuse_reason=action.get("reason", ""),
+        )
     if action["type"] == "suggest":
         return _resp(sid, state, action["reply"], suggestions=action["suggestions"])
     if action["type"] == "confirm":
@@ -226,36 +364,121 @@ async def dialog_generate(
     state["queued"] = []
     await save_session(sid, state)
 
-    # ── Auto-save itinerary to PostgreSQL (non-blocking, best-effort) ──
-    saved_id: Optional[str] = None
-    if db_conn.DB_HEALTHY and itinerary and device_id:
-        try:
-            async with db_conn.async_session() as db:
-                user = await get_or_create_user(db, device_id)
-                saved = await itinerary_service.save_itinerary(
-                    db=db,
-                    user_id=user.id,
-                    itinerary=itinerary,
-                    validation_report=itinerary.get("validation_report"),
-                    profile_snapshot={
-                        "slots": state.get("slots", {}),
-                        "user_input": user_input,
-                    },
-                    weather_snapshot=result.get("weather"),
-                )
-                if saved:
-                    saved_id = saved.id
-        except Exception as e:
-            logger.warning(f"Auto-save itinerary skipped (non-fatal): {e}")
+    # Phase 8.1: Propagate coverage warning from orchestrator
+    coverage_warning = result.get("coverage_warning") or None
 
+    # ── Auto-save itinerary（PG 优先，本地文件回退；Phase 12.24 抽取共用）
+    saved_id = await _auto_save_itinerary(state, itinerary, result, user_input, device_id)
+
+    reply = _delivered_reply(coverage_warning, queued_count)
+    return _resp(sid, state, reply, itinerary=itinerary, itinerary_id=saved_id,
+                 coverage_warning=coverage_warning)
+
+def _delivered_reply(coverage_warning: Optional[str], queued_count: int) -> str:
     reply = "行程卡片生成好啦 ✅ 点卡片看完整版；想改哪里直接说（比如「第二天太赶了」）。"
+    if coverage_warning:
+        reply = f"⚠️ {coverage_warning}\n\n{reply}"
     if queued_count:
         reply += f"（你生成中留的 {queued_count} 条留言，直接再说一遍即可）"
-    return _resp(sid, state, reply, itinerary=itinerary, itinerary_id=saved_id)
+    return reply
+
+
+@router.post("/dialog/generate/stream")
+async def dialog_generate_stream(
+    request: DialogGenerateRequest,
+    device_id: Optional[str] = Depends(get_device_id),
+):
+    """SSE 版生成（Phase 12.24）：与 /agent/plan/stream 同一事件源的真实阶段进度。
+
+    事件序列：progress × N → done（DialogResponse 全字段）/ error。
+    会话状态机与自动保存逻辑与阻塞式 /dialog/generate 完全一致。
+    """
+    sid, state = await get_session(request.session_id)
+
+    if state["stage"] == "delivered" and state.get("itinerary"):
+        payload = _resp(
+            sid, state, "行程卡片已生成过啦，直接告诉我要改哪里就行。",
+            itinerary=state["itinerary"],
+        ).model_dump()
+
+        async def _already():
+            yield f"data: {json.dumps({'event': 'done', 'data': payload}, ensure_ascii=False)}\n\n".encode("utf-8")
+
+        return StreamingResponse(_already(), media_type="text/event-stream", headers=_SSE_HEADERS)
+
+    state["stage"] = "generating"
+    await save_session(sid, state)
+    user_input = synthesize_input(state["slots"])
+    logger.info(f"Dialog generate (stream): {user_input}")
+
+    async def event_generator():
+        final: Dict[str, Any] = {}
+        try:
+            async for event in run_travel_workflow_stream(user_input=user_input):
+                if event.get("event") == "result" and isinstance(event.get("data"), dict):
+                    final = event["data"]
+                yield f"data: {json.dumps(event, ensure_ascii=False)}\n\n".encode("utf-8")
+        except Exception as e:
+            logger.error(f"Dialog stream failed: {e}", exc_info=True)
+            state["stage"] = "confirming"
+            await save_session(sid, state)
+            yield f"data: {json.dumps({'event': 'error', 'message': '生成服务暂不可用，请稍后再试。'}, ensure_ascii=False)}\n\n".encode("utf-8")
+            return
+
+        itinerary = final.get("itinerary") or {}
+        queued_count = len(state["queued"])
+
+        if not itinerary:
+            state["stage"] = "confirming"
+            await save_session(sid, state)
+            err = final.get("error") or "行程生成失败，请再试一次。"
+            yield f"data: {json.dumps({'event': 'error', 'message': err}, ensure_ascii=False)}\n\n".encode("utf-8")
+            return
+
+        state["itinerary"] = itinerary
+        state["stage"] = "delivered"
+        state["queued"] = []
+        await save_session(sid, state)
+
+        coverage_warning = final.get("coverage_warning") or None
+        saved_id = await _auto_save_itinerary(state, itinerary, final, user_input, device_id)
+        reply = _delivered_reply(coverage_warning, queued_count)
+
+        done_payload = _resp(
+            sid, state, reply,
+            itinerary=itinerary, itinerary_id=saved_id,
+            coverage_warning=coverage_warning,
+        ).model_dump()
+        yield f"data: {json.dumps({'event': 'done', 'data': done_payload}, ensure_ascii=False)}\n\n".encode("utf-8")
+
+    return StreamingResponse(
+        event_generator(), media_type="text/event-stream", headers=_SSE_HEADERS
+    )
 
 
 async def _handle_modification(sid: str, state: Dict[str, Any], text: str) -> DialogResponse:
-    """DELIVERED 态：规则分流 → LLM 兜底 → 反问。"""
+    """DELIVERED 态：单项删除 → 规则分流 → LLM 兜底 → 反问。"""
+    # Phase 12.27: 单项删除优先——"去掉 XX" 确定性处理，零 LLM
+    try:
+        removed = try_remove_item(state.get("itinerary"), text)
+    except Exception as e:
+        logger.warning(f"try_remove_item failed (non-fatal): {e}")
+        removed = None
+    if removed:
+        if removed[0] == "__day_would_empty__":
+            return _resp(
+                sid, state,
+                f"第 {removed[1]} 天只剩「{removed[2]}」了，去掉这一天就空了～"
+                "要不我帮你把这一天重新安排一下？",
+            )
+        state["stage"] = "delivered"
+        await save_session(sid, state)
+        return _resp(
+            sid, state,
+            f"已把「{removed[0]}」从第 {removed[1]} 天去掉啦 ✅ 还想调整哪里？",
+            itinerary=state["itinerary"],
+        )
+
     decision = classify_modification(text, state.get("itinerary"))
     if decision["type"] == "unknown":
         decision = await _classify_with_llm(text)

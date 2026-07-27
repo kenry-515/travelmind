@@ -24,9 +24,6 @@ redis==5.2.1            # RedisSessionStore (async redis-py)
 
 # --- AI / LLM ---
 openai==1.57.0           # DeepSeek compatible (OpenAI SDK)
-langchain==1.3.14
-langchain-community==0.4.2
-langgraph==1.2.9
 chromadb==0.5.20
 tiktoken==0.7.0
 pillow==11.0.0           # 测试脚本生成验证图片 (test_vision / smoke_test --with-vision)

@@ -7,12 +7,17 @@ Replaces the originally-planned Baidu Maps — Amap covers all the same
 capabilities (walking, transit, driving, distance matrix) and we already
 have the API key + digital signing configured.
 
+Phase 12.11: When AMAP_API_KEY is empty, all calls return empty results
+gracefully (no errors, no warnings). The system falls back to KB coordinates
+for route calculation and name-based matching for POI verification.
+
 Usage:
     from app.services.amap_service import get_distance_matrix, get_walking_route
 """
 
 import asyncio
 import hashlib
+import json
 import logging
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -21,6 +26,30 @@ import httpx
 from app.config.settings import settings
 
 logger = logging.getLogger(__name__)
+
+# ── API Key availability ───────────────────────────────────
+
+def is_amap_available() -> bool:
+    """Check if the Amap API key is configured and non-empty."""
+    key = getattr(settings, "AMAP_API_KEY", "")
+    return bool(key and key.strip())
+
+
+_AMAP_UNAVAILABLE_LOG = False  # log once per process
+
+
+def _check_amap_available() -> bool:
+    """Check Amap availability; log info once when unavailable."""
+    global _AMAP_UNAVAILABLE_LOG
+    if is_amap_available():
+        return True
+    if not _AMAP_UNAVAILABLE_LOG:
+        _AMAP_UNAVAILABLE_LOG = True
+        logger.info(
+            "Amap API key is not configured — POI verification and route "
+            "distance will use KB coordinates and name matching only."
+        )
+    return False
 
 # ── API endpoints ────────────────────────────────────────
 
@@ -74,7 +103,12 @@ async def search_poi(
     Returns a list of {name, adname (行政区, e.g. 渝中区), address, typecode,
     lat, lon} — used for POI 存续校验、区域归属和地理坐标。
     Returns [] on any failure (treated as 'not found' by callers).
+
+    Phase 12.11: Returns [] gracefully when Amap API key is not configured.
     """
+    if not _check_amap_available():
+        return []
+
     params = _sign_params({
         "key": settings.AMAP_API_KEY,
         "keywords": keywords,
@@ -143,6 +177,20 @@ async def get_walking_route(
     Returns:
         Dict with distance (meters), duration (seconds), or None on failure.
     """
+    if not _check_amap_available():
+        # Fallback: estimate distance using haversine
+        try:
+            from math import radians, sin, cos, sqrt, atan2
+            lat1, lon1 = radians(destination[1]), radians(destination[0])
+            lat2, lon2 = radians(origin[1]), radians(origin[0])
+            dlat, dlon = lat2 - lat1, lon2 - lon1
+            a = sin(dlat/2)**2 + cos(lat1)*cos(lat2)*sin(dlon/2)**2
+            c = 2 * atan2(sqrt(a), sqrt(1-a))
+            dist_m = 6371000 * c
+            return {"distance_m": int(dist_m), "duration_s": int(dist_m / 1.2), "steps": 1}
+        except Exception:
+            return None
+
     params = _sign_params({
         "key": settings.AMAP_API_KEY,
         "origin": f"{origin[0]},{origin[1]}",
@@ -189,6 +237,25 @@ async def get_transit_route(
     Returns:
         Dict with distance, duration, cost, or None on failure.
     """
+    if not _check_amap_available():
+        # Fallback: estimate using haversine
+        try:
+            from math import radians, sin, cos, sqrt, atan2
+            lat1, lon1 = radians(destination[1]), radians(destination[0])
+            lat2, lon2 = radians(origin[1]), radians(origin[0])
+            dlat, dlon = lat2 - lat1, lon2 - lon1
+            a = sin(dlat/2)**2 + cos(lat1)*cos(lat2)*sin(dlon/2)**2
+            c = 2 * atan2(sqrt(a), sqrt(1-a))
+            dist_m = 6371000 * c
+            return {
+                "distance_m": int(dist_m),
+                "duration_s": int(dist_m / 8.0),  # transit ~8 m/s avg
+                "cost_yuan": max(2.0, dist_m / 1000 * 3.0),
+                "walking_distance_m": 500,
+            }
+        except Exception:
+            return None
+
     params = _sign_params({
         "key": settings.AMAP_API_KEY,
         "origin": f"{origin[0]},{origin[1]}",
@@ -241,6 +308,23 @@ async def get_distance_matrix(
     """
     if not origins:
         return []
+
+    if not _check_amap_available():
+        # Fallback: haversine distances
+        from math import radians, sin, cos, sqrt, atan2
+        results = []
+        dlat, dlon = radians(destination[1]), radians(destination[0])
+        for lon, lat in origins[:10]:
+            try:
+                olat, olon = radians(lat), radians(lon)
+                dlat2, dlon2 = olat - dlat, olon - dlon
+                a = sin(dlat2/2)**2 + cos(dlat)*cos(olat)*sin(dlon2/2)**2
+                c = 2 * atan2(sqrt(a), sqrt(1-a))
+                dist_m = int(6371000 * c)
+                results.append({"distance_m": dist_m, "duration_s": int(dist_m / 10.0)})
+            except Exception:
+                results.append({"distance_m": 0, "duration_s": 0})
+        return results
 
     # Amap distance API: origins as pipe-separated coords
     origins_str = "|".join(f"{lon},{lat}" for lon, lat in origins[:10])
@@ -322,8 +406,32 @@ async def score_location_efficiency(
         avg_lat = sum(c[1] for c in valid_coords) / len(valid_coords)
         city_center = (avg_lon, avg_lat)
 
-    # Get distance matrix from all origins to city center
-    distances = await get_distance_matrix(valid_coords, city_center)
+    # Phase 10: Check cache for Amap distance matrix (most expensive API call)
+    #   Key includes city_center — different destinations produce different distances
+    import hashlib
+    coord_key = hashlib.md5(
+        json.dumps((sorted(valid_coords), city_center), sort_keys=True).encode()
+    ).hexdigest()
+    cache_key = f"amap:{coord_key}"
+    distances = None
+    cache = None
+    try:
+        from app.services.cache_service import get_cache
+        cache = get_cache()
+        cached = await cache.get(cache_key)
+        if cached:
+            distances = json.loads(cached)
+            logger.debug("Amap distance cache hit for %d coords", len(valid_coords))
+    except Exception as e:
+        logger.debug("Cache read failed (non-fatal): %s", e)
+
+    if distances is None:
+        distances = await get_distance_matrix(valid_coords, city_center)
+        if cache is not None:
+            try:
+                await cache.set(cache_key, json.dumps(distances), ttl=3600)
+            except Exception:
+                pass  # cache write failure is non-fatal
 
     # Map distances back to scores
     dist_map: Dict[Tuple[float, float], float] = {}

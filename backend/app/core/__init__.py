@@ -35,7 +35,7 @@ class BaseLLMProvider(ABC):
 
 
 class BaseVisionProvider(ABC):
-    """Abstract base for vision providers (Kimi, Qwen-VL, Tencent Hunyuan)."""
+    """Abstract base for vision providers (Kimi k2.6)."""
 
     @abstractmethod
     async def analyze_image(

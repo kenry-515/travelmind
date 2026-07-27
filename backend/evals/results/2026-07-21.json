@@ -1,34 +1,34 @@
 {
   "date": "2026-07-21",
   "total_queries": 12,
-  "micro": 0.75,
+  "micro": 0.8056,
   "macro": 0.0,
   "final_pass_rate": 0.0,
   "per_constraint": {
     "schema_valid": {
-      "pass": 11,
+      "pass": 12,
       "total": 12,
-      "rate": 0.917
+      "rate": 1.0
     },
     "days_correct": {
-      "pass": 11,
+      "pass": 12,
       "total": 12,
-      "rate": 0.917
+      "rate": 1.0
     },
     "stats_place_count": {
-      "pass": 11,
+      "pass": 12,
       "total": 12,
-      "rate": 0.917
+      "rate": 1.0
     },
     "budget_consistent": {
-      "pass": 11,
+      "pass": 12,
       "total": 12,
-      "rate": 0.917
+      "rate": 1.0
     },
     "month_consistent": {
-      "pass": 11,
+      "pass": 12,
       "total": 12,
-      "rate": 0.917
+      "rate": 1.0
     },
     "poi_verified": {
       "pass": 3,
@@ -36,19 +36,19 @@
       "rate": 0.25
     },
     "route_ok": {
-      "pass": 9,
-      "total": 12,
-      "rate": 0.75
-    },
-    "weather_fit": {
-      "pass": 3,
-      "total": 12,
-      "rate": 0.25
-    },
-    "weather_coverage": {
       "pass": 11,
       "total": 12,
       "rate": 0.917
+    },
+    "weather_fit": {
+      "pass": 1,
+      "total": 12,
+      "rate": 0.083
+    },
+    "weather_coverage": {
+      "pass": 12,
+      "total": 12,
+      "rate": 1.0
     }
   },
   "per_query": [
@@ -59,9 +59,9 @@
         "city": "重庆",
         "days": 3
       },
-      "elapsed_s": 24.0,
+      "elapsed_s": 28.4,
       "http": 200,
-      "title": "夏日重庆 · 家庭慢游三日行程",
+      "title": "盛夏山城 · 家庭休闲三日游",
       "api_error": null,
       "scores": {
         "schema_valid": {
@@ -86,7 +86,7 @@
         },
         "poi_verified": {
           "pass": false,
-          "detail": "3/13 = 23%（阈值 50%）"
+          "detail": "6/13 = 46%（阈值 50%）"
         },
         "route_ok": {
           "pass": true,
@@ -110,9 +110,60 @@
         "city": "成都",
         "days": 3
       },
-      "elapsed_s": 24.5,
+      "elapsed_s": 26.9,
       "http": 200,
-      "title": "夏日亲子·成都三日休闲游",
+      "title": "成都亲子消夏 · 三日悠闲行程",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=3 vs 期望 3"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=15 vs 实际=15"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": false,
+          "detail": "2/15 = 13%（阈值 50%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=False"
+        },
+        "weather_fit": {
+          "pass": false,
+          "detail": "weather_fit=poor"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        }
+      },
+      "query_pass": false
+    },
+    {
+      "id": "q03",
+      "input": "上海3日游，喜欢历史和艺术，情侣",
+      "expect": {
+        "city": "上海",
+        "days": 3
+      },
+      "elapsed_s": 36.4,
+      "http": 200,
+      "title": "夏日上海 · 三日历史情侣漫游",
       "api_error": null,
       "scores": {
         "schema_valid": {
@@ -137,58 +188,7 @@
         },
         "poi_verified": {
           "pass": false,
-          "detail": "0/13 = 0%（阈值 50%）"
-        },
-        "route_ok": {
-          "pass": true,
-          "detail": "route_backtrack=False"
-        },
-        "weather_fit": {
-          "pass": false,
-          "detail": "weather_fit=poor"
-        },
-        "weather_coverage": {
-          "pass": true,
-          "detail": ""
-        }
-      },
-      "query_pass": false
-    },
-    {
-      "id": "q03",
-      "input": "上海3日游，喜欢历史和艺术，情侣",
-      "expect": {
-        "city": "上海",
-        "days": 3
-      },
-      "elapsed_s": 23.9,
-      "http": 200,
-      "title": "盛夏沪上 · 三日情侣漫游",
-      "api_error": null,
-      "scores": {
-        "schema_valid": {
-          "pass": true,
-          "detail": ""
-        },
-        "days_correct": {
-          "pass": true,
-          "detail": "daysCount=3 vs 期望 3"
-        },
-        "stats_place_count": {
-          "pass": true,
-          "detail": "stats=14 vs 实际=14"
-        },
-        "budget_consistent": {
-          "pass": true,
-          "detail": "percent 和=100"
-        },
-        "month_consistent": {
-          "pass": true,
-          "detail": ""
-        },
-        "poi_verified": {
-          "pass": false,
-          "detail": "3/14 = 21%（阈值 50%）"
+          "detail": "6/13 = 46%（阈值 50%）"
         },
         "route_ok": {
           "pass": true,
@@ -212,9 +212,60 @@
         "city": "北京",
         "days": 4
       },
-      "elapsed_s": 26.7,
+      "elapsed_s": 73.0,
       "http": 200,
       "title": "盛夏京城 · 四日深度历史行",
+      "api_error": null,
+      "scores": {
+        "schema_valid": {
+          "pass": true,
+          "detail": ""
+        },
+        "days_correct": {
+          "pass": true,
+          "detail": "daysCount=4 vs 期望 4"
+        },
+        "stats_place_count": {
+          "pass": true,
+          "detail": "stats=17 vs 实际=17"
+        },
+        "budget_consistent": {
+          "pass": true,
+          "detail": "percent 和=100"
+        },
+        "month_consistent": {
+          "pass": true,
+          "detail": ""
+        },
+        "poi_verified": {
+          "pass": false,
+          "detail": "7/17 = 41%（阈值 50%）"
+        },
+        "route_ok": {
+          "pass": true,
+          "detail": "route_backtrack=False"
+        },
+        "weather_fit": {
+          "pass": false,
+          "detail": "weather_fit=poor"
+        },
+        "weather_coverage": {
+          "pass": true,
+          "detail": ""
+        }
+      },
+      "query_pass": false
+    },
+    {
+      "id": "q05",
+      "input": "西安4日游，大学生穷游，喜欢历史和博物馆",
+      "expect": {
+        "city": "西安",
+        "days": 4
+      },
+      "elapsed_s": 30.1,
+      "http": 200,
+      "title": "西安四日 · 历史深度穷游行",
       "api_error": null,
       "scores": {
         "schema_valid": {
@@ -257,66 +308,15 @@
       "query_pass": false
     },
     {
-      "id": "q05",
-      "input": "西安4日游，大学生穷游，喜欢历史和博物馆",
-      "expect": {
-        "city": "西安",
-        "days": 4
-      },
-      "elapsed_s": 72.1,
-      "http": 200,
-      "title": "",
-      "api_error": "Noneplanning: 行程生成失败（已达重试上限）",
-      "scores": {
-        "schema_valid": {
-          "pass": false,
-          "detail": "itinerary empty"
-        },
-        "days_correct": {
-          "pass": false,
-          "detail": "itinerary empty"
-        },
-        "stats_place_count": {
-          "pass": false,
-          "detail": "itinerary empty"
-        },
-        "budget_consistent": {
-          "pass": false,
-          "detail": "itinerary empty"
-        },
-        "month_consistent": {
-          "pass": false,
-          "detail": "itinerary empty"
-        },
-        "poi_verified": {
-          "pass": false,
-          "detail": "itinerary empty"
-        },
-        "route_ok": {
-          "pass": false,
-          "detail": "itinerary empty"
-        },
-        "weather_fit": {
-          "pass": false,
-          "detail": "itinerary empty"
-        },
-        "weather_coverage": {
-          "pass": false,
-          "detail": "itinerary empty"
-        }
-      },
-      "query_pass": false
-    },
-    {
       "id": "q06",
       "input": "杭州2日休闲游，喜欢西湖和茶",
       "expect": {
         "city": "杭州",
         "days": 2
       },
-      "elapsed_s": 24.9,
+      "elapsed_s": 22.3,
       "http": 200,
-      "title": "夏雨西湖 · 杭州两日休闲游",
+      "title": "夏日杭州 · 两日休闲之旅",
       "api_error": null,
       "scores": {
         "schema_valid": {
@@ -329,7 +329,7 @@
         },
         "stats_place_count": {
           "pass": true,
-          "detail": "stats=11 vs 实际=11"
+          "detail": "stats=8 vs 实际=8"
         },
         "budget_consistent": {
           "pass": true,
@@ -341,11 +341,11 @@
         },
         "poi_verified": {
           "pass": true,
-          "detail": "6/11 = 55%（阈值 50%）"
+          "detail": "5/8 = 62%（阈值 50%）"
         },
         "route_ok": {
-          "pass": false,
-          "detail": "route_backtrack=True"
+          "pass": true,
+          "detail": "route_backtrack=False"
         },
         "weather_fit": {
           "pass": false,
@@ -365,9 +365,9 @@
         "city": "三亚",
         "days": 3
       },
-      "elapsed_s": 38.7,
+      "elapsed_s": 22.2,
       "http": 200,
-      "title": "夏日三亚 · 亲子海岛休闲之旅",
+      "title": "盛夏三亚 · 亲子海岛休闲之旅",
       "api_error": null,
       "scores": {
         "schema_valid": {
@@ -380,7 +380,7 @@
         },
         "stats_place_count": {
           "pass": true,
-          "detail": "stats=12 vs 实际=12"
+          "detail": "stats=8 vs 实际=8"
         },
         "budget_consistent": {
           "pass": true,
@@ -391,20 +391,20 @@
           "detail": ""
         },
         "poi_verified": {
-          "pass": false,
-          "detail": "4/12 = 33%（阈值 50%）"
+          "pass": true,
+          "detail": "5/8 = 62%（阈值 50%）"
         },
         "route_ok": {
           "pass": true,
           "detail": "route_backtrack=False"
         },
         "weather_fit": {
-          "pass": true,
-          "detail": "weather_fit=unknown"
+          "pass": false,
+          "detail": "weather_fit=poor"
         },
         "weather_coverage": {
           "pass": true,
-          "detail": "无降雨预报，不适用"
+          "detail": ""
         }
       },
       "query_pass": false
@@ -416,9 +416,9 @@
         "city": "桂林",
         "days": 5
       },
-      "elapsed_s": 29.8,
+      "elapsed_s": 31.8,
       "http": 200,
-      "title": "盛夏桂林 · 五日山水摄影之旅",
+      "title": "夏日桂林 · 五日摄影之旅",
       "api_error": null,
       "scores": {
         "schema_valid": {
@@ -431,7 +431,7 @@
         },
         "stats_place_count": {
           "pass": true,
-          "detail": "stats=20 vs 实际=20"
+          "detail": "stats=21 vs 实际=21"
         },
         "budget_consistent": {
           "pass": true,
@@ -443,7 +443,7 @@
         },
         "poi_verified": {
           "pass": false,
-          "detail": "2/20 = 10%（阈值 50%）"
+          "detail": "6/20 = 30%（阈值 50%）"
         },
         "route_ok": {
           "pass": true,
@@ -467,9 +467,9 @@
         "city": "苏州",
         "days": 2
       },
-      "elapsed_s": 21.3,
+      "elapsed_s": 22.3,
       "http": 200,
-      "title": "夏日姑苏 · 文艺古镇两日行",
+      "title": "夏日姑苏 · 文艺古镇两日游",
       "api_error": null,
       "scores": {
         "schema_valid": {
@@ -482,7 +482,7 @@
         },
         "stats_place_count": {
           "pass": true,
-          "detail": "stats=11 vs 实际=11"
+          "detail": "stats=10 vs 实际=10"
         },
         "budget_consistent": {
           "pass": true,
@@ -494,7 +494,7 @@
         },
         "poi_verified": {
           "pass": true,
-          "detail": "6/11 = 55%（阈值 50%）"
+          "detail": "5/10 = 50%（阈值 50%）"
         },
         "route_ok": {
           "pass": true,
@@ -518,9 +518,9 @@
         "city": "丽江",
         "days": 3
       },
-      "elapsed_s": 26.3,
+      "elapsed_s": 37.8,
       "http": 200,
-      "title": "丽江夏日 · 古镇文艺三日游",
+      "title": "夏日丽江 · 古镇休闲三日游",
       "api_error": null,
       "scores": {
         "schema_valid": {
@@ -533,7 +533,7 @@
         },
         "stats_place_count": {
           "pass": true,
-          "detail": "stats=12 vs 实际=12"
+          "detail": "stats=14 vs 实际=14"
         },
         "budget_consistent": {
           "pass": true,
@@ -544,8 +544,8 @@
           "detail": ""
         },
         "poi_verified": {
-          "pass": true,
-          "detail": "6/12 = 50%（阈值 50%）"
+          "pass": false,
+          "detail": "5/14 = 36%（阈值 50%）"
         },
         "route_ok": {
           "pass": true,
@@ -569,9 +569,9 @@
         "city": "张家界",
         "days": 2
       },
-      "elapsed_s": 22.7,
+      "elapsed_s": 22.5,
       "http": 200,
-      "title": "张家界 · 夏日奇境两日游",
+      "title": "张家界 · 夏日两日探险之旅",
       "api_error": null,
       "scores": {
         "schema_valid": {
@@ -596,19 +596,19 @@
         },
         "poi_verified": {
           "pass": false,
-          "detail": "5/11 = 45%（阈值 50%）"
+          "detail": "4/11 = 36%（阈值 50%）"
         },
         "route_ok": {
           "pass": true,
           "detail": "route_backtrack=False"
         },
         "weather_fit": {
-          "pass": true,
-          "detail": "weather_fit=good"
+          "pass": false,
+          "detail": "weather_fit=poor"
         },
         "weather_coverage": {
           "pass": true,
-          "detail": "无降雨预报，不适用"
+          "detail": ""
         }
       },
       "query_pass": false
@@ -620,7 +620,7 @@
         "city": "长沙",
         "days": 2
       },
-      "elapsed_s": 19.7,
+      "elapsed_s": 18.8,
       "http": 200,
       "title": "夏雨长沙 · 两日美食之旅",
       "api_error": null,

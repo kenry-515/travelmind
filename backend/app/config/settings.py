@@ -11,9 +11,10 @@ class Settings(BaseSettings):
 
     # --- App ---
     APP_ENV: str = "development"
-    APP_DEBUG: bool = True
+    APP_DEBUG: bool = False  # Phase 12.29: 默认关闭，生产安全
     APP_HOST: str = "0.0.0.0"
     APP_PORT: int = 8000
+    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173"
 
     # --- LLM ---
     LLM_PROVIDER: str = "deepseek"
@@ -30,17 +31,12 @@ class Settings(BaseSettings):
     VISION_MODEL: str = "kimi-k2.6"
     VISION_TIMEOUT: float = 60.0
     # 备选视觉服务（未启用）
-    QWEN_API_KEY: str = ""
-    QWEN_BASE_URL: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-    TENCENT_SECRET_ID: str = ""
-    TENCENT_SECRET_KEY: str = ""
 
     # --- Maps ---
     AMAP_API_KEY: str = ""
     AMAP_SIGN_KEY: str = ""  # 数字签名私钥 (optional, only if signing is enabled)
-    # Deprecated: Baidu Maps was replaced by Amap. Kept as a no-op so older
-    # .env files containing BAIDU_MAP_AK don't fail settings validation
-    # (extra=forbid). Safe to remove once .env no longer has it.
+    # Deprecated: Baidu Maps was replaced by Amap. Kept as a no-op for backward
+    # compatibility with older .env files. Safe to remove once no longer needed.
     BAIDU_MAP_AK: str = ""
 
     # --- Weather ---

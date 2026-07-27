@@ -18,10 +18,9 @@ import { PlaceCard } from '../components/PlaceCard'
 import { toast } from '../components/Toast'
 import {
   analyzeImage,
-  fetchQuickRecommendations,
-  fetchWeatherCities,
+  fetchByTags,
   type ImageAnalyzeResult,
-  type PlaceItem,
+  type ByTagsResponse,
 } from '../lib/api'
 
 type PageState =
@@ -33,7 +32,7 @@ type PageState =
 type RecState =
   | { stage: 'idle' }
   | { stage: 'loading' }
-  | { stage: 'done'; city: string; places: PlaceItem[] }
+  | { stage: 'done'; data: ByTagsResponse }
   | { stage: 'error'; message: string }
 
 /** Prefer the backend's friendly `detail` message over raw axios errors. */
@@ -48,24 +47,7 @@ function resolveErrorMessage(err: unknown): string {
 
 export function ImagePage() {
   const [state, setState] = useState<PageState>({ stage: 'idle' })
-  const [cities, setCities] = useState<string[]>([])
-  const [city, setCity] = useState('')
   const [recState, setRecState] = useState<RecState>({ stage: 'idle' })
-
-  // 加载城市列表（与知识库相同的 10 个城市）
-  useEffect(() => {
-    fetchWeatherCities()
-      .then((list) => setCities(list.map((c) => c.name)))
-      .catch(() => toast.warning('城市列表加载失败，相似推荐可能不可用'))
-  }, [])
-
-  // 分析完成后，尝试从识别出的地点名中推断城市（如「西湖」→ 不含城市名则不推断）
-  useEffect(() => {
-    if (state.stage === 'done' && state.result.location) {
-      const matched = cities.find((c) => state.result.location.includes(c))
-      if (matched) setCity(matched)
-    }
-  }, [state, cities])
 
   const handleAnalyze = async (file: File) => {
     setState({ stage: 'loading' })
@@ -78,12 +60,15 @@ export function ImagePage() {
     }
   }
 
+  // Auto-trigger similar places search when image analysis completes with tags
+  useEffect(() => {
+    if (state.stage === 'done' && state.result.tags.length > 0) {
+      handleRecommend()
+    }
+  }, [state.stage])
+
   const handleRecommend = async () => {
     if (state.stage !== 'done') return
-    if (!city) {
-      toast.warning('请先选择城市')
-      return
-    }
     const tags = state.result.tags
     if (tags.length === 0) {
       toast.warning('没有可用的风格标签，无法推荐')
@@ -91,8 +76,8 @@ export function ImagePage() {
     }
     setRecState({ stage: 'loading' })
     try {
-      const data = await fetchQuickRecommendations({ city, tags, top_k: 6 })
-      setRecState({ stage: 'done', city: data.city, places: data.places })
+      const data = await fetchByTags({ tags, top_k: 20, min_score: 0.4 })
+      setRecState({ stage: 'done', data })
     } catch (err: unknown) {
       setRecState({ stage: 'error', message: resolveErrorMessage(err) })
     }
@@ -101,25 +86,29 @@ export function ImagePage() {
   const confidencePercent = (c: number) => `${Math.round(c * 100)}%`
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="relative min-h-screen overflow-hidden bg-surface-secondary pb-20 sm:pb-0">
+      {/* 弱化极光背景（Phase 12.24） */}
+      <div aria-hidden className="aurora aurora-soft">
+        <span /><span /><span />
+      </div>
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3">
+      <header className="glass sticky top-0 z-10 border-b border-border-light">
+        <div className="mx-auto flex max-w-5xl items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
           <Link
             to="/"
-            className="rounded-lg p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"
+            className="rounded-xl p-1.5 text-slate-500 transition-colors hover:bg-brand-50 hover:text-brand-600"
             aria-label="返回首页"
           >
             <ArrowLeft size={20} />
           </Link>
           <h2 className="text-sm font-semibold text-slate-800">图片识别</h2>
-          <span className="text-xs text-slate-400">
+          <span className="hidden text-xs text-slate-400 sm:inline">
             上传旅行照片，AI 识别地点与风格标签
           </span>
         </div>
       </header>
 
-      <main className="mx-auto max-w-3xl px-4 py-6">
+      <main className="relative mx-auto max-w-3xl px-4 py-6">
         <ImageUploader onAnalyze={handleAnalyze} loading={state.stage === 'loading'} />
 
         {/* Error */}
@@ -132,16 +121,16 @@ export function ImagePage() {
 
         {/* Analysis result */}
         {state.stage === 'done' && (
-          <div className="mt-6 space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="mt-6 animate-fade-in-up space-y-4 rounded-2xl border border-border bg-white p-5 shadow-card">
             {/* Location */}
             <div className="flex items-start gap-3">
-              <MapPin size={18} className="mt-0.5 shrink-0 text-blue-500" />
+              <MapPin size={18} className="mt-0.5 shrink-0 text-brand-500" />
               <div>
                 <p className="text-xs font-medium text-slate-400">识别地点</p>
                 {state.result.location ? (
-                  <p className="text-base font-semibold text-slate-800">
+                  <p className="text-base font-bold text-slate-800">
                     {state.result.location}
-                    <span className="ml-2 rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600">
+                    <span className="ml-2 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-600">
                       置信度 {confidencePercent(state.result.confidence)}
                     </span>
                   </p>
@@ -195,41 +184,25 @@ export function ImagePage() {
           </div>
         )}
 
-        {/* Similar attractions — closes the multimodal loop */}
+        {/* Similar attractions — cross-city search (Phase 12) */}
         {state.stage === 'done' && (
-          <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-              <TrendingUp size={16} className="text-blue-500" />
+          <div className="mt-6 rounded-2xl border border-border bg-white p-5 shadow-card">
+            <div className="flex items-center gap-2 text-sm font-bold text-slate-800">
+              <TrendingUp size={16} className="text-brand-500" />
               找相似景点
             </div>
             <p className="mt-1 text-xs text-slate-400">
-              用图片的风格标签，在知识库中匹配相似景点（RAG + 6 因子打分）
+              用图片的风格标签，全知识库跨城搜索相似景点
+              {recState.stage === 'done' && recState.data.cities_covered.length > 0 &&
+                `（覆盖 ${recState.data.cities_covered.length} 个城市）`}
             </p>
-            <div className="mt-3 flex items-center gap-3">
-              <select
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 shadow-sm focus:border-blue-400 focus:outline-none"
-                aria-label="选择城市"
-              >
-                <option value="">选择城市</option>
-                {cities.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-              <button
-                onClick={handleRecommend}
-                disabled={recState.stage === 'loading' || !city}
-                className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 disabled:opacity-50"
-              >
-                {recState.stage === 'loading' && (
-                  <Loader2 size={16} className="animate-spin" />
-                )}
-                {recState.stage === 'loading' ? '推荐中...' : '开始推荐'}
-              </button>
-            </div>
+
+            {recState.stage === 'loading' && (
+              <div className="mt-4 text-center py-4">
+                <Loader2 size={24} className="mx-auto mb-2 animate-spin text-brand-500" />
+                <p className="text-sm text-slate-500">全库搜索中...</p>
+              </div>
+            )}
 
             {recState.stage === 'error' && (
               <div className="mt-4 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -239,15 +212,38 @@ export function ImagePage() {
             )}
 
             {recState.stage === 'done' &&
-              (recState.places.length > 0 ? (
-                <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                  {recState.places.map((place, i) => (
-                    <PlaceCard key={place.name} place={place} rank={i + 1} />
-                  ))}
-                </div>
+              (recState.data.places.length > 0 ? (
+                <>
+                  {/* City chips for quick visual grouping */}
+                  {recState.data.cities_covered.length > 1 && (
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {recState.data.cities_covered.map((city) => (
+                        <span
+                          key={city}
+                          className="rounded-full bg-accent-50 px-2.5 py-0.5 text-xs font-medium text-accent-700"
+                        >
+                          {city}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                    {recState.data.places.map((place, i) => (
+                      <PlaceCard key={`${place.city}-${place.name}-${i}`} place={place} rank={i + 1} />
+                    ))}
+                  </div>
+                  {recState.data.filtered_results < recState.data.total_results && (
+                    <p className="mt-3 text-xs text-slate-400">
+                      已过滤 {recState.data.total_results - recState.data.filtered_results} 个低分结果
+                      （阈值 {recState.data.filtered_results > 0 ? '0.4' : '-'}）
+                    </p>
+                  )}
+                </>
               ) : (
                 <p className="mt-4 text-sm text-slate-500">
-                  在「{recState.city}」未找到匹配景点，换个城市或标签试试。
+                  全库未找到匹配景点，换个图片或标签试试。
+                  {recState.data.total_results > 0 && recState.data.filtered_results === 0 &&
+                    `（${recState.data.total_results} 个候选均未达到最低匹配分数）`}
                 </p>
               ))}
           </div>

@@ -1,0 +1,1206 @@
+{
+  "date": "2026-07-26",
+  "merged": [],
+  "rejected": [
+    {
+      "city": "南宁",
+      "name": "广西民族博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzAwODk4Mjk1NQ==&mid=2247680430&idx=1&sn=ef3c17649618b121bf1f3e9356cbec6b",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "南宁",
+      "name": "广西自然博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzAwODk4Mjk1NQ==&mid=2247680430&idx=1&sn=ef3c17649618b121bf1f3e9356cbec6b",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "南宁",
+      "name": "广西自然资源档案博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzAwODk4Mjk1NQ==&mid=2247680430&idx=1&sn=ef3c17649618b121bf1f3e9356cbec6b",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "南宁",
+      "name": "南宁孔庙博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzAwODk4Mjk1NQ==&mid=2247680430&idx=1&sn=ef3c17649618b121bf1f3e9356cbec6b",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "南宁",
+      "name": "广西美术馆",
+      "category": "美术馆",
+      "source_url": "https://view.inews.qq.com/a/20260504A040JD00",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "福州",
+      "name": "福建博物院",
+      "category": "博物馆",
+      "source_url": "https://news.qq.com/rain/a/20250504A06Q2M00",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "福州",
+      "name": "福建省科技馆",
+      "category": "科技馆",
+      "source_url": "https://news.qq.com/rain/a/20250504A06Q2M00",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "福州",
+      "name": "福州科技馆（新馆）",
+      "category": "科技馆",
+      "source_url": "https://news.qq.com/rain/a/20250504A06Q2M00",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "福州",
+      "name": "福建省图书馆",
+      "category": "图书馆",
+      "source_url": "https://news.qq.com/rain/a/20250504A06Q2M00",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "福州",
+      "name": "福州市图书馆",
+      "category": "图书馆",
+      "source_url": "https://news.qq.com/rain/a/20250504A06Q2M00",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "黄山",
+      "name": "中国徽菜博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.icauto.com.cn/trip/art_22505.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "黄山",
+      "name": "黄山太平猴魁博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.icauto.com.cn/trip/hot_6298.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "黄山",
+      "name": "戴震纪念馆",
+      "category": "博物馆",
+      "source_url": "https://www.icauto.com.cn/trip/hot_6293.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "黄山",
+      "name": "阜康钱庄体验馆",
+      "category": "室内其他",
+      "source_url": "https://baike.baidu.com/item/%E9%BB%84%E5%B1%B1%E5%B1%AF%E6%BA%AA%E6%B2%B3%E8%A1%97/67474314",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "黄山",
+      "name": "中共皖南特委旧址纪念馆",
+      "category": "博物馆",
+      "source_url": "https://www.icauto.com.cn/trip/hot_6293.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "拉萨",
+      "name": "西藏自然科学博物馆",
+      "category": "科技馆",
+      "source_url": "https://www.icauto.com.cn/trip/hot_2445.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "拉萨",
+      "name": "藏游坛城奇幻海洋馆",
+      "category": "海洋馆",
+      "source_url": "https://www.icauto.com.cn/trip/hot_2445.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "拉萨",
+      "name": "珠峰登山博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.icauto.com.cn/trip/hot_2445.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "拉萨",
+      "name": "次仁切阿雪山博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.icauto.com.cn/trip/hot_2445.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "拉萨",
+      "name": "西藏藏经博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.icauto.com.cn/trip/hot_2445.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "拉萨",
+      "name": "西藏牦牛博物馆",
+      "category": "博物馆",
+      "source_url": "http://www.tcmap.com.cn/view/museum/index218_list.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "拉萨",
+      "name": "西藏毛主席像章博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.sohu.com/a/1018025039_122756444",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "南京",
+      "name": "侵华日军南京大屠杀遇难同胞纪念馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI0MDQxNDUwMw==&mid=2247711605&idx=1&sn=fa7dfec669f2bf17b010100c54c4ecf7",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "南京",
+      "name": "南京地质博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI0MDQxNDUwMw==&mid=2247711605&idx=1&sn=fa7dfec669f2bf17b010100c54c4ecf7",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "南京",
+      "name": "金陵美术馆",
+      "category": "美术馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI0MDQxNDUwMw==&mid=2247711605&idx=1&sn=fa7dfec669f2bf17b010100c54c4ecf7",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "南京",
+      "name": "江苏省现代美术馆",
+      "category": "美术馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI0MDQxNDUwMw==&mid=2247711605&idx=1&sn=fa7dfec669f2bf17b010100c54c4ecf7",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "南京",
+      "name": "南京越剧博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI0MDQxNDUwMw==&mid=2247711605&idx=1&sn=fa7dfec669f2bf17b010100c54c4ecf7",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "南京",
+      "name": "江南丝绸文化博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI0MDQxNDUwMw==&mid=2247711605&idx=1&sn=fa7dfec669f2bf17b010100c54c4ecf7",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "南京",
+      "name": "先锋书店（五台山总店）",
+      "category": "室内其他",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI0MDQxNDUwMw==&mid=2247711605&idx=1&sn=fa7dfec669f2bf17b010100c54c4ecf7",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "贵阳",
+      "name": "贵阳三线建设博物馆",
+      "category": "博物馆",
+      "source_url": "https://m.gy.bendibao.com/tour/69615.shtm",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "贵阳",
+      "name": "贵州省美术馆",
+      "category": "美术馆",
+      "source_url": "https://m.gy.bendibao.com/tour/69615.shtm",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "贵阳",
+      "name": "贵州民族博物馆",
+      "category": "博物馆",
+      "source_url": "https://m.gy.bendibao.com/tour/69615.shtm",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "贵阳",
+      "name": "钟书阁（贵阳）",
+      "category": "室内其他",
+      "source_url": "https://gs.ctrip.com/html5/you/travels/33/3980706.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "香格里拉",
+      "name": "香格里拉藏药博物馆",
+      "category": "博物馆",
+      "source_url": "https://m.dswenhua.com/landscape/NzgxODA=.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "香格里拉",
+      "name": "独克宗古城非遗体验中心",
+      "category": "室内其他",
+      "source_url": "https://www.sina.cn/news/detail/5243184969160001.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "香格里拉",
+      "name": "香格里拉唐卡艺术中心",
+      "category": "室内其他",
+      "source_url": "https://www.ihg.com/hotelindigo/hotels/cn/zh/diqing/digdq/hoteldetail/local-area-guide",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "香格里拉",
+      "name": "香格里拉茶马古道博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.imetacloud.com/plan/xiang-ge-li-la-cha-ma-gu-dao-bo-wu-guan",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "香格里拉",
+      "name": "独克宗博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.imetacloud.com/plan/xiang-ge-li-la-du-ke-zong-bo-wu-guan",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "青岛",
+      "name": "中国人民解放军海军博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI5NDMzMTQzOQ==&mid=2247671711&idx=1&sn=ee4c71f743d53feb3bc10ec2db83751a",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "青岛",
+      "name": "中国海洋大学海洋生物博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI5NDMzMTQzOQ==&mid=2247672701&idx=1&sn=e44e510ced4f821134b2ef82010ec8ad",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "青岛",
+      "name": "黄盒子美术馆",
+      "category": "美术馆",
+      "source_url": "https://piao.qunar.com/ticket/list_%E5%A1%94%E6%96%AF%E9%A9%AC%E5%B0%BC%E4%BA%9A%E5%8D%9A%E7%89%A9%E9%A6%86%E5%92%8C%E7%BE%8E%E6%9C%AF%E9%A6%86.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "青岛",
+      "name": "青岛市美术馆",
+      "category": "美术馆",
+      "source_url": "https://zhuanlan.zhihu.com/p/393293932",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "大连",
+      "name": "大连自然博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzIwNDQyNTMzNg==&mid=2247725246&idx=1&sn=9128b4b35765a990c01ce6d2835c8ff7",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "大连",
+      "name": "大连城市音乐馆",
+      "category": "室内其他",
+      "source_url": "https://news.qq.com/rain/a/20250801A09D1O00",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "大连",
+      "name": "大连圣亚海洋世界",
+      "category": "海洋馆",
+      "source_url": "https://zhidao.baidu.com/question/2077485440596103068.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "大连",
+      "name": "罗斯福购物中心",
+      "category": "购物中心",
+      "source_url": "https://zhidao.baidu.com/question/1766447777360949748.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "昆明",
+      "name": "云南省博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.tripadvisor.com.hk/Attractions-g298558-Activities-zft11295-Kunming_Yunnan.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "昆明",
+      "name": "昆明市博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.tripadvisor.com.hk/Attractions-g298558-Activities-zft11295-Kunming_Yunnan.html",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "昆明",
+      "name": "云南民族博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.tripadvisor.com.hk/Attractions-g298558-Activities-zft11295-Kunming_Yunnan.html",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "昆明",
+      "name": "云南铁路博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.tripadvisor.com.hk/Attractions-g298558-Activities-zft11295-Kunming_Yunnan.html",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "深圳",
+      "name": "深圳博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI0NzcxNjQ5NA==&mid=2249025445&idx=1&sn=1dec0b1a544ef3bfaf886d0eed296cc7",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "深圳",
+      "name": "南山博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI0NzcxNjQ5NA==&mid=2249025445&idx=1&sn=1dec0b1a544ef3bfaf886d0eed296cc7",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "深圳",
+      "name": "深圳美术馆（新馆）",
+      "category": "美术馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI0NzcxNjQ5NA==&mid=2249025445&idx=1&sn=1dec0b1a544ef3bfaf886d0eed296cc7",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "深圳",
+      "name": "宝安科技馆",
+      "category": "科技馆",
+      "source_url": "https://www.163.com/dy/article/L0UGP0490525CKB5.html",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "深圳",
+      "name": "海上世界文化艺术中心",
+      "category": "室内其他",
+      "source_url": "https://sz.bendibao.com/tour/2025613/ly988752.html",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "哈尔滨",
+      "name": "中国（哈尔滨）森林博物馆",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzI1MDMzMjgzMg==&mid=2247782117&idx=1&sn=1d79f072aec2feb2d56548a5c64c267c",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "哈尔滨",
+      "name": "黑龙江省美术馆",
+      "category": "美术馆",
+      "source_url": "https://you.ctrip.com/sight/harbin151/1675018.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "哈尔滨",
+      "name": "黑龙江省大道美术馆",
+      "category": "美术馆",
+      "source_url": "https://www.icauto.com.cn/trip/hot_1590.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "哈尔滨",
+      "name": "哈尔滨美术馆",
+      "category": "美术馆",
+      "source_url": "https://m.modiauto.com.cn/zijia/h1590.html",
+      "reason": "纯类目泛称拒收"
+    },
+    {
+      "city": "郑州",
+      "name": "河南博物院",
+      "category": "博物馆",
+      "source_url": "http://mp.weixin.qq.com/s?__biz=MzIyMjQyNTcyNw==&mid=2247848546&idx=4&sn=9f2bc59c23242db204085ef18609ae94",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "郑州",
+      "name": "郑州博物馆",
+      "category": "博物馆",
+      "source_url": "http://zz.bendibao.com/tour/202594/145123.shtm",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "郑州",
+      "name": "郑州大河村遗址博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.163.com/dy/article/K2VFBITG0550B6IS.html",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "郑州美术馆（新馆）",
+      "category": "美术馆",
+      "source_url": "https://hn.ifeng.com/c/8kVJ9IgXq2o",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "河南省科技馆新馆",
+      "category": "科技馆",
+      "source_url": "http://www.360doc.com/content/23/0527/10/77741934_1082314946.shtml",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "升达艺术馆",
+      "category": "美术馆",
+      "source_url": "https://hn.ifeng.com/c/8kVJ9IgXq2o",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "郑州",
+      "name": "郑州万象城",
+      "category": "购物中心",
+      "source_url": "http://zz.bendibao.com/tour/202594/145123.shtm",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "只有河南",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69f11e95000000001e00fc2d",
+      "likes": 325,
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "郑州",
+      "name": "8家博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69e5ff5f000000001a021f84",
+      "likes": 22,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "河南博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69f09089000000002300703f",
+      "likes": 60,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "顶流商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69b23ca80000000028008eb3",
+      "likes": 237,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "锐评一下郑州商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/68e39a9d0000000003022238",
+      "likes": 3640,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "号称被二次元拯救的商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/68e3777000000000070326c4",
+      "likes": 610,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "人气zui旺的商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69c3e57200000000210139c8",
+      "likes": 101,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "景区级商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/688b2f7d000000000403e755",
+      "likes": 1057,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "还得是磨李夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a1959e9000000000603359c",
+      "likes": 167,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "南五里堡夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a60d3650000000010027530",
+      "likes": 15,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "健康路夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/68974f800000000004005740",
+      "likes": 15,
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "郑州",
+      "name": "分享郑州一条夜市",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7653394599192660850",
+      "likes": 557,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "今天咱们来吃郑州南五里堡夜市",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7663824917658375013",
+      "likes": 892,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "超详细的南五里堡夜市",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7662343574319709812",
+      "likes": 1384,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "磨李夜市",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7635908292048447397",
+      "likes": 1896,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "盘点郑州夜市",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7662304066621648366",
+      "likes": 44,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "又是一期南五里堡夜市",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7642604896105927665",
+      "likes": 997,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "20元吃遍郑州夜市",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7653030073130617408",
+      "likes": 1245,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "20元吃遍夜市",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7653030073130617408",
+      "likes": 1245,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a23ab76000000001c025cd8",
+      "likes": 4,
+      "reason": "纯类目泛称拒收"
+    },
+    {
+      "city": "郑州",
+      "name": "还有一个小众且爽的博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69788743000000001a02d29e",
+      "likes": 170,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "必逛的9个商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5606bf000000000803e61e",
+      "likes": 56,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "郑州丹尼斯大卫城",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69bcbc4f0000000021038f8a",
+      "likes": 190,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "每次路过都觉得重奢商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/689f2b66000000001b0203ac",
+      "likes": 419,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "9大宝藏夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a0c1b71000000003503ba8b",
+      "likes": 210,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "郑州",
+      "name": "的夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a097ae1000000003503bfe7",
+      "likes": 1457,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "世界上最大的购物中心",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a2a52d3000000001503cec9",
+      "likes": 937,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "盘龙城遗址",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5f2443000000001b01dfcb",
+      "likes": 0,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "武大万林博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5c2c3a000000001d022e33",
+      "likes": 2,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "最奢华的商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a534dfc000000001702e862",
+      "likes": 2800,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "全球最大商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69cb4eeb000000002302235a",
+      "likes": 326,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "Wuhan顶级高端商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/68d53501000000001301ff6a",
+      "likes": 1351,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "1个人50元吃空江夏夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a51d4da0000000006021a3d",
+      "likes": 22,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "光谷六路夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/694915cd000000001e014b0c",
+      "likes": 160,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "在武汉发现一个动漫谷子的商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/68ffa257000000000700b126",
+      "likes": 28,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "人气商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/694c7f2f000000001e027a73",
+      "likes": 986,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "第一次来湖北省博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7651915763885093211",
+      "likes": 2665,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "一个博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7651915763885093211",
+      "likes": 2665,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "湖北武汉博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7644118604313382522",
+      "likes": 518,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "没有抢到湖北省博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7644118604313382522",
+      "likes": 518,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "那就来同样是一级博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7644118604313382522",
+      "likes": 518,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "的武汉博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7644118604313382522",
+      "likes": 518,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7644118604313382522",
+      "likes": 518,
+      "reason": "纯类目泛称拒收"
+    },
+    {
+      "city": "武汉",
+      "name": "辛亥革命博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7648791814930188608",
+      "likes": 115,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "今天带大家逛一逛辛亥革命博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7648791814930188608",
+      "likes": 115,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "离换黄鹤楼",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7648791814930188608",
+      "likes": 115,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "沉浸式带你看湖北省博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7650109521322968763",
+      "likes": 6,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "遇见博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7650109521322968763",
+      "likes": 6,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "作为国家5A级博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7666020321603167345",
+      "likes": 5,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "一镜到底探秘湖北省博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7663750113526308835",
+      "likes": 20,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "在武汉挖到一处宝藏博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7654556357144658661",
+      "likes": 7645,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "警察博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7663464046930670449",
+      "likes": 61,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "省博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7666038170357876602",
+      "likes": 17,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "达临性学博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7662221902873710825",
+      "likes": 298,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "6月27日湖北省博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7655872386763583462",
+      "likes": 55,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "这里有个乡村博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7645147935676637029",
+      "likes": 263,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "长庭陶瓷博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.douyin.com/video/7645147935676637029",
+      "likes": 263,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "来湖北省博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a59af46000000001f01faaf",
+      "likes": 41,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "湖北省博以外的小而美博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a63444a000000001d020da7",
+      "likes": 6,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "不妨去武汉博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5dde2a0000000001003268",
+      "likes": 7,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "凤纹方罍武汉博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a646235000000000a03a604",
+      "likes": 4,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "武汉",
+      "name": "关于武汉博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5b1f1c000000000401dfa3",
+      "likes": 47,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "国家海洋博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.sohu.com/a/737395266_121117454",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "天津博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.sohu.com/a/737395266_121117454",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "天津",
+      "name": "天津自然博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.sohu.com/a/737395266_121117454",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "天津",
+      "name": "天津美术馆",
+      "category": "美术馆",
+      "source_url": "https://www.visitbeijing.com.cn/article/4IutMK8T40o?device=amp&device=amp",
+      "reason": "纯类目泛称拒收"
+    },
+    {
+      "city": "天津",
+      "name": "沉香艺术博物馆",
+      "category": "博物馆",
+      "source_url": "https://www.sohu.com/a/737395266_121117454",
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "北疆博物院",
+      "category": "博物馆",
+      "source_url": "https://tj.bendibao.com/tour/202473/147065.shtm",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "天津",
+      "name": "天津文化中心海底世界",
+      "category": "海洋馆",
+      "source_url": "https://tj.bendibao.com/tour/202473/147065.shtm",
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "天津",
+      "name": "误入天津室内温泉水上乐园",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a47c7280000000008027775",
+      "likes": 7284,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "少有人知的百年博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a3dc320000000001101be37",
+      "likes": 275,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "霍格沃兹图书馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69f3067e000000003501e74b",
+      "likes": 377,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "文化中心",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a4543d5000000001102c8ec",
+      "likes": 36,
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "天津",
+      "name": "国家一级博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a60b401000000000f008b9b",
+      "likes": 5,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "·天津博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a60b401000000000f008b9b",
+      "likes": 5,
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "天津",
+      "name": "人气商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6960c49c0000000022030216",
+      "likes": 487,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "逛到了天津top1商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/697e10be000000000b013adc",
+      "likes": 719,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "最强商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69e618180000000021004213",
+      "likes": 288,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "看不出的商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/68e0a9b1000000000702260b",
+      "likes": 1011,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "这是我迄今为止逛过的最大商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/693442d2000000001f00e5bd",
+      "likes": 150,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "十大热门商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69c1e0ec00000000230274da",
+      "likes": 25,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "市人气商场",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a16c15e0000000007021f2d",
+      "likes": 386,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "全国第一夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a47bba9000000001702bb68",
+      "likes": 137,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "姚村夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a4c728d000000002103e19f",
+      "likes": 686,
+      "reason": "KB 已存在"
+    },
+    {
+      "city": "天津",
+      "name": "必吃美食街",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/68ecc26a0000000005002e44",
+      "likes": 323,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "从西青跑到鼓楼",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a4bc50e000000002103c382",
+      "likes": 230,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "西青大学城的姚村夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a647b24000000001c00cece",
+      "likes": 1,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "一贴看全镇馆之宝",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5cca8c000000000401c356",
+      "likes": 16,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "小喜与天津博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5b99ac000000001101113f",
+      "likes": 1,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "博物馆",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a649d5d00000000100275c8",
+      "likes": 9,
+      "reason": "纯类目泛称拒收"
+    },
+    {
+      "city": "天津",
+      "name": "滨海宝藏夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69d928fb000000001d01d431",
+      "likes": 36,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "好吃的夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/69f0f90f0000000022029059",
+      "likes": 895,
+      "reason": "OSM 未找到同名地物"
+    },
+    {
+      "city": "天津",
+      "name": "香山道夜市",
+      "category": "室内其他",
+      "source_url": "https://www.xiaohongshu.com/explore/6a622c28000000001101b9f8",
+      "likes": 39,
+      "reason": "OSM 未找到同名地物"
+    }
+  ],
+  "query_failed": []
+}
