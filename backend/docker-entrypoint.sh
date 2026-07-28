@@ -2,6 +2,14 @@
 # TravelMind Agent — 后端容器入口：等待 DB → 向量库自举 → 迁移 → 启动 API。
 set -e
 
+# Phase 14d: SIGTERM handler — graceful shutdown
+_cleanup() {
+    echo "[entrypoint] SIGTERM received — shutting down..."
+    exec 2>/dev/null || true
+    exit 0
+}
+trap _cleanup SIGTERM SIGINT
+
 # Phase 12.29e: wait-for-DB 重试循环（pg_isready 最多 30 次 ≈ 60s）
 if [ -n "${DATABASE_URL_SYNC:-}" ]; then
   DB_HOST=$(echo "$DATABASE_URL_SYNC" | sed -E 's|.*@([^:/]+).*|\1|')
