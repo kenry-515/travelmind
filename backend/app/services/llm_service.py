@@ -188,6 +188,14 @@ class DeepSeekProvider(BaseLLMProvider):
                 **kwargs,
             )
 
+            # Phase 14e: Log token usage
+            usage = getattr(response, "usage", None)
+            if usage:
+                logger.info(
+                    "LLM tokens — prompt=%d completion=%d total=%d",
+                    usage.prompt_tokens, usage.completion_tokens, usage.total_tokens,
+                )
+
             tool_calls = response.choices[0].message.tool_calls
             if tool_calls and tool_calls[0].function.arguments:
                 return json.loads(tool_calls[0].function.arguments)
