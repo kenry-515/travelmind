@@ -483,6 +483,11 @@ body:has(.dark) {
   color: #64748b;
 }
 
+/* Glass morphism in dark mode */
+.dark .glass {
+  background-color: rgb(30 41 59 / 0.8);
+}
+
 /* Borders in dark mode */
 .dark .border-border,
 .dark .border-border-light {
