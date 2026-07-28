@@ -158,9 +158,9 @@ def compute_price_summary(
             if is_stale(updated):
                 stale_count += 1
 
-    # Budget comparison
-    budget_map = {"经济": 300, "适中": 800, "舒适": 1500, "高端": 3000, "奢华": 5000}
-    budget_slot = budget_map.get(user_budget, budget_map["适中"])
+    # Budget comparison — Phase 12.29: 使用集中化的 BUDGET_PER_DAY
+    from app.core.constants import BUDGET_PER_DAY
+    budget_slot = BUDGET_PER_DAY.get(user_budget, BUDGET_PER_DAY["适中"])
     over_budget = total_max > budget_slot
     over_budget_warning = ""
     if over_budget:

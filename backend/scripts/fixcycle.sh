@@ -134,8 +134,12 @@ if [ -n "$LATEST_RESULT" ] && [ -f "$LATEST_RESULT" ]; then
     MACRO=$(python -c "import json; d=json.load(open('$LATEST_RESULT','r',encoding='utf-8')); print(d.get('macro',0))" 2>/dev/null || echo "1.0")
     TEST_COUNT=$(python -m pytest --co -q 2>/dev/null | tail -1 | grep -oP '\d+(?= tests)' || echo "349")
 
+    # 自动推断 Phase 号：从 git log 取最新 commit message 中的 Phase 号
+    CURRENT_PHASE=$(git log --oneline -1 --format="%s" 2>/dev/null | grep -oP 'Phase \K[0-9.]+' || echo "12.29")
+    if [ -z "$CURRENT_PHASE" ]; then CURRENT_PHASE="12.29"; fi
+
     if python -X utf8 scripts/update_docs.py "$LATEST_RESULT" \
-        --phase "12.28a" \
+        --phase "$CURRENT_PHASE" \
         --test-count "$TEST_COUNT" 2>&1; then
         log_pass "文档已更新"
         DOC_UPDATED=true
@@ -159,7 +163,7 @@ echo ""
 
 if [ "$DOC_UPDATED" = false ] && ! $SKIP_EVAL && ! $QUICK; then
     echo -e "${YELLOW}💡 提示：运行以下命令手动更新文档：${NC}"
-    echo "   cd backend && python -X utf8 scripts/update_docs.py <evals/results/最新.json> --phase 12.28a"
+    echo "   cd backend && python -X utf8 scripts/update_docs.py <evals/results/最新.json> --phase $(git log --oneline -1 --format='%s' | grep -oP 'Phase \K[0-9.]+' || echo 'auto')"
 fi
 
 exit $FAIL

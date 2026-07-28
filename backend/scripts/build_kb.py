@@ -91,7 +91,19 @@ def _normalize_names() -> bool:
                 a["name_normalized"] = norm
                 fixed += 1
 
-    # 2) 城市坐标边界清洗（防止跨境 bbox 污染）
+    # 2) 清洗缺坐标 POI（Phase 12.29: 无坐标的 POI 在路线优化中不可用，
+    #    属于无效数据。WebSearch/无验证来源必须带坐标才可入库。）
+    missing_coord = [a for a in kb["attractions"]
+                     if not a.get("lat") or not a.get("lon")]
+    if missing_coord:
+        logger.warning(f"发现 {len(missing_coord)} 个缺坐标 POI，已移除:")
+        for a in missing_coord[:5]:
+            logger.warning(f"  - {a.get('city','?')} / {a.get('name','?')} (来源: {a.get('data_source','?')})")
+        kb["attractions"] = [a for a in kb["attractions"]
+                             if a.get("lat") and a.get("lon")]
+        logger.warning(f"清洗后 KB: {len(kb['attractions'])} POI")
+
+    # 3) 城市坐标边界清洗（防止跨境 bbox 污染）
     cleaned = []
     removed = 0
     for a in kb["attractions"]:

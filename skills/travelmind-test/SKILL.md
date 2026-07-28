@@ -24,7 +24,7 @@ description: |
 cd backend && python -X utf8 scripts/smoke_test.py
 ```
 
-断言：health(api=healthy) → weather/cities(15 城) → weather/三亚 →
+断言：health(api=healthy) → weather/cities(30 城) → weather/三亚 →
 recommend/quick（纯 RAG+打分，无 LLM，0 token）→（可选）--with-vision 图片识别。
 任何一项失败 → 非零退出码 + 失败项明细。
 
@@ -55,7 +55,7 @@ cd backend && python -X utf8 scripts/e2e_pages.py
 cd backend && python -X utf8 -m evals.run_evals [--limit N]
 ```
 
-对 `backend/evals/queries.json`（63 条 × 24 约束，可扩充）逐条真实生成，
+对 `backend/evals/queries.json`（80 条 × 28 约束，可扩充）逐条真实生成，
 再用确定性打分器输出 **Micro / Macro / Final Pass Rate** 三级指标，
 结果落盘 `backend/evals/results/YYYY-MM-DD.json`。
 指标含义与当前基线见 `docs/BASELINE.md` 和 README「质量评测」。

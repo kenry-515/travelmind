@@ -153,56 +153,12 @@ export interface WeatherForecast {
   daily: DailyWeather[]
 }
 
-export interface WeatherAdvice {
-  city: string
-  overall_score: number
-  advice: string
-  daily_summary: {
-    date: string
-    weather: string
-    temp: string
-    rain: string
-    travel_score: number
-  }[]
-  warnings: string[]
-}
-
 // ── API Functions ─────────────────────────────────────────
-
-/** Run the full travel planning workflow (Profile → Trend → Weather → RAG → Recommend → Plan). */
-export async function fetchPlan(userInput: string): Promise<PlanResponse> {
-  // The full pipeline includes DeepSeek itinerary generation (30-90s) —
-  // the 30s axios default is not enough.
-  const { data } = await api.post<PlanResponse>(
-    '/agent/plan',
-    { user_input: userInput },
-    { timeout: 120000 }
-  )
-  return data
-}
 
 /** Get ranked recommendations (stops before LLM itinerary generation — faster). */
 export async function fetchRecommendations(userInput: string): Promise<RecommendResponse> {
   const { data } = await api.post<RecommendResponse>('/recommend', {
     user_input: userInput,
-  })
-  return data
-}
-
-/** Quick recommendations with pre-extracted parameters. */
-export async function fetchQuickRecommendations(params: {
-  city: string
-  tags: string[]
-  budget?: string
-  travel_month?: number
-  top_k?: number
-}): Promise<{ city: string; total_results: number; places: PlaceItem[] }> {
-  const { data } = await api.post('/recommend/quick', {
-    city: params.city,
-    tags: params.tags,
-    budget: params.budget || '适中',
-    travel_month: params.travel_month || 0,
-    top_k: params.top_k || 20,
   })
   return data
 }
@@ -236,18 +192,7 @@ export async function fetchWeather(city: string, days = 5): Promise<WeatherForec
   return data
 }
 
-/** Get simplified travel weather advice. */
-export async function fetchWeatherAdvice(city: string, days = 5): Promise<WeatherAdvice> {
-  const { data } = await api.post<WeatherAdvice>(
-    '/weather/travel-advice',
-    null,
-    { params: { city, days } }
-  )
-  return data
-}
-
-
-// ── Image Analysis (Phase 5) ────────────────────────────
+// ── Image Analysis ───────────────────────────────────────
 
 export interface ImageAnalyzeResult {
   location: string
@@ -270,20 +215,6 @@ export async function analyzeImage(file: File): Promise<ImageAnalyzeResult> {
     headers: { 'Content-Type': undefined },
   })
   return data
-}
-
-
-/** City supported by the weather service (same 10 cities as the knowledge base). */
-export interface CityInfo {
-  name: string
-  lat: number
-  lon: number
-}
-
-/** List cities available for weather / quick recommendations. */
-export async function fetchWeatherCities(): Promise<CityInfo[]> {
-  const { data } = await api.get<{ cities: CityInfo[] }>('/weather/cities')
-  return data.cities
 }
 
 
@@ -476,10 +407,6 @@ export interface VersionSummary {
   created_at: string
 }
 
-export interface VersionDetail extends VersionSummary {
-  plan: TravelItinerary
-}
-
 export interface VersionListResponse {
   versions: VersionSummary[]
 }
@@ -492,17 +419,6 @@ export async function fetchVersions(
     `/itineraries/${itineraryId}/versions`
   )
   return data.versions
-}
-
-/** Get a specific version with full plan. */
-export async function fetchVersionDetail(
-  itineraryId: string,
-  versionId: string
-): Promise<VersionDetail> {
-  const { data } = await api.get<VersionDetail>(
-    `/itineraries/${itineraryId}/versions/${versionId}`
-  )
-  return data
 }
 
 /** Restore itinerary to a previous version. */

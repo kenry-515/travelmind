@@ -3,6 +3,7 @@ TravelMind Agent — LLM Service
 DeepSeek provider implementation using OpenAI-compatible SDK.
 """
 
+import asyncio
 import json
 import logging
 from typing import Any, AsyncIterator, Dict, List, Optional
@@ -225,14 +226,18 @@ class DeepSeekProvider(BaseLLMProvider):
         return result
 
 
-# ── Factory ────────────────────────────────────────────
+# ── Factory singleton with lock ───────────────────────────
 
 _llm_provider: Optional[DeepSeekProvider] = None
+_llm_lock: asyncio.Lock = asyncio.Lock()
 
 
-def get_llm_provider() -> DeepSeekProvider:
-    """Get or create the singleton LLM provider instance."""
+async def get_llm_provider() -> DeepSeekProvider:
+    """Get or create the singleton LLM provider instance (thread-safe)."""
     global _llm_provider
-    if _llm_provider is None:
-        _llm_provider = DeepSeekProvider()
+    if _llm_provider is not None:
+        return _llm_provider
+    async with _llm_lock:
+        if _llm_provider is None:
+            _llm_provider = DeepSeekProvider()
     return _llm_provider

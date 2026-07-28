@@ -35,10 +35,10 @@ cd backend && bash scripts/full_verify.sh
 ```
 
 四步断言链，任一失败即非零退出：
-1. `python -m pytest`（当前基线 349 全过）
+1. `python -m pytest`（当前基线 373 全过，21 文件）
 2. `npm run build`（TypeScript 0 错误）
 3. `npx oxlint`（0 错误）
-4. `scripts/smoke_test.py`（需后端在线，不在线则 SKIP 并提示）
+5. `scripts/smoke_test.py`（需后端在线，不在线则 SKIP 并提示）
 
 ## 3. 快速评测冒烟（少量 DeepSeek token）
 

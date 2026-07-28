@@ -12,8 +12,10 @@ see or delete another user's itineraries.
 import logging
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel, Field
+
+from app.api.errors import error_response
 
 from app.api.deps import get_device_id, get_db
 from app.services.user_service import get_or_create_user
@@ -109,11 +111,11 @@ async def get_itinerary_detail(
     """
     if db is None:
         if not device_id:
-            raise HTTPException(status_code=400, detail="缺少设备标识")
+            raise error_response(400, "AUTH_REQUIRED", "缺少设备标识")
         from app.services import local_itinerary_store
         detail = local_itinerary_store.get_itinerary(device_id, itinerary_id)
         if detail is None:
-            raise HTTPException(status_code=404, detail="行程未找到")
+            raise error_response(404, "NOT_FOUND", "行程未找到")
         return detail
 
     user_id = None
@@ -124,7 +126,7 @@ async def get_itinerary_detail(
 
     detail = await itinerary_service.get_itinerary(db, itinerary_id, user_id=user_id)
     if detail is None:
-        raise HTTPException(status_code=404, detail="行程未找到")
+        raise error_response(404, "NOT_FOUND", "行程未找到")
 
     # Phase 8.2: Revalidate POI status on demand
     revalidation_alerts = None
@@ -204,7 +206,7 @@ async def list_versions(
 ):
     """List all versions for an itinerary, newest first."""
     if db is None:
-        raise HTTPException(status_code=503, detail="版本历史暂不可用")
+        raise error_response(503, "SERVICE_UNAVAILABLE", "版本历史暂不可用")
 
     from app.services import itinerary_version_service as ver_svc
 
@@ -214,7 +216,7 @@ async def list_versions(
         user_id=(await _get_user_id(db, device_id)) if device_id else None,
     )
     if detail is None:
-        raise HTTPException(status_code=404, detail="行程未找到")
+        raise error_response(404, "NOT_FOUND", "行程未找到")
 
     versions = await ver_svc.list_versions(db, itinerary_id)
     return {"versions": versions}
@@ -232,7 +234,7 @@ async def get_version_detail(
 ):
     """Get a specific version with its full plan."""
     if db is None:
-        raise HTTPException(status_code=503, detail="版本历史暂不可用")
+        raise error_response(503, "SERVICE_UNAVAILABLE", "版本历史暂不可用")
 
     from app.services import itinerary_version_service as ver_svc
 
@@ -242,11 +244,11 @@ async def get_version_detail(
         user_id=(await _get_user_id(db, device_id)) if device_id else None,
     )
     if detail is None:
-        raise HTTPException(status_code=404, detail="行程未找到")
+        raise error_response(404, "NOT_FOUND", "行程未找到")
 
     version = await ver_svc.get_version(db, itinerary_id, version_id)
     if version is None:
-        raise HTTPException(status_code=404, detail="版本未找到")
+        raise error_response(404, "NOT_FOUND", "版本未找到")
 
     return version
 
@@ -263,20 +265,20 @@ async def restore_version(
 ):
     """Restore an itinerary to a previous version (creates new version)."""
     if db is None:
-        raise HTTPException(status_code=503, detail="版本历史暂不可用")
+        raise error_response(503, "SERVICE_UNAVAILABLE", "版本历史暂不可用")
 
     user_id = await _get_user_id(db, device_id) if device_id else None
 
     # Verify ownership
     detail = await itinerary_service.get_itinerary(db, itinerary_id, user_id=user_id)
     if detail is None:
-        raise HTTPException(status_code=404, detail="行程未找到")
+        raise error_response(404, "NOT_FOUND", "行程未找到")
 
     from app.services import itinerary_version_service as ver_svc
 
     result = await ver_svc.restore_version(db, itinerary_id, version_id)
     if result is None:
-        raise HTTPException(status_code=404, detail="版本未找到")
+        raise error_response(404, "NOT_FOUND", "版本未找到")
 
     # Update the current itinerary plan
     await itinerary_service.update_itinerary_plan(
@@ -303,21 +305,21 @@ async def delete_itinerary(
     """Delete an itinerary. Only the owner can delete it."""
     if db is None:
         if not device_id:
-            raise HTTPException(status_code=400, detail="缺少设备标识")
+            raise error_response(400, "AUTH_REQUIRED", "缺少设备标识")
         from app.services import local_itinerary_store
         if not local_itinerary_store.delete_itinerary(device_id, itinerary_id):
-            raise HTTPException(status_code=404, detail="行程未找到或无权删除")
+            raise error_response(404, "NOT_FOUND", "行程未找到或无权删除")
         return {"ok": True}
 
     if not device_id:
-        raise HTTPException(status_code=400, detail="缺少设备标识")
+        raise error_response(400, "AUTH_REQUIRED", "缺少设备标识")
 
     user = await get_or_create_user(db, device_id)
     if user is None:
-        raise HTTPException(status_code=404, detail="行程未找到")
+        raise error_response(404, "NOT_FOUND", "行程未找到")
 
     ok = await itinerary_service.delete_itinerary(db, itinerary_id, user.id)
     if not ok:
-        raise HTTPException(status_code=404, detail="行程未找到或无权删除")
+        raise error_response(404, "NOT_FOUND", "行程未找到或无权删除")
 
     return {"ok": True}

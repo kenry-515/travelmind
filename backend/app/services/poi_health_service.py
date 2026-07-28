@@ -23,8 +23,6 @@ from typing import Optional, Set
 
 logger = logging.getLogger(__name__)
 
-import re
-
 # Simple normalize for POI health matching (strips punctuation only,
 # intentionally does NOT strip city prefixes/suffixes — those are needed
 # for exact inactive-name matching).

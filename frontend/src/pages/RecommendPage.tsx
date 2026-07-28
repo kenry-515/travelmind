@@ -10,6 +10,7 @@ import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Search, Sparkles, TrendingUp, Loader2, AlertCircle } from 'lucide-react'
 import { PlaceCard } from '../components/PlaceCard'
+import { SkeletonRecommend } from '../components/Skeleton'
 import { fetchRecommendations, type RecommendResponse } from '../lib/api'
 
 type PageState =
@@ -126,14 +127,10 @@ export function RecommendPage() {
           </div>
         )}
 
-        {/* Loading */}
+        {/* Loading — Phase 12.29b: 使用骨架屏替代纯 spinner */}
         {state.stage === 'loading' && (
-          <div className="mt-20 text-center">
-            <Loader2 size={40} className="mx-auto mb-4 animate-spin text-brand-500" />
-            <p className="text-slate-500">AI 正在分析你的需求，搜索最佳景点...</p>
-            <p className="mt-1 text-xs text-slate-400">
-              这可能需要 10-15 秒
-            </p>
+          <div className="mt-6">
+            <SkeletonRecommend />
           </div>
         )}
 

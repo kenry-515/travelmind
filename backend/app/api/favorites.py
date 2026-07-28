@@ -11,9 +11,10 @@ Privacy: all endpoints filter by device_id → user.
 import logging
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
 
+from app.api.errors import error_response
 from app.api.deps import get_device_id, get_db
 from app.services.user_service import get_or_create_user
 from app.services import favorite_service
@@ -69,17 +70,17 @@ async def add_favorite(
 ):
     """Add a favorite (attraction or itinerary)."""
     if db is None:
-        raise HTTPException(status_code=503, detail="收藏服务暂不可用")
+        raise error_response(503, "SERVICE_UNAVAILABLE", "收藏服务暂不可用")
 
     if not device_id:
-        raise HTTPException(status_code=400, detail="缺少设备标识")
+        raise error_response(400, "AUTH_REQUIRED", "缺少设备标识")
 
     if body.target_type not in ("attraction", "itinerary"):
-        raise HTTPException(status_code=422, detail="target_type 必须为 'attraction' 或 'itinerary'")
+        raise error_response(422, "VALIDATION_FAILED", "target_type 必须为 'attraction' 或 'itinerary'")
 
     user = await get_or_create_user(db, device_id)
     if user is None:
-        raise HTTPException(status_code=400, detail="用户未找到")
+        raise error_response(400, "NOT_FOUND", "用户未找到")
 
     fav = await favorite_service.add_favorite(
         db, user.id, body.target_type, body.target_id
@@ -111,17 +112,17 @@ async def remove_favorite(
 ):
     """Remove a favorite. Only the owner can remove it."""
     if db is None:
-        raise HTTPException(status_code=503, detail="收藏服务暂不可用")
+        raise error_response(503, "SERVICE_UNAVAILABLE", "收藏服务暂不可用")
 
     if not device_id:
-        raise HTTPException(status_code=400, detail="缺少设备标识")
+        raise error_response(400, "AUTH_REQUIRED", "缺少设备标识")
 
     user = await get_or_create_user(db, device_id)
     if user is None:
-        raise HTTPException(status_code=404, detail="收藏未找到")
+        raise error_response(404, "NOT_FOUND", "收藏未找到")
 
     ok = await favorite_service.remove_favorite(db, favorite_id, user.id)
     if not ok:
-        raise HTTPException(status_code=404, detail="收藏未找到或无权删除")
+        raise error_response(404, "NOT_FOUND", "收藏未找到或无权删除")
 
     return {"ok": True}

@@ -10,8 +10,9 @@ POST /api/v1/weather/travel-advice — Simplified travel weather advice
 import logging
 from typing import Any, Dict, List
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Query
 
+from app.api.errors import error_response
 from app.services.weather_service import (
     CITY_COORDS,
     get_travel_weather_advice,
@@ -91,10 +92,10 @@ async def get_weather(
     try:
         forecast = await get_weather_forecast(city, days=days)
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise error_response(404, "NOT_FOUND", str(e))
     except Exception as e:
         logger.error(f"Weather fetch failed: {e}")
-        raise HTTPException(status_code=502, detail="天气服务暂不可用。")
+        raise error_response(502, "UPSTREAM_ERROR", "天气服务暂不可用。")
 
     return WeatherForecastResponse(
         city=forecast.city,
@@ -121,9 +122,9 @@ async def get_weather_advice(
     try:
         advice = await get_travel_weather_advice(city, days=days)
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise error_response(404, "NOT_FOUND", str(e))
     except Exception as e:
         logger.error(f"Weather advice failed: {e}")
-        raise HTTPException(status_code=502, detail="天气服务暂不可用。")
+        raise error_response(502, "UPSTREAM_ERROR", "天气服务暂不可用。")
 
     return WeatherAdviceResponse(**advice)

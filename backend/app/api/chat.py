@@ -7,10 +7,11 @@ import logging
 import uuid
 from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field, model_validator
 
+from app.api.errors import error_response
 from app.services.llm_service import get_llm_provider
 
 logger = logging.getLogger(__name__)
@@ -75,8 +76,8 @@ async def chat(request: ChatRequest):
     Streaming: returns text/event-stream (SSE) for real-time display.
     """
     session_id = request.session_id or _generate_session_id()
-    llm = get_llm_provider()
     messages = [{"role": m.role, "content": m.content} for m in request.messages]
+    llm = await get_llm_provider()
 
     logger.info(
         "Chat — session=%s messages=%d stream=%s model=%s",
@@ -109,9 +110,10 @@ async def chat(request: ChatRequest):
         content = await llm.chat(messages)
     except Exception as e:
         logger.error(f"Chat error: {e}")
-        raise HTTPException(
+        raise error_response(
             status_code=502,
-            detail=f"LLM service error: {str(e)}",
+            code="UPSTREAM_ERROR",
+            message="LLM service error. Please try again later.",
         )
 
     return ChatResponse(

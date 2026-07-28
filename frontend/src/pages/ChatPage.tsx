@@ -13,6 +13,7 @@ import {
   type DialogSuggestion,
   type TravelItinerary,
 } from '../lib/api'
+import { useSavedPlaces } from '../lib/savedPlaces'
 
 // 生成管线阶段（与后端 orchestrator progress 事件一致）
 const PLAN_STEPS = [
@@ -106,6 +107,7 @@ export function ChatPage() {
   const [generating, setGenerating] = useState(false)
   const [planSteps, setPlanSteps] = useState<PlanStep[]>([])
   const hasSentInitial = useRef(false)
+  const abortRef = useRef<AbortController | null>(null)
 
   // Hydrate state from sessionStorage on client-side only (SSR-safe)
   useEffect(() => {
@@ -128,6 +130,14 @@ export function ChatPage() {
       // non-fatal
     }
   }, [messages, dialog, storedLoaded])
+
+  // Phase 12.29b: 组件卸载时取消 SSE 请求，防止 unmount 后继续更新状态
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort()
+      abortRef.current = null
+    }
+  }, [])
 
   const applyResponse = useCallback((d: import('../lib/api').DialogResponse) => {
     setDialog((prev) => ({
@@ -152,14 +162,34 @@ export function ChatPage() {
     }
   }, [])
 
+  const { getPlacesForPrompt, addPlace } = useSavedPlaces()
+
+  // Phase 14: 行程生成后自动收藏 POI 到侧边栏
+  useEffect(() => {
+    if (dialog.stage === 'delivered' && dialog.itinerary) {
+      const seen = new Set<string>()
+      for (const day of dialog.itinerary.days || []) {
+        for (const item of day.items || []) {
+          const name = item.poi || ''
+          if (name && !seen.has(name)) {
+            seen.add(name)
+            addPlace({ name, city: dialog.slots?.city || '', tags: [], note: '', source: 'chat' })
+          }
+        }
+      }
+    }
+  }, [dialog.stage, dialog.itinerary, dialog.slots?.city, addPlace])
+
   const sendText = useCallback(
     async (text: string) => {
       setMessages((prev) => [...prev, { id: genId(), role: 'user', content: text }])
       setLoading(true)
+      const savedPrompt = getPlacesForPrompt()
+      const enrichedText = savedPrompt ? `${text}\n\n${savedPrompt}` : text
       try {
         const d = await sendDialogMessage({
           sessionId: dialog.sessionId || undefined,
-          text,
+          text: enrichedText,
         })
         applyResponse(d)
       } catch {
@@ -204,8 +234,19 @@ export function ChatPage() {
     setPlanSteps([...steps])
     let errorMsg: string | null = null
     try {
+      // Phase 14: append saved places before generating
+      const savedPrompt = getPlacesForPrompt()
+      if (savedPrompt && dialog.sessionId) {
+        // Send a dialog message with saved places to set context before generating
+        try {
+          await sendDialogMessage({ sessionId: dialog.sessionId, text: savedPrompt })
+        } catch { /* non-fatal */ }
+      }
+      // Phase 12.29b: 创建新的 AbortController，组件卸载时自动中止
+      abortRef.current = new AbortController()
       // SSE 真实阶段进度（Phase 12.24）——与 /agent/plan/stream 同一事件源
       const res = await fetch('/api/v1/dialog/generate/stream', {
+        signal: abortRef.current.signal,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -254,7 +295,11 @@ export function ChatPage() {
           { id: genId(), role: 'assistant', content: `生成失败了：${errorMsg}，请再点一次试试。` },
         ])
       }
-    } catch {
+    } catch (e: unknown) {
+      // Phase 12.29b: 组件卸载时中止SSE请求，不更新状态
+      if (e instanceof DOMException && e.name === 'AbortError') {
+        return
+      }
       // SSE 不可用时回退阻塞式接口（旧后端兼容）
       try {
         const d = await generateDialogPlan(dialog.sessionId)
@@ -266,6 +311,7 @@ export function ChatPage() {
         ])
       }
     } finally {
+      abortRef.current = null
       setGenerating(false)
       setPlanSteps([])
     }
@@ -443,32 +489,49 @@ export function ChatPage() {
             </div>
           )}
 
-          {/* 精简行程卡 */}
+          {/* 精简行程卡 + 节奏模板 */}
           {dialog.stage === 'delivered' && dialog.itinerary && (
-            <button
-              onClick={openItinerary}
-              className="card hover-lift mb-3 w-full p-4 text-left"
-            >
-              <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
-                <MapPin size={16} className="text-brand-500" />
-                {dialog.itinerary.trip.title}
-              </div>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {dialog.itinerary.trip.stats.slice(0, 4).map((s, i) => (
-                  <span key={i} className="rounded-lg bg-surface-secondary px-2 py-1 text-xs text-slate-600">
-                    {s.value} · {s.label}
-                  </span>
+            <>
+              <button onClick={openItinerary} className="card hover-lift mb-2 w-full p-4 text-left">
+                <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
+                  <MapPin size={16} className="text-brand-500" />
+                  {dialog.itinerary.trip.title}
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {dialog.itinerary.trip.stats.slice(0, 4).map((s, i) => (
+                    <span key={i} className="rounded-lg bg-surface-secondary px-2 py-1 text-xs text-slate-600">
+                      {s.value} · {s.label}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-2 space-y-1">
+                  {dialog.itinerary.days.map((d) => (
+                    <p key={d.day} className="text-xs text-slate-500">
+                      <span className="font-medium text-slate-700">D{d.day}</span> {d.theme} · {d.title}
+                    </p>
+                  ))}
+                </div>
+                <p className="mt-2 text-xs font-semibold text-brand-600">点击查看完整行程 →</p>
+              </button>
+
+              {/* Phase 14.4: 节奏模板快速调整 */}
+              <div className="mb-3 flex gap-1.5">
+                {[
+                  { id: '休闲', icon: '🌿', label: '休闲慢游', msg: '行程太赶了，节奏放慢一点，每天少去几个地方，多留自由活动时间' },
+                  { id: '适中', icon: '⚖️', label: '适中节奏', msg: '行程节奏调到适中，每天安排合理的景点数量' },
+                  { id: '紧凑', icon: '🚀', label: '紧凑充实', msg: '行程太松了，每天再多安排一些景点，节奏紧凑一些' },
+                ].map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => sendText(t.msg)}
+                    className="flex-1 rounded-xl border border-border-light bg-white px-2 py-2 text-center text-xs transition-all hover:border-brand-200 hover:bg-brand-50"
+                  >
+                    <span className="block text-sm">{t.icon}</span>
+                    <span className="mt-0.5 block font-medium text-slate-600">{t.label}</span>
+                  </button>
                 ))}
               </div>
-              <div className="mt-2 space-y-1">
-                {dialog.itinerary.days.map((d) => (
-                  <p key={d.day} className="text-xs text-slate-500">
-                    <span className="font-medium text-slate-700">D{d.day}</span> {d.theme} · {d.title}
-                  </p>
-                ))}
-              </div>
-              <p className="mt-2 text-xs font-semibold text-brand-600">点击查看完整行程 →</p>
-            </button>
+            </>
           )}
         </div>
       </div>

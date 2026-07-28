@@ -5,8 +5,6 @@
  * Pure frontend — no backend API needed.
  */
 
-import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
 import type { TravelItinerary, WeatherForecast } from './api'
 
 /** Escape text for safe interpolation into inline HTML. */
@@ -178,6 +176,12 @@ export async function exportItineraryPdf(
   if (!Array.isArray(itinerary?.trip?.stats) || !Array.isArray(itinerary?.days)) {
     throw new Error('Invalid itinerary structure: missing trip.stats or days')
   }
+
+  // Phase 12.29b: 动态导入 html2canvas + jspdf（~300KB 非首屏加载）
+  const [jsPDF, html2canvas] = await Promise.all([
+    import('jspdf').then(m => m.default),
+    import('html2canvas').then(m => m.default),
+  ])
 
   const html = renderItineraryHtml(itinerary, weather)
 

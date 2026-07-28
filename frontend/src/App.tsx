@@ -1,14 +1,20 @@
-import { useEffect, useCallback } from 'react'
+import { lazy, Suspense, useEffect, useCallback } from 'react'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
-import { HomePage } from './pages/HomePage'
-import { ChatPage } from './pages/ChatPage'
-import { RecommendPage } from './pages/RecommendPage'
-import { ItineraryPage } from './pages/ItineraryPage'
-import { ImagePage } from './pages/ImagePage'
-import { HistoryPage } from './pages/HistoryPage'
 import { ToastContainer } from './components/Toast'
 import { MobileNav } from './components/MobileNav'
 import { ThemeToggle } from './components/ThemeToggle'
+import { ErrorBoundary } from './components/ErrorBoundary'
+import { SkeletonItinerary } from './components/Skeleton'
+import { SavedPlacesProvider } from './lib/savedPlaces'
+import { SavedPlacesSidebar } from './components/SavedPlacesSidebar'
+
+// Phase 12.29b: 路由级代码分割 — 每个页面独立 chunk，首屏仅加载首页
+const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })))
+const ChatPage = lazy(() => import('./pages/ChatPage').then(m => ({ default: m.ChatPage })))
+const RecommendPage = lazy(() => import('./pages/RecommendPage').then(m => ({ default: m.RecommendPage })))
+const ItineraryPage = lazy(() => import('./pages/ItineraryPage').then(m => ({ default: m.ItineraryPage })))
+const ImagePage = lazy(() => import('./pages/ImagePage').then(m => ({ default: m.ImagePage })))
+const HistoryPage = lazy(() => import('./pages/HistoryPage').then(m => ({ default: m.HistoryPage })))
 
 /** Keyboard shortcut handler (Phase 12.28d). */
 function KeyboardShortcuts() {
@@ -36,25 +42,54 @@ function KeyboardShortcuts() {
 
 function App() {
   return (
+    <SavedPlacesProvider>
     <BrowserRouter>
       <KeyboardShortcuts />
       <ToastContainer />
 
-      {/* Floating theme toggle (Phase 12.28d) */}
-      <div className="fixed top-4 right-4 z-50">
+      {/* Saved places sidebar */}
+      <SavedPlacesSidebar />
+
+      {/* Floating theme toggle */}
+      <div className="fixed bottom-24 right-4 z-50 sm:top-4 sm:bottom-auto">
         <ThemeToggle />
       </div>
 
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/chat" element={<ChatPage />} />
-        <Route path="/recommend" element={<RecommendPage />} />
-        <Route path="/itinerary" element={<ItineraryPage />} />
-        <Route path="/image" element={<ImagePage />} />
-        <Route path="/history" element={<HistoryPage />} />
+        <Route path="/" element={
+          <Suspense fallback={<div className="p-8"><SkeletonItinerary /></div>}>
+            <ErrorBoundary><HomePage /></ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/chat" element={
+          <Suspense fallback={<div className="p-8"><SkeletonItinerary /></div>}>
+            <ErrorBoundary><ChatPage /></ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/recommend" element={
+          <Suspense fallback={<div className="p-8"><SkeletonItinerary /></div>}>
+            <ErrorBoundary><RecommendPage /></ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/itinerary" element={
+          <Suspense fallback={<div className="p-8"><SkeletonItinerary /></div>}>
+            <ErrorBoundary><ItineraryPage /></ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/image" element={
+          <Suspense fallback={<div className="p-8"><SkeletonItinerary /></div>}>
+            <ErrorBoundary><ImagePage /></ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/history" element={
+          <Suspense fallback={<div className="p-8"><SkeletonItinerary /></div>}>
+            <ErrorBoundary><HistoryPage /></ErrorBoundary>
+          </Suspense>
+        } />
       </Routes>
       <MobileNav />
     </BrowserRouter>
+    </SavedPlacesProvider>
   )
 }
 

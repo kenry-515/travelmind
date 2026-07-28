@@ -13,10 +13,11 @@ import json
 import logging
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
+from app.api.errors import error_response
 from app.agents.dialog_manager import (
     apply_slot_override,
     build_summary,
@@ -129,7 +130,8 @@ async def _naturalize_reply(action: Dict[str, Any], state: Dict[str, Any], user_
             "如果需要追问，把问题融进对话里而不是生硬审问；"
             "不要输出「我在听」「说说你的想法」这类空话；每次措辞都要不一样。"
         )
-        reply = await get_llm_provider().chat(
+        _provider = await get_llm_provider()
+        reply = await _provider.chat(
             messages=[{"role": "user", "content": prompt}],
             system_prompt="你是用户贴心的旅行搭子「小游」，说话自然、真诚、简洁，像好朋友一样帮用户规划旅行。",
             temperature=0.9,
@@ -166,7 +168,8 @@ async def _classify_with_llm(text: str) -> Dict[str, Any]:
         "required": ["type"],
     }
     try:
-        result = await get_llm_provider().chat_structured(
+        _provider_s = await get_llm_provider()
+        result = await _provider_s.chat_structured(
             messages=[{"role": "user", "content": f"用户对已生成的旅行行程说：「{text}」。请判断修改意图类型。"}],
             output_schema=schema,
             system_prompt="你是修改意图分类器，只通过 output 函数返回 JSON。",
@@ -348,7 +351,7 @@ async def dialog_generate(
     except Exception as e:
         logger.error(f"Dialog generate failed: {e}", exc_info=True)
         state["stage"] = "confirming"
-        raise HTTPException(status_code=502, detail="生成服务暂不可用，请稍后再试。")
+        raise error_response(502, "UPSTREAM_ERROR", "生成服务暂不可用，请稍后再试。")
 
     itinerary = result.get("itinerary") or {}
     queued_count = len(state["queued"])

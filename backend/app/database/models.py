@@ -58,7 +58,7 @@ class UserProfile(Base):
     __tablename__ = "user_profiles"
 
     id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
-    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False, unique=True)
+    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False, unique=True, index=True)
     preferred_tags = Column(ARRAY(String), default=list)         # ["摄影", "美食", "历史"]
     travel_style = Column(String(50), nullable=True)              # "休闲" / "特种兵" / "亲子"
     budget_level = Column(String(20), nullable=True)              # "经济" / "舒适" / "奢华"
@@ -132,7 +132,7 @@ class RecommendationHistory(Base):
     __tablename__ = "recommendation_history"
 
     id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
-    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
+    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False, index=True)
     query_input = Column(Text, nullable=True)
     results = Column(JSON, nullable=True)                        # [{place_id, score, factors}, ...]
     scores_detail = Column(JSON, nullable=True)                  # full scoring breakdown
@@ -147,7 +147,7 @@ class Itinerary(Base):
     __tablename__ = "itineraries"
 
     id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
-    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
+    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False, index=True)
     title = Column(String(255), nullable=True)
     days = Column(Integer, nullable=False)
     plan = Column(JSON, nullable=False)                          # full day-by-day plan
@@ -194,7 +194,7 @@ class Feedback(Base):
     __tablename__ = "feedback"
 
     id = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
-    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
+    user_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False, index=True)
     target_type = Column(String(50), nullable=False)             # "recommendation" / "itinerary" / "chat"
     target_id = Column(UUID(as_uuid=False), nullable=True)
     rating = Column(Integer, nullable=True)                      # 1-5

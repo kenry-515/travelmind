@@ -10,9 +10,10 @@ import logging
 from pathlib import Path
 from typing import List
 
-from fastapi import APIRouter, File, HTTPException, UploadFile
+from fastapi import APIRouter, File, UploadFile
 from pydantic import BaseModel
 
+from app.api.errors import error_response
 from app.agents.vision_agent import analyze_travel_image
 from app.services.vision_service import KimiVisionProvider
 
@@ -68,13 +69,13 @@ async def analyze_image(image: UploadFile = File(...)):
         # Fallback for clients that send a generic content type
         media_type = EXT_MEDIA_TYPE_MAP.get(Path(image.filename).suffix.lower())
     if media_type is None:
-        raise HTTPException(status_code=400, detail="仅支持 png/jpeg/webp/gif 格式的图片。")
+        raise error_response(400, "INVALID_INPUT", "仅支持 png/jpeg/webp/gif 格式的图片。")
 
     data = await image.read()
     if not data:
-        raise HTTPException(status_code=400, detail="图片内容为空。")
+        raise error_response(400, "INVALID_INPUT", "图片内容为空。")
     if len(data) > MAX_IMAGE_SIZE:
-        raise HTTPException(status_code=413, detail="图片过大，请压缩到 10MB 以内再上传。")
+        raise error_response(413, "INVALID_INPUT", "图片过大，请压缩到 10MB 以内再上传。")
 
     logger.info(
         f"Image analyze request: {image.filename}, {len(data)} bytes, {media_type}"
@@ -86,6 +87,6 @@ async def analyze_image(image: UploadFile = File(...)):
         result = await analyze_travel_image(data_url)
     except Exception as e:
         logger.error(f"Image analysis failed: {e}")
-        raise HTTPException(status_code=502, detail="图片分析服务暂不可用，请稍后再试。")
+        raise error_response(502, "UPSTREAM_ERROR", "图片分析服务暂不可用，请稍后再试。")
 
     return ImageAnalyzeResponse(**result)

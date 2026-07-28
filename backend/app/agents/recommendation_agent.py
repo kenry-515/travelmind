@@ -18,6 +18,7 @@ Usage:
 
 import asyncio
 import logging
+import re
 from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
@@ -157,45 +158,13 @@ def _diversity_penalty(places: List[Dict[str, Any]], max_same_area: int = 2) -> 
             penalties.append(1.0)
     return penalties
 
-# ── Budget mapping ───────────────────────────────────────
-
-BUDGET_MAP = {
-    "穷游": "经济",
-    "经济": "经济",
-    "低": "经济",
-    "中等": "适中",
-    "适中": "适中",
-    "舒适": "适中",
-    "高端": "高端",
-    "奢华": "高端",
-    "高": "高端",
-}
-
-BUDGET_LEVELS = ["经济", "适中", "高端"]
-
-
-def _budget_to_level(budget: str) -> str:
-    """Normalize a budget description to one of: 经济/适中/高端."""
-    for key, level in BUDGET_MAP.items():
-        if key in budget:
-            return level
-    return "适中"
-
-
-# ── Season / Month mapping ──────────────────────────────
-
-SEASON_MONTHS = {
-    "春季": {3, 4, 5},
-    "夏季": {6, 7, 8},
-    "秋季": {9, 10, 11},
-    "冬季": {12, 1, 2},
-}
-
-MONTH_NAMES = {
-    1: "一月", 2: "二月", 3: "三月", 4: "四月",
-    5: "五月", 6: "六月", 7: "七月", 8: "八月",
-    9: "九月", 10: "十月", 11: "十一月", 12: "十二月",
-}
+from app.core.constants import (
+    BUDGET_MAP,
+    BUDGET_LEVELS,
+    MONTH_NAMES,
+    SEASON_MONTHS,
+    normalize_budget_level,
+)
 
 
 def _parse_months_from_best_time(best_time: str) -> set:
@@ -219,7 +188,6 @@ def _parse_months_from_best_time(best_time: str) -> set:
             months.add(m_num)
 
     # Check for "X月" patterns
-    import re
     month_pattern = re.findall(r"(\d{1,2})\s*月", best_time)
     for m_str in month_pattern:
         m = int(m_str)
@@ -282,7 +250,7 @@ def _score_budget(user_budget: str, place_price: str) -> float:
     if not user_budget:
         return 0.5  # neutral
 
-    user_level = _budget_to_level(user_budget)
+    user_level = normalize_budget_level(user_budget)
     if not place_price or place_price not in BUDGET_LEVELS:
         return 0.5  # neutral — place price unknown
 

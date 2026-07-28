@@ -6,6 +6,7 @@ No registration flow — device_id is the sole identity for anonymous users.
 """
 
 import logging
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy import select
@@ -43,7 +44,6 @@ async def get_or_create_user(
         logger.info(f"Created new anonymous user: {user.id} (device={device_id[:12]}...)")
     else:
         # Phase 12.29: Touch last_active_at for analytics/cleanup
-        from datetime import datetime, timezone
         user.last_active_at = datetime.now(timezone.utc)
         await db.commit()
 

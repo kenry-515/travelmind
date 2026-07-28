@@ -7,6 +7,7 @@
 
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { SkeletonHistory } from '../components/Skeleton'
 import {
   ArrowLeft,
   Loader2,
@@ -122,11 +123,10 @@ export function HistoryPage() {
       </header>
 
       <main className="relative mx-auto max-w-4xl px-4 py-6">
-        {/* Loading */}
+        {/* Loading — Phase 12.29b: 使用骨架屏替代纯 spinner */}
         {state.stage === 'loading' && (
-          <div className="mt-20 text-center">
-            <Loader2 size={40} className="mx-auto mb-4 animate-spin text-brand-500" />
-            <p className="text-slate-500">加载历史记录...</p>
+          <div className="mt-6">
+            <SkeletonHistory />
           </div>
         )}
 

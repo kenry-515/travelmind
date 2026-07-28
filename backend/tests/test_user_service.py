@@ -44,9 +44,9 @@ class TestGetOrCreateUser:
 
         user = await get_or_create_user(db, "device-abc-123")
 
-        # Verify no new user was created
+        # Verify no new user was created (Phase 12.29: commit called for last_active_at update)
         db.add.assert_not_called()
-        db.commit.assert_not_called()
+        db.commit.assert_called_once()
         assert user is existing
         assert user.device_id == "device-abc-123"
 

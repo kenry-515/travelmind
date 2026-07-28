@@ -12,6 +12,7 @@ from Chroma's built-in embedding functions.
 """
 
 import logging
+import os
 import uuid
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -56,7 +57,6 @@ class ChromaStore:
         when the collection grows beyond default HNSW parameters.
         """
         try:
-            import os
             os.environ.setdefault("ANONYMIZED_TELEMETRY", "False")
 
             Path(self._persist_dir).mkdir(parents=True, exist_ok=True)

@@ -87,7 +87,7 @@ async def free_chat(
 
     # Try LLM
     try:
-        provider = get_llm_provider()
+        provider = await get_llm_provider()
         reply = await provider.chat(
             messages=messages,
             temperature=0.7,  # Slightly creative for natural conversation

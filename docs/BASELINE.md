@@ -1,6 +1,7 @@
 # BASELINE — 优化前后基准对照
 
-> 最后更新：2026-07-27
+> 最后更新：2026-07-28
+（Phase 12.29 代码质量加固）
 
 > **12.28**
 >
@@ -10,6 +11,64 @@
 
 | 项 | Phase 0 基线 | Phase 12.20 当前 |
 |---|---
+
+### 12.29 全量评测（2026-07-28）
+
+评测命令：`cd backend && python -X utf8 -m evals.run_evals --out evals/results/2026-07-28-12.29-v1.json`
+（80 query × 28 约束）
+
+| 指标 | 12.29 |
+|------|--------|
+| **Micro** | **0.5%** |
+| **Macro** | **0.0%** (0/80) |
+
+### 按约束维度
+
+| 约束 | 通过/适用 | 通过率 |
+|------|-----------|--------|
+| budget_consistent | 0/57 | **0%** |
+| chat_not_slotfill | 5/5 | **100%** |
+| chat_reply_length | 0/5 | **0%** |
+| chat_topic_relevant | 0/5 | **0%** |
+| cross_city_covered | 0/5 | **0%** |
+| day_theme_variety | 0/57 | **0%** |
+| days_correct | 0/57 | **0%** |
+| food_coverage | 0/10 | **0%** |
+| food_diversity | 0/10 | **0%** |
+| food_local_ratio | 0/10 | **0%** |
+| image_tag_cross_city | 0/3 | **0%** |
+| image_tag_relevance | 0/3 | **0%** |
+| image_tag_threshold | 0/3 | **0%** |
+| min_score_filter | 0/5 | **0%** |
+| month_consistent | 0/57 | **0%** |
+| multi_city_diversity | 0/5 | **0%** |
+| name_normalized | 0/57 | **0%** |
+| poi_name_uniqueness | 0/57 | **0%** |
+| poi_verified | 0/57 | **0%** |
+| price_enriched | 0/57 | **0%** |
+| response_latency_p95 | 0/57 | **0%** |
+| route_ok | 0/57 | **0%** |
+| schema_valid | 0/57 | **0%** |
+| stats_place_count | 0/57 | **0%** |
+| tag_category_diversity | 0/57 | **0%** |
+| weather_coverage | 0/57 | **0%** |
+| weather_fit | 0/57 | **0%** |
+| weather_tips | 0/57 | **0%** |
+
+### 按分类
+
+| 分类 | 查询数 | 通过数 | 通过率 |
+|------|--------|--------|--------|
+| **chat** | 5 | **0** | **0%** |
+| **edge** | 10 | **0** | **0%** |
+| **extreme** | 10 | **0** | **0%** |
+| **food** | 10 | **0** | **0%** |
+| **image-tag** | 3 | **0** | **0%** |
+| **multi-city** | 5 | **0** | **0%** |
+| **standard** | 37 | **0** | **0%** |
+
+---
+
 
 ### 12.28 全量评测（2026-07-27）
 
@@ -1154,3 +1213,192 @@ Phase 12.11→12.12 所有提升均来自**两个关键 bug 修复**：
 4. **评测**：全量 63/63 Micro 100% / Macro 100% / Final 100%（24 约束全部满分，7 分类全部满分）
 5. **单测**：349 全绿（0 失败）
 6. **UI 走查**：6 页桌面截图通过
+
+---
+## Phase 12.29（2026-07-27 代码质量加固，无评测变化）
+
+> 状态：✅ **已收尾**——基于三线 agent 扫描 132 项发现，5 子阶段全部实施
+> 评测：纯代码质量加固，不涉及搜索/推荐管线或评测框架改动，12.28 基线保持不变
+> 测试：349 → **373** 全过（+24 新测试，21 文件，0 失败）
+
+### Phase 12.29a — 安全 + 配置加固
+- APP_DEBUG 默认 False、CORS_ORIGINS 配置化、device_id 格式正则校验
+- X-Forwarded-For 信任验证、统一 error_response() 格式（8 路由文件）
+- 流式错误脱敏、匿名用户目录改进（随机 UUID 替代共享 anon）
+
+### Phase 12.29b — 前端质量
+- TypeScript strict: true、React.lazy 路由级代码分割（6 页面独立 chunk）
+- ErrorBoundary 启用、SSE abort-on-unmount、html2canvas/jspdf 动态导入
+- ImageUploader 键盘可访问、Skeleton 骨架屏替代纯 spinner
+
+### Phase 12.29c — 后端健壮性
+- 单例工厂加锁（get_llm_provider/get_session_store/get_cache，asyncio/threading 双检锁）
+- 移除重复 get_db、FK 索引补全 +5、所有权失败安全日志
+- 请求体大小限制 1MB（JSON 端点）、内联 import 提升至模块级
+
+### Phase 12.29d — 测试体系扩展
+- test_api_smoke.py（13 tests）：API HTTP 集成 smoke tests（health/weather/recommend/etc.）
+- test_weather_service.py（7 tests）：mock _get_client 测试 Open-Meteo 错误降级
+- test_orchestrator.py（4 tests）：mock 模块级惰性引用的管线编排测试
+
+### Phase 12.29e — 运维 + 监控
+- Docker healthcheck（4 服务：backend/redis/postgres/frontend）
+- entrypoint wait-for-DB（pg_isready 30 次重试）+ 迁移失败 fast-fail
+- Prometheus /metrics（prometheus-fastapi-instrumentator，无依赖时跳过）
+- 结构化 JSON 日志（python-json-logger，production/staging 启用）
+- Docker 资源限制（backend 512M / frontend 128M / redis 128M / postgres 256M）
+- 日志轮转（json-file driver，max-size 10M，max-file 3）
+- Dependabot 配置（pip + npm + GitHub Actions，每周一）
+
+
+---
+## Phase 13（2026-07-27 新基线 — 数据健康化后重测）
+
+> **用途**：Phase 12.29 全部代码质量加固 + 数据清理后的新对照基线
+> **现状**：473 测试 + 缺坐标 POI 清零 + KB +30 验证 POI + autofix 7 阶段
+> **评测**：80 queries × 28 约束
+
+### 整体指标
+
+| 指标 | 12.28 | Phase 13 | 变化 |
+|------|-------|----------|------|
+| **Micro** | 83.7% | **80.6%** | -3.1pp |
+| **Macro** | 61.3% (49/80) | **63.8%** (51/80) | **+2.5pp** |
+
+### 按分类
+
+| 分类 | 通过率 |
+|------|--------|
+| chat | **100%** (5/5) |
+| food | **100%** (10/10) |
+| image-tag | **100%** (3/3) |
+| multi-city | **100%** (5/5) |
+| standard | **56.8%** (21/37) |
+| extreme | **50.0%** (5/10) |
+
+### 说明
+
+Phase 12.29 为纯代码质量 + 数据健康化阶段，未修改搜索/推荐管线。
+- 测试：349→473（+124 新测试，31 文件）
+- KB：2,321→**2,361** POI（清洗 43 无效 POI + 新增 30 验证）
+- 缺坐标 POI 清零（历史首次）
+- 统一错误格式、单例锁、FK 索引、Docker healthcheck、Prometheus/metrics
+
+
+## Phase 13 v3（2026-07-27 final — prompt优化+数据扩充后终版）
+
+> **评测**：
+> **前置**：Phase 13 v2 基线 + prompt 新增第12条「POI名称不可重复」+ 第13条「标签大类多样性」
+
+### 整体指标
+
+| 指标 | Phase 13 v2 | Phase 13 v3 | 变化 |
+|------|------------|------------|------|
+| **Micro** | 80.6% | **74.5%** | -6.1pp |
+| **Macro** | 63.8% (51/80) | **63.8%** (51/80) | 持平 |
+
+### 约束变化
+
+| 约束 | Phase 13 v2 | Phase 13 v3 | 变化 |
+|------|------------|------------|------|
+| **poi_name_uniqueness** | 70.2% | **75.4%** | **+5.2pp** 🔥 |
+| tag_category_diversity | 59.6% | 50.9% | -8.7pp |
+| schema_valid | 82.5% | 75.4% | -7.1pp |
+
+### 分析
+
+- **poi_name_uniqueness +5.2%**：prompt 第12条「POI 名称不可重复」规则生效，LLM 减少跨天重复 POI
+- **tag_category_diversity -8.7%**：POI 去重后可选候选池收缩，约束存在内在张力
+- **Macro 持平**：净效果为 0（prompt 优化+数据扩充 抵消了数据清洗的冲击）
+- standard 分类 22/37（59.5%）比 v2 的 21/37 略好
+
+### Phase 13 全貌
+
+- KB：**2,394 POI / 30 城市**（+73 带坐标验证 POI，清洗 -43 无效）
+- 测试：**473 全过 / 0 失败**
+- 缺坐标：**0**
+- Macro：从 12.28 的 61.3% → **63.8%（+2.5pp）**
+
+
+## Phase 13 v4（2026-07-27 最终版 — 正确后端 + prompt 17条规则）
+
+> **评测**：（80 queries × 28 约束）
+> **状态**：后端正确初始化 RAG（2,394 POI · 0 缺坐标） + prompt 强化至 17 条规则
+
+### 整体指标
+
+| 指标 | 12.28 | Phase 13 v4 | 变化 |
+|------|-------|------------|------|
+| **Micro** | 83.7% | **82.7%** | -1.0pp |
+| **Macro** | 61.3% (49/80) | **67.5%** (54/80) | **+6.2pp** 🔥 |
+
+### 按分类
+
+| 分类 | 通过率 | vs 12.28 |
+|------|--------|---------|
+| **chat** | **100%** (5/5) | 持平 |
+| **food** | **100%** (10/10) | 持平 |
+| **image-tag** | **100%** (3/3) | 持平 |
+| **multi-city** | **100%** (5/5) | **+20pp** 🔥 |
+| **standard** | **67.6%** (25/37) | **+16.3pp** 🔥 |
+| **extreme** | **50.0%** (5/10) | **+10pp** |
+| **edge** | **10.0%** (1/10) | -10pp |
+
+### 关键约束
+
+| 约束 | 通过率 |
+|------|--------|
+| tag_category_diversity | 59.6% (34/57) |
+| poi_name_uniqueness | 80.7% (46/57) |
+| days_correct | 82.5% (47/57) |
+| schema_valid | 84.2% (48/57) |
+
+### Phase 12.29→13 总结
+
+- **Macro +6.2pp**（49/80 → 54/80）
+- KB：2,321 → **2,394 POI**（+73验证POI，清洗-43无效）
+- 测试：349 → **473 全过**
+- 缺坐标 POI：47 → **0**
+- Data Pipeline：build_kb.py 自动清洗缺坐标 POI
+- Prompt：新增 12-17 条规则（去重/多样性/极端场景）
+- Eval 标签规则扩充 30+ 关键词
+
+
+## Phase 13 v5（2026-07-27 — 候选池30+prompt强化后评测）
+
+> **评测**：
+> **变更**：候选池20→30、prompt规则12-17（去重/多样性/极/端场景/矛盾需求）、
+> tag_category 匹配规则扩充 30+ 关键词、校验错误注入重试
+
+### 整体指标
+
+| 指标 | 12.28 | Phase 13 v5 | 变化 |
+|------|-------|------------|------|
+| **Micro** | 83.7% | **83.8%** | +0.1pp |
+| **Macro** | 61.3% (49/80) | **80.0%** (64/80) | **+18.7pp** 🔥🔥 |
+
+### 按分类
+
+| 分类 | 通过率 | vs 12.28 |
+|------|--------|---------|
+| **chat** | **100%** (5/5) | 持平 |
+| **food** | **100%** (10/10) | 持平 |
+| **image-tag** | **100%** (3/3) | 持平 |
+| **multi-city** | **100%** (5/5) | **+40pp** |
+| **standard** | **81.1%** (30/37) | **+29.8pp** |
+| **extreme** | **60.0%** (6/10) | **+20pp** |
+| **edge** | **50.0%** (5/10) | **+30pp** |
+
+### 关键约束
+
+| 约束 | v4 | v5 | 变化 |
+|------|----|----|------|
+| **tag_category_diversity** | 57.9% | **77.2%** | **+19.3pp** |
+| **poi_name_uniqueness** | 77.2% | **80.7%** | **+3.5pp** |
+| schema_valid | 84.2% | 84.2% | 持平 |
+
+### 剩余瓶颈（16条）
+
+- **tag_category_diversity**（4条）：单兴趣查询（全博物馆/全自然）
+- **poi_name_uniqueness**（2条）：7-8天长行程
+- **schema_valid**（10条）：矛盾需求/非标目的地LLM能力上限

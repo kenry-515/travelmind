@@ -81,13 +81,22 @@ export function ImageUploader({ onAnalyze, loading }: ImageUploaderProps) {
       {!previewUrl ? (
         <div
           onClick={() => !loading && inputRef.current?.click()}
+          onKeyDown={(e) => {
+            if (!loading && (e.key === 'Enter' || e.key === ' ')) {
+              e.preventDefault()
+              inputRef.current?.click()
+            }
+          }}
           onDragOver={(e) => {
             e.preventDefault()
             setDragOver(true)
           }}
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
-          className={`flex h-56 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed transition-all ${
+          role="button"
+          tabIndex={0}
+          aria-label="选择图片进行识别"
+          className={`flex h-56 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed transition-all focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 ${
             dragOver
               ? 'border-brand-400 bg-brand-50 scale-[1.01]'
               : 'border-slate-300 bg-white hover:border-brand-300 hover:bg-brand-50/40'

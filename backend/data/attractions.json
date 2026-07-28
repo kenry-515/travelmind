@@ -1,7 +1,7 @@
 {
-  "source": "Wikidata + Wikipedia + Amap + AI Enrichment + Amap Food + Indoor + Indoor + Indoor + Indoor + Indoor",
-  "enrich_date": "2026-07-26",
-  "total": 2337,
+  "source": "Wikidata + Wikipedia + Amap + AI Enrichment + Amap Food + Indoor + Indoor + Indoor + Indoor + Indoor + Indoor + Indoor",
+  "enrich_date": "2026-07-27",
+  "total": 2374,
   "ai_enriched": 896,
   "attractions": [
     {
@@ -3158,49 +3158,6 @@
       "name_normalized": "上翔堂"
     },
     {
-      "name": "人民公园近现代建筑群",
-      "name_en": "",
-      "lat": null,
-      "lon": null,
-      "city": "成都",
-      "wiki_article": "https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%B0%91%E5%85%AC%E5%9B%AD%E8%BF%91%E7%8E%B0%E4%BB%A3%E5%BB%BA%E7%AD%91%E7%BE%A4",
-      "wiki_article_en": "",
-      "wikidata_id": "Q110110291",
-      "instance_of": "遺跡",
-      "description": "人民公园近现代建筑群是中国四川省成都市一组历史建筑群，位于人民公园之中，包括中正图书馆旧址、民众教育馆旧址、通俗教育馆旧址，三处建筑目前分别为成都市人民公园管理处、人民公园大会议室、四川保路运动史事陈列馆。2020年，人民公园近现代建筑群列入成都市文物保护单位。\n",
-      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/%E6%88%90%E9%83%BD%E4%BA%BA%E6%B0%91%E5%85%AC%E5%9B%AD-%E4%B8%AD%E6%AD%A3%E5%9B%BE%E4%B9%A6%E9%A6%86%E6%97%A7%E5%9D%80_2023-12-02.jpg/330px-%E6%88%90%E9%83%BD%E4%BA%BA%E6%B0%91%E5%85%AC%E5%9B%AD-%E4%B8%AD%E6%AD%A3%E5%9B%BE%E4%B9%A6%E9%A6%86%E6%97%A7%E5%9D%80_2023-12-02.jpg",
-      "full_url": "https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%B0%91%E5%85%AC%E5%9B%AD%E8%BF%91%E7%8E%B0%E4%BB%A3%E5%BB%BA%E7%AD%91%E7%BE%A4",
-      "description_source": "wikipedia_zh",
-      "wiki_pageid": "7536258",
-      "address": null,
-      "amap_id": null,
-      "amap_type": null,
-      "amap_typecode": null,
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata",
-      "tags": [
-        "历史",
-        "建筑",
-        "深度",
-        "休闲",
-        "春季",
-        "秋季"
-      ],
-      "suitable_for": "历史爱好者、休闲游客",
-      "best_time": "春秋季",
-      "price_level": "经济",
-      "popularity_score": 5,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 50
-      },
-      "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25",
-      "name_normalized": "人民公园近现代建筑群"
-    },
-    {
       "name": "上古寺",
       "name_en": "",
       "lat": 30.81696922,
@@ -4341,8 +4298,8 @@
     {
       "name": "伏龙观",
       "name_en": "",
-      "lat": null,
-      "lon": null,
+      "lat": 31.017,
+      "lon": 103.616,
       "city": "成都",
       "wiki_article": "https://zh.wikipedia.org/wiki/%E4%BC%8F%E9%BE%99%E8%A7%82",
       "wiki_article_en": "",
@@ -4377,7 +4334,8 @@
       },
       "price_source": "估算（基于价格等级）",
       "price_updated_at": "2026-07-25",
-      "name_normalized": "伏龙观"
+      "name_normalized": "伏龙观",
+      "data_source": "manual_fix"
     },
     {
       "name": "新津黃鶴樓",
@@ -5244,45 +5202,6 @@
       "price_source": "估算（基于价格等级）",
       "price_updated_at": "2026-07-25",
       "name_normalized": "起义"
-    },
-    {
-      "name": "广州市文物保护单位",
-      "name_en": "",
-      "lat": null,
-      "lon": null,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "Q123117794",
-      "instance_of": "遺跡",
-      "description": null,
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": null,
-      "address": null,
-      "amap_id": null,
-      "amap_type": null,
-      "amap_typecode": null,
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata",
-      "tags": [
-        "历史",
-        "遗址",
-        "全年"
-      ],
-      "suitable_for": "历史爱好者",
-      "best_time": "全年",
-      "price_level": "经济",
-      "popularity_score": 2,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 50
-      },
-      "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25",
-      "name_normalized": "市文物保护单位"
     },
     {
       "name": "长隆野生动物世界",
@@ -6651,8 +6570,8 @@
     {
       "name": "正佳极地海洋世界",
       "name_en": "",
-      "lat": null,
-      "lon": null,
+      "lat": 23.136,
+      "lon": 113.328,
       "city": "广州",
       "wiki_article": "https://zh.wikipedia.org/wiki/%E6%AD%A3%E4%BD%B3%E6%9E%81%E5%9C%B0%E6%B5%B7%E6%B4%8B%E4%B8%96%E7%95%8C",
       "wiki_article_en": "https://en.wikipedia.org/wiki/Grandview_Mall_Aquarium",
@@ -6687,7 +6606,8 @@
       },
       "price_source": "估算（基于价格等级）",
       "price_updated_at": "2026-07-25",
-      "name_normalized": "正佳极地海洋世界"
+      "name_normalized": "正佳极地海洋世界",
+      "data_source": "manual_fix"
     },
     {
       "name": "粤海关",
@@ -11572,49 +11492,6 @@
       "name_normalized": "苍山神祠"
     },
     {
-      "name": "沘江古桥梁群",
-      "name_en": "",
-      "lat": null,
-      "lon": null,
-      "city": "大理",
-      "wiki_article": "https://zh.wikipedia.org/wiki/%E6%B2%98%E6%B1%9F%E5%8F%A4%E6%A1%A5%E6%A2%81%E7%BE%A4",
-      "wiki_article_en": "",
-      "wikidata_id": "Q115134513",
-      "instance_of": "遺跡",
-      "description": "沘（bǐ）江古桥梁群位于云南省大理州云龙县境内的沘江及其支流上，包含37座不同类型的古桥梁，2013年3月公布为第七批全国重点文物保护单位。\n",
-      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/%E4%BA%91%E9%BE%99%E9%80%9A%E4%BA%AC%E6%A1%A5.jpg/330px-%E4%BA%91%E9%BE%99%E9%80%9A%E4%BA%AC%E6%A1%A5.jpg",
-      "full_url": "https://zh.wikipedia.org/wiki/%E6%B2%98%E6%B1%9F%E5%8F%A4%E6%A1%A5%E6%A2%81%E7%BE%A4",
-      "description_source": "wikipedia_zh",
-      "wiki_pageid": "8172637",
-      "address": null,
-      "amap_id": null,
-      "amap_type": null,
-      "amap_typecode": null,
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata",
-      "tags": [
-        "历史",
-        "建筑",
-        "遗址",
-        "摄影",
-        "深度",
-        "全年"
-      ],
-      "suitable_for": "历史爱好者、建筑爱好者、摄影爱好者",
-      "best_time": "全年",
-      "price_level": "经济",
-      "popularity_score": 4,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 50
-      },
-      "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25",
-      "name_normalized": "沘江古桥梁群"
-    },
-    {
       "name": "平川观音寺",
       "name_en": "",
       "lat": 26.038333333,
@@ -15243,47 +15120,6 @@
       "name_normalized": "中国银行旧址"
     },
     {
-      "name": "紅岩公墓",
-      "name_en": "",
-      "lat": null,
-      "lon": null,
-      "city": "重庆",
-      "wiki_article": "https://zh.wikipedia.org/wiki/%E7%B4%85%E5%B2%A9%E5%85%AC%E5%A2%93",
-      "wiki_article_en": "",
-      "wikidata_id": "Q21051733",
-      "instance_of": "遺跡",
-      "description": "紅岩公墓位於重慶市沙坪坝区紅岩村13號，文物遺址年代為1939-1946年，1983年12月1日列為重慶市第一批市級文物保護單位。2000年9月7日列為第一批重慶市文物保護單位。\n",
-      "thumbnail_url": null,
-      "full_url": "https://zh.wikipedia.org/wiki/%E7%B4%85%E5%B2%A9%E5%85%AC%E5%A2%93",
-      "description_source": "wikipedia_zh",
-      "wiki_pageid": "5020911",
-      "address": null,
-      "amap_id": null,
-      "amap_type": null,
-      "amap_typecode": null,
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata",
-      "tags": [
-        "历史",
-        "遗址",
-        "深度",
-        "全年"
-      ],
-      "suitable_for": "历史爱好者、红色旅游爱好者",
-      "best_time": "全年",
-      "price_level": "经济",
-      "popularity_score": 4,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 50
-      },
-      "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25",
-      "name_normalized": "红岩公墓"
-    },
-    {
       "name": "国民政府立法院、司法院及蒙藏委员会旧址",
       "name_en": "",
       "lat": 29.558875188,
@@ -16433,124 +16269,6 @@
       "price_source": "高德POI",
       "price_updated_at": "2026-07-25",
       "name_normalized": "塔坪寺铁塔"
-    },
-    {
-      "name": "萬縣流杯池",
-      "name_en": "",
-      "lat": null,
-      "lon": null,
-      "city": "重庆",
-      "wiki_article": "https://zh.wikipedia.org/wiki/%E8%90%AC%E7%B8%A3%E6%B5%81%E6%9D%AF%E6%B1%A0",
-      "wiki_article_en": "",
-      "wikidata_id": "Q21018150",
-      "instance_of": "遺跡",
-      "description": "萬縣流杯池位於重庆市万州区。1961年7月13日公佈為四川省第二批歷史及革命文物保護單位。\n",
-      "thumbnail_url": null,
-      "full_url": "https://zh.wikipedia.org/wiki/%E8%90%AC%E7%B8%A3%E6%B5%81%E6%9D%AF%E6%B1%A0",
-      "description_source": "wikipedia_zh",
-      "wiki_pageid": "4984841",
-      "address": null,
-      "amap_id": null,
-      "amap_type": null,
-      "amap_typecode": null,
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata",
-      "tags": [
-        "历史",
-        "遗址",
-        "民俗"
-      ],
-      "suitable_for": "历史爱好者",
-      "best_time": "全年",
-      "price_level": "经济",
-      "popularity_score": 2,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 50
-      },
-      "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25",
-      "name_normalized": "万县流杯池"
-    },
-    {
-      "name": "西山碑",
-      "name_en": "",
-      "lat": null,
-      "lon": null,
-      "city": "重庆",
-      "wiki_article": "https://zh.wikipedia.org/wiki/%E8%A5%BF%E5%B1%B1%E7%A2%91",
-      "wiki_article_en": "",
-      "wikidata_id": "Q21018194",
-      "instance_of": "遺跡",
-      "description": "西山碑位於重慶市萬州区。1980年7月7日列為四川省重新確定公布的第一批省級文物保護單位。2000年9月7日列為第一批重慶市文物保護單位。\n",
-      "thumbnail_url": null,
-      "full_url": "https://zh.wikipedia.org/wiki/%E8%A5%BF%E5%B1%B1%E7%A2%91",
-      "description_source": "wikipedia_zh",
-      "wiki_pageid": "4988590",
-      "address": null,
-      "amap_id": null,
-      "amap_type": null,
-      "amap_typecode": null,
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata",
-      "tags": [
-        "历史",
-        "遗址"
-      ],
-      "suitable_for": "历史爱好者、书法爱好者",
-      "best_time": "全年",
-      "price_level": "经济",
-      "popularity_score": 2,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 50
-      },
-      "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25",
-      "name_normalized": "西山碑"
-    },
-    {
-      "name": "雷劈石崖墓",
-      "name_en": "",
-      "lat": null,
-      "lon": null,
-      "city": "重庆",
-      "wiki_article": "https://zh.wikipedia.org/wiki/%E9%9B%B7%E5%8A%88%E7%9F%B3%E5%B4%96%E5%A2%93",
-      "wiki_article_en": "",
-      "wikidata_id": "Q21018390",
-      "instance_of": "遺跡",
-      "description": "雷劈石崖墓位於重庆市南川区太平场镇。文物遺址年代判定為漢。1991年4月16日公佈為第三批四川省文物保護單位。2000年9月7日列為第一批重慶市文物保護單位。\n",
-      "thumbnail_url": null,
-      "full_url": "https://zh.wikipedia.org/wiki/%E9%9B%B7%E5%8A%88%E7%9F%B3%E5%B4%96%E5%A2%93",
-      "description_source": "wikipedia_zh",
-      "wiki_pageid": "4972126",
-      "address": null,
-      "amap_id": null,
-      "amap_type": null,
-      "amap_typecode": null,
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata",
-      "tags": [
-        "历史",
-        "遗址"
-      ],
-      "suitable_for": "历史爱好者、考古爱好者",
-      "best_time": "全年",
-      "price_level": "经济",
-      "popularity_score": 2,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 50
-      },
-      "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25",
-      "name_normalized": "雷劈石崖墓"
     },
     {
       "name": "龍崖城",
@@ -18185,90 +17903,6 @@
       "name_normalized": "高家镇"
     },
     {
-      "name": "梁平文峰塔",
-      "name_en": "",
-      "lat": null,
-      "lon": null,
-      "city": "重庆",
-      "wiki_article": "https://zh.wikipedia.org/wiki/%E6%A2%81%E5%B9%B3%E6%96%87%E5%B3%B0%E5%A1%94",
-      "wiki_article_en": "",
-      "wikidata_id": "Q21017752",
-      "instance_of": "遺跡",
-      "description": "梁平文峰塔位於重庆市梁平区。文物遺址年代判定為明。1991年4月16日公佈為四川省第三批省級重點文物保護單位。2000年9月7日列為第一批重慶市文物保護單位。\n",
-      "thumbnail_url": null,
-      "full_url": "https://zh.wikipedia.org/wiki/%E6%A2%81%E5%B9%B3%E6%96%87%E5%B3%B0%E5%A1%94",
-      "description_source": "wikipedia_zh",
-      "wiki_pageid": "4974660",
-      "address": null,
-      "amap_id": null,
-      "amap_type": null,
-      "amap_typecode": null,
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata",
-      "tags": [
-        "历史",
-        "建筑",
-        "遗址",
-        "摄影",
-        "全年"
-      ],
-      "suitable_for": "历史爱好者、建筑爱好者、摄影爱好者",
-      "best_time": "全年",
-      "price_level": "经济",
-      "popularity_score": 4,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 50
-      },
-      "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25",
-      "name_normalized": "梁平文峰塔"
-    },
-    {
-      "name": "楊闇公舊居",
-      "name_en": "",
-      "lat": null,
-      "lon": null,
-      "city": "重庆",
-      "wiki_article": "https://zh.wikipedia.org/wiki/%E6%A5%8A%E9%97%87%E5%85%AC%E8%88%8A%E5%B1%85",
-      "wiki_article_en": "",
-      "wikidata_id": "Q21017770",
-      "instance_of": "遺跡",
-      "description": "楊闇公舊居位於重慶市潼南縣雙江鎮。又称「郵政局大院」。1987年1月23日列為重慶市第二批市級文物保護單位初定名單。1992年3月19日列為重慶市第二批市級文物保護單位。1996年9月16日公佈為四川省第四批省級文物保護單位。2000年9月7日列為第一批重慶市文物保護單位。\n",
-      "thumbnail_url": null,
-      "full_url": "https://zh.wikipedia.org/wiki/%E6%A5%8A%E9%97%87%E5%85%AC%E8%88%8A%E5%B1%85",
-      "description_source": "wikipedia_zh",
-      "wiki_pageid": "4933388",
-      "address": null,
-      "amap_id": null,
-      "amap_type": null,
-      "amap_typecode": null,
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata",
-      "tags": [
-        "历史",
-        "建筑",
-        "遗址",
-        "古镇",
-        "全年"
-      ],
-      "suitable_for": "历史爱好者、红色旅游爱好者",
-      "best_time": "全年",
-      "price_level": "经济",
-      "popularity_score": 4,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 50
-      },
-      "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25",
-      "name_normalized": "杨闇公旧居"
-    },
-    {
       "name": "楊闇公墓",
       "name_en": "",
       "lat": 29.5476,
@@ -18391,48 +18025,6 @@
       "price_source": "高德POI",
       "price_updated_at": "2026-07-25",
       "name_normalized": "秦良玉陵园"
-    },
-    {
-      "name": "馬龍山摩崖造像",
-      "name_en": "",
-      "lat": null,
-      "lon": null,
-      "city": "重庆",
-      "wiki_article": "https://zh.wikipedia.org/wiki/%E9%A6%AC%E9%BE%8D%E5%B1%B1%E6%91%A9%E5%B4%96%E9%80%A0%E5%83%8F",
-      "wiki_article_en": "",
-      "wikidata_id": "Q21018430",
-      "instance_of": "遺跡",
-      "description": "馬龍山摩崖造像位於重慶市潼南縣臥佛鎮12村，文物遺址年代判定為清、民國。1987年1月23日列為重慶市第二批市級文物保護單位初定名單。1991年4月16日公佈為四川省第三批省級重點文物保護單位。2000年9月7日列為第一批重慶市文物保護單位。\n",
-      "thumbnail_url": null,
-      "full_url": "https://zh.wikipedia.org/wiki/%E9%A6%AC%E9%BE%8D%E5%B1%B1%E6%91%A9%E5%B4%96%E9%80%A0%E5%83%8F",
-      "description_source": "wikipedia_zh",
-      "wiki_pageid": "4975057",
-      "address": null,
-      "amap_id": null,
-      "amap_type": null,
-      "amap_typecode": null,
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata",
-      "tags": [
-        "历史",
-        "寺庙",
-        "遗址",
-        "深度",
-        "全年"
-      ],
-      "suitable_for": "历史爱好者、宗教文化爱好者",
-      "best_time": "全年",
-      "price_level": "经济",
-      "popularity_score": 3,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 50
-      },
-      "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25",
-      "name_normalized": "马龙山摩崖造像"
     },
     {
       "name": "荆竹坝岩棺群",
@@ -24163,8 +23755,8 @@
     {
       "name": "西安钟楼、鼓楼",
       "name_en": "",
-      "lat": null,
-      "lon": null,
+      "lat": 34.261,
+      "lon": 108.942,
       "city": "西安",
       "wiki_article": "",
       "wiki_article_en": "",
@@ -24200,7 +23792,8 @@
       },
       "price_source": "估算（基于价格等级）",
       "price_updated_at": "2026-07-25",
-      "name_normalized": "钟楼"
+      "name_normalized": "钟楼",
+      "data_source": "manual_fix"
     },
     {
       "name": "西峪遗址",
@@ -26249,8 +25842,8 @@
     {
       "name": "西湖南山造像",
       "name_en": "",
-      "lat": null,
-      "lon": null,
+      "lat": 30.235,
+      "lon": 120.147,
       "city": "杭州",
       "wiki_article": "https://zh.wikipedia.org/wiki/%E8%A5%BF%E6%B9%96%E5%8D%97%E5%B1%B1%E9%80%A0%E5%83%8F",
       "wiki_article_en": "",
@@ -26287,7 +25880,8 @@
       },
       "price_source": "估算（基于价格等级）",
       "price_updated_at": "2026-07-25",
-      "name_normalized": "西湖南山造像"
+      "name_normalized": "西湖南山造像",
+      "data_source": "manual_fix"
     },
     {
       "name": "宝成寺麻曷葛剌造像",
@@ -31180,47 +30774,6 @@
       "name_normalized": "顾炎武墓及"
     },
     {
-      "name": "丽则女学校旧址",
-      "name_en": "",
-      "lat": null,
-      "lon": null,
-      "city": "苏州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "Q133312565",
-      "instance_of": "遺跡",
-      "description": null,
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": null,
-      "address": null,
-      "amap_id": null,
-      "amap_type": null,
-      "amap_typecode": null,
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata",
-      "tags": [
-        "历史",
-        "建筑",
-        "遗址",
-        "深度",
-        "全年"
-      ],
-      "suitable_for": "历史爱好者、教育文化爱好者",
-      "best_time": "全年",
-      "price_level": "经济",
-      "popularity_score": 3,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 50
-      },
-      "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25",
-      "name_normalized": "丽则女学校旧址"
-    },
-    {
       "name": "垂虹断桥",
       "name_en": "",
       "lat": 31.15771,
@@ -32017,49 +31570,6 @@
       "price_source": "估算（基于价格等级）",
       "price_updated_at": "2026-07-25",
       "name_normalized": "紫金庵罗汉塑像"
-    },
-    {
-      "name": "苏州乐园",
-      "name_en": "",
-      "lat": null,
-      "lon": null,
-      "city": "苏州",
-      "wiki_article": "https://zh.wikipedia.org/wiki/%E8%8B%8F%E5%B7%9E%E4%B9%90%E5%9B%AD",
-      "wiki_article_en": "",
-      "wikidata_id": "Q15923965",
-      "instance_of": "旅遊景點",
-      "description": "苏州乐园是江苏省苏州市的一个大型主题公园，主要经营建设娱乐、餐饮及其它旅游配套设施，建成于1997年，同年2月开始营业。\n",
-      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Suzhou_Amusement_Land_1-20130322.jpg/330px-Suzhou_Amusement_Land_1-20130322.jpg",
-      "full_url": "https://zh.wikipedia.org/wiki/%E8%8B%8F%E5%B7%9E%E4%B9%90%E5%9B%AD",
-      "description_source": "wikipedia_zh",
-      "wiki_pageid": "2746799",
-      "address": null,
-      "amap_id": null,
-      "amap_type": null,
-      "amap_typecode": null,
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata",
-      "tags": [
-        "亲子",
-        "家庭",
-        "休闲",
-        "打卡",
-        "夏季",
-        "冬季"
-      ],
-      "suitable_for": "亲子家庭、年轻人、情侣",
-      "best_time": "夏季、节假日",
-      "price_level": "适中",
-      "popularity_score": 8,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 20,
-        "max": 120
-      },
-      "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25",
-      "name_normalized": "乐园"
     },
     {
       "name": "耕乐堂",
@@ -82798,6 +82308,1953 @@
       "ai_enriched": false,
       "indoor_type": "住宿",
       "name_normalized": "九州大酒店"
+    },
+    {
+      "name": "乾坤购物",
+      "city": "武汉",
+      "lat": 30.9200979,
+      "lon": 113.9378394,
+      "address": "",
+      "osm_id": "node/4689730710",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "购物",
+        "商场",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "购物中心",
+      "name_normalized": "乾坤购物"
+    },
+    {
+      "name": "长郡中学图书馆",
+      "city": "长沙",
+      "lat": 28.1893066,
+      "lon": 112.9698932,
+      "address": "",
+      "osm_id": "node/2786507386",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "图书馆",
+        "文化",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "图书馆",
+      "name_normalized": "长郡中学图书馆"
+    },
+    {
+      "name": "长郡中学校史馆",
+      "city": "长沙",
+      "lat": 28.1899054,
+      "lon": 112.9691189,
+      "address": "",
+      "osm_id": "node/4619022539",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "博物馆",
+        "文化",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "博物馆",
+      "name_normalized": "长郡中学校史馆"
+    },
+    {
+      "name": "长沙市规划展示馆",
+      "city": "长沙",
+      "lat": 28.2455124,
+      "lon": 112.975046,
+      "address": "",
+      "osm_id": "node/4794443122",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "博物馆",
+        "文化",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "博物馆",
+      "name_normalized": "市规划展示馆"
+    },
+    {
+      "name": "开元博物館",
+      "city": "长沙",
+      "lat": 28.2076111,
+      "lon": 112.9844075,
+      "address": "",
+      "osm_id": "node/5175691027",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "博物馆",
+        "文化",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "博物馆",
+      "name_normalized": "开元"
+    },
+    {
+      "name": "长沙市少年宫-影剧院",
+      "city": "长沙",
+      "lat": 28.1975638,
+      "lon": 112.9743869,
+      "address": "",
+      "osm_id": "node/6070520377",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "剧院",
+        "演出",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "剧院",
+      "name_normalized": "市少年宫影剧院"
+    },
+    {
+      "name": "步步高鞋业(山月路)",
+      "city": "长沙",
+      "lat": 28.2471012,
+      "lon": 113.0305165,
+      "address": "",
+      "osm_id": "node/6091484041",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "购物",
+        "商场",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "购物中心",
+      "name_normalized": "步步高鞋业山月路"
+    },
+    {
+      "name": "午夜阳光KTV",
+      "city": "长沙",
+      "lat": 27.8891457,
+      "lon": 112.8647632,
+      "address": "",
+      "osm_id": "node/6109366308",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "剧院",
+        "演出",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "剧院",
+      "name_normalized": "午夜阳光KTV"
+    },
+    {
+      "name": "华星KTV",
+      "city": "长沙",
+      "lat": 27.8933617,
+      "lon": 112.8561873,
+      "address": "",
+      "osm_id": "node/6109401379",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "剧院",
+        "演出",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "剧院",
+      "name_normalized": "华星KTV"
+    },
+    {
+      "name": "万顺批发商行",
+      "city": "长沙",
+      "lat": 27.8549449,
+      "lon": 112.8984349,
+      "address": "",
+      "osm_id": "node/6112886614",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "购物",
+        "商场",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "购物中心",
+      "name_normalized": "万顺批发商行"
+    },
+    {
+      "name": "鑫旺调剂商行",
+      "city": "长沙",
+      "lat": 27.8546971,
+      "lon": 112.8949561,
+      "address": "",
+      "osm_id": "node/6114515506",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "购物",
+        "商场",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "购物中心",
+      "name_normalized": "鑫旺调剂商行"
+    },
+    {
+      "name": "坪塘商场",
+      "city": "长沙",
+      "lat": 28.0885126,
+      "lon": 112.9201257,
+      "address": "",
+      "osm_id": "node/6145192859",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "购物",
+        "商场",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "购物中心",
+      "name_normalized": "坪塘商场"
+    },
+    {
+      "name": "旺旺百货",
+      "city": "长沙",
+      "lat": 28.0899495,
+      "lon": 112.9205452,
+      "address": "",
+      "osm_id": "node/6145192861",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "购物",
+        "商场",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "购物中心",
+      "name_normalized": "旺旺百货"
+    },
+    {
+      "name": "校史馆",
+      "city": "长沙",
+      "lat": 28.2091238,
+      "lon": 112.9468629,
+      "address": "",
+      "osm_id": "node/6172168680",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "博物馆",
+        "文化",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "博物馆",
+      "name_normalized": "校史馆"
+    },
+    {
+      "name": "麓山小剧场",
+      "city": "长沙",
+      "lat": 28.2081116,
+      "lon": 112.9451606,
+      "address": "",
+      "osm_id": "node/6172168681",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "剧院",
+        "演出",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "剧院",
+      "name_normalized": "麓山小剧场"
+    },
+    {
+      "name": "狮强电器",
+      "city": "长沙",
+      "lat": 27.8794435,
+      "lon": 112.8993457,
+      "address": "",
+      "osm_id": "node/6178158693",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "购物",
+        "商场",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "购物中心",
+      "name_normalized": "狮强电器"
+    },
+    {
+      "name": "巴马长寿文化体验馆",
+      "city": "长沙",
+      "lat": 27.8719009,
+      "lon": 112.9164894,
+      "address": "",
+      "osm_id": "node/6185797096",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "博物馆",
+        "文化",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "博物馆",
+      "name_normalized": "巴马长寿文化体验馆"
+    },
+    {
+      "name": "湘潭市城市建设档案馆",
+      "city": "长沙",
+      "lat": 27.8659675,
+      "lon": 112.9122086,
+      "address": "",
+      "osm_id": "node/6185849498",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "图书馆",
+        "文化",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "图书馆",
+      "name_normalized": "湘潭市城市建设档案馆"
+    },
+    {
+      "name": "欧罗芬(长沙店)",
+      "city": "长沙",
+      "lat": 28.2298763,
+      "lon": 112.9573308,
+      "address": "",
+      "osm_id": "node/7065959551",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "购物",
+        "商场",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "购物中心",
+      "name_normalized": "欧罗芬长沙店"
+    },
+    {
+      "name": "莱创暖通",
+      "city": "长沙",
+      "lat": 28.2303932,
+      "lon": 112.9579192,
+      "address": "",
+      "osm_id": "node/7065959552",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "购物",
+        "商场",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "购物中心",
+      "name_normalized": "莱创暖通"
+    },
+    {
+      "name": "大明眼镜",
+      "city": "长沙",
+      "lat": 28.2368262,
+      "lon": 112.9471291,
+      "address": "",
+      "osm_id": "node/7066954567",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "购物",
+        "商场",
+        "室内"
+      ],
+      "suitable_for": "雨天备选、室内休闲",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "indoor_type": "购物中心",
+      "name_normalized": "大明眼镜"
+    },
+    {
+      "name": "两岸咖啡",
+      "city": "上海",
+      "lat": 31.0402639,
+      "lon": 121.216427,
+      "address": "",
+      "osm_id": "node/3638289555",
+      "osm_verified": true,
+      "source": "osm-overpass",
+      "tags": [
+        "美食",
+        "饮品甜点"
+      ],
+      "suitable_for": "美食探索、本地味道",
+      "best_time": "全年",
+      "price_level": "适中",
+      "popularity_score": 4,
+      "rating": null,
+      "comment_count": 0,
+      "ai_enriched": false,
+      "food_type": "饮品甜点",
+      "name_normalized": "两岸咖啡"
+    },
+    {
+      "name": "曲水俊巴渔村",
+      "city": "拉萨",
+      "tags": [
+        "小众",
+        "文化",
+        "美食",
+        "自然"
+      ],
+      "lat": 29.32,
+      "lon": 90.78,
+      "popularity_score": 7,
+      "price_level": 2,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "曲水俊巴渔村",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "拉鲁湿地",
+      "city": "拉萨",
+      "tags": [
+        "自然",
+        "摄影",
+        "休闲"
+      ],
+      "lat": 29.67,
+      "lon": 91.1,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "拉鲁湿地",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "扎基寺",
+      "city": "拉萨",
+      "tags": [
+        "寺庙",
+        "历史",
+        "文化"
+      ],
+      "lat": 29.66,
+      "lon": 91.12,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "扎基寺",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "南山半山观景台",
+      "city": "拉萨",
+      "tags": [
+        "摄影",
+        "地标",
+        "休闲"
+      ],
+      "lat": 29.63,
+      "lon": 91.13,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "南山半山观景台",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "东关街",
+      "city": "大连",
+      "tags": [
+        "历史",
+        "建筑",
+        "打卡"
+      ],
+      "lat": 38.92,
+      "lon": 121.63,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "东关街",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "俄罗斯风情街",
+      "city": "大连",
+      "tags": [
+        "建筑",
+        "打卡",
+        "摄影"
+      ],
+      "lat": 38.92,
+      "lon": 121.64,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "俄罗斯风情街",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "东港威尼斯水城",
+      "city": "大连",
+      "tags": [
+        "建筑",
+        "摄影",
+        "休闲"
+      ],
+      "lat": 38.92,
+      "lon": 121.68,
+      "popularity_score": 8,
+      "price_level": 2,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "东港威尼斯水城",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "琥珀湾",
+      "city": "大连",
+      "tags": [
+        "自然",
+        "海岛",
+        "休闲"
+      ],
+      "lat": 38.86,
+      "lon": 121.7,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "琥珀湾",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "瓜皮岛",
+      "city": "大连",
+      "tags": [
+        "自然",
+        "海岛",
+        "小众"
+      ],
+      "lat": 39.45,
+      "lon": 122.23,
+      "popularity_score": 5,
+      "price_level": 2,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "瓜皮岛",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "钻石湾滨海公园",
+      "city": "大连",
+      "tags": [
+        "自然",
+        "摄影",
+        "休闲"
+      ],
+      "lat": 38.95,
+      "lon": 121.62,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "钻石湾滨海公园",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "老道外中华巴洛克",
+      "city": "哈尔滨",
+      "tags": [
+        "历史",
+        "建筑",
+        "摄影"
+      ],
+      "lat": 45.78,
+      "lon": 126.64,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "老道外中华巴洛克",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "伏尔加庄园",
+      "city": "哈尔滨",
+      "tags": [
+        "建筑",
+        "摄影",
+        "自然"
+      ],
+      "lat": 45.75,
+      "lon": 126.68,
+      "popularity_score": 7,
+      "price_level": 3,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "伏尔加庄园",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "哈尔滨大剧院",
+      "city": "哈尔滨",
+      "tags": [
+        "建筑",
+        "艺术",
+        "地标"
+      ],
+      "lat": 45.8,
+      "lon": 126.57,
+      "popularity_score": 8,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "哈尔滨大剧院",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "花园街黄房子咖啡",
+      "city": "哈尔滨",
+      "tags": [
+        "文艺",
+        "咖啡",
+        "打卡"
+      ],
+      "lat": 45.74,
+      "lon": 126.65,
+      "popularity_score": 6,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "花园街黄房子咖啡",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "红专街早市",
+      "city": "哈尔滨",
+      "tags": [
+        "美食",
+        "夜市",
+        "休闲"
+      ],
+      "lat": 45.77,
+      "lon": 126.62,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "红专街早市",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "上下杭历史文化街区",
+      "city": "福州",
+      "tags": [
+        "历史",
+        "建筑",
+        "美食"
+      ],
+      "lat": 26.06,
+      "lon": 119.31,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "上下杭历史文化街区",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "烟台山历史风貌区",
+      "city": "福州",
+      "tags": [
+        "建筑",
+        "文艺",
+        "摄影"
+      ],
+      "lat": 26.04,
+      "lon": 119.31,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "烟台山历史风貌区",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "林浦村",
+      "city": "福州",
+      "tags": [
+        "历史",
+        "古镇",
+        "文化"
+      ],
+      "lat": 26.01,
+      "lon": 119.35,
+      "popularity_score": 5,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "林浦村",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "海坛岛",
+      "city": "福州",
+      "tags": [
+        "自然",
+        "海岛",
+        "摄影"
+      ],
+      "lat": 25.5,
+      "lon": 119.79,
+      "popularity_score": 6,
+      "price_level": 2,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "海坛岛",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "福道",
+      "city": "福州",
+      "tags": [
+        "自然",
+        "休闲",
+        "摄影"
+      ],
+      "lat": 26.07,
+      "lon": 119.27,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "福道",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "小青岛",
+      "city": "青岛",
+      "tags": [
+        "自然",
+        "摄影",
+        "海岛"
+      ],
+      "lat": 36.05,
+      "lon": 120.32,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "小青岛",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "小麦岛公园",
+      "city": "青岛",
+      "tags": [
+        "自然",
+        "摄影",
+        "休闲"
+      ],
+      "lat": 36.05,
+      "lon": 120.4,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "小麦岛公园",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "沙子口海湾",
+      "city": "青岛",
+      "tags": [
+        "自然",
+        "摄影",
+        "休闲"
+      ],
+      "lat": 36.09,
+      "lon": 120.48,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "沙子口海湾",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "青山渔村",
+      "city": "青岛",
+      "tags": [
+        "古镇",
+        "自然",
+        "摄影"
+      ],
+      "lat": 36.16,
+      "lon": 120.67,
+      "popularity_score": 7,
+      "price_level": 2,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "青山渔村",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "齐东路十字街坊",
+      "city": "青岛",
+      "tags": [
+        "文艺",
+        "建筑",
+        "打卡"
+      ],
+      "lat": 36.07,
+      "lon": 120.33,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "齐东路十字街坊",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "麻园米轨公园",
+      "city": "昆明",
+      "tags": [
+        "文艺",
+        "历史",
+        "打卡"
+      ],
+      "lat": 25.06,
+      "lon": 102.7,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "麻园米轨公园",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "大墨雨村",
+      "city": "昆明",
+      "tags": [
+        "古镇",
+        "美食",
+        "文艺"
+      ],
+      "lat": 25.28,
+      "lon": 102.58,
+      "popularity_score": 5,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "大墨雨村",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "小白龙森林公园",
+      "city": "昆明",
+      "tags": [
+        "自然",
+        "休闲",
+        "探险"
+      ],
+      "lat": 24.92,
+      "lon": 103.14,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "小白龙森林公园",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "巡津街",
+      "city": "昆明",
+      "tags": [
+        "文艺",
+        "咖啡",
+        "打卡"
+      ],
+      "lat": 25.03,
+      "lon": 102.71,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "巡津街",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "百草村",
+      "city": "昆明",
+      "tags": [
+        "古镇",
+        "美食",
+        "文化"
+      ],
+      "lat": 24.83,
+      "lon": 102.64,
+      "popularity_score": 5,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "百草村",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "齐云山",
+      "city": "黄山",
+      "tags": [
+        "自然",
+        "历史",
+        "寺庙",
+        "登山"
+      ],
+      "lat": 29.81,
+      "lon": 118.05,
+      "popularity_score": 8,
+      "price_level": 3,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "齐云山",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "木梨硔",
+      "city": "黄山",
+      "tags": [
+        "古镇",
+        "自然",
+        "摄影",
+        "小众"
+      ],
+      "lat": 29.72,
+      "lon": 117.98,
+      "popularity_score": 7,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "木梨硔",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "西溪南古村",
+      "city": "黄山",
+      "tags": [
+        "古镇",
+        "自然",
+        "摄影",
+        "休闲"
+      ],
+      "lat": 29.82,
+      "lon": 118.25,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "西溪南古村",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "奇墅湖",
+      "city": "黄山",
+      "tags": [
+        "自然",
+        "摄影",
+        "小众"
+      ],
+      "lat": 29.92,
+      "lon": 117.98,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "秋季",
+      "data_source": "websearch_verified",
+      "name_normalized": "奇墅湖",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "屯溪老街",
+      "city": "黄山",
+      "tags": [
+        "历史",
+        "美食",
+        "购物"
+      ],
+      "lat": 29.72,
+      "lon": 118.32,
+      "popularity_score": 8,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "屯溪老街",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "月潭湖",
+      "city": "黄山",
+      "tags": [
+        "自然",
+        "摄影",
+        "休闲"
+      ],
+      "lat": 29.68,
+      "lon": 118.08,
+      "popularity_score": 5,
+      "price_level": 1,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "月潭湖",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "黄山东大门",
+      "city": "黄山",
+      "tags": [
+        "自然",
+        "登山",
+        "地标"
+      ],
+      "lat": 30.1,
+      "lon": 118.18,
+      "popularity_score": 9,
+      "price_level": 3,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "黄山东大门",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "西海大峡谷",
+      "city": "黄山",
+      "tags": [
+        "自然",
+        "登山",
+        "摄影"
+      ],
+      "lat": 30.12,
+      "lon": 118.15,
+      "popularity_score": 9,
+      "price_level": 3,
+      "best_time": "秋季",
+      "data_source": "websearch_verified",
+      "name_normalized": "西海大峡谷",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "独克宗古城",
+      "city": "香格里拉",
+      "tags": [
+        "古镇",
+        "历史",
+        "建筑"
+      ],
+      "lat": 27.83,
+      "lon": 99.71,
+      "popularity_score": 8,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "独克宗古城",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "纳帕海",
+      "city": "香格里拉",
+      "tags": [
+        "自然",
+        "摄影",
+        "湖泊"
+      ],
+      "lat": 27.85,
+      "lon": 99.63,
+      "popularity_score": 8,
+      "price_level": 2,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "纳帕海",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "巴拉格宗大峡谷",
+      "city": "香格里拉",
+      "tags": [
+        "自然",
+        "探险",
+        "峡谷"
+      ],
+      "lat": 28.15,
+      "lon": 99.28,
+      "popularity_score": 8,
+      "price_level": 3,
+      "best_time": "秋季",
+      "data_source": "websearch_verified",
+      "name_normalized": "巴拉格宗大峡谷",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "雨崩村",
+      "city": "香格里拉",
+      "tags": [
+        "自然",
+        "徒步",
+        "小众",
+        "探险"
+      ],
+      "lat": 28.35,
+      "lon": 98.78,
+      "popularity_score": 7,
+      "price_level": 2,
+      "best_time": "秋季",
+      "data_source": "websearch_verified",
+      "name_normalized": "雨崩村",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "梅里雪山观景台",
+      "city": "香格里拉",
+      "tags": [
+        "自然",
+        "摄影",
+        "日出",
+        "登山"
+      ],
+      "lat": 28.43,
+      "lon": 98.67,
+      "popularity_score": 9,
+      "price_level": 1,
+      "best_time": "秋季",
+      "data_source": "websearch_verified",
+      "name_normalized": "梅里雪山观景台",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "斗南花市",
+      "city": "昆明",
+      "tags": [
+        "购物",
+        "休闲",
+        "打卡"
+      ],
+      "lat": 24.88,
+      "lon": 102.8,
+      "popularity_score": 8,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "斗南花市",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "海埂大坝",
+      "city": "昆明",
+      "tags": [
+        "自然",
+        "摄影",
+        "休闲"
+      ],
+      "lat": 24.96,
+      "lon": 102.65,
+      "popularity_score": 8,
+      "price_level": 1,
+      "best_time": "冬季",
+      "data_source": "websearch_verified",
+      "name_normalized": "海埂大坝",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "抚仙湖",
+      "city": "昆明",
+      "tags": [
+        "自然",
+        "湖泊",
+        "摄影",
+        "休闲"
+      ],
+      "lat": 24.54,
+      "lon": 102.9,
+      "popularity_score": 8,
+      "price_level": 2,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "抚仙湖",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "金马碧鸡坊",
+      "city": "昆明",
+      "tags": [
+        "历史",
+        "建筑",
+        "地标"
+      ],
+      "lat": 25.04,
+      "lon": 102.71,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "金马碧鸡坊",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "老光明岗琼甜茶馆",
+      "city": "拉萨",
+      "tags": [
+        "美食",
+        "休闲",
+        "饮品"
+      ],
+      "lat": 29.655,
+      "lon": 91.131,
+      "popularity_score": 9,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "老光明岗琼甜茶馆",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "安多诺增藏餐",
+      "city": "拉萨",
+      "tags": [
+        "美食",
+        "藏餐"
+      ],
+      "lat": 29.655,
+      "lon": 91.129,
+      "popularity_score": 8,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "安多诺增藏餐",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "桑吉拉姆拉萨菜",
+      "city": "拉萨",
+      "tags": [
+        "美食",
+        "藏餐"
+      ],
+      "lat": 29.653,
+      "lon": 91.132,
+      "popularity_score": 8,
+      "price_level": 3,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "桑吉拉姆拉萨菜",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "同吉康桑藏餐厅",
+      "city": "拉萨",
+      "tags": [
+        "美食",
+        "藏餐"
+      ],
+      "lat": 29.654,
+      "lon": 91.13,
+      "popularity_score": 7,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "同吉康桑藏餐厅",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "雪域餐厅",
+      "city": "拉萨",
+      "tags": [
+        "美食",
+        "藏餐"
+      ],
+      "lat": 29.653,
+      "lon": 91.133,
+      "popularity_score": 8,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "雪域餐厅",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "古树酸奶",
+      "city": "拉萨",
+      "tags": [
+        "美食",
+        "饮品"
+      ],
+      "lat": 29.654,
+      "lon": 91.132,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "古树酸奶",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "前站牦牛酸奶坊",
+      "city": "拉萨",
+      "tags": [
+        "美食",
+        "饮品"
+      ],
+      "lat": 29.657,
+      "lon": 91.12,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "前站牦牛酸奶坊",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "措姆凉粉",
+      "city": "拉萨",
+      "tags": [
+        "美食",
+        "小吃"
+      ],
+      "lat": 29.656,
+      "lon": 91.128,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "措姆凉粉",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "仓姑寺茶馆",
+      "city": "拉萨",
+      "tags": [
+        "美食",
+        "寺庙",
+        "休闲"
+      ],
+      "lat": 29.651,
+      "lon": 91.134,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "仓姑寺茶馆",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "革命甜茶馆",
+      "city": "拉萨",
+      "tags": [
+        "美食",
+        "饮品",
+        "休闲"
+      ],
+      "lat": 29.654,
+      "lon": 91.131,
+      "popularity_score": 6,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "革命甜茶馆",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "老街坊徽菜",
+      "city": "黄山",
+      "tags": [
+        "美食",
+        "徽菜"
+      ],
+      "lat": 29.72,
+      "lon": 118.32,
+      "popularity_score": 7,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "老街坊徽菜",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "临街徽菜馆",
+      "city": "黄山",
+      "tags": [
+        "美食",
+        "徽菜"
+      ],
+      "lat": 29.72,
+      "lon": 118.31,
+      "popularity_score": 6,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "临街徽菜馆",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "海味馆",
+      "city": "大连",
+      "tags": [
+        "美食",
+        "海鲜"
+      ],
+      "lat": 38.91,
+      "lon": 121.63,
+      "popularity_score": 7,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "海味馆",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "大连老菜馆",
+      "city": "大连",
+      "tags": [
+        "美食",
+        "海鲜",
+        "本地菜"
+      ],
+      "lat": 38.9,
+      "lon": 121.62,
+      "popularity_score": 6,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "大连老菜馆",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "老凯俚酸汤鱼",
+      "city": "贵阳",
+      "tags": [
+        "美食",
+        "贵州菜",
+        "酸汤"
+      ],
+      "lat": 26.65,
+      "lon": 106.63,
+      "popularity_score": 8,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "老凯俚酸汤鱼",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "丝恋丝娃娃",
+      "city": "贵阳",
+      "tags": [
+        "美食",
+        "小吃"
+      ],
+      "lat": 26.64,
+      "lon": 106.62,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "丝恋丝娃娃",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "喀什古城",
+      "city": "喀什",
+      "tags": [
+        "古镇",
+        "历史",
+        "人文",
+        "建筑",
+        "美食"
+      ],
+      "lat": 39.47,
+      "lon": 75.99,
+      "popularity_score": 9,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "喀什古城",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "艾提尕尔清真寺",
+      "city": "喀什",
+      "tags": [
+        "寺庙",
+        "历史",
+        "建筑",
+        "地标"
+      ],
+      "lat": 39.47,
+      "lon": 75.98,
+      "popularity_score": 9,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "艾提尕尔清真寺",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "香妃园",
+      "city": "喀什",
+      "tags": [
+        "历史",
+        "建筑",
+        "打卡"
+      ],
+      "lat": 39.48,
+      "lon": 76.03,
+      "popularity_score": 8,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "香妃园",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "高台民居",
+      "city": "喀什",
+      "tags": [
+        "历史",
+        "建筑",
+        "摄影"
+      ],
+      "lat": 39.47,
+      "lon": 75.99,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "高台民居",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "百年老茶馆",
+      "city": "喀什",
+      "tags": [
+        "美食",
+        "人文",
+        "文艺"
+      ],
+      "lat": 39.47,
+      "lon": 75.99,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "百年老茶馆",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "汗巴扎夜市",
+      "city": "喀什",
+      "tags": [
+        "美食",
+        "夜市",
+        "购物"
+      ],
+      "lat": 39.47,
+      "lon": 75.99,
+      "popularity_score": 8,
+      "price_level": 1,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "汗巴扎夜市",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "盘橐城",
+      "city": "喀什",
+      "tags": [
+        "历史",
+        "遗址",
+        "人文"
+      ],
+      "lat": 39.46,
+      "lon": 76.0,
+      "popularity_score": 6,
+      "price_level": 2,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "盘橐城",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "喀什大巴扎",
+      "city": "喀什",
+      "tags": [
+        "购物",
+        "美食",
+        "民俗"
+      ],
+      "lat": 39.48,
+      "lon": 75.98,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "喀什大巴扎",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "甘肃省博物馆",
+      "city": "兰州",
+      "tags": [
+        "博物馆",
+        "历史",
+        "文化"
+      ],
+      "lat": 36.07,
+      "lon": 103.76,
+      "popularity_score": 9,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "甘肃省博物馆",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "中山桥",
+      "city": "兰州",
+      "tags": [
+        "地标",
+        "历史",
+        "建筑"
+      ],
+      "lat": 36.06,
+      "lon": 103.82,
+      "popularity_score": 9,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "中山桥",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "白塔山公园",
+      "city": "兰州",
+      "tags": [
+        "自然",
+        "摄影",
+        "地标"
+      ],
+      "lat": 36.06,
+      "lon": 103.82,
+      "popularity_score": 8,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "白塔山公园",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "黄河风情线",
+      "city": "兰州",
+      "tags": [
+        "自然",
+        "休闲",
+        "摄影"
+      ],
+      "lat": 36.06,
+      "lon": 103.8,
+      "popularity_score": 8,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "黄河风情线",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "磨沟沿老店牛肉面",
+      "city": "兰州",
+      "tags": [
+        "美食",
+        "小吃"
+      ],
+      "lat": 36.05,
+      "lon": 103.8,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "磨沟沿老店牛肉面",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "水车博览园",
+      "city": "兰州",
+      "tags": [
+        "历史",
+        "地标",
+        "亲子"
+      ],
+      "lat": 36.06,
+      "lon": 103.84,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "水车博览园",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "正宁路夜市",
+      "city": "兰州",
+      "tags": [
+        "美食",
+        "夜市",
+        "休闲"
+      ],
+      "lat": 36.06,
+      "lon": 103.82,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "夏季",
+      "data_source": "websearch_verified",
+      "name_normalized": "正宁路夜市",
+      "confidence": 0.8,
+      "source_id": ""
+    },
+    {
+      "name": "兰州老街",
+      "city": "兰州",
+      "tags": [
+        "古镇",
+        "美食",
+        "购物"
+      ],
+      "lat": 36.07,
+      "lon": 103.75,
+      "popularity_score": 7,
+      "price_level": 1,
+      "best_time": "全年",
+      "data_source": "websearch_verified",
+      "name_normalized": "兰州老街",
+      "confidence": 0.8,
+      "source_id": ""
     }
   ]
 }

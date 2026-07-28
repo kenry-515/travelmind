@@ -44,7 +44,7 @@ cd backend && python scripts/build_kb.py --only normalize,rebuild,quality
 
 - OSM Overpass ✅（事实主力源）；WebSearch ✅（候选发现）；WebBridge ✅（需用户浏览器在线）
 - 高德 ⚠️ AMAP_API_KEY 为空；Wikidata/Nominatim ❌ GFW 阻断
-- 当前 KB：**2,321 POI / 30 城市**（Phase 12.27），pytest 349 全过
+- 当前 KB：**2,410 POI / 30 城市**（Phase 12.27），pytest 373 全过（21 文件）
 
 ## 收尾
 

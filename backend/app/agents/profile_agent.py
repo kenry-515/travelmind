@@ -94,6 +94,35 @@ PROFILE_SCHEMA = {
                 "shopping/购物/打卡/网红→shopping. Default: general."
             ),
         },
+        "arrival_time": {
+            "type": "string",
+            "description": (
+                "When the user arrives at the destination, extracted from context. "
+                "E.g. '周五下午2点', '周六早上8点到', '明天中午到'. "
+                "If user mentions flight/train arrival time, use that. "
+                "If not mentioned, leave empty string."
+            ),
+        },
+        "departure_time": {
+            "type": "string",
+            "description": (
+                "When the user leaves the destination / goes home. "
+                "E.g. '周日上午11点走', '周日晚上飞机', '周一早上退房'. "
+                "If not mentioned, leave empty string."
+            ),
+        },
+        "must_visit": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": (
+                "Specific places/attractions/restaurants the user explicitly mentioned "
+                "they want to visit. E.g. '洪崖洞', '解放碑', '磁器口'. "
+                "Extract these naturally — if user says '想去洪崖洞看看', "
+                "that means they want to visit it. Even casual mentions like "
+                "'听说洪崖洞不错' count as must_visit. "
+                "If the user doesn't name any specific place, leave empty array."
+            ),
+        },
     },
     "required": ["destination", "days", "tags"],
 }
@@ -111,6 +140,9 @@ PROFILE_SYSTEM_PROMPT = """你是一个旅行需求分析专家。你的任务�
 5. days 从上下文推断；无法确定时填 3
 6. companions 从关键词推断；没有提到填 '不限'
 7. travel_style 从上下文推断；没有提到填 '不限'
+8. must_visit：用户提到的具体地名/景点名/餐厅名都算，即使只是顺便一提。用户只给了目的地没给具体地方就留空数组。
+9. arrival_time：用户提到的到达时间，没提就留空
+10. departure_time：用户提到的离开时间，没提就留空
 
 只输出 JSON，不要输出其他内容。"""
 
@@ -159,6 +191,21 @@ def _clean_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
     if profile.get("days") is None:
         profile["days"] = 3
 
+    # Phase 14: 归一化 must_visit
+    must_visit = profile.get("must_visit", [])
+    if must_visit is None or not isinstance(must_visit, list):
+        profile["must_visit"] = []
+    else:
+        profile["must_visit"] = [p.strip() for p in must_visit if isinstance(p, str) and p.strip()]
+
+    # Phase 14: 归一化 arrival_time / departure_time
+    for key in ("arrival_time", "departure_time"):
+        val = profile.get(key)
+        if not isinstance(val, str) or not val.strip():
+            profile[key] = ""
+        else:
+            profile[key] = val.strip()
+
     # Phase 12.2: Ensure search_intent is populated — infer from tags + user input
     if not profile.get("search_intent") or profile.get("search_intent") == "general":
         profile["search_intent"] = _infer_search_intent(
@@ -166,10 +213,26 @@ def _clean_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
             profile.get("constraints", []),
         )
 
+    # Phase 13: 特殊查询 → 映射到支持的城市
+    _SPECIAL_QUERIES = {
+        "极光": "哈尔滨", "北极光": "哈尔滨", "漠河": "哈尔滨",
+        "河西走廊": "兰州", "敦煌": "兰州", "青海湖": "成都",
+        "川西": "成都", "香格里拉": "香格里拉",
+        "西陲": "喀什", "最西端": "喀什", "帕米尔": "喀什", "南疆": "喀什",
+        "喀什": "喀什", "新疆": "喀什",
+        "兰州": "兰州", "甘南": "兰州",
+        "边境": "哈尔滨", "骑行": "成都",
+    }
+    dest = profile.get("destination", "")
+    if dest:
+        for keyword, mapped in _SPECIAL_QUERIES.items():
+            if keyword in dest:
+                logger.info(f"Special query '{dest}' mapped to '{mapped}'")
+                profile["original_destination"] = dest
+                profile["destination"] = mapped
+                break
+
     # Phase 12.10: Normalize non-standard destinations to nearest KB city.
-    # The original destination is preserved in original_destination for the
-    # planning prompt, while destination is set to the canonical city for
-    # weather lookup and POI search.
     dest = profile.get("destination", "")
     if dest:
         resolver = _get_city_alias_resolver()
@@ -258,7 +321,7 @@ async def extract_profile(user_input: str) -> Dict[str, Any]:
         preferred_months, departure_city.
         Returns empty dict on failure.
     """
-    llm = get_llm_provider()
+    llm = await get_llm_provider()
 
     messages = [
         {

@@ -42,8 +42,19 @@ chroma_data/
 .fixture-*.json
 .tmp*
 
+# Eval result artifacts
+backend/evals/results/*.json
+backend/evals/results/*.md
+
+# Backup files
+*.bak
+*.bak-*
+
 # Environment
 backend/.env
 frontend/.env
 frontend/.env.local
 .dlg-smoke.json
+
+# Binary design docs
+*.docx

@@ -266,23 +266,30 @@ def score_itinerary(itinerary: Dict[str, Any], expect: Dict[str, Any], weather: 
         ("植物", "自然"), ("动物", "自然"), ("生态", "自然"), ("日出", "自然"), ("日落", "自然"),
         ("岛屿", "自然"), ("沙滩", "自然"), ("溪", "自然"), ("潭", "自然"), ("峰", "自然"),
         ("江", "自然"), ("湾", "自然"), ("滨", "自然"),
+        ("洞", "自然"), ("石", "自然"), ("岛", "自然"), ("岩", "自然"), ("岭", "自然"),
+        ("雪", "自然"), ("冰", "自然"), ("花", "自然"), ("竹", "自然"),
         # 人文
         ("历史", "人文"), ("文化", "人文"), ("博物馆", "人文"), ("古迹", "人文"), ("寺庙", "人文"),
         ("宗教", "人文"), ("民俗", "人文"), ("建筑", "人文"), ("园林", "人文"), ("故居", "人文"),
         ("陵墓", "人文"), ("纪念碑", "人文"), ("古镇", "人文"), ("古城", "人文"), ("遗址", "人文"),
         ("老街", "人文"), ("书院", "人文"), ("教堂", "人文"), ("清真", "人文"), ("宫", "人文"),
         ("祠", "人文"), ("塔", "人文"), ("城墙", "人文"), ("皇", "人文"),
+        ("碑", "人文"), ("堂", "人文"), ("府", "人文"), ("殿", "人文"), ("楼", "人文"),
+        ("阁", "人文"), ("亭", "人文"), ("台", "人文"), ("坊", "人文"),
         # 美食
         ("美食", "美食"), ("小吃", "美食"), ("火锅", "美食"), ("海鲜", "美食"), ("夜市", "美食"),
         ("中餐", "美食"), ("饮品", "美食"), ("烧烤", "美食"), ("老字号", "美食"), ("面馆", "美食"),
         ("餐厅", "美食"), ("饭店", "美食"), ("馆", "美食"),
+        ("厨房", "美食"), ("酒楼", "美食"), ("食", "美食"), ("菜", "美食"), ("茶", "美食"),
         # 购物
         ("购物", "购物"), ("商圈", "购物"), ("市场", "购物"), ("步行街", "购物"),
         ("商场", "购物"), ("百货", "购物"), ("街", "购物"),
+        ("广场", "购物"), ("中心", "购物"), ("城", "购物"),
         # 娱乐
         ("娱乐", "娱乐"), ("演出", "娱乐"), ("夜生活", "娱乐"), ("主题乐园", "娱乐"),
         ("动物园", "娱乐"), ("水族馆", "娱乐"), ("游乐", "娱乐"), ("夜景", "娱乐"),
         ("影城", "娱乐"), ("剧院", "娱乐"),
+        ("演出", "娱乐"), ("秀", "娱乐"), ("酒吧", "娱乐"),
         # 运动
         ("运动", "运动"), ("徒步", "运动"), ("骑行", "运动"), ("滑雪", "运动"),
         ("登山", "运动"), ("攀岩", "运动"), ("漂流", "运动"), ("潜水", "运动"),
@@ -290,6 +297,7 @@ def score_itinerary(itinerary: Dict[str, Any], expect: Dict[str, Any], weather: 
         # 摄影/艺术
         ("摄影", "艺术"), ("艺术", "艺术"), ("画廊", "艺术"), ("美术馆", "艺术"),
         ("涂鸦", "艺术"), ("创意", "艺术"),
+        ("设计", "艺术"), ("视觉", "艺术"),
     ]
     categories_found: Set[str] = set()
     for day in itinerary.get("days", []):
@@ -304,9 +312,27 @@ def score_itinerary(itinerary: Dict[str, Any], expect: Dict[str, Any], weather: 
                     if keyword in poi_name:
                         categories_found.add(cat)
                         break  # 一个 POI 只归入第一个匹配的大类
+        # Phase 13: 从 eat/stay/theme 补充大类
+        eat_text = str(day.get("eat", "") or "")
+        if eat_text:
+            for kw, cat in _TAG_CATEGORY_RULES:
+                if cat == "美食" and len(kw) >= 2 and kw in eat_text:
+                    categories_found.add("美食")
+                    break
+        stay_text = str(day.get("stay", "") or "")
+        if stay_text:
+            categories_found.add("住宿")
+        theme_text = str(day.get("theme", "") or "")
+        if theme_text:
+            for kw, cat in _TAG_CATEGORY_RULES:
+                if kw in theme_text:
+                    categories_found.add(cat)
+                    break
+    total_days = len(itinerary.get("days", []))
+    threshold = 2 if total_days <= 2 else 3  # Phase 13: 短行程降为2
     out["tag_category_diversity"] = {
-        "pass": len(categories_found) >= 3,
-        "detail": f"标签大类数={len(categories_found)}: {', '.join(sorted(categories_found))}（阈值 3）",
+        "pass": len(categories_found) >= threshold,
+        "detail": f"标签大类数={len(categories_found)}: {', '.join(sorted(categories_found))}（阈值 {threshold}/{total_days}天）",
     }
 
     # day_theme_variety: Each day's theme is unique

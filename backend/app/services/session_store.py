@@ -14,6 +14,7 @@ Redis 连接走 `REDIS_URL`（默认 redis://localhost:6379/0）。
 
 import json
 import logging
+import threading
 import time
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
@@ -116,15 +117,20 @@ class RedisSessionStore(BaseSessionStore):
         await self._redis.expire(self._key(session_id), ttl_seconds)
 
 
-# ── 工厂 ────────────────────────────────────────────────
+# ── 工厂（线程安全单例） ──────────────────────────────────
 
 _store: Optional[BaseSessionStore] = None
+_store_lock: threading.Lock = threading.Lock()
 
 
 def get_session_store() -> BaseSessionStore:
-    """按 SESSION_STORE 环境变量返回单例存储实现。"""
+    """按 SESSION_STORE 环境变量返回单例存储实现（线程安全）。"""
     global _store
-    if _store is None:
+    if _store is not None:
+        return _store
+    with _store_lock:
+        if _store is not None:
+            return _store
         backend = (settings.SESSION_STORE or "memory").lower()
         if backend == "redis":
             try:
@@ -144,4 +150,5 @@ def get_session_store() -> BaseSessionStore:
 def reset_session_store() -> None:
     """测试用：重置工厂单例。"""
     global _store
-    _store = None
+    with _store_lock:
+        _store = None

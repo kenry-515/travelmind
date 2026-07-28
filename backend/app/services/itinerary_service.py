@@ -147,6 +147,10 @@ async def get_itinerary(
 
         # Privacy: only the owner can read
         if user_id is not None and str(row.user_id) != str(user_id):
+            logger.warning(
+                "Ownership check failed: user %s attempted to read itinerary %s owned by %s",
+                user_id, itinerary_id, row.user_id,
+            )
             return None
 
         return {
@@ -218,7 +222,13 @@ async def delete_itinerary(
         )
         row = result.scalar_one_or_none()
 
-        if row is None or str(row.user_id) != str(user_id):
+        if row is None:
+            return False
+        if str(row.user_id) != str(user_id):
+            logger.warning(
+                "Ownership check failed: user %s attempted to delete itinerary %s owned by %s",
+                user_id, itinerary_id, row.user_id,
+            )
             return False
 
         await db.delete(row)

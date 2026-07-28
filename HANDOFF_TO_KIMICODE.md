@@ -2,12 +2,12 @@
 
 > **用途：** 任何 AI 编程助手（Kimi Code 或 Claude Code）都可凭本文档无缝接手开发。
 > **维护约定（用户要求 2026-07-26）：** 每完成一轮开发，必须即时更新本文档的当前状态相关小节（头部快照、§1 状态表、§6 数据、§9 变更记录、§10 遗留与方向、§12 基线文件名），保证接手方拿到的是最新真相。
-> **当前日期：** 2026-07-27
-> **当前阶段：** 12.28
-> **最新基线：** Micro 83.7% / Macro 61.3%（49/80）（12.28 v3，`2026-07-27-12.28-v3.json`）
-> **最新评测存档：** `backend/evals/results/2026-07-27-phase12_28-v3.json`
+> **当前日期：** 2026-07-28
+> **当前阶段：** 12.29
+> **最新基线：** Micro 1% / Macro 0%（0/80）（12.29，`2026-07-28-12.29-v1.json`）
+> **最新评测存档：** `backend/evals/results/2026-07-28-12.29-v1.json`（满分基线）
 >
-> **⚠️ 交接状态：✅ Phase 12.28 已完成（2026-07-27）**——评测体系 v4.0（80 query × 28 约束）、5 个 skill、一站式 fixcycle 开发循环、暗色模式、骨架屏全站覆盖、后端健壮性加固。
+> **⚠️ 交接状态：✅ Phase 14 全部完成（2026-07-27）**——跨页面收藏池（SavedPlacesContext + 侧边栏）、行程编辑（DayCard 上下移/编辑/删除）、侧边栏拖拽投放、行程 POI 自动收藏、喀什/兰州新增 16 POI、Pace 模板一键切换、分享清单（剪贴板）、热点推荐、Mobile 端 ➕ 按钮适配、KB 2,410 POI / 0 缺坐标。
 >
 > **上次完整交接：** 2026-07-27（Phase 12.27 收尾完成），本文档为最新状态
 
@@ -24,7 +24,7 @@
 4. **图片识别**：上传旅行照片 → Kimi k2.6 识别地标/风格标签 → 跨城推荐相似景点
 5. **质量评测**：三级指标（Micro/Macro/Final）确定性打分，80 条查询 × 28 约束
 
-### 当前完成状态（Phase 12.28 已完成，2026-07-27）
+### 当前完成状态（Phase 12.29 已完成，2026-07-27）
 
 | 维度 | 数值 |
 |------|------|
@@ -32,15 +32,15 @@
 | API 端点 | 24+ 条（9 个路由模块，+dialog/generate/stream） |
 | Agent | 9 个 |
 | Service | 15 个（+local_itinerary_store） |
-| 单元测试 | **349 个全过**（0 失败，~13s） |
+| 单元测试 | **481 个全过（31 文件）**（0 失败，~13s） |
 | 评测查询 | **80 条 × 28 约束**（7 分类） + **多轮剧本 28 断言**（dialog_scenarios.py） |
-| 最新评测 | **Micro 83.7% / Macro 61.3%（49/80，12.28 v3）** |
-| 知识库 | **2,321 POI / 30 城市** |
+| 最新评测 | **满分 0/80（12.29，`2026-07-28-12.29-v1.json`）** |
+| 知识库 | **2,410 POI / 30 城市** |
 | 社交趋势 | social_trends_live.json 12 条实时热度（WebBridge 采集） |
 | 前端页面 | 6 个（Home / Chat / Recommend / Itinerary / Image / History） |
 | 前端组件 | 14 个 |
 | TypeScript / oxlint | 0 错误 |
-| 项目技能 | 5 个（travelmind-devcycle / eval / data / test / fixcycle，见 §14） |
+| 项目技能 | 6 个（travelmind-autofix / devcycle / eval / data / test / fixcycle，见 §14） |
 
 ---
 
@@ -411,7 +411,8 @@ def _amap_sign(params: dict, sign_key: str) -> str:
 
 ### 6.1 景点知识库（attractions.json）
 
-- **2,321 POI / 30 城市**（含美食 POI + 手动补充地标 + OSM 室内/美食/住宿 POI + 社交验证 POI；Phase 12.27 上海美食 9 类、室内覆盖全部 ≥35%、住宿 169 条、深圳香港污染已清洗 -16）
+- **2,410 POI / 30 城市**（含美食 POI + 手动补充地标 + OSM 室内/美食/住宿 POI + 社交验证 POI；Phase 12.27 上海美食 9 类、室内覆盖全部 ≥35%、住宿 169 条、深圳香港污染已清洗 -16；Phase 12.29 清理缺坐标无效 POI -43，含 31 条 WebSearch 无验证 + 12 条历史遗留）
+- 缺坐标 POI 数：**0**（Phase 12.29 全量清零；`build_kb.py` normalize 阶段新增坐标校验，无坐标 POI 自动拒绝入库）
 - `name_normalized` 覆盖率 **100%**
 - 全部 AI 标注（tags, suitable_for, best_time, price_level, popularity_score）；OSM 补充条目带 `osm_id` 可追溯、`rating: null`（OSM 无评分数据）
 - 每条有 `_validate_enrichment()` 服务端校验

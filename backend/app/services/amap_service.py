@@ -19,6 +19,7 @@ import asyncio
 import hashlib
 import json
 import logging
+from math import radians, sin, cos, sqrt, atan2
 from typing import Any, Dict, List, Optional, Tuple
 
 import httpx
@@ -180,7 +181,6 @@ async def get_walking_route(
     if not _check_amap_available():
         # Fallback: estimate distance using haversine
         try:
-            from math import radians, sin, cos, sqrt, atan2
             lat1, lon1 = radians(destination[1]), radians(destination[0])
             lat2, lon2 = radians(origin[1]), radians(origin[0])
             dlat, dlon = lat2 - lat1, lon2 - lon1
@@ -240,7 +240,6 @@ async def get_transit_route(
     if not _check_amap_available():
         # Fallback: estimate using haversine
         try:
-            from math import radians, sin, cos, sqrt, atan2
             lat1, lon1 = radians(destination[1]), radians(destination[0])
             lat2, lon2 = radians(origin[1]), radians(origin[0])
             dlat, dlon = lat2 - lat1, lon2 - lon1
@@ -311,7 +310,6 @@ async def get_distance_matrix(
 
     if not _check_amap_available():
         # Fallback: haversine distances
-        from math import radians, sin, cos, sqrt, atan2
         results = []
         dlat, dlon = radians(destination[1]), radians(destination[0])
         for lon, lat in origins[:10]:
@@ -408,7 +406,6 @@ async def score_location_efficiency(
 
     # Phase 10: Check cache for Amap distance matrix (most expensive API call)
     #   Key includes city_center — different destinations produce different distances
-    import hashlib
     coord_key = hashlib.md5(
         json.dumps((sorted(valid_coords), city_center), sort_keys=True).encode()
     ).hexdigest()

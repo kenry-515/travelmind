@@ -12,8 +12,10 @@ import json
 import logging
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
+
+from app.api.errors import error_response
 from pydantic import BaseModel, Field, field_validator
 
 from app.agents.orchestrator import run_travel_workflow, run_travel_workflow_stream
@@ -180,9 +182,10 @@ async def agent_plan(
         )
     except Exception as e:
         logger.error(f"Workflow fatal error: {e}", exc_info=True)
-        raise HTTPException(
+        raise error_response(
             status_code=500,
-            detail="Agent workflow failed due to an internal error.",
+            code="WORKFLOW_ERROR",
+            message="Agent workflow failed due to an internal error.",
         )
 
     # Auto-save itinerary to DB (best-effort, non-blocking)
@@ -216,9 +219,10 @@ async def agent_profile(request: ProfileRequest):
         profile = await extract_profile(request.user_input)
     except Exception as e:
         logger.error(f"Profile extraction error: {e}", exc_info=True)
-        raise HTTPException(
+        raise error_response(
             status_code=502,
-            detail="LLM service is currently unavailable. Please try again later.",
+            code="UPSTREAM_ERROR",
+            message="LLM service is currently unavailable. Please try again later.",
         )
 
     return ProfileResponse(profile=profile)
@@ -269,10 +273,10 @@ async def agent_regenerate_day(request: RegenerateDayRequest):
             places=places,
         )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise error_response(400, "INVALID_INPUT", str(e))
     except RuntimeError as e:
         logger.error(f"Day regeneration failed: {e}")
-        raise HTTPException(status_code=502, detail=str(e))
+        raise error_response(502, "UPSTREAM_ERROR", "Day regeneration failed. Please try again.")
 
     return RegenerateDayResponse(itinerary=updated)
 

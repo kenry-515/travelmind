@@ -1,4 +1,4 @@
-from app.database.connection import Base, engine, async_session, get_db, check_db_connection
+from app.database.connection import Base, engine, async_session, check_db_connection
 from app.database.models import (
     User,
     UserProfile,

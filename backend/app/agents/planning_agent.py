@@ -375,7 +375,25 @@ _QUALITY_REQUIREMENTS = """【规划要求】
 11.【天气自适应】高温日（≥35°C）午后 12:00-16:00 禁止排户外景点，每个高温日至少 2 个室内项目；
    降雨/雷暴日：户外项目数不得超过室内项目数（户外 ≤ 室内），每个降雨日至少 2 个室内/半室内项目；
    知名户外地标（山岳/湖泊/公园/岛屿类）在降雨日必须让位于室内替代项，不得因名气大而保留；
-   tips 中必须包含当季天气应对建议（遮阳/雨具/室内备选方案）"""
+   tips 中必须包含当季天气应对建议（遮阳/雨具/室内备选方案）
+12.【POI名称不可重复】不同天之间不得出现相同的poi名称。每个景点在全行程中只出现一次。
+13.【标签大类多样性】景点应覆盖至少3个不同标签大类（自然/人文/美食/购物/娱乐/运动/艺术）。
+14.【极端预算场景】预算极低时优先免费景点和路边摊，一天中至少一半以上免费活动。
+15.【矛盾需求处理】有矛盾需求时优先安全可行性，tips中说明可能无法全部满足。
+16.【特殊人群】老人/小孩/孕妇：无剧烈运动、少阶梯、有空调、近医疗设施。
+17.【极寒/极热】冬季极寒户外不超60分钟；夏季酷暑午后仅排室内项目。
+18.【到达日安排】如果用户提供到达时间，当天从到达时间开始安排：到达前写[行]出发/到达/办入住/休整；下午轻松活动不超过3个。凌晨/深夜到达(23-06点)当天只安排到达休息。长途旅行后第一个半天安排轻松活动。必须包含入住酒店环节。
+19.【离开日安排】如果用户提供离开时间：活动在离开前2-3小时结束，最后写[行]前往机场/车站。轻量活动不超过3个，包含退房/寄存行李环节。
+20.【三餐规则】每顿餐作为独立行程项，写真实餐厅名：早饭07-09点，午饭11:30-13:00，晚饭17:30-19:00。每餐写1-2道推荐菜。
+21.【体力节奏】用户精力有限：每天最多4-6个活动(不含三餐休息)。每2-3活动后安排一段休息/自由活动。夏季12-15点安排1-2小时午休。剧烈活动(爬山/徒步)后有休息缓冲。
+22.【项目类型标注】每个item的note开头标注类型标记：
+   [景]景点游览 [吃]用餐/美食
+   [休]休息/自由活动/午休
+   [行]交通：飞机/高铁/火车/公交/自驾/打车（具体写明工具，如"[行]高铁前往成都"）
+   [住]住宿：酒店/民宿/青旅（具体写明类型，如"[住]入住解放碑附近酒店"或"[住]住进特色民宿"）
+   [到]到达/出发（如"[到]抵达重庆江北机场"）
+23.【指定地点排入】用户提到的must_visit地方必须排进行程(如洪崖洞/解放碑)，放在最顺路的天和时间段，以[景]类型出现。
+"""
 
 
 # ── KB-aware POI catalog ──────────────────────────────────
@@ -690,8 +708,19 @@ def _build_planning_prompt(
             "⑤ 若当天同时有降雨，室内项目数必须 ≥ 户外项目数。"
         ).format(month=month)
 
-    # Phase 12.10: Extreme scenario guidance blocks
-    extreme_blocks = _build_extreme_guidance(profile, places, days)
+    # Phase 14: Time-aware blocks (arrival/departure/must_visit)
+    time_blocks = ""
+    must_visit = profile.get("must_visit", []) or []
+    if must_visit:
+        time_blocks += f"\n【用户指定要去的地方（必须排进行程）】{'、'.join(must_visit)}"
+    arrival = profile.get("arrival_time", "") or ""
+    if arrival:
+        time_blocks += f"\n【到达时间】{arrival}——那天从到达时间开始安排"
+    departure = profile.get("departure_time", "") or ""
+    if departure:
+        time_blocks += f"\n【离开时间】{departure}——那天在离开时间前结束活动"
+    if time_blocks:
+        time_blocks += "\n"
 
     # Phase 12.13: KB-aware POI catalog — all verified names the LLM can use
     kb_catalog = _build_kb_catalog(dest, places)
@@ -706,7 +735,7 @@ def _build_planning_prompt(
 【旅行风格】{style}
 【特殊要求】{constraints}
 
-{date_block}{rain_block}{rain_days_block}{kb_indoor_block}{naming_block}{summer_block}{extreme_blocks}
+{date_block}{rain_block}{rain_days_block}{kb_indoor_block}{naming_block}{summer_block}{extreme_blocks}{time_blocks}
 
 {kb_catalog}
 
@@ -818,7 +847,7 @@ async def generate_itinerary(
 
     days = profile.get("days", 3)
     trip_month = date.today().month
-    top_n = min(len(recommendations), 20)
+    top_n = min(len(recommendations), 30)
     places = recommendations[:top_n]
     prompt = _build_planning_prompt(profile, places, weather)
     tool_schema = schema_for_llm()
@@ -829,9 +858,10 @@ async def generate_itinerary(
             f"Planning itinerary: {days}d from {len(places)} places"
             + (f" (attempt {attempt + 1})" if attempt else "")
         )
+        cur_prompt = prompt + ("\n[Prev error: " + str(last_error)[:200] + "]" if attempt > 0 and last_error else "")
         try:
             data = await _call_llm(
-                _SYSTEM_PROMPT_FULL, prompt, tool_schema,
+                _SYSTEM_PROMPT_FULL, cur_prompt, tool_schema,
                 f"Return the {days}-day itinerary as structured JSON.",
             )
             if not data:
@@ -842,7 +872,7 @@ async def generate_itinerary(
             data = _normalize_nested_json(_unwrap_tool_envelope(data))
             errors = _full_validate(data, trip_month, weather)
             if errors:
-                last_error = {"schema_errors": errors[:5]}
+                last_error = "; ".join(str(e)[:100] for e in errors[:3])
                 logger.warning(
                     f"Planning attempt {attempt + 1}: {len(errors)} validation errors — "
                     f"first: {errors[0][:120]}"

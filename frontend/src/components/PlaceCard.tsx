@@ -10,9 +10,10 @@
  */
 
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, MapPin, Clock, DollarSign, Users, Flame, Database } from 'lucide-react'
+import { ChevronDown, ChevronUp, MapPin, Clock, DollarSign, Users, Flame, Database, Heart } from 'lucide-react'
 import { ScoreBar } from './ScoreBar'
 import type { PlaceItem } from '../lib/api'
+import { useSavedPlaces } from '../lib/savedPlaces'
 
 interface PlaceCardProps {
   place: PlaceItem
@@ -44,12 +45,16 @@ function dataSourceLabel(raw: string): string {
 
 export function PlaceCard({ place, rank }: PlaceCardProps) {
   const [expanded, setExpanded] = useState(false)
+  const { togglePlace, isSaved } = useSavedPlaces()
 
   const scorePct = Math.round(place.total_score * 100)
   const scoreColor =
     scorePct >= 70 ? 'text-success-600' : scorePct >= 50 ? 'text-amber-600' : 'text-danger-500'
 
   const { trendSource, dataSource } = getPlaceExt(place)
+  const saved = isSaved(place.name, place.city)
+  const city = place.city
+  const tags = place.tags || []
 
   return (
     <div className="card hover-lift animate-fade-in-up p-4">
@@ -71,9 +76,21 @@ export function PlaceCard({ place, rank }: PlaceCardProps) {
             <span>{place.city}</span>
           </div>
         </div>
-        <div className={`text-right shrink-0 ${scoreColor}`}>
-          <span className="text-2xl font-extrabold tabular-nums">{scorePct}</span>
-          <span className="text-xs">分</span>
+        <div className="flex items-start gap-1">
+          <button
+            onClick={() => togglePlace({ name: place.name, city, tags, note: '', source: 'recommend' })}
+            className={`rounded-lg p-1.5 transition-all ${
+              saved ? 'text-red-400 hover:text-red-500' : 'text-slate-300 hover:text-red-400'
+            }`}
+            aria-label={saved ? '取消收藏' : '收藏'}
+            title={saved ? '已收藏' : '收藏'}
+          >
+            <Heart size={16} fill={saved ? 'currentColor' : 'none'} />
+          </button>
+          <div className={`text-right ${scoreColor}`}>
+            <span className="text-2xl font-extrabold tabular-nums">{scorePct}</span>
+            <span className="text-xs">分</span>
+          </div>
         </div>
       </div>
 

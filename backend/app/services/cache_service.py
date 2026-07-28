@@ -18,6 +18,7 @@ Usage:
 
 import json
 import logging
+import threading
 from typing import Any, Optional
 
 from app.config.settings import settings
@@ -112,13 +113,14 @@ class NoOpCache(BaseCache):
         return 0
 
 
-# ── Factory singleton ────────────────────────────────────────
+# ── Factory singleton (thread-safe) ──────────────────────────
 
 _cache: Optional[BaseCache] = None
+_cache_lock: threading.Lock = threading.Lock()
 
 
 def get_cache() -> BaseCache:
-    """Return the singleton cache instance.
+    """Return the singleton cache instance (thread-safe).
 
     Tries Redis first; falls back to NoOpCache if:
     - SESSION_STORE is not 'redis' (no Redis configured)
@@ -127,25 +129,27 @@ def get_cache() -> BaseCache:
     global _cache
     if _cache is not None:
         return _cache
-
-    backend = (settings.SESSION_STORE or "memory").lower()
-    if backend == "redis":
-        try:
-            _cache = RedisCache()
-            logger.info("Cache: Redis (%s)", settings.REDIS_URL)
+    with _cache_lock:
+        if _cache is not None:
             return _cache
-        except Exception as e:
-            logger.warning(
-                "Redis cache init failed (%s), falling back to no-op cache", e
-            )
-    else:
-        logger.debug("Cache: no-op (SESSION_STORE=%s)", backend)
-
-    _cache = NoOpCache()
+        backend = (settings.SESSION_STORE or "memory").lower()
+        if backend == "redis":
+            try:
+                _cache = RedisCache()
+                logger.info("Cache: Redis (%s)", settings.REDIS_URL)
+                return _cache
+            except Exception as e:
+                logger.warning(
+                    "Redis cache init failed (%s), falling back to no-op cache", e
+                )
+        else:
+            logger.debug("Cache: no-op (SESSION_STORE=%s)", backend)
+        _cache = NoOpCache()
     return _cache
 
 
 def reset_cache() -> None:
     """Reset the singleton (for testing)."""
     global _cache
-    _cache = None
+    with _cache_lock:
+        _cache = None

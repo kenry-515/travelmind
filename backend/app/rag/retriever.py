@@ -16,9 +16,13 @@ Combines:
   6. Weather boost          (indoor ↑ / outdoor ↓ when rain, Phase 12.16)
 """
 
+import hashlib
 import json
 import logging
+from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+from app.core.constants import BUDGET_LEVELS, normalize_budget_level
 
 from app.rag.embedding import BaseEmbeddingProvider, get_embedding_provider
 from app.rag.vector_store import ChromaStore, get_vector_store
@@ -35,7 +39,6 @@ def _get_kb_cities() -> List[str]:
     global _KB_CITIES_CACHE
     if _KB_CITIES_CACHE is None:
         try:
-            from pathlib import Path
             data_path = Path(__file__).parent.parent.parent / "data" / "attractions.json"
             with open(data_path, "r", encoding="utf-8") as f:
                 _KB_CITIES_CACHE = sorted({
@@ -199,7 +202,6 @@ async def retrieve(
     rain_ratio = _compute_rain_ratio(weather)
 
     # Phase 10: Check cache for RAG results (key includes rain_ratio for Phase 12.16)
-    import hashlib
     tags_hash = hashlib.md5(",".join(sorted(tags)).encode()).hexdigest() if tags else "notags"
     cache_key = f"rag:{city}:{tags_hash}:{budget}:{travel_style}:{travel_month}:{top_k}:w{rain_ratio:.1f}"
     cache = None
@@ -680,19 +682,8 @@ def _build_budget_filter(budget: str) -> Optional[Dict[str, Any]]:
     if not budget:
         return None
 
-    # Map common budget terms to our price_level values
-    budget_map = {
-        "穷游": "经济",
-        "经济": "经济",
-        "低": "经济",
-        "中等": "适中",
-        "适中": "适中",
-        "舒适": "适中",
-        "高端": "高端",
-        "奢华": "高端",
-        "高": "高端",
-    }
-    price_level = budget_map.get(budget, "适中")
+    # Phase 12.29: 使用集中化的 BUDGET_MAP（core/constants.py）
+    price_level = normalize_budget_level(budget)
 
     if price_level == "适中":
         # For moderate budget, include 经济 and 适中
@@ -779,12 +770,7 @@ def _budget_match_score(user_budget: str, item_price: str) -> float:
     if not user_budget or not item_price:
         return 0.5  # neutral if unknown
 
-    budget_map = {
-        "穷游": "经济", "经济": "经济",
-        "中等": "适中", "适中": "适中", "舒适": "适中",
-        "高端": "高端", "奢华": "高端",
-    }
-    user_level = budget_map.get(user_budget, "适中")
+    user_level = normalize_budget_level(user_budget)
 
     levels = ["经济", "适中", "高端"]
     if item_price not in levels:

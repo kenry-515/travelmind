@@ -50,7 +50,6 @@ import { ValidationReportCard } from '../components/ValidationReportCard'
 import { DayCard } from '../components/DayCard'
 import { PriceSummaryCard } from '../components/PriceBadge'
 import { SkeletonItinerary } from '../components/Skeleton'
-import { exportItineraryPdf } from '../lib/exportPdf'
 import { usePlanStream, type StreamState } from '../hooks/usePlanStream'
 
 // ── Helpers ───────────────────────────────────────────────
@@ -393,6 +392,43 @@ export function ItineraryPage() {
     toast.success(`已去掉「${removed.poi}」`)
   }
 
+  // Phase 14: 项目上移/下移
+  function handleMoveItem(dayIndex: number, itemIndex: number, direction: 'up' | 'down') {
+    const ready = effectiveState
+    if (ready?.stage !== 'ready') return
+    const day = ready.itinerary.days[dayIndex]
+    if (!day || day.items.length < 2) return
+    const targetIndex = direction === 'up' ? itemIndex - 1 : itemIndex + 1
+    if (targetIndex < 0 || targetIndex >= day.items.length) return
+    const items = [...day.items]
+    ;[items[itemIndex], items[targetIndex]] = [items[targetIndex], items[itemIndex]]
+    const updated: TravelItinerary = {
+      ...ready.itinerary,
+      days: ready.itinerary.days.map((d, i) => (i === dayIndex ? { ...d, items } : d)) as TravelItinerary['days'],
+    }
+    if (state) setState((prev) => (prev?.stage === 'ready' ? { ...prev, itinerary: updated } : prev))
+    else setLocalReady((prev) => (prev?.stage === 'ready' ? { ...prev, itinerary: updated } : prev))
+    try { sessionStorage.setItem('travelmind_itinerary', JSON.stringify(updated)) } catch { /* */ }
+  }
+
+  // Phase 14: 编辑项目名称
+  function handleEditItem(dayIndex: number, itemIndex: number, newName: string) {
+    const ready = effectiveState
+    if (ready?.stage !== 'ready') return
+    const updated: TravelItinerary = {
+      ...ready.itinerary,
+      days: ready.itinerary.days.map((d, i) =>
+        i === dayIndex
+          ? { ...d, items: d.items.map((item, j) => (j === itemIndex ? { ...item, poi: newName } : item)) }
+          : d
+      ) as TravelItinerary['days'],
+    }
+    if (state) setState((prev) => (prev?.stage === 'ready' ? { ...prev, itinerary: updated } : prev))
+    else setLocalReady((prev) => (prev?.stage === 'ready' ? { ...prev, itinerary: updated } : prev))
+    try { sessionStorage.setItem('travelmind_itinerary', JSON.stringify(updated)) } catch { /* */ }
+    toast.success('已更新')
+  }
+
   // Pre-compute max version number (avoid O(n²) in render)
   const maxVersionNum = useMemo(
     () => (versions.length > 0 ? Math.max(...versions.map((v) => v.version_number)) : 0),
@@ -437,7 +473,10 @@ export function ItineraryPage() {
               <button
                 onClick={async () => {
                   if (pdfExporting) return; setPdfExporting(true)
-                  try { await exportItineraryPdf(ready.itinerary, weather) }
+                  try {
+                    const { exportItineraryPdf } = await import('../lib/exportPdf')
+                    await exportItineraryPdf(ready.itinerary, weather)
+                  }
                   catch (err) {
                     console.error('PDF export failed:', err)
                     toast.error('PDF 导出失败，请稍后重试。')
@@ -492,7 +531,10 @@ export function ItineraryPage() {
                       onClick={async () => {
                         setMobileMenuOpen(false)
                         if (pdfExporting) return; setPdfExporting(true)
-                        try { await exportItineraryPdf(ready.itinerary, weather) }
+                        try {
+                          const { exportItineraryPdf } = await import('../lib/exportPdf')
+                          await exportItineraryPdf(ready.itinerary, weather)
+                        }
                         catch (err) { toast.error('PDF 导出失败，请稍后重试。') }
                         finally { setPdfExporting(false) }
                       }}
@@ -617,22 +659,76 @@ export function ItineraryPage() {
               <ValidationReportCard report={ready.itinerary.validation_report} />
             )}
 
-            {/* ── 每天一栏 ── */}
+            {/* ── 每天一栏（带侧边栏拖拽投放）─ */}
             <div className="space-y-6">
               {ready.itinerary.days.map((day, dayIndex) => (
-                <DayCard
-                  key={`${day.day}-${dayIndex}`}
-                  day={day}
-                  icon={getDayIcon(day.theme)}
-                  regenOpen={regenIndex === dayIndex}
-                  regenBusy={regenBusy}
-                  regenText={regenIndex === dayIndex ? regenText : ''}
-                  onRegenOpen={() => { setRegenIndex(dayIndex); setRegenText('') }}
-                  onRegenClose={() => setRegenIndex(null)}
-                  onRegenText={setRegenText}
-                  onRegenSubmit={() => handleRegen(dayIndex)}
-                  onRemoveItem={(itemIndex) => handleRemoveItem(dayIndex, itemIndex)}
-                />
+                <div
+                  key={`drop-${day.day}-${dayIndex}`}
+                  className="relative"
+                  onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'copy'; (e.currentTarget as HTMLDivElement).dataset.dragover = 'true' }}
+                  onDragLeave={(e) => { delete (e.currentTarget as HTMLDivElement).dataset.dragover }}
+                  onDrop={(e) => {
+                    e.preventDefault()
+                    try {
+                      const data = JSON.parse(e.dataTransfer.getData('text/plain'))
+                      if (data && data.name) {
+                        const updated: TravelItinerary = {
+                          ...ready.itinerary,
+                          days: ready.itinerary.days.map((d, i) =>
+                            i === dayIndex ? { ...d, items: [...d.items, { poi: data.name, time: '自由安排', note: `[景] ${data.city}景点` }] } : d
+                          ) as TravelItinerary['days'],
+                        }
+                        if (state) setState((prev) => (prev?.stage === 'ready' ? { ...prev, itinerary: updated } : prev))
+                        else setLocalReady((prev) => (prev?.stage === 'ready' ? { ...prev, itinerary: updated } : prev))
+                        try { sessionStorage.setItem('travelmind_itinerary', JSON.stringify(updated)) } catch { /* */ }
+                        toast.success(`已添加「${data.name}」到第 ${dayIndex + 1} 天`)
+                      }
+                    } catch { /* */ }
+                    delete (e.currentTarget as HTMLDivElement).dataset.dragover
+                  }}
+                >
+                  <DayCard
+                    key={`${day.day}-${dayIndex}`}
+                    day={day}
+                    icon={getDayIcon(day.theme)}
+                    regenOpen={regenIndex === dayIndex}
+                    regenBusy={regenBusy}
+                    regenText={regenIndex === dayIndex ? regenText : ''}
+                    onRegenOpen={() => { setRegenIndex(dayIndex); setRegenText('') }}
+                    onRegenClose={() => setRegenIndex(null)}
+                    onRegenText={setRegenText}
+                    onRegenSubmit={() => handleRegen(dayIndex)}
+                    onRemoveItem={(itemIndex) => handleRemoveItem(dayIndex, itemIndex)}
+                    onMoveItem={(itemIndex, dir) => handleMoveItem(dayIndex, itemIndex, dir)}
+                    onEditItem={(itemIndex, newName) => handleEditItem(dayIndex, itemIndex, newName)}
+                    totalItems={day.items.length}
+                  />
+                  {/* Drop zone indicator */}
+                  <div
+                    className="mt-2 h-10 rounded-xl border-2 border-dashed border-transparent text-xs text-transparent transition-all"
+                    onDragOver={(e) => { e.preventDefault(); const el = e.currentTarget; el.style.borderColor = '#818cf8'; el.style.color = '#818cf8'; el.textContent = '📥 松开添加到此天' }}
+                    onDragLeave={(e) => { const el = e.currentTarget; el.style.borderColor = 'transparent'; el.style.color = 'transparent'; el.textContent = '' }}
+                    onDrop={(e) => {
+                      e.preventDefault(); e.stopPropagation()
+                      try {
+                        const data = JSON.parse(e.dataTransfer.getData('text/plain'))
+                        if (data && data.name) {
+                          const updated: TravelItinerary = {
+                            ...ready.itinerary,
+                            days: ready.itinerary.days.map((d, i) =>
+                              i === dayIndex ? { ...d, items: [...d.items, { poi: data.name, time: '自由安排', note: `[景] ${data.city}景点` }] } : d
+                            ) as TravelItinerary['days'],
+                          }
+                          if (state) setState((prev) => (prev?.stage === 'ready' ? { ...prev, itinerary: updated } : prev))
+                          else setLocalReady((prev) => (prev?.stage === 'ready' ? { ...prev, itinerary: updated } : prev))
+                          try { sessionStorage.setItem('travelmind_itinerary', JSON.stringify(updated)) } catch { /* */ }
+                          toast.success(`已添加「${data.name}」`)
+                        }
+                      } catch { /* */ }
+                      const el = e.currentTarget; el.style.borderColor = 'transparent'; el.style.color = 'transparent'; el.textContent = ''
+                    }}
+                  />
+                </div>
               ))}
             </div>
 

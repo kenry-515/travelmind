@@ -5,12 +5,15 @@ AI 多 Agent 旅行规划系统。MCP 大赛项目，已超出 MVP 进入持续�
 ## 快速命令
 
 ```bash
+# 自治优化循环（新增 — 一键全部）
+cd backend && python -X utf8 scripts/sync_skill_metadata.py  # 技能文件自更新（零 AI 成本）
+
 # 开发循环（一站式）
 cd backend && bash scripts/fixcycle.sh              # 完整: pytest→build→lint→重启→eval→doc
 cd backend && bash scripts/fixcycle.sh --quick      # 仅 pytest+build+lint
 
 # 单独步骤
-cd backend && python -m pytest -q                          # 349 测试 ~13s
+cd backend && python -m pytest -q                          # 373 测试 ~13s
 cd frontend && npm run build                               # TypeScript 编译
 cd backend && python -X utf8 -m evals.run_evals --out evals/results/$(date +%Y-%m-%d)-v1.json  # 全量评测
 
@@ -42,8 +45,9 @@ L3 7 步管线: Profile→Trend→Weather→RAG→Recommend→Plan→Aggregator
 - **数据库**: PostgreSQL + Redis (外置 session) + Chroma (向量)
 - **数据铁律**: 严禁 AI 编造数据，所有数值必须来自真实来源
 
-## 项目技能 (5 个)
+## 项目技能（8 个）
 
+- `travelmind-autofix` — **自治优化循环** (扫描→修复→测试→文档→再扫描，一次命令跑完)
 - `travelmind-devcycle` — 开发循环 (pytest → smoke → walkthrough → contract → eval)
 - `travelmind-fixcycle` — 快速迭代 (pytest → build → lint → eval_smart → update_docs)
 - `travelmind-eval` — 评测分析 (run_evals → 结果解读 → 建议)

@@ -24,8 +24,10 @@ _STORE_ROOT = Path(__file__).resolve().parent.parent.parent / "data" / "user_iti
 
 
 def _user_dir(device_id: str) -> Path:
-    # device_id 只保留安全字符，避免路径穿越
-    safe = "".join(c for c in device_id if c.isalnum() or c in "-_")[:64] or "anon"
+    # Phase 12.29: device_id 为空时使用随机 UUID 而非 "anon"，防止所有匿名用户共享目录
+    safe = "".join(c for c in device_id if c.isalnum() or c in "-_")[:64]
+    if not safe:
+        safe = f"anon_{uuid.uuid4().hex[:12]}"
     d = _STORE_ROOT / safe
     d.mkdir(parents=True, exist_ok=True)
     return d

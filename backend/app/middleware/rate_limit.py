@@ -12,7 +12,7 @@ TravelMind Agent — 令牌桶请求限流中间件（Phase 12.28c）
 import time
 import logging
 from collections import defaultdict
-from typing import Dict, Tuple
+from typing import Dict, Optional, Tuple
 
 from starlette.types import ASGIApp, Receive, Scope, Send, Message
 
@@ -66,18 +66,46 @@ class RateLimitMiddleware:
         self._buckets: Dict[str, TokenBucket] = {}
         self._last_cleanup = time.monotonic()
 
+    # Phase 12.29: 可信代理列表（生产环境配置，为空时不信任 X-Forwarded-For）
+    TRUSTED_PROXIES: Tuple[str, ...] = tuple()
+
     def _get_client_ip(self, scope: Scope) -> str:
-        """Extract client IP from scope."""
-        # Check X-Forwarded-For header first
-        headers = dict(scope.get("headers", []))
-        forwarded = headers.get(b"x-forwarded-for")
-        if forwarded:
-            return forwarded.decode().split(",")[0].strip()
+        """Extract client IP from scope.
+
+        Phase 12.29: 只有在配置了可信代理时，才信任 X-Forwarded-For 头。
+        默认（空列表）下直接取 client IP，避免 IP 伪造。
+
+        验证算法（RFC 7239 推荐）：
+        从右向左遍历 X-Forwarded-For 链，逐一验证每个代理 IP 是否在
+        TRUSTED_PROXIES 中。遇到第一个不在信任列表中的 IP 即为真实客户端 IP。
+        """
+        # Only trust X-Forwarded-For when proxies are explicitly configured
+        forwarded = self._get_forwarded_for(scope)
+        if forwarded and self.TRUSTED_PROXIES:
+            # Phase 12.29: 从右向左遍历代理链
+            forwarded_ips = [ip.strip() for ip in forwarded.split(",")]
+            # 从最右开始向左遍历，跳过所有可信代理
+            # 最后一个代理（最右）必须是可信代理（它是上游加的头）
+            # 然后继续向左找第一个不可信 IP → 那就是真实客户端
+            for i in range(len(forwarded_ips) - 1, -1, -1):
+                ip = forwarded_ips[i].strip()
+                if ip not in self.TRUSTED_PROXIES:
+                    return ip
+            # 全部可信 → 返回最左的 IP（可能是内部监控自己调自己）
+            return forwarded_ips[0].strip()
         # Fallback to direct client
         client = scope.get("client")
         if client:
             return client[0]
         return "unknown"
+
+    def _get_forwarded_for(self, scope: Scope) -> Optional[str]:
+        """Extract X-Forwarded-For header value, if present."""
+        headers = dict(scope.get("headers", []))
+        forwarded = headers.get(b"x-forwarded-for")
+        if forwarded:
+            return forwarded.decode()
+        return None
 
     def _cleanup_expired(self) -> None:
         """Periodically remove stale buckets to prevent memory leak."""

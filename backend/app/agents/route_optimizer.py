@@ -17,6 +17,7 @@ BEFORE computed-field injection):
 """
 
 import asyncio
+import copy
 import json
 import logging
 import math
@@ -365,9 +366,8 @@ def _char_overlap_ratio(a: str, b: str) -> float:
     a slightly different name format (e.g., "洪崖洞民俗风貌区" vs "洪崖洞").
     """
     # Extract only Chinese characters (U+4E00-U+9FFF)
-    import re as _re
-    chars_a = set(_re.findall(r'[一-鿿]', a))
-    chars_b = set(_re.findall(r'[一-鿿]', b))
+    chars_a = set(re.findall(r'[一-鿿]', a))
+    chars_b = set(re.findall(r'[一-鿿]', b))
     if not chars_a or not chars_b:
         return 0.0
     overlap = chars_a & chars_b
@@ -744,8 +744,6 @@ async def optimize_itinerary(
     - 校验报告汇总每个 POI 的存续状态、每日路线里程/折返结论、校验日期，
       供 docs/itinerary.schema.json 的 validation_report 字段使用。
     """
-    import copy
-
     result = copy.deepcopy(data)
     days = result.get("days", [])
     tips: List[str] = result.setdefault("tips", [])

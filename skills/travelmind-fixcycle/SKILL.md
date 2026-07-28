@@ -55,8 +55,8 @@ cd backend && python -X utf8 scripts/eval_smart.py --report-only       # 仅对�
 从评测结果 JSON 自动更新 `docs/BASELINE.md` 和 `HANDOFF_TO_KIMICODE.md`。
 
 ```bash
-cd backend && python -X utf8 scripts/update_docs.py <结果.json> --phase 12.28a
-cd backend && python -X utf8 scripts/update_docs.py --test-count 349   # 仅更新测试数
+cd backend && python -X utf8 scripts/update_docs.py <结果.json> --phase 12.29
+cd backend && python -X utf8 scripts/update_docs.py --test-count 373   # 仅更新测试数
 ```
 
 ## 开发循环标准流程

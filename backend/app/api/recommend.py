@@ -11,12 +11,13 @@ POST /api/v1/recommend/quick — Fast path: just RAG → Recommend (requires pre
 import logging
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from pydantic import BaseModel, Field, field_validator
 
 from app.agents.profile_agent import extract_profile
 from app.agents.recommendation_agent import recommend
 from app.agents.trend_agent import analyze_trends
+from app.api.errors import APIError, ErrorCode, error_response
 from app.rag.retriever import retrieve, retrieve_cross_city
 
 logger = logging.getLogger(__name__)
@@ -326,14 +327,11 @@ async def get_recommendations(request: RecommendRequest):
                    for p in ("哪里", "哪个", "哪些", "去哪", "什么地方", "推荐")):
                 logger.info(f"Discovery query, guessed city {city} → multi-city")
                 city = ""
-    except HTTPException:
+    except APIError:
         raise
     except Exception as e:
         logger.error(f"Profile extraction failed: {e}")
-        raise HTTPException(
-            status_code=502,
-            detail="LLM 服务暂不可用，请稍后重试。",
-        )
+        raise error_response(502, "UPSTREAM_ERROR", "LLM 服务暂不可用，请稍后重试。")
 
     # Phase 12.2: Multi-city mode — when city is not recognized, search across
     # all cities for better discovery. Previously this was a hard 422 error.
@@ -351,7 +349,7 @@ async def get_recommendations(request: RecommendRequest):
             )
         except Exception as e:
             logger.error(f"Cross-city retrieval failed: {e}")
-            raise HTTPException(status_code=502, detail="知识库检索服务暂不可用。")
+            raise error_response(502, "UPSTREAM_ERROR", "知识库检索服务暂不可用。")
 
         if not candidates:
             return RecommendResponse(
@@ -377,7 +375,7 @@ async def get_recommendations(request: RecommendRequest):
             scored = await recommend(profile, candidates, trends=trends_mc)
         except Exception as e:
             logger.error(f"Recommendation scoring failed: {e}")
-            raise HTTPException(status_code=502, detail="推荐评分服务暂不可用。")
+            raise error_response(502, "UPSTREAM_ERROR", "推荐评分服务暂不可用。")
 
         cities = sorted({p.get("city", "") for p in scored if p.get("city")})
         # Phase 12.18: 宁缺毋滥——跨城发现的尾部多为弱相关（语义噪音），
@@ -392,10 +390,7 @@ async def get_recommendations(request: RecommendRequest):
 
     # Single city mode: require a destination
     if not city or city.strip() in NO_CITY_MARKERS:
-        raise HTTPException(
-            status_code=422,
-            detail="无法识别目的地城市，请提供更详细的旅行需求（如「推荐重庆美食」）。",
-        )
+        raise error_response(422, "VALIDATION_FAILED", "无法识别目的地城市，请提供更详细的旅行需求（如「推荐重庆美食」）。")
 
     try:
         # Step 2: Trend analysis
@@ -415,10 +410,7 @@ async def get_recommendations(request: RecommendRequest):
         candidates = await retrieve(rag_profile, request.user_input, top_k=20)
     except Exception as e:
         logger.error(f"RAG retrieval failed: {e}")
-        raise HTTPException(
-            status_code=502,
-            detail="知识库检索服务暂不可用。",
-        )
+        raise error_response(502, "UPSTREAM_ERROR", "知识库检索服务暂不可用。")
 
     # Phase 12.20: per-tag 候选池补充——单语义检索会被高热类目（如美食）
     # 垄断候选池，按意图标签逐个补充检索，保证池子覆盖用户的全部意图
@@ -458,10 +450,7 @@ async def get_recommendations(request: RecommendRequest):
         scored = await recommend(profile, candidates, trends)
     except Exception as e:
         logger.error(f"Recommendation scoring failed: {e}")
-        raise HTTPException(
-            status_code=502,
-            detail="推荐评分服务暂不可用。",
-        )
+        raise error_response(502, "UPSTREAM_ERROR", "推荐评分服务暂不可用。")
 
     # Phase 12.20: 意图覆盖保底——用户的每个意图标签都要有代表结果
     scored = _ensure_intent_coverage(scored, tags)
@@ -503,7 +492,7 @@ async def get_quick_recommendations(request: QuickRecommendRequest):
         candidates = await retrieve(profile, "", top_k=request.top_k)
     except Exception as e:
         logger.error(f"RAG retrieval failed: {e}")
-        raise HTTPException(status_code=502, detail="知识库检索服务暂不可用。")
+        raise error_response(502, "UPSTREAM_ERROR", "知识库检索服务暂不可用。")
 
     if not candidates:
         return QuickRecommendResponse(
@@ -516,7 +505,7 @@ async def get_quick_recommendations(request: QuickRecommendRequest):
         scored = await recommend(profile, candidates, trends)
     except Exception as e:
         logger.error(f"Recommendation scoring failed: {e}")
-        raise HTTPException(status_code=502, detail="推荐评分服务暂不可用。")
+        raise error_response(502, "UPSTREAM_ERROR", "推荐评分服务暂不可用。")
 
     return QuickRecommendResponse(
         city=request.city,
@@ -580,7 +569,7 @@ async def get_by_tags(request: ByTagsRequest):
         )
     except Exception as e:
         logger.error(f"Cross-city retrieval failed: {e}")
-        raise HTTPException(status_code=502, detail="知识库检索服务暂不可用。")
+        raise error_response(502, "UPSTREAM_ERROR", "知识库检索服务暂不可用。")
 
     if not candidates:
         return ByTagsResponse(
@@ -602,7 +591,7 @@ async def get_by_tags(request: ByTagsRequest):
         scored = await recommend(profile, candidates, trends=None)
     except Exception as e:
         logger.error(f"Recommendation scoring failed: {e}")
-        raise HTTPException(status_code=502, detail="推荐评分服务暂不可用。")
+        raise error_response(502, "UPSTREAM_ERROR", "推荐评分服务暂不可用。")
 
     # Filter by minimum score threshold
     filtered = [p for p in scored if p.get("total_score", 0) >= request.min_score]
