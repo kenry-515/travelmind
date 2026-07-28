@@ -168,7 +168,25 @@ export function DayCard({
                       </button>
                     )}
                     {onEditItem && (
-                      <button onClick={() => { const n = prompt('修改项目名称：', item.poi); if (n && n.trim()) onEditItem(i, n.trim()); }} className="rounded-lg p-1 text-slate-300 hover:bg-amber-50 hover:text-amber-500" title="编辑" aria-label="编辑">
+                      <button onClick={() => {
+                        const input = document.createElement('input')
+                        input.type = 'text'
+                        input.value = item.poi
+                        input.className = 'fixed inset-0 z-50 m-auto h-10 w-64 rounded-xl border border-brand-300 bg-white px-4 text-sm shadow-lg outline-none'
+                        input.style.top = '50%'
+                        input.style.transform = 'translateY(-50%)'
+                        input.setAttribute('aria-label', '修改项目名称')
+                        const overlay = document.createElement('div')
+                        overlay.className = 'fixed inset-0 z-40 bg-black/20'
+                        overlay.onclick = () => { overlay.remove(); input.remove() }
+                        document.body.append(overlay, input)
+                        input.focus()
+                        input.select()
+                        input.onkeydown = (e: KeyboardEvent) => {
+                          if (e.key === 'Enter') { const v = input.value.trim(); if (v) onEditItem(i, v); overlay.remove(); input.remove() }
+                          if (e.key === 'Escape') { overlay.remove(); input.remove() }
+                        }
+                      }} className="rounded-lg p-1 text-slate-300 hover:bg-amber-50 hover:text-amber-500" title="编辑" aria-label="编辑">
                         <Edit3 size={13} />
                       </button>
                     )}

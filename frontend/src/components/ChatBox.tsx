@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, memo } from 'react'
 import { User, Bot } from 'lucide-react'
 
 export interface Message {
@@ -79,7 +79,7 @@ function MessageBubble({ msg }: { msg: Message }) {
 
 function LoadingDots() {
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3" role="status" aria-label="正在生成回复">
       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-100 text-accent-700 shadow-sm">
         <Bot size={16} />
       </div>
@@ -98,6 +98,8 @@ const STARTERS = [
   { icon: '📸', text: '我想去适合拍照的小众景点' },
   { icon: '🐼', text: '周末去成都看熊猫吃火锅' },
 ]
+
+const MessageBubbleMemo = memo(MessageBubble)
 
 export function ChatBox({ messages, loading, onStarterSelect }: ChatBoxProps) {
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -140,7 +142,7 @@ export function ChatBox({ messages, loading, onStarterSelect }: ChatBoxProps) {
 
       <div className="mx-auto flex max-w-3xl flex-col gap-4">
         {messages.map((msg) => (
-          <MessageBubble key={msg.id} msg={msg} />
+          <MessageBubbleMemo key={msg.id} msg={msg} />
         ))}
         {loading && <LoadingDots />}
         <div ref={bottomRef} />

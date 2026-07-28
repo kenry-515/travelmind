@@ -154,9 +154,18 @@ li {
   transform: translateY(-1px);
 }
 
+/* ── Z-index layering system ────────────────────────
+   z-10  — sticky headers
+   z-20  — dropdown menus, popovers
+   z-30  — mobile bottom nav
+   z-40  — floating sidebars, overlays
+   z-50  — theme toggle, toasts, modals
+   z-[51] — inline edit overlays
+*/
+
 /* 玻璃拟态 */
 .glass {
-  background-color: rgb(255 255 255 / 0.8);
+  background-color: rgb(255 255 255 / 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -295,6 +304,9 @@ li {
   opacity: 0.55;
   will-change: transform;
 }
+@media (prefers-reduced-motion: reduce) {
+  .aurora { display: none; }
+}
 .aurora > span:nth-child(1) {
   top: -12%; left: -8%;
   width: 44vw; height: 44vw;
@@ -413,23 +425,22 @@ li {
 .dark {
   color-scheme: dark;
 }
-.dark body,
-body:has(.dark) {
+.dark body {
   background: #0f172a;
   color: #e2e8f0;
 }
 
 /* Surface colors in dark mode */
 .dark .bg-surface-primary,
-.dark body:has(.dark) .bg-surface-primary {
+.dark .bg-surface-primary {
   background-color: #1e293b;
 }
 .dark .bg-surface-secondary,
-.dark body:has(.dark) .bg-surface-secondary {
+.dark .bg-surface-secondary {
   background-color: #334155;
 }
 .dark .bg-surface-tertiary,
-.dark body:has(.dark) .bg-surface-tertiary {
+.dark .bg-surface-tertiary {
   background-color: #475569;
 }
 

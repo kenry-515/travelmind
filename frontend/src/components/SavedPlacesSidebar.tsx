@@ -150,7 +150,7 @@ export function SavedPlacesSidebar() {
                 <Share2 size={16} />
               </button>
             )}
-            <button onClick={() => setOpen(false)} className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-brand-100 hover:text-brand-600">
+            <button onClick={() => setOpen(false)} aria-label="关闭侧边栏" className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-brand-100 hover:text-brand-600">
               <X size={18} />
             </button>
           </div>

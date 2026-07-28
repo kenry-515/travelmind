@@ -50,7 +50,7 @@ export function ToastContainer() {
   const colors: Record<ToastItem['type'], string> = {
     info: 'bg-slate-800 text-white',
     success: 'bg-green-600 text-white',
-    warning: 'bg-yellow-500 text-white',
+    warning: 'bg-yellow-600 text-white',
     error: 'bg-red-600 text-white',
   }
 

@@ -399,9 +399,9 @@ export function ChatPage() {
           {/* 组合建议 chips */}
           {dialog.suggestions && dialog.suggestions.length > 0 && !loading && (
             <div className="mb-3 flex flex-wrap gap-2">
-              {dialog.suggestions.map((s, i) => (
+              {dialog.suggestions.map((s) => (
                 <button
-                  key={i}
+                  key={s.label || s.text}
                   onClick={() => sendText(s.text || s.label)}
                   className="rounded-full border border-brand-200 bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-700 transition-all hover:bg-brand-100 hover:shadow-sm"
                 >
