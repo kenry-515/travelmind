@@ -508,7 +508,7 @@ async def recommend(
                 pass
         if trend is None and trends:
             from app.agents.trend_agent import get_trend_score
-            trend = get_trend_score(place_name, place["city"], trends)
+            trend = await get_trend_score(place_name, place["city"], trends)
         if trend is None:
             # Use RAG's relevance_score or popularity as fallback
             rag_score = c.get("relevance_score", 0.5)

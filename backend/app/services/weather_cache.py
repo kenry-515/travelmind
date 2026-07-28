@@ -107,11 +107,14 @@ class WeatherCache:
 
 # Singleton
 _weather_cache: Optional[WeatherCache] = None
+_weather_cache_lock = threading.Lock()
 
 
 def get_weather_cache() -> WeatherCache:
     """Get or create the singleton weather cache."""
     global _weather_cache
     if _weather_cache is None:
-        _weather_cache = WeatherCache()
+        with _weather_cache_lock:
+            if _weather_cache is None:
+                _weather_cache = WeatherCache()
     return _weather_cache

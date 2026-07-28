@@ -48,8 +48,7 @@ def _load_closures() -> Dict[str, Dict[str, str]]:
     if _KNOWN_CLOSURES is not None:
         return _KNOWN_CLOSURES
     try:
-        with open(_CLOSURES_PATH, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        data = json.loads(_CLOSURES_PATH.read_text("utf-8"))
         closures = {}
         for entry in data.get("closures", []):
             name = entry.get("name", "")
@@ -88,8 +87,7 @@ def _load_kb_coords() -> Dict[str, List[Tuple[float, float, str]]]:
     _KB_COORDS = {}
     _KB_RAW_COORDS = {}
     try:
-        with open(_ATTRACTIONS_PATH, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        data = json.loads(_ATTRACTIONS_PATH.read_text("utf-8"))
         for a in data.get("attractions", []):
             name = a.get("name", "")
             lat = a.get("lat")
@@ -522,7 +520,7 @@ async def _lookup(poi: str, city: str, known_lat: Optional[float] = None, known_
             best_strategy = strategy
 
         # Exact match using NameNormalizer (canonical containment)
-        if _matches(base, h["name"]) or _matches(core, h["name"]):
+        if await _matches(base, h["name"]) or await _matches(core, h["name"]):
             logger.debug(f"POI verified '{poi}' → Amap '{h['name']}' (strategy={strategy})")
             return {
                 "status": "ok",
@@ -765,7 +763,7 @@ async def optimize_itinerary(
             if base in _load_closures():
                 return poi, {
                     "status": "closed",
-                    "info": _load_closures()[base],
+                    "info": (_load_closures())[base],
                     "adname": "",
                     "lat": None,
                     "lon": None,
@@ -786,11 +784,10 @@ async def optimize_itinerary(
     )
 
     # ── Step 2: 停业 POI 替换（仅 _load_closures() 实证清单）──
-    trip_poi_names = {
-        normalize_poi_name(_search_name(item.get("poi", "")))
-        for day in days
-        for item in day.get("items", [])
-    }
+    trip_poi_names: Set[str] = set()
+    for day in days:
+        for item in day.get("items", []):
+            trip_poi_names.add(normalize_poi_name(_search_name(item.get("poi", ""))))
 
     for day in days:
         for item in day.get("items", []):
@@ -816,16 +813,14 @@ async def optimize_itinerary(
             if status != "closed":
                 continue
 
-            closure = _load_closures()[_search_name(poi)]
+            closures = _load_closures()
+            closure = closures[_search_name(poi)]
             alts = await search_poi(closure["replacement_keyword"], city, limit=5)
-            replacement = next(
-                (
-                    a for a in alts
-                    if not _INFRA_RE.search(a["name"])
-                    and normalize_poi_name(a["name"]) not in trip_poi_names
-                ),
-                None,
-            )
+            replacement = None
+            for a in alts:
+                if not _INFRA_RE.search(a["name"]) and normalize_poi_name(a["name"]) not in trip_poi_names:
+                    replacement = a
+                    break
             if replacement is None:
                 tips.append(f"⚠️ 「{poi}」{closure['evidence']}，请出行前重新规划该景点")
                 continue

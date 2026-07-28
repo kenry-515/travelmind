@@ -21,7 +21,8 @@ from urllib.parse import quote
 
 logger = logging.getLogger(__name__)
 
-from app.agents.route_optimizer import _normalize, _core_name, _name_matches
+from app.agents.route_optimizer import _normalize, _core_name
+from app.services.name_normalizer import poi_names_match
 
 # ── Constants ──────────────────────────────────────────────
 
@@ -97,7 +98,7 @@ def _find_attraction(
 
     # 2. Check all keys for substring containment
     for key, attr in lookup.items():
-        if _name_matches(poi_name, key):
+        if poi_names_match(poi_name, key):
             return attr
 
     return None

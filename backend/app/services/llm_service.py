@@ -197,11 +197,11 @@ class DeepSeekProvider(BaseLLMProvider):
             if content:
                 return json.loads(content)
 
-            return {}
+            raise ValueError("chat_structured failed to parse LLM output")
 
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse structured output: {e}")
-            return {}
+            raise ValueError("chat_structured failed to parse LLM output") from e
         except Exception as e:
             logger.error(f"DeepSeek structured output error: {e}")
             raise

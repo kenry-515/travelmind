@@ -14,13 +14,13 @@ Failure policy: at most 2 retries; on final failure a structured error is
 logged and {} is returned so the orchestrator can accumulate it.
 """
 
+import asyncio
 import json
 import logging
 from datetime import date, timedelta
 from typing import Any, Dict, List, Optional, Set
 
-import httpx
-from openai import AsyncOpenAI
+from app.services.llm_service import get_llm_provider
 
 from app.agents.itinerary_contract import (
     budget_sum_mismatch,
@@ -141,19 +141,6 @@ def _parse_json_tolerant(text: str) -> Optional[Dict[str, Any]]:
 
 # ── LLM client ───────────────────────────────────────────
 
-def _get_llm_client() -> AsyncOpenAI:
-    """Create a DeepSeek AsyncOpenAI client from settings."""
-    return AsyncOpenAI(
-        api_key=settings.DEEPSEEK_API_KEY,
-        base_url=settings.DEEPSEEK_BASE_URL,
-        timeout=90.0,
-        max_retries=1,
-        # trust_env=False: DeepSeek is reachable directly; a VPN system proxy
-        # breaks Python TLS through the tunnel (same fix as llm_service).
-        http_client=httpx.AsyncClient(trust_env=False, timeout=90.0),
-    )
-
-
 async def _call_llm(
     system_prompt: str,
     user_prompt: str,
@@ -161,39 +148,20 @@ async def _call_llm(
     tool_description: str,
 ) -> Optional[Dict[str, Any]]:
     """Single structured LLM call → tolerant-parsed JSON dict or None."""
-    client = _get_llm_client()
-    tools = [{
-        "type": "function",
-        "function": {
-            "name": "output",
-            "description": tool_description,
-            "parameters": tool_schema,
-        },
-    }]
-    response = await client.chat.completions.create(
-        model=settings.LLM_MODEL,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],  # type: ignore
-        temperature=0.5,
-        tools=tools,  # type: ignore
-        tool_choice={"type": "function", "function": {"name": "output"}},
-        # DeepSeek V4 defaults to thinking mode, which rejects forced
-        # tool_choice — disable it (same fix as llm_service).
-        extra_body={"thinking": {"type": "disabled"}},
-    )
-
-    tool_calls = response.choices[0].message.tool_calls
-    if tool_calls and tool_calls[0].function.arguments:
-        parsed = _parse_json_tolerant(tool_calls[0].function.arguments)
-        if parsed:
-            return parsed
-
-    content = response.choices[0].message.content
-    if content:
-        return _parse_json_tolerant(content)
-    return None
+    provider = await get_llm_provider()
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
+    try:
+        result = await provider.chat_structured(
+            messages=messages,
+            output_schema=tool_schema,
+            temperature=0.5,
+        )
+        return result or None
+    except Exception:
+        return None
 
 
 # ── Knowledge-base cache (for price enrichment) ────────────
@@ -201,14 +169,14 @@ async def _call_llm(
 _kb_attractions_cache: Optional[List[Dict[str, Any]]] = None
 
 
-def _get_kb_attractions() -> List[Dict[str, Any]]:
+async def _get_kb_attractions() -> List[Dict[str, Any]]:
     """Load attractions from the data file (cached at module level)."""
     global _kb_attractions_cache
     if _kb_attractions_cache is None:
         from pathlib import Path
         data_path = Path(__file__).parent.parent.parent / "data" / "attractions.json"
-        with open(data_path, "r", encoding="utf-8") as f:
-            _kb_attractions_cache = json.load(f).get("attractions", [])
+        data = await asyncio.to_thread(lambda: json.loads(data_path.read_text("utf-8")))
+        _kb_attractions_cache = data.get("attractions", [])
         logger.info(f"Loaded {len(_kb_attractions_cache)} attractions for price enrichment")
     return _kb_attractions_cache
 
@@ -454,7 +422,7 @@ def _classify_poi_tags(tags: List[str]) -> str:
     return "其他景点"
 
 
-def _build_kb_catalog(
+async def _build_kb_catalog(
     city: str,
     places: List[Dict[str, Any]],
 ) -> str:
@@ -481,7 +449,7 @@ def _build_kb_catalog(
     # Collect additional KB POIs in the same city (not already in rec_names)
     extra_names: List[str] = []
     try:
-        kb_all = _get_kb_attractions()
+        kb_all = await _get_kb_attractions()
         for a in kb_all:
             if a.get("city", "") != city:
                 continue
@@ -606,7 +574,7 @@ def _build_extreme_guidance(
     return "".join(blocks)
 
 
-def _build_planning_prompt(
+async def _build_planning_prompt(
     profile: Dict[str, Any],
     places: List[Dict[str, Any]],
     weather: Optional[Dict[str, Any]] = None,
@@ -679,12 +647,11 @@ def _build_planning_prompt(
     kb_indoor_block = ""
     if weather and trip_has_rain(weather, days):
         try:
-            kb_indoor = [
-                a for a in _get_kb_attractions()
-                if a.get("city") == dest
-                and classify_poi_indoor(a.get("name", ""), kb_tags=a.get("tags") or None)
-                in ("indoor", "semi")
-            ]
+            kb_all = await _get_kb_attractions()
+            kb_indoor = []
+            for a in kb_all:
+                if a.get("city") == dest and classify_poi_indoor(a.get("name", ""), kb_tags=a.get("tags") or None) in ("indoor", "semi"):
+                    kb_indoor.append(a)
             kb_indoor.sort(key=lambda x: x.get("popularity_score", 0), reverse=True)
             kb_names = [a["name"] for a in kb_indoor[:12] if a.get("name")]
             if kb_names:
@@ -726,7 +693,7 @@ def _build_planning_prompt(
         time_blocks += "\n"
 
     # Phase 12.13: KB-aware POI catalog — all verified names the LLM can use
-    kb_catalog = _build_kb_catalog(dest, places)
+    kb_catalog = await _build_kb_catalog(dest, places)
 
     return f"""请为以下旅行需求生成一份详细的 {days} 日行程规划（严格按 output 函数的 JSON 结构）：
 
@@ -852,7 +819,7 @@ async def generate_itinerary(
     trip_month = date.today().month
     top_n = min(len(recommendations), 30)
     places = recommendations[:top_n]
-    prompt = _build_planning_prompt(profile, places, weather)
+    prompt = await _build_planning_prompt(profile, places, weather)
     tool_schema = schema_for_llm()
 
     last_error: Any = None
@@ -899,14 +866,14 @@ async def generate_itinerary(
 
             # Phase 12.17 v5: 恶劣天气确定性室内替换（雷暴/冰雹日户外→KB 室内）
             try:
-                enforce_severe_weather_indoor(data, weather, _get_kb_attractions())
+                enforce_severe_weather_indoor(data, weather, await _get_kb_attractions())
             except Exception as e:
                 logger.warning(f"Severe-weather guard failed (non-fatal): {e}")
 
             # Phase 12.27: 按天挂载 KB 真实餐厅与住宿（"吃住都没有推荐"修复）
             try:
                 attach_daily_dining_and_stay(
-                    data, _get_kb_attractions(), profile.get("destination", "")
+                    data, await _get_kb_attractions(), profile.get("destination", "")
                 )
             except Exception as e:
                 logger.warning(f"Dining/stay attach failed (non-fatal): {e}")
@@ -914,7 +881,7 @@ async def generate_itinerary(
             # Phase 7: Price enrichment from knowledge base (non-LLM, best-effort)
             try:
                 from app.services.price_enricher import enrich_prices
-                kb_attractions = _get_kb_attractions()
+                kb_attractions = await _get_kb_attractions()
                 user_budget = profile.get("budget_level", "") or profile.get("budget", "")
                 enrich_prices(data, kb_attractions, user_budget=user_budget)
             except Exception as e:
@@ -925,7 +892,7 @@ async def generate_itinerary(
             # 校验报告：路线核实结论 + 天气匹配度（Phase 1 可视化）
             if route_report:
                 # Phase 12.15: Pass KB for tag-based indoor classification
-                kb_attrs = _get_kb_attractions()
+                kb_attrs = await _get_kb_attractions()
                 fit, weather_notes = compute_weather_fit(data, weather, kb_attractions=kb_attrs)
                 route_report["weather_fit"] = fit
                 route_report["weather_notes"] = weather_notes

@@ -14,12 +14,12 @@ import pytest
 from app.services.price_enricher import (
     _build_lookup,
     _find_attraction,
-    _name_matches,
     build_booking_url,
     compute_price_summary,
     enrich_prices,
     is_stale,
 )
+from app.services.name_normalizer import poi_names_match as _name_matches
 
 
 # ── Fixtures ────────────────────────────────────────────

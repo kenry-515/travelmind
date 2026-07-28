@@ -16,6 +16,7 @@ Usage:
 """
 
 import asyncio
+import threading
 import hashlib
 import json
 import logging
@@ -64,13 +65,16 @@ SEARCH_URL = f"{BASE_URL}/v3/place/text"
 
 # Amap free tier: 5000 calls/day, 30 QPS for personal dev
 _client: Optional[httpx.AsyncClient] = None
+_client_lock = threading.Lock()
 
 
 def _get_client() -> httpx.AsyncClient:
     """Get or create a shared httpx AsyncClient."""
     global _client
     if _client is None:
-        _client = httpx.AsyncClient(timeout=15.0, trust_env=False)
+        with _client_lock:
+            if _client is None:
+                _client = httpx.AsyncClient(timeout=15.0, trust_env=False)
     return _client
 
 

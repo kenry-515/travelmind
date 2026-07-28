@@ -9,6 +9,7 @@ Docs: https://platform.kimi.com/docs/guide/use-kimi-vision-model
 import base64
 import json
 import logging
+import threading
 import re
 from typing import Any, Dict, Optional
 
@@ -146,11 +147,14 @@ class KimiVisionProvider(BaseVisionProvider):
 # ── Factory ────────────────────────────────────────────
 
 _vision_provider: Optional[KimiVisionProvider] = None
+_vision_lock = threading.Lock()
 
 
 def get_vision_provider() -> KimiVisionProvider:
     """Get or create the singleton vision provider instance."""
     global _vision_provider
     if _vision_provider is None:
-        _vision_provider = KimiVisionProvider()
+        with _vision_lock:
+            if _vision_provider is None:
+                _vision_provider = KimiVisionProvider()
     return _vision_provider

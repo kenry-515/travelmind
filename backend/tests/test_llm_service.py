@@ -259,7 +259,7 @@ class TestDeepSeekProvider:
 
     @pytest.mark.asyncio
     async def test_chat_structured_invalid_json_fallback(self, mock_openai):
-        """chat_structured() should return {} on JSON parse error."""
+        """chat_structured() should raise ValueError on JSON parse error."""
         _, client = mock_openai
         resp = MagicMock()
         resp.choices = [MagicMock()]
@@ -268,12 +268,11 @@ class TestDeepSeekProvider:
         client.chat.completions.create.return_value = resp
 
         provider = DeepSeekProvider()
-        result = await provider.chat_structured(
-            [{"role": "user", "content": "plan"}],
-            output_schema={},
-        )
-
-        assert result == {}
+        with pytest.raises(ValueError, match="chat_structured failed to parse LLM output"):
+            await provider.chat_structured(
+                [{"role": "user", "content": "plan"}],
+                output_schema={},
+            )
 
     # -- Error handling ---------------------------------------------------
 

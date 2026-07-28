@@ -61,6 +61,17 @@ try:
 except ImportError:
     pass
 
+# ── Startup validation ─────────────────────────────────
+
+_IMPORT_WARNINGS = []
+if _extract_profile is None: _IMPORT_WARNINGS.append("extract_profile")
+if _analyze_trends is None: _IMPORT_WARNINGS.append("analyze_trends")
+if _retrieve is None: _IMPORT_WARNINGS.append("retrieve")
+if _recommend is None: _IMPORT_WARNINGS.append("recommend")
+if _generate_itinerary is None: _IMPORT_WARNINGS.append("generate_itinerary")
+if _IMPORT_WARNINGS:
+    logger.warning(f"Orchestrator imports failed for: {', '.join(_IMPORT_WARNINGS)}")
+
 
 # ── TravelState ─────────────────────────────────────────
 

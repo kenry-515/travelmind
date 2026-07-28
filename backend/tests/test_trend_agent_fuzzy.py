@@ -6,7 +6,7 @@ import json
 import pytest
 from unittest.mock import MagicMock, patch
 
-pytestmark = pytest.mark.asyncio
+
 
 MOCK_TRENDS = [
     {"place": "洪崖洞", "city": "重庆", "tag": "夜景", "heat_score": 95},
@@ -56,6 +56,7 @@ def test_score_normalization():
 
 # ── analyze_trends 集成测试（使用 mock 缓存）──
 
+@pytest.mark.asyncio
 async def test_analyze_known_city():
     from app.agents.trend_agent import analyze_trends
     trends = await analyze_trends("重庆", ["美食", "夜景"])
@@ -63,18 +64,21 @@ async def test_analyze_known_city():
     assert len(trends) > 0
 
 
+@pytest.mark.asyncio
 async def test_analyze_tags_filter():
     from app.agents.trend_agent import analyze_trends
     trends = await analyze_trends("重庆", ["夜景"])
     assert trends is not None
 
 
+@pytest.mark.asyncio
 async def test_analyze_unknown_city():
     from app.agents.trend_agent import analyze_trends
     trends = await analyze_trends("UNKNOWN", ["美食"])
     assert trends == []
 
 
+@pytest.mark.asyncio
 async def test_analyze_no_tags():
     from app.agents.trend_agent import analyze_trends
     trends = await analyze_trends("重庆", [])

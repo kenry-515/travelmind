@@ -25,6 +25,7 @@ Usage:
     canonical = nn.normalize("重庆洪崖洞民俗风貌区")  # → "洪崖洞"
 """
 
+import asyncio
 import json
 import logging
 import re
@@ -226,8 +227,7 @@ class NameNormalizer:
             return
 
         try:
-            with open(path, "r", encoding="utf-8") as f:
-                data = json.load(f)
+            data = json.loads(path.read_text("utf-8"))
 
             aliases_list = data.get("aliases", []) if isinstance(data, dict) else data
 

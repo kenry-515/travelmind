@@ -12,6 +12,7 @@ from Chroma's built-in embedding functions.
 """
 
 import logging
+import threading
 import os
 import uuid
 from pathlib import Path
@@ -351,11 +352,14 @@ def _sanitize_metadata(meta: Dict[str, Any]) -> Dict[str, Any]:
 # ── Singleton ────────────────────────────────────────────
 
 _store: Optional[ChromaStore] = None
+_store_lock = threading.Lock()
 
 
 def get_vector_store() -> ChromaStore:
     """Get or create the singleton ChromaStore."""
     global _store
     if _store is None:
-        _store = ChromaStore()
+        with _store_lock:
+            if _store is None:
+                _store = ChromaStore()
     return _store

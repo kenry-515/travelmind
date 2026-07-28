@@ -12,6 +12,7 @@ Usage:
     trends = await analyze_trends("重庆", ["美食", "夜景"])
 """
 
+import asyncio
 import json
 import logging
 from pathlib import Path
@@ -28,7 +29,7 @@ _TRENDS_LIVE_FILE = _DATA_DIR / "social_trends_live.json"
 _trends_cache: Optional[List[Dict[str, Any]]] = None
 
 
-def _load_trends() -> List[Dict[str, Any]]:
+async def _load_trends() -> List[Dict[str, Any]]:
     """Load trends from JSON, caching in memory.
 
     Phase 12.18: merge WebBridge live social trends (social_trends_live.json)
@@ -42,8 +43,9 @@ def _load_trends() -> List[Dict[str, Any]]:
     static: List[Dict[str, Any]] = []
     if _TRENDS_FILE.exists():
         try:
-            with open(_TRENDS_FILE, "r", encoding="utf-8") as f:
-                static = json.load(f).get("trends", [])
+            static = (await asyncio.to_thread(
+                lambda: json.loads(_TRENDS_FILE.read_text("utf-8"))
+            )).get("trends", [])
         except Exception as e:
             logger.error(f"Failed to load trends: {e}")
     else:
@@ -52,8 +54,9 @@ def _load_trends() -> List[Dict[str, Any]]:
     live: List[Dict[str, Any]] = []
     if _TRENDS_LIVE_FILE.exists():
         try:
-            with open(_TRENDS_LIVE_FILE, "r", encoding="utf-8") as f:
-                live = json.load(f).get("trends", [])
+            live = (await asyncio.to_thread(
+                lambda: json.loads(_TRENDS_LIVE_FILE.read_text("utf-8"))
+            )).get("trends", [])
         except Exception as e:
             logger.warning(f"Failed to load live social trends: {e}")
 
@@ -114,7 +117,7 @@ async def analyze_trends(
           - effective_score: final trend score (normalized + 0.5*tag_boost, capped at 1.0)
           - source: data source (douyin_hot, xiaohongshu, ctrip_hot)
     """
-    all_trends = _load_trends()
+    all_trends = await _load_trends()
     tags = tags or []
     tag_set = set(tags)
 
@@ -159,7 +162,7 @@ async def analyze_trends(
     return result
 
 
-def get_trend_score(
+async def get_trend_score(
     place_name: str,
     city: str,
     trends: Optional[List[Dict[str, Any]]] = None,
@@ -178,7 +181,7 @@ def get_trend_score(
         Normalized trend score 0.0-1.0 (0.5 if no trend data found).
     """
     if trends is None:
-        all_trends = _load_trends()
+        all_trends = await _load_trends()
         trends = [t for t in all_trends if t.get("city") == city]
 
     if not trends:

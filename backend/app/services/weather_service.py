@@ -14,6 +14,7 @@ Usage:
 
 import json
 import logging
+import threading
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Optional
@@ -192,15 +193,18 @@ class WeatherForecast:
 # ── HTTP Client ───────────────────────────────────────────
 
 _client: Optional[httpx.AsyncClient] = None
+_client_lock = threading.Lock()
 
 
 def _get_client() -> httpx.AsyncClient:
     """Get or create a shared httpx AsyncClient singleton."""
     global _client
     if _client is None:
-        # trust_env=False: ignore the Windows system proxy (stale local proxy
-        # breaks TLS); Open-Meteo is reached directly, same as amap_service.
-        _client = httpx.AsyncClient(timeout=15.0, trust_env=False)
+        with _client_lock:
+            if _client is None:
+                # trust_env=False: ignore the Windows system proxy (stale local proxy
+                # breaks TLS); Open-Meteo is reached directly, same as amap_service.
+                _client = httpx.AsyncClient(timeout=15.0, trust_env=False)
     return _client
 
 
