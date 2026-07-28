@@ -7,7 +7,7 @@
  * (RAG → 6-factor scoring via /recommend/quick).
  */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import {
@@ -48,6 +48,7 @@ function resolveErrorMessage(err: unknown): string {
 export function ImagePage() {
   const [state, setState] = useState<PageState>({ stage: 'idle' })
   const [recState, setRecState] = useState<RecState>({ stage: 'idle' })
+  const recommendSentRef = useRef(false)
 
   const handleAnalyze = async (file: File) => {
     setState({ stage: 'loading' })
@@ -62,8 +63,12 @@ export function ImagePage() {
 
   // Auto-trigger similar places search when image analysis completes with tags
   useEffect(() => {
-    if (state.stage === 'done' && state.result.tags.length > 0) {
-      handleRecommend()
+    if (state.stage === 'done' && state.result.tags.length > 0 && !recommendSentRef.current) {
+      recommendSentRef.current = true
+      handleRecommend().catch((err) => {
+        console.error('Auto recommend failed:', err)
+        setRecState({ stage: 'error', message: '相似地点推荐失败，请稍后重试。' })
+      })
     }
   }, [state.stage])
 

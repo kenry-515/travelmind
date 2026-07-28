@@ -214,7 +214,7 @@ export function ItineraryPage() {
     let cancelled = false
     fetchWeather(city, ready.itinerary.trip.daysCount)
       .then((w) => { if (!cancelled) setWeather(w) })
-      .catch(() => { /* non-critical */ })
+      .catch(() => { console.warn('Weather fetch failed — weather widget hidden'); })
     return () => { cancelled = true }
   }, [effectiveState, weather])
 

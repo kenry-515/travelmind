@@ -163,6 +163,8 @@ export function ChatPage() {
   }, [])
 
   const { getPlacesForPrompt, addPlace } = useSavedPlaces()
+  const getPlacesForPromptRef = useRef(getPlacesForPrompt)
+  useEffect(() => { getPlacesForPromptRef.current = getPlacesForPrompt }, [getPlacesForPrompt])
 
   // Phase 14: 行程生成后自动收藏 POI 到侧边栏
   useEffect(() => {
@@ -184,7 +186,7 @@ export function ChatPage() {
     async (text: string) => {
       setMessages((prev) => [...prev, { id: genId(), role: 'user', content: text }])
       setLoading(true)
-      const savedPrompt = getPlacesForPrompt()
+      const savedPrompt = getPlacesForPromptRef.current()
       const enrichedText = savedPrompt ? `${text}\n\n${savedPrompt}` : text
       try {
         const d = await sendDialogMessage({
@@ -235,7 +237,7 @@ export function ChatPage() {
     let errorMsg: string | null = null
     try {
       // Phase 14: append saved places before generating
-      const savedPrompt = getPlacesForPrompt()
+      const savedPrompt = getPlacesForPromptRef.current()
       if (savedPrompt && dialog.sessionId) {
         // Send a dialog message with saved places to set context before generating
         try {

@@ -66513,7 +66513,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "大昭寺",
@@ -66533,7 +66534,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "八廓街",
@@ -66553,7 +66555,8 @@
         "max": 0
       },
       "price_source": "免费",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "色拉寺",
@@ -66573,7 +66576,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "哲蚌寺",
@@ -66593,7 +66597,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "罗布林卡",
@@ -66613,7 +66618,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "纳木错",
@@ -66633,7 +66639,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "夫子庙",
@@ -66653,7 +66660,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "总统府",
@@ -66673,7 +66681,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "南京博物院",
@@ -66693,7 +66702,8 @@
         "max": 0
       },
       "price_source": "免费",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "鸡鸣寺",
@@ -66713,7 +66723,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "中华门",
@@ -66733,7 +66744,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "南京城墙",
@@ -66753,7 +66765,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "黄鹤楼",
@@ -66774,7 +66787,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "户部巷",
@@ -66794,7 +66808,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "湖北省博物馆",
@@ -66814,7 +66829,8 @@
         "max": 0
       },
       "price_source": "免费",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "武汉长江大桥",
@@ -66834,7 +66850,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "归元寺",
@@ -66853,7 +66870,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "晴川阁",
@@ -66872,7 +66890,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "天津之眼",
@@ -66892,7 +66911,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "五大道",
@@ -66912,7 +66932,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "意式风情区",
@@ -66932,7 +66953,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "古文化街",
@@ -66952,7 +66974,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "瓷房子",
@@ -66972,7 +66995,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "世界之窗",
@@ -66992,7 +67016,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "大梅沙海滨公园",
@@ -67012,7 +67037,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "锦绣中华民俗村",
@@ -67032,7 +67058,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "灵隐寺",
@@ -67052,7 +67079,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "雷峰塔",
@@ -67072,7 +67100,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "西溪国家湿地公园",
@@ -67092,7 +67121,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "苏堤",
@@ -67112,7 +67142,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "磁器口古镇",
@@ -67132,7 +67163,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "朝天门广场",
@@ -67152,7 +67184,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "长江索道",
@@ -67172,7 +67205,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "渣滓洞",
@@ -67191,7 +67225,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "白公馆",
@@ -67211,7 +67246,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "少林寺",
@@ -67231,7 +67267,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "黄河风景名胜区",
@@ -67251,7 +67288,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "天安门广场",
@@ -67271,7 +67309,8 @@
         "max": 0
       },
       "price_source": "免费",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "国家博物馆",
@@ -67291,7 +67330,8 @@
         "max": 0
       },
       "price_source": "免费",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "外滩",
@@ -67311,7 +67351,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "豫园",
@@ -67331,7 +67372,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "拙政园",
@@ -67351,7 +67393,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "虎丘",
@@ -67371,7 +67414,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "两江四湖",
@@ -67391,7 +67435,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "兵马俑",
@@ -67411,7 +67456,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "圣索菲亚教堂",
@@ -67432,7 +67478,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "橘子洲头",
@@ -67453,7 +67500,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "湖南省博物馆",
@@ -67473,7 +67521,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "天心阁",
@@ -67493,7 +67542,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "太平街",
@@ -67513,7 +67563,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "坡子街",
@@ -67532,7 +67583,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "杜甫江阁",
@@ -67552,7 +67604,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "开福寺",
@@ -67572,7 +67625,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "长沙IFS国金中心",
@@ -67592,7 +67646,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "梅溪湖",
@@ -67613,7 +67668,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "贾谊故居",
@@ -67633,7 +67689,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "陈家祠",
@@ -67654,7 +67711,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "石室圣心大教堂",
@@ -67675,7 +67733,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "上下九步行街",
@@ -67696,7 +67755,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "北京路步行街",
@@ -67717,7 +67777,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "越秀公园",
@@ -67738,7 +67799,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "广东省博物馆",
@@ -67759,7 +67821,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "花城广场",
@@ -67780,7 +67843,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "荔枝湾",
@@ -67801,7 +67865,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "黄埔古港",
@@ -67822,7 +67887,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "广州大剧院",
@@ -67843,7 +67909,8 @@
         "max": 50
       },
       "price_source": "估算（基于价格等级）",
-      "price_updated_at": "2026-07-25"
+      "price_updated_at": "2026-07-25",
+      "source": "kb-curated"
     },
     {
       "name": "贵州地质博物馆",
@@ -82853,7 +82920,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "曲水俊巴渔村",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "拉鲁湿地",
@@ -82871,7 +82939,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "拉鲁湿地",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "扎基寺",
@@ -82889,7 +82958,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "扎基寺",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "南山半山观景台",
@@ -82907,7 +82977,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "南山半山观景台",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "东关街",
@@ -82925,7 +82996,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "东关街",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "俄罗斯风情街",
@@ -82943,7 +83015,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "俄罗斯风情街",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "东港威尼斯水城",
@@ -82961,7 +83034,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "东港威尼斯水城",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "琥珀湾",
@@ -82979,7 +83053,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "琥珀湾",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "瓜皮岛",
@@ -82997,7 +83072,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "瓜皮岛",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "钻石湾滨海公园",
@@ -83015,7 +83091,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "钻石湾滨海公园",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "老道外中华巴洛克",
@@ -83033,7 +83110,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "老道外中华巴洛克",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "伏尔加庄园",
@@ -83051,7 +83129,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "伏尔加庄园",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "哈尔滨大剧院",
@@ -83069,7 +83148,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "哈尔滨大剧院",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "花园街黄房子咖啡",
@@ -83087,7 +83167,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "花园街黄房子咖啡",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "红专街早市",
@@ -83105,7 +83186,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "红专街早市",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "上下杭历史文化街区",
@@ -83123,7 +83205,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "上下杭历史文化街区",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "烟台山历史风貌区",
@@ -83141,7 +83224,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "烟台山历史风貌区",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "林浦村",
@@ -83159,7 +83243,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "林浦村",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "海坛岛",
@@ -83177,7 +83262,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "海坛岛",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "福道",
@@ -83195,7 +83281,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "福道",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "小青岛",
@@ -83213,7 +83300,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "小青岛",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "小麦岛公园",
@@ -83231,7 +83319,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "小麦岛公园",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "沙子口海湾",
@@ -83249,7 +83338,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "沙子口海湾",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "青山渔村",
@@ -83267,7 +83357,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "青山渔村",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "齐东路十字街坊",
@@ -83285,7 +83376,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "齐东路十字街坊",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "麻园米轨公园",
@@ -83303,7 +83395,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "麻园米轨公园",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "大墨雨村",
@@ -83321,7 +83414,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "大墨雨村",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "小白龙森林公园",
@@ -83339,7 +83433,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "小白龙森林公园",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "巡津街",
@@ -83357,7 +83452,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "巡津街",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "百草村",
@@ -83375,7 +83471,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "百草村",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "齐云山",
@@ -83394,7 +83491,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "齐云山",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "木梨硔",
@@ -83413,7 +83511,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "木梨硔",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "西溪南古村",
@@ -83432,7 +83531,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "西溪南古村",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "奇墅湖",
@@ -83450,7 +83550,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "奇墅湖",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "屯溪老街",
@@ -83468,7 +83569,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "屯溪老街",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "月潭湖",
@@ -83486,7 +83588,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "月潭湖",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "黄山东大门",
@@ -83504,7 +83607,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "黄山东大门",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "西海大峡谷",
@@ -83522,7 +83626,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "西海大峡谷",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "独克宗古城",
@@ -83540,7 +83645,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "独克宗古城",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "纳帕海",
@@ -83558,7 +83664,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "纳帕海",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "巴拉格宗大峡谷",
@@ -83576,7 +83683,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "巴拉格宗大峡谷",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "雨崩村",
@@ -83595,7 +83703,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "雨崩村",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "梅里雪山观景台",
@@ -83614,7 +83723,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "梅里雪山观景台",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "斗南花市",
@@ -83632,7 +83742,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "斗南花市",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "海埂大坝",
@@ -83650,7 +83761,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "海埂大坝",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "抚仙湖",
@@ -83669,7 +83781,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "抚仙湖",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "金马碧鸡坊",
@@ -83687,7 +83800,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "金马碧鸡坊",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "老光明岗琼甜茶馆",
@@ -83705,7 +83819,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "老光明岗琼甜茶馆",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "安多诺增藏餐",
@@ -83722,7 +83837,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "安多诺增藏餐",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "桑吉拉姆拉萨菜",
@@ -83739,7 +83855,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "桑吉拉姆拉萨菜",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "同吉康桑藏餐厅",
@@ -83756,7 +83873,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "同吉康桑藏餐厅",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "雪域餐厅",
@@ -83773,7 +83891,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "雪域餐厅",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "古树酸奶",
@@ -83790,7 +83909,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "古树酸奶",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "前站牦牛酸奶坊",
@@ -83807,7 +83927,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "前站牦牛酸奶坊",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "措姆凉粉",
@@ -83824,7 +83945,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "措姆凉粉",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "仓姑寺茶馆",
@@ -83842,7 +83964,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "仓姑寺茶馆",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "革命甜茶馆",
@@ -83860,7 +83983,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "革命甜茶馆",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "老街坊徽菜",
@@ -83877,7 +84001,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "老街坊徽菜",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "临街徽菜馆",
@@ -83894,7 +84019,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "临街徽菜馆",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "海味馆",
@@ -83911,7 +84037,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "海味馆",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "大连老菜馆",
@@ -83929,7 +84056,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "大连老菜馆",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "老凯俚酸汤鱼",
@@ -83947,7 +84075,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "老凯俚酸汤鱼",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "丝恋丝娃娃",
@@ -83964,7 +84093,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "丝恋丝娃娃",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "喀什古城",
@@ -83984,7 +84114,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "喀什古城",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "艾提尕尔清真寺",
@@ -84003,7 +84134,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "艾提尕尔清真寺",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "香妃园",
@@ -84021,7 +84153,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "香妃园",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "高台民居",
@@ -84039,7 +84172,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "高台民居",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "百年老茶馆",
@@ -84057,7 +84191,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "百年老茶馆",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "汗巴扎夜市",
@@ -84075,7 +84210,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "汗巴扎夜市",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "盘橐城",
@@ -84093,7 +84229,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "盘橐城",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "喀什大巴扎",
@@ -84111,7 +84248,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "喀什大巴扎",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "甘肃省博物馆",
@@ -84129,7 +84267,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "甘肃省博物馆",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "中山桥",
@@ -84147,7 +84286,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "中山桥",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "白塔山公园",
@@ -84165,7 +84305,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "白塔山公园",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "黄河风情线",
@@ -84183,7 +84324,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "黄河风情线",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "磨沟沿老店牛肉面",
@@ -84200,7 +84342,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "磨沟沿老店牛肉面",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "水车博览园",
@@ -84218,7 +84361,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "水车博览园",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "正宁路夜市",
@@ -84236,7 +84380,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "正宁路夜市",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     },
     {
       "name": "兰州老街",
@@ -84254,7 +84399,8 @@
       "data_source": "websearch_verified",
       "name_normalized": "兰州老街",
       "confidence": 0.8,
-      "source_id": ""
+      "source_id": "",
+      "source": "kb-curated"
     }
   ]
 }
