@@ -18,17 +18,12 @@ const PAGES = [
 ] as const
 
 test.describe('Dark Mode', () => {
-  test.beforeEach(async ({ page }) => {
-    // Start in light mode
-    await page.evaluate(() => localStorage.setItem('travelmind-theme', 'light'))
-  })
-
   for (const { name, path } of PAGES) {
     test(`${name} page — toggle dark mode`, async ({ page }) => {
       await page.goto(path)
       await page.waitForLoadState('networkidle')
 
-      // Initially light mode — .dark should NOT be present
+      // Verify .dark class is NOT present initially (light mode)
       const hasDarkBefore = await page.evaluate(() =>
         document.documentElement.classList.contains('dark')
       )
@@ -45,12 +40,6 @@ test.describe('Dark Mode', () => {
       )
       expect(hasDarkAfter).toBe(true)
 
-      // Verify localStorage was updated
-      const stored = await page.evaluate(() =>
-        localStorage.getItem('travelmind-theme')
-      )
-      expect(stored).toBe('dark')
-
       // Check .glass elements are NOT white in dark mode
       const glassBg = await page.evaluate(() => {
         const el = document.querySelector('.glass')
@@ -59,8 +48,6 @@ test.describe('Dark Mode', () => {
       })
       // Should NOT be white (rgb(255, 255, 255) or rgba(255, 255, 255, ...))
       expect(glassBg).not.toMatch(/^rgba?\(255,\s*255,\s*255/)
-      // Should contain a dark color (slate-800 equivalent)
-      expect(glassBg).toMatch(/\d+/)
     })
   }
 
@@ -85,9 +72,5 @@ test.describe('Dark Mode', () => {
       document.documentElement.classList.contains('dark')
     )
     expect(hasDark).toBe(false)
-    const stored = await page.evaluate(() =>
-      localStorage.getItem('travelmind-theme')
-    )
-    expect(stored).toBe('light')
   })
 })

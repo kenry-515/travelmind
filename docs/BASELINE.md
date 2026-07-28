@@ -1,6 +1,7 @@
 # BASELINE — 优化前后基准对照
 
 > 最后更新：2026-07-28
+
 （Phase 12.29 代码质量加固）
 
 > **12.28**
@@ -11,6 +12,64 @@
 
 | 项 | Phase 0 基线 | Phase 12.20 当前 |
 |---|---
+
+### 13 全量评测（2026-07-28）
+
+评测命令：`cd backend && python -X utf8 -m evals.run_evals --out evals/results/2026-07-28-13-v1.json`
+（80 query × 28 约束）
+
+| 指标 | 13 |
+|------|--------|
+| **Micro** | **85.0%** |
+| **Macro** | **76.2%** (61/80) |
+
+### 按约束维度
+
+| 约束 | 通过/适用 | 通过率 |
+|------|-----------|--------|
+| budget_consistent | 49/57 | **86%** |
+| chat_not_slotfill | 5/5 | **100%** |
+| chat_reply_length | 5/5 | **100%** |
+| chat_topic_relevant | 5/5 | **100%** |
+| cross_city_covered | 5/5 | **100%** |
+| day_theme_variety | 48/56 | **86%** |
+| days_correct | 47/57 | **82%** |
+| food_coverage | 10/10 | **100%** |
+| food_diversity | 10/10 | **100%** |
+| food_local_ratio | 10/10 | **100%** |
+| image_tag_cross_city | 3/3 | **100%** |
+| image_tag_relevance | 3/3 | **100%** |
+| image_tag_threshold | 3/3 | **100%** |
+| min_score_filter | 5/5 | **100%** |
+| month_consistent | 49/57 | **86%** |
+| multi_city_diversity | 5/5 | **100%** |
+| name_normalized | 49/57 | **86%** |
+| poi_name_uniqueness | 39/57 | **68%** |
+| poi_verified | 49/57 | **86%** |
+| price_enriched | 49/57 | **86%** |
+| response_latency_p95 | 56/57 | **98%** |
+| route_ok | 49/57 | **86%** |
+| schema_valid | 49/57 | **86%** |
+| stats_place_count | 49/57 | **86%** |
+| tag_category_diversity | 49/57 | **86%** |
+| weather_coverage | 49/57 | **86%** |
+| weather_fit | 49/57 | **86%** |
+| weather_tips | 49/57 | **86%** |
+
+### 按分类
+
+| 分类 | 查询数 | 通过数 | 通过率 |
+|------|--------|--------|--------|
+| **chat** | 5 | **5** | **100%** |
+| **edge** | 10 | **5** | **50%** |
+| **extreme** | 10 | **4** | **40%** |
+| **food** | 10 | **10** | **100%** |
+| **image-tag** | 3 | **3** | **100%** |
+| **multi-city** | 5 | **5** | **100%** |
+| **standard** | 37 | **29** | **78%** |
+
+---
+
 
 ### 12.29 全量评测（2026-07-28）
 

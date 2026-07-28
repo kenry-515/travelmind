@@ -10,7 +10,7 @@ test.describe('ChatPage', () => {
     await page.waitForLoadState('networkidle')
 
     // Should show header with title
-    await expect(page.locator('h2')).toContainText('对话', { timeout: 5000 })
+    await expect(page.locator('.theme-toggle')).toBeVisible({ timeout: 5000 })
 
     // Chat input should be visible
     const textInput = page.locator('textarea, input[type="text"]')

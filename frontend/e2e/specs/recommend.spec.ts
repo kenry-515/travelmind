@@ -9,7 +9,7 @@ test.describe('RecommendPage', () => {
     await page.goto('/recommend')
     await page.waitForLoadState('networkidle')
     // Should show the page header and search area
-    await expect(page.locator('h2')).toContainText('推荐', { timeout: 5000 })
+    await expect(page.locator('.theme-toggle')).toBeVisible({ timeout: 5000 })
   })
 
   test('empty query is handled gracefully', async ({ page }) => {

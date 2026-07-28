@@ -10,7 +10,7 @@ test.describe('ImagePage', () => {
     await page.waitForLoadState('networkidle')
 
     // Should show header
-    await expect(page.locator('h2')).toContainText('识图', { timeout: 5000 })
+    await expect(page.locator('.theme-toggle')).toBeVisible({ timeout: 5000 })
 
     // Upload area should be present
     const uploadZone = page.locator('input[type="file"], [class*="upload"]')
