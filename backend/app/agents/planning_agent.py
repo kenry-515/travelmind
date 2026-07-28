@@ -708,6 +708,9 @@ def _build_planning_prompt(
             "⑤ 若当天同时有降雨，室内项目数必须 ≥ 户外项目数。"
         ).format(month=month)
 
+    # Phase 12.10: Extreme/edge scenario guidance blocks
+    extreme_blocks = _build_extreme_guidance(profile, places, days)
+
     # Phase 14: Time-aware blocks (arrival/departure/must_visit)
     time_blocks = ""
     must_visit = profile.get("must_visit", []) or []

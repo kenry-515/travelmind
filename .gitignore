@@ -58,3 +58,8 @@ frontend/.env.local
 
 # Binary design docs
 *.docx
+
+# Playwright test artifacts
+frontend/test-results/
+frontend/playwright-report/
+frontend/playwright/.cache/

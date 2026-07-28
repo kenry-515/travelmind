@@ -9,7 +9,10 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "gen:types": "json2ts -i ../docs/itinerary.schema.json -o src/types/itinerary.ts",
-    "sync:fixture": "node -e \"require('fs').copyFileSync('../docs/itinerary.example.json','fixtures/itinerary.example.json')\""
+    "sync:fixture": "node -e \"require('fs').copyFileSync('../docs/itinerary.example.json','fixtures/itinerary.example.json')\"",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -23,6 +26,7 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.0",
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",

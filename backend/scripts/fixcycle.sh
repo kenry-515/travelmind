@@ -3,7 +3,7 @@
 # TravelMind Agent — 一站式开发循环（fixcycle）
 # Phase 12.28a — 将每轮开发固定步骤压缩为一条命令
 #
-# 编排：pytest → build → oxlint → 重启后端 → eval_smart → update_docs
+# 编排：preflight → pytest → build → oxlint → 重启后端 → eval_smart → update_docs
 #
 # 用法：
 #   bash scripts/fixcycle.sh              # 完整循环
@@ -60,8 +60,17 @@ log_warn() {
     echo -e "  ${YELLOW}⚠️  $1${NC}"
 }
 
+# ── Step 0: Preflight Check ───────────────────────────────
+log_section "0/7 preflight_check（环境预检）"
+cd "$BACKEND_DIR"
+if python -X utf8 scripts/preflight_check.py 2>&1; then
+    log_pass "环境预检通过"
+else
+    log_warn "环境预检有警告/失败——查看上方的 ⚠️ ❌ 标记"
+fi
+
 # ── Step 1: pytest ──────────────────────────────────────
-log_section "1/6 pytest"
+log_section "1/7 pytest"
 cd "$BACKEND_DIR"
 if python -m pytest -q 2>&1; then
     log_pass "pytest 全部通过"
@@ -71,7 +80,7 @@ else
 fi
 
 # ── Step 2: Frontend build ──────────────────────────────
-log_section "2/6 npm run build"
+log_section "2/7 npm run build"
 cd "$FRONTEND_DIR"
 if npm run build 2>&1; then
     log_pass "TypeScript build 0 错误"
@@ -81,7 +90,7 @@ else
 fi
 
 # ── Step 3: oxlint ──────────────────────────────────────
-log_section "3/6 oxlint"
+log_section "3/7 oxlint"
 if npx oxlint 2>&1; then
     log_pass "oxlint 0 错误"
 else
@@ -93,11 +102,11 @@ cd "$BACKEND_DIR"
 
 # ── Step 4: 重启后端 ────────────────────────────────────
 if $SKIP_RESTART; then
-    log_warn "4/6 跳过重启后端（--no-restart）"
+    log_warn "4/7 跳过重启后端（--no-restart）"
 elif $QUICK; then
-    log_warn "4/6 跳过重启后端（--quick）"
+    log_warn "4/7 跳过重启后端（--quick）"
 else
-    log_section "4/6 重启后端"
+    log_section "4/7 重启后端"
     if bash scripts/backend_restart.sh 2>&1; then
         log_pass "后端已重启并就绪"
     else
@@ -109,12 +118,12 @@ fi
 # ── Step 5: Smart Eval ──────────────────────────────────
 if $SKIP_EVAL || $QUICK; then
     if $QUICK; then
-        log_warn "5/6 跳过评测（--quick）"
+        log_warn "5/7 跳过评测（--quick）"
     else
-        log_warn "5/6 跳过评测（--skip-eval）"
+        log_warn "5/7 跳过评测（--skip-eval）"
     fi
 else
-    log_section "5/6 eval_smart（增量评测）"
+    log_section "5/7 eval_smart（增量评测）"
     if python -X utf8 scripts/eval_smart.py 2>&1; then
         log_pass "eval_smart 通过（零劣化）"
     else
@@ -124,7 +133,7 @@ else
 fi
 
 # ── Step 6: Update Docs ─────────────────────────────────
-log_section "6/6 update_docs"
+log_section "6/7 update_docs"
 DOC_UPDATED=false
 # Try to auto-update with latest eval result
 LATEST_RESULT=$(ls -t "$BACKEND_DIR/evals/results/"*.json 2>/dev/null | head -1 || echo "")
@@ -148,6 +157,19 @@ if [ -n "$LATEST_RESULT" ] && [ -f "$LATEST_RESULT" ]; then
     fi
 else
     log_warn "无评测结果，跳过文档更新"
+fi
+
+# ── Step 7: E2E Tests（可选）──────────────────────────
+log_section "7/7 playwright e2e（可选）"
+cd "$FRONTEND_DIR"
+if command -v npx &>/dev/null && [ -f "node_modules/.bin/playwright" ]; then
+    if npx playwright test --reporter=line 2>&1; then
+        log_pass "E2E 测试通过"
+    else
+        log_warn "E2E 测试有失败项（可单独运行 npm run test:e2e 查看详情）"
+    fi
+else
+    log_warn "Playwright 未安装，跳过 E2E（cd frontend && npx playwright install chromium）"
 fi
 
 # ── Summary ──────────────────────────────────────────────
