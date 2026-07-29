@@ -87,6 +87,9 @@ CONSTRAINT_REGISTRY: Dict[str, Dict[str, Any]] = {
     "tag_category_diversity":  {"group": "base", "desc": "行程覆盖 ≥3 个不同标签大类"},
     "response_latency_p95":    {"group": "base", "desc": "P95 响应时间 ≤90s"},
     "day_theme_variety":       {"group": "base", "desc": "每天 theme 不重复"},
+    # Phase 15c: Experiential quality constraints
+    "pace_reasonable":         {"group": "base", "desc": "每天活动数 2-6 个，节奏合理"},
+    "dining_coverage":         {"group": "base", "desc": "每天至少有一餐推荐"},
     # === Food (Phase 12.5) ===
     "food_coverage":           {"group": "food", "desc": "≥30% 结果为美食相关"},
     "food_diversity":          {"group": "food", "desc": "≥3 种不同美食类型"},
@@ -349,6 +352,55 @@ def score_itinerary(itinerary: Dict[str, Any], expect: Dict[str, Any], weather: 
         }
     else:
         out["day_theme_variety"] = {"pass": True, "detail": "天数 <2，不适用", "na": True}
+
+    # ── Phase 15c: Experiential quality constraints ──
+
+    # pace_reasonable: 每天活动数 2-6 个（含三餐和休息）
+    days_data = itinerary.get("days", [])
+    if days_data:
+        excessive_days = []
+        for day in days_data:
+            item_count = len([i for i in day.get("items", []) if isinstance(i, dict) and i.get("poi")])
+            if item_count > 6:
+                excessive_days.append(f"第{day.get('day', '?')}天{item_count}项")
+        if excessive_days:
+            out["pace_reasonable"] = {
+                "pass": False,
+                "detail": f"节奏过紧: {'; '.join(excessive_days)}（上限6项/天）",
+            }
+        else:
+            out["pace_reasonable"] = {"pass": True, "detail": f"每天活动数在合理范围内（2-6项/天）"}
+    else:
+        out["pace_reasonable"] = {"pass": False, "detail": "无天数数据"}
+
+    # dining_coverage: 每天至少有一餐推荐（item 标注为 [吃] 或含 eat 字段）
+    if days_data:
+        days_without_dining = []
+        for day in days_data:
+            items = day.get("items", [])
+            has_dining = False
+            for item in items:
+                if not isinstance(item, dict):
+                    continue
+                note = item.get("note", "")
+                poi_name = item.get("poi", "")
+                if "[吃]" in note or "餐" in note:
+                    has_dining = True
+                    break
+            # Also check day-level eat field
+            if not has_dining and day.get("eat"):
+                has_dining = True
+            if not has_dining:
+                days_without_dining.append(f"第{day.get('day', '?')}天")
+        if days_without_dining:
+            out["dining_coverage"] = {
+                "pass": False,
+                "detail": f"缺少餐饮推荐: {'; '.join(days_without_dining)}",
+            }
+        else:
+            out["dining_coverage"] = {"pass": True, "detail": "每天都有餐饮推荐"}
+    else:
+        out["dining_coverage"] = {"pass": False, "detail": "无天数数据"}
 
     return out
 
@@ -873,7 +925,8 @@ _FILE_AFFECT_MAP = {
         ["schema_valid", "weather_fit", "weather_coverage", "weather_tips",
          "route_ok", "stats_place_count", "poi_verified", "name_normalized",
          "budget_consistent", "month_consistent", "days_correct", "price_enriched",
-         "poi_name_uniqueness", "tag_category_diversity", "day_theme_variety"],
+         "poi_name_uniqueness", "tag_category_diversity", "day_theme_variety",
+        "pace_reasonable", "dining_coverage"],
         ["standard", "edge", "extreme"],
     ),
     "app/rag/retriever.py": (
