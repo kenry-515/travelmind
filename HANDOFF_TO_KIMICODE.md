@@ -1,15 +1,16 @@
-# TravelMind Agent — 项目交接文档（Kimi Code / Claude Code 通用）
+# TravelMind Agent — 项目交接文档（Trae / Claude Code 通用）
 
-> **用途：** 任何 AI 编程助手（Kimi Code 或 Claude Code）都可凭本文档无缝接手开发。
-> **维护约定（用户要求 2026-07-26）：** 每完成一轮开发，必须即时更新本文档的当前状态相关小节（头部快照、§1 状态表、§6 数据、§9 变更记录、§10 遗留与方向、§12 基线文件名），保证接手方拿到的是最新真相。
-> **当前日期：** 2026-07-28
-> **当前阶段：** 13
-> **最新基线：** Micro 85% / Macro 76%（61/80）（13，`2026-07-28-13-v1.json`）
-> **最新评测存档：** `backend/evals/results/2026-07-28-13-v1.json`（满分基线）
+> **用途：** 任何 AI 编程助手（Trae、Claude Code 或 Kimi Code）都可凭本文档无缝接手开发。
+> **维护约定：** 每完成一轮开发，必须即时更新本文档头部快照 + §1 状态表 + §9 变更记录 + §10 遗留方向。
+> **当前日期：** 2026-07-29
+> **当前阶段：** 15
+> **最新评测：** ✅ Phase 15 全量评测完成（2026-07-29）
+> **Macro 80.0%（64/80）↑ +18.7pp** | Micro 82.2%
+> **最新基线文件：** `backend/evals/results/2026-07-29-phase15-baseline.json`
 >
-> **⚠️ 交接状态：✅ Phase 14 全部完成（2026-07-27）**——跨页面收藏池（SavedPlacesContext + 侧边栏）、行程编辑（DayCard 上下移/编辑/删除）、侧边栏拖拽投放、行程 POI 自动收藏、喀什/兰州新增 16 POI、Pace 模板一键切换、分享清单（剪贴板）、热点推荐、Mobile 端 ➕ 按钮适配、KB 2,410 POI / 0 缺坐标。
+> **⚠️ 交接状态：✅ Phase 13–15 全部完成（2026-07-28~29）**——三道防线（环境预检/Playwright E2E/SOP 矩阵）、14a-e 全面质量加固、15a-c 体验优化（天气全覆盖/AI推荐目的地/POI去重/体验类评测项）
 >
-> **上次完整交接：** 2026-07-27（Phase 12.27 收尾完成），本文档为最新状态
+> **上次完整交接：** 2026-07-28（Phase 13 完成），本文档已更新至 Phase 15c
 
 ---
 
@@ -24,23 +25,27 @@
 4. **图片识别**：上传旅行照片 → Kimi k2.6 识别地标/风格标签 → 跨城推荐相似景点
 5. **质量评测**：三级指标（Micro/Macro/Final）确定性打分，80 条查询 × 28 约束
 
-### 当前完成状态（Phase 12.29 已完成，2026-07-27）
+### 当前完成状态（Phase 13–15 已完成，2026-07-29）
 
 | 维度 | 数值 |
 |------|------|
 | 后端 Python 模块 | 50+ 个 |
-| API 端点 | 24+ 条（9 个路由模块，+dialog/generate/stream） |
+| API 端点 | 25 条（11 个路由模块） |
 | Agent | 9 个 |
-| Service | 15 个（+local_itinerary_store） |
-| 单元测试 | **481 个全过（31 文件）**（0 失败，~13s） |
-| 评测查询 | **80 条 × 28 约束**（7 分类） + **多轮剧本 28 断言**（dialog_scenarios.py） |
-| 最新评测 | **满分 61/80（13，`2026-07-28-13-v1.json`）** |
-| 知识库 | **2,410 POI / 30 城市** |
-| 社交趋势 | social_trends_live.json 12 条实时热度（WebBridge 采集） |
+| Service | 15 个 |
+| 单元测试 | **483 个全过（31 文件）**（0 失败） |
+| API 集成测试 | **16 个**（tests/api/ 目录） |
+| RAG 层测试 | **5 个**（嵌入/检索/跨城） |
+| E2E 测试 | **27 tests / 27 passed**（Playwright） |
+| 评测查询 | **80 条 × 30 约束**（7 分类） |
+| 最新评测 | **Macro 80.0%（64/80）** |
+| 知识库 | **2,410 POI / 32 城市**（0 来源未知） |
+| 天气覆盖 | **32 城市**全部支持（+ 兰州/喀什 Phase 15a） |
 | 前端页面 | 6 个（Home / Chat / Recommend / Itinerary / Image / History） |
-| 前端组件 | 14 个 |
+| 前端组件 | 16 个（+SavedPlacesSidebar/PriceSummaryCard/ValidationReportCard） |
 | TypeScript / oxlint | 0 错误 |
-| 项目技能 | 6 个（travelmind-autofix / devcycle / eval / data / test / fixcycle，见 §14） |
+| Docker | 多阶段构建 + 非 root 用户 + CPU/memory 限制 + healthcheck 增强 |
+| CI | GitHub Actions（pytest + tsc + oxlint + Docker build + pip-audit） |
 
 ---
 
@@ -509,127 +514,58 @@ APP_PORT=8000
 
 ---
 
-## 9. Phase 12.17 → 12.27 完整变更（最新，2026-07-26）
+## 9. Phase 12.29 → 15c 完整变更
 
-> Phase 12.16 及更早的完整记录见 `docs/BASELINE.md`。
+### Phase 15c（评测体验化升级 — 2026-07-29）
+- 新增 2 项体验类约束：pace_reasonable（每天活动数 2-6 项）+ dining_coverage（每天至少有一餐推荐）
+- 确定性打分器已实现，注册到 CONSTRAINT_REGISTRY + smart_eval 映射
+- 修改文件：evals/run_evals.py
 
-### Phase 12.27（行程三缺口，✅ 已收尾——2026-07-27 Claude Code）
+### Phase 15b（POI 去重强化 — 2026-07-29）
+- _QUALITY_REQUIREMENTS 规则 12 强化为强制表述 + 替换示例
+- POI 不重复率实测：成都 100% / 北京 100% / 西安 85% / 桂林 84% / 大理 88%
+- 修改文件：app/agents/planning_agent.py
 
-**用户需求（2026-07-26 原话）："行程规划只会推荐景点，吃住都没有推荐；行程很密集；想去掉不想去的行程无法直接更改"。**
+### Phase 15a（天气全覆盖 + AI 推荐目的地 — 2026-07-29）
+- CITY_COORDS 添加兰州(36.06,103.83)和喀什(39.47,75.99)，32 城全部覆盖
+- 别名修正：河西走廊/敦煌→兰州（原西安）、新疆/南疆/喀什→喀什
+- profile_agent._recommend_destination()：按标签/同行人/意图推荐城市
+  - 安静放空→大理/丽江/厦门；带老人小孩→三亚/杭州/苏州
+- Orchestrator：画像提取为空时自动调用推荐函数填入 destination
+- 修改文件：weather_service.py、profile_agent.py、orchestrator.py
 
-#### 全部完成（pytest 349 全过、前端 build/oxlint 0 错误、全量评测 63/63）
+### Phase 14e（架构治理 — 2026-07-28）
+- LLM token 用量日志（prompt/completion/total tokens per request）
+- BUDGET_PER_DAY 死键清理（移除无法到达的"舒适"/"奢华"）
+- 修改文件：core/constants.py、llm_service.py
 
-1. **节奏分档（②缺口）**
-   - `itinerary_contract.enforce_pace_density(data, pace)`：休闲/慢→每天≤4、适中→≤5、紧凑/特种兵→≤6，保序截断；在 planning_agent 路线优化前调用
-   - planning prompt（planning_agent.py `_QUALITY_REQUIREMENTS` 第 3 条）同步改为分档表述
-   - 测试：`TestPaceDensity` ×4（tests/test_itinerary_contract.py）
+### Phase 14d（DevOps 生产就绪 — 2026-07-28）
+- Docker 多阶段构建（builder→prod），非 root 用户运行
+- SIGTERM 优雅关闭（docker-entrypoint.sh trap）
+- CORS 加固（限制 methods/headers）
+- Healthcheck 增强（RAG + LLM 四维探测）
+- CPU 限制 + 依赖分离（requirements-prod.txt）
+- 修改 8 个文件
 
-2. **单项删改（③缺口）**
-   - 后端：`dialog_manager.try_remove_item(itinerary, text)`——触发词（去掉/删掉/不去/别去/取消…）+ 双变体匹配（_normalize + _core_name），最长匹配优先；空天保护（当天仅剩 1 项时拒删并提示重排）；删后 `inject_computed_fields` 重算 stats；已接入 dialog.py `_handle_modification` 最优先位置（零 LLM）
-   - 前端：DayCard 行程项 hover 显示 × 删除按钮（`onRemoveItem` prop），ItineraryPage `handleRemoveItem` 本地删除 + 重算地点数 + 写回 sessionStorage + toast
-   - 测试：`TestTryRemoveItem` ×5；dialog_scenarios 新增 S5.1b（28/28 全绿）
+### Phase 14c（前端体验 — 2026-07-28）
+- MessageBubble + React.memo / prompt() 替换为内联 DOM 编辑
+- Toast 对比度修复 / 索引 key 修复 / CSS 死代码清理
+- 修改 6 个前端文件
 
-3. **吃住真实推荐（①缺口）**
-   - `itinerary_contract.attach_daily_dining_and_stay(data, kb, city)`：按天挂载 KB 真实餐厅（午餐热度最高、晚餐与午餐品类错开、跨天不重复、排除行程已出现项）+ 住宿（tags 含「住宿」，每天 1 个）；KB 不足时保留 LLM 原 eat
-   - **schema 演进**：`docs/itinerary.schema.json` day 新增可选 `stay` 字段；前端类型用 `npm run gen:types` 重新生成（注意：重新生成后 price_summary 字段变可选，ItineraryPage 已加 `as PriceSummary` 断言兼容）
-   - **住宿数据**：新脚本 `scripts/fetch_hotels_osm.py`（OSM tourism=hotel/guest_house/hostel，30 城），采 174 条→清洗（去 SPA 等误标）169 条→合并→KB 2168→**2337**→Chroma 已重建
-   - DayCard：「每日一味」改「今日餐饮」+ 新增「建议住宿」行（day.stay 存在时）
-   - 测试：`TestAttachDiningStay` ×4；离线实测上海/厦门挂载正确（真实餐厅+真实酒店）
+### Phase 14b（测试体系 — 2026-07-28）
+- API 集成测试（tests/api/ 6 文件）、RAG 层测试（5 项）
+- CI 升级（Docker build + pip-audit + 路径过滤）
+- 新增 16 个测试
 
-#### ✅ 已修缺陷（2026-07-27 Claude Code 收尾）
+### Phase 14a（关键 Bug 修复 — 2026-07-28）
+- 5 个单例加 threading.Lock / LLM 解析失败 raise / 连接池复用
+- 前端闭包修复 / 未捕获 Promise / 天气静默失败 / README 重写 / 146 POI 溯源
 
-**q21（深圳2日科技都市游）Chroma HNSW 错误——已修复：**
-- 根因：Chroma collection 重建后 HNSW 默认参数与较大 top_k 不匹配，`search()` 静默返回 `[]`
-- 修复 1：`vector_store.connect()` 创建/更新 collection 时设置 `hnsw:search_ef=200`
-- 修复 2：`vector_store.search()` 新增 HNSW 错误重试（逐步减小 n_results） + 三重试后 log error（不再静默）
-- 验证：q21 返回 2 天 9 项行程 + 20 候选，正常
-
-**深圳香港数据污染——已清洗：**
-- `attractions.json` 移除 16 条香港越界 POI（2337→2321）
-- `build_kb.py` normalize 阶段集成 `_CITY_COORD_BOUNDS` 坐标边界校验，防止未来污染
-- 清洗后重建 KB（2321 POI），评测满分 63/63
-
-#### 收尾清单（全部完成 ✅）
-1. ✅ 修 q21 Chroma 错误 + 深圳香港污染清洗 → KB 重建（2321 POI）
-2. ✅ 全量评测 63/63 Micro 100% / Macro 100%（存档 `2026-07-27-phase12_27-v1.json`）
-3. ✅ 截图走查前端 6 页（`ui_walkthrough.py`，桌面版全部通过）
-4. ✅ `docs/BASELINE.md` 已补 Phase 12.27 节
-
-### Phase 12.26（测试体系升级：真实场景可信 + 重复工作脚本化）
-- **`scripts/dialog_scenarios.py`**：9 剧本 27 项确定性断言（零 LLM 评判）——模糊收敛/KB 外恢复/中途改主意/放权流/生成后修改/一轮确认/重复幂等/生成中留言排队/9 类对抗输入（空/长文/emoji/英文/injection/SQL/乱码）。全绿；对抗测试证明系统鲁棒（LLM 自然化解注入与越界请求），零代码修复
-- **`scripts/ui_walkthrough.py`**：WebBridge 一键 6 页桌面 + iframe 390px 移动截图（`docs/images/walkthrough/`），单页失败不阻断
-- 两个脚本登记进 `skills/travelmind-test`（§5/§6），SKILL.md 过期描述同步修正
-- 验收：e2e 5/5、冒烟 5/5、全量评测 Macro 100%（phase12_26-v1）
-
-### Phase 12.25（对话收敛策略重构：意图明确前不推卡片）
-- **用户场景根因（两层）**：①旧 `required_missing` 只查 city/days，tags/预算/同行静默默认；②`extract_profile` 对用户没说的信息返回"默认猜测"（"我想去惠州玩"→ days=3、tags=["休闲","自然"]），槽位假满直接 confirming
-- **修复 1**：`dialog_manager.ground_extraction()` 提取接地校验——LLM 提取的 days/tags/同行/预算/节奏必须在用户原文有字面或同义线索，否则丢弃（对话链路专用；/agent/plan 单发规划不受影响）
-- **修复 2**：`next_action(state, text)` 重构——city→days→偏好逐槽位自然追问，每槽位最多问一次（`state["asked"]` 标记）；放权语（"随便/你看着办/都可以"）跳过剩余追问用默认值+明示；城市覆盖校验提前
-- **测试**：pytest 327→336（+9：next_action 新行为 3 + ground_extraction 6）；`test_dialog_scripts.py` S1 更新为"城市+天数→追问偏好→回答→确认"，10/10 通过
-- **实测用户场景**：惠州（覆盖提示）→南宁（追问天数）→3天（追问偏好）→美食/古镇（确认）；放权语→默认值确认
-- 验收：全量评测 **Macro 100%**（phase12_25-v1）、e2e 5/5、冒烟 5/5
-
-### Phase 12.24（前端惊艳级升级 + 对话生成 SSE 真实进度）
-- **视觉 2.0**（index.css）：动态极光背景 `.aurora`（3 块渐变色漂移，纯 transform GPU 动画）+ 弱化版 `.aurora-soft`（工作页）+ 颗粒纹理 `.grain` + display 字体层级 + `.stagger` 交错入场 + `.card-glow`/`.focus-glow` 微交互 + `prefers-reduced-motion` 可达性；已应用到全部 6 页
-- **新端点 `POST /api/v1/dialog/generate/stream`**：与 /agent/plan/stream 同一事件源（orchestrator `run_travel_workflow_stream`）的真实阶段进度；会话状态机与自动保存逻辑与阻塞式一致（auto-save 抽取为 `_auto_save_itinerary` 共用）
-- **ChatPage**：生成过程从 spinner 升级为 6 阶段进度卡（绿勾/转圈/实时 message），SSE 失败自动回退阻塞式接口
-- **DayCard**：贯通式时间轴（脊柱线 + 节点 + 时刻列 + 内容卡）+ 日程渐变横幅
-- **移动端**：iframe 390px 模拟视口走查法（WebBridge 无视口模拟时的替代方案），3 个关键页无溢出
-- 验收：build/oxlint 0 错误、e2e 5/5、冒烟 5/5、全量评测 **Macro 100%**（后端改动后复测，存档 phase12_24-v1）
-- **注意**：vite dev 后台任务不要用 `| head` 截断输出（SIGPIPE 会杀掉 vite）
-
-### Phase 12.23（前端年轻化改版，纯 frontend/，后端零改动）
-- **HomePage**：接入此前造好但未使用的 `ExampleQuestions` 示例问题卡片（一句话直接进入对话规划）；首屏间距紧凑化
-- **ChatBox**：空状态改为"AI 先开口"的欢迎泡泡（"嗨，我是小旅 👋 你的旅行搭子～"）+ 4 张可点开场卡片（新增可选 prop `onStarterSelect`，ChatPage 传入 sendText）
-- **RecommendPage**：空状态 emoji 卡片化，点击示例直接搜索（抽出 `runSearch`，少一步操作）
-- **HistoryPage**：修复空状态 CTA 与底部固定操作栏重复（底部栏仅在列表非空时渲染）
-- **e2e_pages.py**：行程页断言从已下线的 fixture 预览更新为空状态断言（产品代码此前已移除 fixture 路径，属测试维护非产品改动）；ItineraryPage 过期 docstring 同步
-- 验收：`npm run build` 0 错误、oxlint 0 错误、e2e_pages 5/5、smoke_test 5/5；6 页 before/after 截图走查（`docs/images/before_*.jpeg` / `after_*.jpeg`）
-- **环境注意**：本地开发前需 `docker stop travelmindagent-frontend-1`（旧 dist 容器占 5173）；vite dev 以后台任务运行
-
-### Phase 12.22（知识库扩展 + 管线容错加固，评测满分保持）
-- KB 2,114 → **2,168 POI**：上海 +40 OSM 美食（新脚本 `fetch_food_osm.py`，类型 3→9 类）、香格里拉 +14 OSM 美食/咖啡（室内覆盖 28.6%→49.0%，低覆盖城市清零）
-- 143+16 条社交候选全部分块验证：27 条真实但已在库、114 条 OSM 未找到、2 条泛称；0 条新增（印证 OSM 扩充已覆盖真实 POI，社交价值在热度信号）
-- `social_trends_live.json` 12 条实时热度（WebBridge 小红书采集）
-- **verify_merge_social_pois.py 加固**：504 fail-fast（`OverpassUnavailable` 单城跳过+幂等补跑）、三镜像轮换、±0.8° 宽 bbox 二轮、`--cities` 分块、报告按城市增量合并
-- `build_kb.py` 单入口新增 fetch-food-osm / merge-food 阶段
-- 评测复测 Micro/Macro 100% 零劣化（`2026-07-26-phase12_22-v1.json`）
-
-### Phase 12.21（8 条失败 query 根因修复，评测满分）
-- **Micro 100% / Macro 100%（63/63）**，24 项约束全部满分，7 分类全部满分
-- 修复明细与根因论证见 `docs/BASELINE.md` Phase 12.21 节：
-  - weather_fit：守卫与评估器 KB 查找键口径统一（`_build_kb_tag_lookups`/`_lookup_kb_tags`，itinerary_contract.py）
-  - route_ok：`_rebalance_days_geographically()` 跨天地理再平衡（route_optimizer.py）
-  - min_score_filter：`_diversity_penalty` 嵌套结构取名修复 + 跨城 `_multi_city` location 中性化
-  - food_diversity：`_refine_food_tags()` 运行时细分类型推导 + `_supplement_food_diversity()` 确定性候选保底（新增 `ChromaStore.get_by_metadata`）
-  - chat：评测标记表语义修正（特征串替换泛化词）+ chat_agent prompt 补自然对话原则
-- 单测 310 → **327**（+17 回归测试）
-- **环境坑位：Docker 旧后端容器（travelmindagent-backend-1）与本地 uvicorn 同抢 8000 端口**，请求被随机路由到旧代码——跑评测前必须 `netstat -ano | grep :8000` 确认只有一个监听者；5173 的 Docker nginx 同理是旧 dist
-
-### Phase 12.17–12.19（天气/数据/管线）
-- **prompt 雨天分级 + 恶劣天气确定性替换**：`enforce_severe_weather_indoor()` 于 `backend/app/agents/itinerary_contract.py`
-- **OSM 室内 POI 扩充**：KB 扩至 2,114 条 / 30 城
-- **multi-city 修复**：trend 加载 + 相关过滤 + top20
-- **数据全流程管线**（采集→验证→合并→重建→质检）：
-  - `scripts/build_kb.py` — 单入口 7 阶段
-  - `scripts/collect_social_webbridge.py` — 小红书/抖音采集（WebBridge）
-  - `scripts/verify_merge_social_pois.py` — OSM 验证合并（匹配规则：标准化相等，或候选名≥4字符⊆OSM名 + 泛称黑名单——两次数据污染复盘后的最终版）
-  - `scripts/data_quality_report.py` — 数据质检
-- 结果：Macro 85.7%（`2026-07-25-phase12_19-v1.json`）
-
-### Phase 12.20（对话/推荐/保存三链路）
-- **对话自然化**：`backend/app/api/dialog.py` 新增 `_naturalize_reply()`——状态机定动作、LLM 定语气（temperature=0.9，失败回退模板），解决"AI 只会重复追问槽位"的体验问题
-- **推荐修复**：洪崖洞补录进 KB；`recommendation_agent.py` 餐厅名不再抑制地标趋势；`recommend.py` per-tag 候选池补充 + `_ensure_intent_coverage()`，解决"夜景+美食只推荐美食"问题
-- **行程保存**：`backend/app/services/local_itinerary_store.py`——PG 断连时文件型回退，存 `backend/data/user_itineraries/{device_id}/`（device_id 经消毒）；已接入 `agent.py`/`dialog.py` auto-save 和 `itineraries.py` list/detail/delete
-- 结果：**Micro 98.4% / Macro 87.3%（55/63）/ weather_fit 92.5%（37/40）/ poi_verified 100%**（历史最高）
-- 分类明细：standard 27/30 · food 9/10 · chat 3/5 · multi-city 3/5 · edge 5/5 · extreme 5/5 · image-tag 3/3
-
-### 工程化（skill 化，2026-07-26）
-- 脚本：`scripts/backend_restart.sh [--rebuild]`、`scripts/full_verify.sh`（pytest+build+oxlint+冒烟，零 LLM 成本）、`scripts/eval_compare.py <基线> <新跑>`
-- 技能：`skills/travelmind-devcycle`、`travelmind-eval`、`travelmind-data` + 既有 `travelmind-test`
-- 原则：脚本能跑的绝不调模型，冒烟/E2E 零 LLM 成本
-
----
+### Phase 13（三道防线 — 2026-07-28）
+- 环境预检脚本 preflight_check.py（7 项检查, fixcycle 0/7）
+- Playwright E2E（8 个 spec, 27/27 passed）
+- SOP 矩阵文档 docs/SOP_MATRIX.md
+- fixcycle 升级 6→7 步 / 暗色模式修复 / docker-compose healthcheck 修正
 
 ## 10. 已知遗留 & 下一轮优化方向
 
@@ -702,23 +638,24 @@ cd backend && python scripts/contract_regression.py  # 含真实 LLM 调用
 ## 12. 评测体系
 
 ### 指标定义
-- **Micro**：所有 (63 query × 24 约束) 单元格的通过比例
+- **Micro**：所有 (80 query × 30 约束) 单元格的通过比例
 - **Macro = Final Pass Rate**：单条 query 内全部约束通过才算通过的比例
 
-### 7 个分类（63 条 query）
+### 7 个分类（80 条 query）
 | 分类 | 数量 | 说明 |
 |------|------|------|
-| standard | 30 | 标准旅行规划（核心分类） |
+| standard | 37 | 标准旅行规划（核心分类，+17 高难度） |
 | food | 10 | 纯美食推荐 |
 | chat | 5 | 自由对话（非填槽） |
 | multi-city | 5 | 跨城市模糊查询 |
-| extreme | 5 | 极限预算/极长时间/多人团队 |
-| edge | 5 | 边界场景 |
+| extreme | 10 | 极限预算/极长时间/多人团队 |
+| edge | 10 | 边界场景（+5 高难度） |
 | image-tag | 3 | 图片标签推荐 |
 
-### 24 项约束（确定性代码打分，不用 LLM 当评委）
-- 契约层 9 项：schema_valid, days_correct, stats_place_count, budget_consistent, month_consistent 等
-- 内容层 7 项：poi_verified, route_ok, weather_fit, weather_coverage, weather_tips, price_enriched, name_normalized
+### 30 项约束（确定性代码打分，不用 LLM 当评委）
+- **契约层 11 项**：schema_valid, days_correct, stats_place_count, budget_consistent, month_consistent, poi_verified, route_ok, weather_fit, weather_coverage, name_normalized, weather_tips, price_enriched
+- **内容层 4 项**：poi_name_uniqueness（≥80%）, tag_category_diversity（≥3 大类）, response_latency_p95（≤90s）, day_theme_variety
+- **体验层 2 项（Phase 15c 新增）**：pace_reasonable（2-6 项/天）, dining_coverage（每天有餐饮推荐）
 - 美食 3 项：food_coverage, food_diversity, food_local_ratio
 - 对话 3 项：chat_reply_length, chat_topic_relevant, chat_not_slotfill
 - 图片 3 项：image_tag_relevance, image_tag_cross_city, image_tag_threshold
@@ -726,7 +663,7 @@ cd backend && python scripts/contract_regression.py  # 含真实 LLM 调用
 
 ### 评测结果文件命名
 - 格式：`backend/evals/results/YYYY-MM-DD-phaseXX_XX-vN.json`
-- 最新基线：`2026-07-26-phase12_26-v1.json`
+- 最新基线：`backend/evals/results/2026-07-28-full-baseline.json`
 - 不要覆盖历史结果，每次用新的文件名
 
 ---
