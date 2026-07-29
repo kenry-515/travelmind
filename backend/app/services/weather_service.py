@@ -58,6 +58,9 @@ CITY_COORDS: Dict[str, tuple[float, float]] = {
     "青岛": (36.0631, 120.3752),
     "香格里拉": (27.8302, 99.6928),
     "黄山": (29.7143, 118.3229),
+    # ── Phase 15a: Remaining KB cities ──
+    "兰州": (36.0611, 103.8343),
+    "喀什": (39.4704, 75.9898),
 }
 
 # ── City Aliases (Phase 12.10) ────────────────────────────
@@ -90,17 +93,23 @@ CITY_ALIASES: Dict[str, str] = {
     "日喀则": "拉萨",
     "纳木错": "拉萨",
     "珠峰": "拉萨",
-    # Western China / Silk Road → Xi'an
-    "河西走廊": "西安",
-    "敦煌": "西安",
-    "丝绸之路": "西安",
+    # Western China / Silk Road → Lanzhou
+    "河西走廊": "兰州",
+    "敦煌": "兰州",
+    "丝绸之路": "兰州",
+    "甘南": "兰州",
+    "青海湖": "兰州",
+    # Xinjiang → Kashgar / Urumqi
+    "喀什": "喀什",
+    "帕米尔": "喀什",
+    "南疆": "喀什",
+    "新疆": "喀什",
+    "乌鲁木齐": "喀什",
+    "喀纳斯": "喀什",
     # Inner Mongolia → Beijing
     "呼伦贝尔": "北京",
     "呼和浩特": "北京",
     "鄂尔多斯": "北京",
-    # Xinjiang → Urumqi not in KB, use Xi'an as nearest
-    "乌鲁木齐": "西安",
-    "喀纳斯": "西安",
     # Other regional descriptors
     "江南": "苏州",
     "徽州": "黄山",

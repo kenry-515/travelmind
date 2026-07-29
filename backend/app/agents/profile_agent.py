@@ -306,6 +306,110 @@ def _infer_search_intent(
     return "general"
 
 
+# ── Destination Recommendation（Phase 15a）─────────────────
+# 当用户没有明确说目的地时，根据意图推荐合适的城市。
+
+_DEST_RULES: List[tuple[set[str], str, list[str]]] = []
+
+
+def _build_dest_rules() -> list[tuple[set[str], str, list[str]]]:
+    """Build destination recommendation rules lazily."""
+    if _DEST_RULES:
+        return _DEST_RULES
+
+    rules: list[tuple[set[str], str, list[str]]] = [
+        # (trigger_keywords, reasoning_label, recommended_cities)
+        ({"安静", "放空", "发呆", "放松", "悠闲", "慢生活"}, "放松慢生活",
+         ["大理", "丽江", "厦门", "苏州", "杭州"]),
+        ({"老人", "父母", "长辈", "奶奶", "爷爷", "外婆", "外公"}, "适合长辈的轻松旅行",
+         ["三亚", "杭州", "苏州", "桂林", "南京"]),
+        ({"小孩", "孩子", "宝宝", "亲子", "乐园", "动物园"}, "适合亲子游",
+         ["三亚", "成都", "广州", "杭州", "上海"]),
+        ({"家庭", "全家", "一起"}, "适合全家出游",
+         ["三亚", "杭州", "成都", "厦门", "苏州"]),
+        ({"情侣", "浪漫", "蜜月", "二人"}, "浪漫之旅",
+         ["厦门", "大理", "三亚", "丽江", "杭州"]),
+        ({"冒险", "刺激", "挑战", "探险"}, "冒险之旅",
+         ["重庆", "张家界", "西安", "黄山", "桂林"]),
+        ({"美食", "火锅", "小吃", "烧烤", "吃"}, "美食之旅",
+         ["成都", "重庆", "广州", "长沙", "西安"]),
+        ({"自然", "风景", "摄影", "山", "湖", "海", "户外"}, "自然风光",
+         ["桂林", "张家界", "黄山", "香格里拉", "大理", "三亚"]),
+        ({"历史", "文化", "博物馆", "古迹", "古"}, "历史文化之旅",
+         ["北京", "西安", "南京", "洛阳", "成都"]),
+        ({"夜生活", "酒吧", "夜市", "不夜城"}, "夜生活丰富",
+         ["重庆", "成都", "长沙", "上海", "广州"]),
+        ({"文艺", "小清新", "拍照", "打卡"}, "文艺打卡",
+         ["厦门", "大理", "丽江", "苏州", "杭州"]),
+        ({"滑雪"}, "滑雪胜地",
+         ["哈尔滨"]),
+        ({"温泉"}, "温泉休养",
+         ["南京", "福州", "重庆"]),
+        ({"海岛", "海滩", "度假", "游泳"}, "海岛度假",
+         ["三亚", "厦门", "青岛", "大连"]),
+    ]
+    _DEST_RULES.extend(rules)
+    return _DEST_RULES
+
+
+def _recommend_destination(
+    tags: list[str],
+    companions: str = "",
+    constraints: Optional[list[str]] = None,
+    search_intent: str = "general",
+) -> list[dict[str, str]]:
+    """根据用户画像推荐目的地。
+
+    Returns:
+        list of {city, reason} 按匹配度排序。
+    """
+    keywords = set(t.lower() for t in tags if isinstance(t, str))
+    keywords.add(companions.lower())
+    if constraints:
+        for c in constraints:
+            for w in c.split():
+                keywords.add(w.lower())
+
+    # Score each rule
+    from collections import Counter
+    scores: Counter[str] = Counter()
+    reasons: dict[str, str] = {}
+
+    rules = _build_dest_rules()
+    for trigger_set, label, cities in rules:
+        matches = keywords & trigger_set
+        if matches:
+            for city in cities:
+                scores[city] += len(matches)
+                if city not in reasons:
+                    reasons[city] = label
+
+    # Intent-based boost
+    intent_cities = {
+        "food": ["成都", "重庆", "广州", "长沙", "西安"],
+        "nature": ["桂林", "张家界", "黄山", "香格里拉", "大理", "三亚"],
+        "history": ["北京", "西安", "南京", "成都", "洛阳"],
+        "shopping": ["上海", "广州", "成都", "重庆", "杭州"],
+    }
+    for city in intent_cities.get(search_intent, []):
+        scores[city] += 1
+        if city not in reasons:
+            reasons[city] = f"{search_intent}主题推荐"
+
+    # If nothing matched, use hot general cities
+    if not scores:
+        for city in ["成都", "重庆", "北京", "杭州", "西安", "厦门", "大理", "三亚"]:
+            scores[city] = 1
+            reasons[city] = "热门旅游城市推荐"
+
+    # Sort by score descending
+    sorted_cities = sorted(scores.keys(), key=lambda c: (-scores[c], c))
+    return [
+        {"city": c, "reason": reasons.get(c, "推荐目的地")}
+        for c in sorted_cities[:5]
+    ]
+
+
 # ── Public API ──────────────────────────────────────────
 
 async def extract_profile(user_input: str) -> Dict[str, Any]:

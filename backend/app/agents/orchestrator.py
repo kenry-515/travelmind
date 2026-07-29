@@ -136,14 +136,29 @@ async def _profile_extraction(state: TravelState) -> TravelState:
         dest = (profile or {}).get("destination", "")
         if not dest or not dest.strip():
             logger.warning("Profile extracted but destination is empty — "
-                           "user input may be incomplete")
-            _append_error(
-                state, "profile_extraction",
-                ValueError(
-                    "无法识别目的地，请提供更详细的旅行需求"
-                    "（例如：'想去重庆玩3天'）"
-                ),
-            )
+                           "auto-recommending based on user intent")
+            # Phase 15a: recommend destination based on tags/companions/intent
+            from app.agents.profile_agent import _recommend_destination
+            tags = (profile or {}).get("tags", [])
+            companions = (profile or {}).get("companions", "")
+            constraints = (profile or {}).get("constraints", [])
+            intent = (profile or {}).get("search_intent", "general")
+            recs = _recommend_destination(tags, companions, constraints, intent)
+            if recs:
+                profile["destination"] = recs[0]["city"]
+                profile["auto_recommended"] = True
+                profile["recommended_cities"] = recs
+                logger.info(f"Auto-recommended destination: {recs[0]['city']} "
+                           f"(reason: {recs[0]['reason']})")
+                state["user_profile"] = profile
+            else:
+                _append_error(
+                    state, "profile_extraction",
+                    ValueError(
+                        "无法识别目的地，请提供更详细的旅行需求"
+                        "（例如：'想去重庆玩3天'）"
+                    ),
+                )
         else:
             logger.info(f"Profile extracted: {dest}")
     except Exception as e:
