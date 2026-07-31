@@ -1,0 +1,1378 @@
+{
+  "generated_at": "2026-07-30T12:09:10.181279",
+  "total_scenarios": 20,
+  "average_score": 76.6,
+  "results": [
+    {
+      "id": "BJ_FAMILY_3D",
+      "city": "北京",
+      "days": 3,
+      "total_score": 75.8,
+      "dimensions": {
+        "rag_quality": 62.0,
+        "itinerary_quality": 75,
+        "data_coverage": 95
+      },
+      "issues": [
+        "仅2/5个期望POI被推荐",
+        "Top1评分过低 (0.26)",
+        "餐厅推荐不足: 0 < 3",
+        "酒店推荐不足: 0 < 2",
+        "北京 缺少POI: 颐和园"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "司马台长城",
+          "score": 0.2628
+        },
+        {
+          "name": "盛福年烤鸭店·北京菜(故宫店)",
+          "score": 0.1931
+        },
+        {
+          "name": "八达岭",
+          "score": 0.1866
+        },
+        {
+          "name": "霸天虎过山车",
+          "score": 0.1699
+        },
+        {
+          "name": "恭王府",
+          "score": 0.1679
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "盛夏北京 · 三日室内文化之旅",
+        "days_count": 3,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "盛福年烤鸭店·北京菜(故宫店)",
+              "国家博物馆",
+              "瑞蚨祥旧址门面",
+              "大栅栏商业建筑"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "真觉寺金刚宝座",
+              "双清别墅",
+              "盛福年烤鸭店·北京菜(故宫店)",
+              "故宫"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "爨底下村古建筑群",
+              "北京环球度假区",
+              "庆淮宴·家宴淮扬菜(望京店)",
+              "中国国家图书馆古籍馆"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CD_COUPLE_4D",
+      "city": "成都",
+      "days": 4,
+      "total_score": 65.5,
+      "dimensions": {
+        "rag_quality": 40.0,
+        "itinerary_quality": 85,
+        "data_coverage": 80
+      },
+      "issues": [
+        "仅0/4个期望POI被推荐",
+        "Top1评分过低 (0.19)",
+        "餐厅推荐不足: 2 < 4",
+        "餐厅推荐不足: 0 < 4",
+        "成都 缺少POI: 大熊猫基地, 宽窄巷子, 锦里, 都江堰"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "成都大熊猫繁育研究基地",
+          "score": 0.191
+        },
+        {
+          "name": "天师洞",
+          "score": 0.1568
+        },
+        {
+          "name": "罨画池",
+          "score": 0.1548
+        },
+        {
+          "name": "昭觉寺",
+          "score": 0.144
+        },
+        {
+          "name": "成都永陵博物馆",
+          "score": 0.1437
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "盛夏成都 · 四日室内文化之旅",
+        "days_count": 4,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "金沙遺址",
+              "杜甫草堂",
+              "青羊宫",
+              "天师洞"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "成都永陵博物馆",
+              "四川科技馆",
+              "成都川港国际酒店",
+              "昭觉寺"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "宝光寺",
+              "杨升庵祠及桂湖",
+              "成都川港国际酒店",
+              "成都直升机博物馆"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "XA_HISTORY_3D",
+      "city": "西安",
+      "days": 3,
+      "total_score": 79.0,
+      "dimensions": {
+        "rag_quality": 62.5,
+        "itinerary_quality": 85,
+        "data_coverage": 95
+      },
+      "issues": [
+        "Top1评分过低 (0.25)",
+        "餐厅推荐不足: 0 < 3",
+        "餐厅推荐不足: 0 < 3",
+        "西安 缺少POI: 回民街"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "大雁塔",
+          "score": 0.2533
+        },
+        {
+          "name": "华清池",
+          "score": 0.24
+        },
+        {
+          "name": "秦始皇兵马俑博物馆",
+          "score": 0.2367
+        },
+        {
+          "name": "兵马俑",
+          "score": 0.1699
+        },
+        {
+          "name": "大明宫",
+          "score": 0.1609
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "盛夏西安·三日深度文化行",
+        "days_count": 3,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "[行] 西安市区乘地铁+公交前往临潼",
+              "秦始皇兵马俑博物馆",
+              "[吃] 午餐：临潼当地餐馆（兵马俑景区附近）",
+              "[休] 室内午休避暑"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "[吃] 早餐：酒店附近早餐店",
+              "西安城隍庙",
+              "八路軍西安辦事處舊址",
+              "[吃] 午餐：糊涂记(新城广场店)"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "[吃] 早餐：酒店附近早餐店",
+              "汉长安城",
+              "大秦寺塔",
+              "[吃] 午餐：花溪雨·长安菜·长安茶(西安总店)"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "SH_FOODIE_3D",
+      "city": "上海",
+      "days": 3,
+      "total_score": 79.0,
+      "dimensions": {
+        "rag_quality": 70.0,
+        "itinerary_quality": 75,
+        "data_coverage": 95
+      },
+      "issues": [
+        "Top1评分过低 (0.29)",
+        "餐厅推荐不足: 0 < 5",
+        "酒店推荐不足: 0 < 2",
+        "上海 缺少POI: 田子坊"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "外滩家宴·上海菜(外滩豫园店)",
+          "score": 0.2881
+        },
+        {
+          "name": "上海外滩建筑群",
+          "score": 0.2389
+        },
+        {
+          "name": "四季民福烤鸭店(外滩外白渡桥店)",
+          "score": 0.2059
+        },
+        {
+          "name": "澜逸酒家",
+          "score": 0.1274
+        },
+        {
+          "name": "台甬宴·东海小鲜",
+          "score": 0.1274
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "盛夏上海 · 奢华三日行程",
+        "days_count": 3,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "上海外滩建筑群",
+              "豫园",
+              "耶里夏丽·新疆菜·西域宴(徐汇旗舰店)",
+              "上海科技馆"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "上海鲁迅故居",
+              "嘉道理爵士公馆",
+              "大马可意大利餐厅",
+              "上海博物馆"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "上海迪士尼乐园",
+              "上海迪士尼乐园·室内项目区",
+              "迪士尼小镇",
+              "晶彩奇航"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CQ_HOTPOT_3D",
+      "city": "重庆",
+      "days": 3,
+      "total_score": 72.5,
+      "dimensions": {
+        "rag_quality": 50.0,
+        "itinerary_quality": 75,
+        "data_coverage": 100
+      },
+      "issues": [
+        "仅1/3个期望POI被推荐",
+        "Top1评分过低 (0.22)",
+        "餐厅推荐不足: 2 < 5",
+        "餐厅推荐不足: 0 < 5",
+        "酒店推荐不足: 0 < 1"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "老甘家江湖菜·小龙虾(洪崖洞店)",
+          "score": 0.222
+        },
+        {
+          "name": "抗战胜利纪功碑暨人民解放纪念碑",
+          "score": 0.2076
+        },
+        {
+          "name": "“中美合作所”集中营旧址",
+          "score": 0.1806
+        },
+        {
+          "name": "国民参政会旧址",
+          "score": 0.1678
+        },
+        {
+          "name": "钓鱼城遗址",
+          "score": 0.1418
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "盛夏山城 · 三日休闲行程",
+        "days_count": 3,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "抗战胜利纪功碑暨人民解放纪念碑",
+              "重庆湖广会馆",
+              "老甘家江湖菜·小龙虾(洪崖洞店)",
+              "特园"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "重庆工业博物馆",
+              "重庆动物园",
+              "中国西部科学院旧址",
+              "白鹤梁"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "重庆市人民大礼堂",
+              "罗斯福图书馆旧址",
+              "史迪威博物馆",
+              "法国水师兵营旧址"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "GZ_MOTHER_5D",
+      "city": "广州",
+      "days": 5,
+      "total_score": 80.5,
+      "dimensions": {
+        "rag_quality": 70.0,
+        "itinerary_quality": 75,
+        "data_coverage": 100
+      },
+      "issues": [
+        "Top1评分过低 (0.26)",
+        "餐厅推荐不足: 1 < 6",
+        "餐厅推荐不足: 0 < 6",
+        "酒店推荐不足: 0 < 2"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "广州长隆旅游度假区",
+          "score": 0.264
+        },
+        {
+          "name": "长隆欢乐世界",
+          "score": 0.2547
+        },
+        {
+          "name": "长隆野生动物世界",
+          "score": 0.2507
+        },
+        {
+          "name": "长隆水上乐园",
+          "score": 0.2453
+        },
+        {
+          "name": "广州沙面建筑群",
+          "score": 0.2229
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "盛夏广州 · 五日室内文化避暑之旅",
+        "days_count": 5,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "陈家祠",
+              "六榕寺",
+              "南越国木构水闸遗址",
+              "滋粥楼·顺德菜(南村万博长隆商圈店)"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "镇海楼与广州明城墙",
+              "南越国宫署遗址及南越文王墓",
+              "广州起义纪念馆",
+              "猪腰一家·地道佛山菜(长大中心店)"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "怀圣寺光塔",
+              "农民运动讲习所",
+              "欧记大排档·江西景德菜(广州首店)",
+              "余荫山房"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ZJJ_MOUNTAIN_3D",
+      "city": "张家界",
+      "days": 3,
+      "total_score": 87.0,
+      "dimensions": {
+        "rag_quality": 90.0,
+        "itinerary_quality": 75,
+        "data_coverage": 95
+      },
+      "issues": [
+        "餐厅推荐不足: 0 < 2",
+        "酒店推荐不足: 0 < 2",
+        "张家界 缺少POI: 金鞭溪"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "天门山玻璃栈道",
+          "score": 0.6177
+        },
+        {
+          "name": "天门山国家森林公园C线索道",
+          "score": 0.5092
+        },
+        {
+          "name": "张家界大峡谷玻璃桥",
+          "score": 0.4726
+        },
+        {
+          "name": "天门山国家森林公园",
+          "score": 0.4337
+        },
+        {
+          "name": "七星山风景区",
+          "score": 0.413
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "张家界夏日避暑 · 三日徒步行程",
+        "days_count": 3,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "张家界市博物馆",
+              "普光禅寺",
+              "大庸古城",
+              "秦大妈传家菜·始于1999(天门山索道一店)"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "张家界国家森林公园",
+              "武陵源风景名胜区",
+              "索溪山寨·湘西民间土菜(标志门店)",
+              "印象鲵宴(溪布街购物广场店)"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "张家界土司城",
+              "李憨憨三下锅(天门山索道店)",
+              "老媽下饭菜(张家界中天鹭鸶湾一期店)",
+              "七十二奇楼景区"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "LSK_NATURE_4D",
+      "city": "九寨沟",
+      "days": 4,
+      "total_score": 75.0,
+      "dimensions": {
+        "rag_quality": 90.0,
+        "itinerary_quality": 85,
+        "data_coverage": 45
+      },
+      "issues": [
+        "餐厅推荐不足: 0 < 2",
+        "九寨沟 POI数据极少: 仅7条",
+        "九寨沟 酒店不足: 0 < 2",
+        "九寨沟 缺少POI: 藏寨"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "黄龙风景名胜区",
+          "score": 1.0
+        },
+        {
+          "name": "九寨沟风景名胜区",
+          "score": 1.0
+        },
+        {
+          "name": "五花海",
+          "score": 0.9519
+        },
+        {
+          "name": "珍珠滩瀑布",
+          "score": 0.9026
+        },
+        {
+          "name": "树正寨",
+          "score": 0.8112
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "夏游九寨 · 四日深度慢行",
+        "days_count": 4,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "成都出发前往九寨沟",
+              "九寨沟沟口酒店办理入住",
+              "树正寨",
+              "藏家宴"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "九寨沟风景名胜区",
+              "五花海",
+              "珍珠滩瀑布",
+              "诺日朗餐厅（景区内）"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "九寨沟周边晨间散步",
+              "九寨人家",
+              "沟口藏式茶馆休憩",
+              "九寨沟藏羌文化博物馆"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ZY_UNKNOWN_2D",
+      "city": "遵义",
+      "days": 2,
+      "total_score": 69.0,
+      "dimensions": {
+        "rag_quality": 90.0,
+        "itinerary_quality": 75,
+        "data_coverage": 35
+      },
+      "issues": [
+        "餐厅推荐不足: 0 < 1",
+        "餐厅推荐不足: 0 < 1",
+        "酒店推荐不足: 0 < 1",
+        "遵义 POI数据极少: 仅4条",
+        "遵义 餐厅不足: 0 < 1",
+        "遵义 酒店不足: 0 < 1"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "遵义会议会址",
+          "score": 1.0
+        },
+        {
+          "name": "赤水丹霞旅游区",
+          "score": 0.925
+        },
+        {
+          "name": "娄山关",
+          "score": 0.7
+        },
+        {
+          "name": "遵义市博物馆",
+          "score": 0.65
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "盛夏遵义 · 红色深度两日行",
+        "days_count": 2,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "遵义会议会址",
+              "遵义市博物馆",
+              "老城捞沙巷",
+              "遵义会议会址周边茶馆"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "遵义红军山烈士陵园",
+              "遵义市博物馆",
+              "遵义老城步行街",
+              "遵义老城茶馆"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "NN_UNKNOWN_3D",
+      "city": "南宁",
+      "days": 3,
+      "total_score": 85.0,
+      "dimensions": {
+        "rag_quality": 85.0,
+        "itinerary_quality": 75,
+        "data_coverage": 95
+      },
+      "issues": [
+        "餐厅推荐不足: 0 < 2",
+        "酒店推荐不足: 0 < 1",
+        "南宁 缺少POI: 德天瀑布"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "复记老友粉",
+          "score": 0.75
+        },
+        {
+          "name": "邕江鱼府",
+          "score": 0.7
+        },
+        {
+          "name": "柠檬鸭",
+          "score": 0.7
+        },
+        {
+          "name": "粉之都",
+          "score": 0.7
+        },
+        {
+          "name": "青秀山丛林栈道",
+          "score": 0.205
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "南宁夏日·三日室内避暑行程",
+        "days_count": 3,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "复记老友粉",
+              "粉之都",
+              "广西民族博物馆",
+              "广西美术馆"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "粉之都",
+              "邕江鱼府",
+              "南宁博物馆",
+              "广西科技馆"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "复记老友粉",
+              "柠檬鸭",
+              "广西自然博物馆",
+              "南宁极地海洋世界"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DL_ELDERLY_5D",
+      "city": "大理",
+      "days": 5,
+      "total_score": 58.0,
+      "dimensions": {
+        "rag_quality": 70.0,
+        "itinerary_quality": 0,
+        "data_coverage": 100
+      },
+      "issues": [
+        "仅1/3个期望POI被推荐",
+        "餐厅推荐不足: 0 < 4",
+        "行程生成失败"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "云南驿古建筑群",
+          "score": 0.5047
+        },
+        {
+          "name": "凤羽古建筑群",
+          "score": 0.4876
+        },
+        {
+          "name": "水城藤桥",
+          "score": 0.4654
+        },
+        {
+          "name": "喜洲白族古建筑群",
+          "score": 0.4256
+        },
+        {
+          "name": "苍山神祠",
+          "score": 0.4156
+        }
+      ],
+      "itinerary_preview": null
+    },
+    {
+      "id": "SC_WEDDING_7D",
+      "city": "三亚",
+      "days": 7,
+      "total_score": 74.0,
+      "dimensions": {
+        "rag_quality": 50.0,
+        "itinerary_quality": 85,
+        "data_coverage": 95
+      },
+      "issues": [
+        "仅1/3个期望POI被推荐",
+        "Top1评分过低 (0.19)",
+        "餐厅推荐不足: 2 < 5",
+        "餐厅推荐不足: 0 < 5",
+        "三亚 缺少POI: 蜈支洲岛"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "亚龙湾百花谷商业中心",
+          "score": 0.1944
+        },
+        {
+          "name": "三亚千古情景区",
+          "score": 0.1841
+        },
+        {
+          "name": "大东海旅游区",
+          "score": 0.1738
+        },
+        {
+          "name": "黎竹·海南菜(亚龙湾东榕美食广场店)",
+          "score": 0.1733
+        },
+        {
+          "name": "唠婆香草鸭·老海南大排档(亚龙湾东榕美食广场店)",
+          "score": 0.1733
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "盛夏三亚 · 奢华度假七日行程",
+        "days_count": 7,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "三亚玛瑞纳酒店",
+              "三亚·中交凤凰岛",
+              "南海黎村·海南民族菜·海景餐厅(椰梦长廊店)",
+              "海月广场"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "三亚玛瑞纳酒店",
+              "三亚·中交凤凰岛",
+              "鸿洲时代广场",
+              "沿江海南菜(免税二期店)"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "三亚玛瑞纳酒店",
+              "崖城学宫",
+              "大东海广场",
+              "创味·民间海南菜(藤桥·免税城店)"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "LZ_BUDDHISM_5D",
+      "city": "拉萨",
+      "days": 5,
+      "total_score": 92.5,
+      "dimensions": {
+        "rag_quality": 100,
+        "itinerary_quality": 75,
+        "data_coverage": 100
+      },
+      "issues": [
+        "餐厅推荐不足: 0 < 2",
+        "酒店推荐不足: 1 < 2"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "玛吉阿米",
+          "score": 0.85
+        },
+        {
+          "name": "八廓街藏餐",
+          "score": 0.75
+        },
+        {
+          "name": "雪域老灶火锅",
+          "score": 0.7
+        },
+        {
+          "name": "纳木错",
+          "score": 0.1583
+        },
+        {
+          "name": "大昭寺",
+          "score": 0.1583
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "雨季拉萨 · 五日深度人文之旅",
+        "days_count": 5,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "药王山观景台",
+              "布达拉宫",
+              "老光明岗琼甜茶馆",
+              "大昭寺"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "扎基寺",
+              "安多诺增藏餐",
+              "仓姑寺茶馆",
+              "西藏革命建设改革纪念馆"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "哲蚌寺",
+              "罗布林卡",
+              "前站牦牛酸奶坊",
+              "桑吉拉姆拉萨菜"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "HZ_ANCIENT_3D",
+      "city": "杭州",
+      "days": 3,
+      "total_score": 83.0,
+      "dimensions": {
+        "rag_quality": 80.0,
+        "itinerary_quality": 75,
+        "data_coverage": 95
+      },
+      "issues": [
+        "餐厅推荐不足: 0 < 4",
+        "餐厅推荐不足: 0 < 4",
+        "酒店推荐不足: 0 < 1",
+        "杭州 缺少POI: 乌镇"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "新叶村乡土建筑",
+          "score": 0.406
+        },
+        {
+          "name": "杭州西湖风景名胜区",
+          "score": 0.3166
+        },
+        {
+          "name": "梅城北峰塔",
+          "score": 0.2892
+        },
+        {
+          "name": "西湖博览会博物馆",
+          "score": 0.2415
+        },
+        {
+          "name": "文澜阁",
+          "score": 0.2364
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "盛夏杭州 · 三日休闲文化之旅",
+        "days_count": 3,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "杭州西湖风景名胜区",
+              "胡雪岩故居",
+              "西湖博览会博物馆",
+              "灵隐寺"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "临安城",
+              "郊坛下和老虎洞窑址",
+              "烟霞洞造像",
+              "章太炎故居"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "杭州碑林",
+              "良渚古城外围水利工程遗址",
+              "新叶村乡土建筑",
+              "吴记餐厅·杭帮菜·私房菜(西湖湖滨店)"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "KM_FOOD_3D",
+      "city": "昆明",
+      "days": 3,
+      "total_score": 81.5,
+      "dimensions": {
+        "rag_quality": 80.0,
+        "itinerary_quality": 75,
+        "data_coverage": 90
+      },
+      "issues": [
+        "仅1/3个期望POI被推荐",
+        "餐厅推荐不足: 0 < 3",
+        "酒店推荐不足: 0 < 1",
+        "昆明 缺少POI: 石林, 民族村"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "过桥米线博物馆",
+          "score": 0.8
+        },
+        {
+          "name": "云味集·云南菜",
+          "score": 0.75
+        },
+        {
+          "name": "建新园过桥米线",
+          "score": 0.75
+        },
+        {
+          "name": "老滇过桥米线",
+          "score": 0.7
+        },
+        {
+          "name": "滇池绿道草之桥",
+          "score": 0.1633
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "昆明夏日·雷雨季室内漫游三日行程",
+        "days_count": 3,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "昆明市博物馆",
+              "建新园过桥米线",
+              "金马碧鸡坊",
+              "云南省茶文化博物馆"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "云南省博物馆",
+              "云南民族博物馆",
+              "巡津街",
+              "老滇过桥米线"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "聂耳纪念馆",
+              "昆明百货大楼",
+              "云味集·云南菜",
+              "斗南花市"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CS_FOOD_2D",
+      "city": "长沙",
+      "days": 2,
+      "total_score": 80.5,
+      "dimensions": {
+        "rag_quality": 70.0,
+        "itinerary_quality": 75,
+        "data_coverage": 100
+      },
+      "issues": [
+        "Top1评分过低 (0.25)",
+        "餐厅推荐不足: 1 < 4",
+        "餐厅推荐不足: 0 < 4",
+        "酒店推荐不足: 0 < 1"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "岳麓山禹王碑",
+          "score": 0.2504
+        },
+        {
+          "name": "爱晚亭",
+          "score": 0.2193
+        },
+        {
+          "name": "岳麓书院",
+          "score": 0.2162
+        },
+        {
+          "name": "橘子洲头",
+          "score": 0.1866
+        },
+        {
+          "name": "黄兴故居、墓",
+          "score": 0.1733
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "夏雨长沙 · 两日休闲行程",
+        "days_count": 2,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "岳麓书院",
+              "太平街",
+              "火宫殿(坡子街总店)",
+              "黄兴故居、墓"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "铜官窑国风乐园",
+              "渔米湘•铜官窑本地土菜",
+              "长沙IFS国金中心",
+              "坡子街"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "NB_WEEKEND_2D",
+      "city": "宁波",
+      "days": 2,
+      "total_score": 77.5,
+      "dimensions": {
+        "rag_quality": 100,
+        "itinerary_quality": 75,
+        "data_coverage": 50
+      },
+      "issues": [
+        "餐厅推荐不足: 0 < 2",
+        "酒店推荐不足: 0 < 1",
+        "宁波 POI数据极少: 仅6条",
+        "宁波 酒店不足: 0 < 1"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "天一阁",
+          "score": 1.0
+        },
+        {
+          "name": "老外滩",
+          "score": 0.975
+        },
+        {
+          "name": "东钱湖旅游度假区",
+          "score": 0.8
+        },
+        {
+          "name": "缸鸭狗",
+          "score": 0.8
+        },
+        {
+          "name": "溪口风景区",
+          "score": 0.75
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "盛夏宁波 · 两日避暑休闲行",
+        "days_count": 2,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "天一阁",
+              "缸鸭狗",
+              "赵大有糕饼店",
+              "老外滩"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "东钱湖旅游度假区",
+              "韩岭老街",
+              "宁波博物馆",
+              "南塘老街"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "FX_WEEKEND_2D",
+      "city": "福州",
+      "days": 2,
+      "total_score": 77.5,
+      "dimensions": {
+        "rag_quality": 70.0,
+        "itinerary_quality": 75,
+        "data_coverage": 90
+      },
+      "issues": [
+        "仅0/2个期望POI被推荐",
+        "餐厅推荐不足: 0 < 2",
+        "酒店推荐不足: 0 < 1",
+        "福州 缺少POI: 三坊七巷, 鼓山"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "聚春园",
+          "score": 0.8
+        },
+        {
+          "name": "安泰楼",
+          "score": 0.75
+        },
+        {
+          "name": "连江海鲜酒楼",
+          "score": 0.7
+        },
+        {
+          "name": "文儒坊小吃",
+          "score": 0.7
+        },
+        {
+          "name": "白云顶",
+          "score": 0.1425
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "夏雨福州 · 两日休闲行程",
+        "days_count": 2,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "安泰楼",
+              "上下杭历史文化街区",
+              "文儒坊小吃",
+              "福建省科技馆"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "于山风景名胜公园",
+              "连江海鲜酒楼",
+              "学生街城市广场",
+              "烟台山历史风貌区"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "SH_MUSEUM_4D",
+      "city": "上海",
+      "days": 4,
+      "total_score": 69.5,
+      "dimensions": {
+        "rag_quality": 50.0,
+        "itinerary_quality": 75,
+        "data_coverage": 90
+      },
+      "issues": [
+        "仅0/3个期望POI被推荐",
+        "Top1评分过低 (0.15)",
+        "餐厅推荐不足: 0 < 3",
+        "酒店推荐不足: 1 < 2",
+        "上海 缺少POI: 故宫博物院, 上海博物馆"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "上海迪士尼乐园",
+          "score": 0.155
+        },
+        {
+          "name": "东方滨江大酒店",
+          "score": 0.1355
+        },
+        {
+          "name": "世茂皇家艾美酒店",
+          "score": 0.1355
+        },
+        {
+          "name": "Courtyard万豪酒店",
+          "score": 0.1355
+        },
+        {
+          "name": "华美达上海五角场大酒店",
+          "score": 0.1351
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "盛夏上海 · 四日深度行程",
+        "days_count": 4,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "上海科技馆",
+              "東方明珠廣播電視塔",
+              "上海海鸥丽晶酒店",
+              "上海迪士尼乐园"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "上海鲁迅故居",
+              "上海外滩建筑群",
+              "大上海电影院",
+              "四行仓库"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "广富林遗址",
+              "辰山",
+              "农家菜老大(松江店)",
+              "上海动物园"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CD_CHILD_4D",
+      "city": "成都",
+      "days": 4,
+      "total_score": 69.5,
+      "dimensions": {
+        "rag_quality": 50.0,
+        "itinerary_quality": 75,
+        "data_coverage": 90
+      },
+      "issues": [
+        "仅0/3个期望POI被推荐",
+        "Top1评分过低 (0.19)",
+        "餐厅推荐不足: 0 < 3",
+        "酒店推荐不足: 0 < 2",
+        "成都 缺少POI: 熊猫基地, 海洋馆"
+      ],
+      "recommendations_preview": [
+        {
+          "name": "成都大熊猫繁育研究基地",
+          "score": 0.1884
+        },
+        {
+          "name": "天师洞",
+          "score": 0.1492
+        },
+        {
+          "name": "成都永陵博物馆",
+          "score": 0.1406
+        },
+        {
+          "name": "满堂·匠心川宴",
+          "score": 0.1404
+        },
+        {
+          "name": "观音阁老茶馆",
+          "score": 0.1404
+        }
+      ],
+      "itinerary_preview": {
+        "trip_title": "盛夏成都 · 四日室内文化漫游",
+        "days_count": 4,
+        "daily_pois": [
+          {
+            "day": 1,
+            "pois": [
+              "成都永陵博物馆",
+              "杜甫草堂",
+              "金沙遺址",
+              "满堂·匠心川宴"
+            ]
+          },
+          {
+            "day": 2,
+            "pois": [
+              "青羊宫",
+              "四川科技馆",
+              "成都古蜀船棺合葬墓",
+              "海底捞火锅"
+            ]
+          },
+          {
+            "day": 3,
+            "pois": [
+              "昭觉寺",
+              "宝光寺",
+              "满堂·匠心川宴",
+              "成都直升机博物馆"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

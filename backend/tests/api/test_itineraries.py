@@ -1,5 +1,7 @@
 """
 API 集成测试 — Itineraries Endpoints
+
+Phase 12.30: 真实 DB 测试模式，不再覆盖 get_db。
 """
 
 import pytest

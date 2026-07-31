@@ -6,7 +6,9 @@ Uses DeepSeek chat_structured() to parse user intent into JSON with fields:
   destination, budget_level, days, companions, tags, travel_style, constraints.
 """
 
+import json
 import logging
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from app.services.llm_service import get_llm_provider
@@ -15,6 +17,31 @@ logger = logging.getLogger(__name__)
 
 # Phase 12.10: City alias resolver for normalizing non-standard destinations
 _resolve_city_alias = None
+
+# Phase 4.1: Dynamically load valid tags from tags.json
+def _load_valid_tags() -> set:
+    """Load valid tags from tags.json with fallback to hardcoded defaults."""
+    try:
+        tags_path = Path(__file__).parent.parent.parent / "data" / "tags.json"
+        if tags_path.exists():
+            with open(tags_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            return set(data.get("all_tags", []))
+    except Exception as e:
+        logger.warning(f"Failed to load tags.json: {e}")
+    
+    # Fallback to defaults
+    return {
+        "美食", "历史", "摄影", "自然", "购物", "亲子", "情侣",
+        "夜生活", "小众", "文艺", "探险", "休闲", "网红打卡", "博物馆", "古镇", "温泉",
+        "滑雪", "海岛", "爬山", "寺庙", "日出", "日落", "赏花", "红叶", "演出",
+        "文化", "海滩", "海边", "小吃", "火锅", "登山", "观景"
+    }
+
+
+# VALID_TAGS is now dynamically loaded from tags.json
+VALID_TAGS = _load_valid_tags()
+logger.info(f"Loaded {len(VALID_TAGS)} valid tags from tags.json")
 
 
 def _get_city_alias_resolver():
@@ -146,14 +173,7 @@ PROFILE_SYSTEM_PROMPT = """你是一个旅行需求分析专家。你的任务�
 
 只输出 JSON，不要输出其他内容。"""
 
-
-# ── Allowed tags (must match schema description) ────────────
-
-VALID_TAGS = {
-    "美食", "历史", "摄影", "自然", "购物", "亲子", "情侣",
-    "夜生活", "小众", "文艺", "探险", "休闲", "网红打卡", "博物馆", "古镇", "温泉",
-    "滑雪", "海岛", "爬山", "寺庙", "日出", "日落", "赏花", "红叶", "演出",
-}
+# ── Note: VALID_TAGS is now dynamically loaded from tags.json at module top ───
 
 # ── Post-processing ──────────────────────────────────────
 

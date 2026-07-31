@@ -58,7 +58,7 @@ export function ChatInput({ onSend, disabled, placeholder }: ChatInputProps) {
         disabled={disabled}
         rows={1}
         placeholder={placeholder || '输入你的旅行需求... (Shift+Enter 换行)'}
-        className="flex-1 resize-none rounded-2xl border border-border bg-surface-secondary px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 transition-all focus:border-brand-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-100 disabled:opacity-50"
+        className="flex-1 resize-none rounded-2xl border border-border bg-surface-secondary dark:bg-slate-800/60 px-4 py-2.5 text-sm text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all focus:border-brand-400 dark:focus:border-brand-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40 disabled:opacity-50"
         aria-label="输入消息"
       />
       <button

@@ -69,26 +69,54 @@ def _build_metadata(attraction: Dict[str, Any]) -> Dict[str, Any]:
 
     Chroma metadata only supports str, int, float, bool — nested objects
     like price_range are flattened into price_range_min / price_range_max.
+
+    Truthful data: price_range can be null (not verified).
     """
-    pr = attraction.get("price_range") or {}
+    pr = attraction.get("price_range")
+    has_price = pr is not None and isinstance(pr, dict)
+
+    # Price: use 0 for min/max when not verified, but mark as unverifiable
+    if has_price:
+        pr_min = int(pr.get("min", 0))
+        pr_max = int(pr.get("max", 0))
+        price_verifiable = True
+    else:
+        pr_min = 0
+        pr_max = 0
+        price_verifiable = False
+
     return {
         "name": attraction.get("name", ""),
+        "name_normalized": attraction.get("name_normalized", attraction.get("name", "")),
         "city": attraction.get("city", ""),
         "lat": attraction.get("lat"),
         "lon": attraction.get("lon"),
         "tags": ", ".join(attraction.get("tags", [])) if attraction.get("tags") else "",
-        "price_level": attraction.get("price_level", "适中"),
-        # Phase 7: Flat price fields for Chroma compatibility
-        "price_range_min": int(pr.get("min", 0)) if isinstance(pr, dict) else 0,
-        "price_range_max": int(pr.get("max", 0)) if isinstance(pr, dict) else 0,
-        "price_source": attraction.get("price_source", ""),
-        "price_updated_at": attraction.get("price_updated_at", ""),
+        "price_level": attraction.get("price_level", ""),
+        # Truthful price fields
+        "price_range_min": pr_min,
+        "price_range_max": pr_max,
+        "price_verifiable": price_verifiable,
+        "price_source": attraction.get("price_source", "") or "",
+        "price_updated_at": attraction.get("price_updated_at", "") or "",
         "amap_id": attraction.get("amap_id", ""),
-        "popularity_score": attraction.get("popularity_score", 5),
-        "best_time": attraction.get("best_time", "全年"),
-        "suitable_for": attraction.get("suitable_for", ""),
-        "instance_of": attraction.get("instance_of", ""),
-        "source": attraction.get("source", ""),
+        "popularity_score": attraction.get("popularity_score", 0),
+        "best_time": attraction.get("best_time", "") or "",
+        "suitable_for": attraction.get("suitable_for", "") or "",
+        "instance_of": attraction.get("instance_of", "") or "",
+        "source": attraction.get("source", "") or "",
+        "internal_rating": attraction.get("internal_rating", 0),
+        "data_reliability": (
+            attraction.get("data_quality", {}).get("reliability", "unknown")
+            if isinstance(attraction.get("data_quality"), dict)
+            else "unknown"
+        ),
+        "description_source": attraction.get("description_source", "") or "",
+        "description_quality": attraction.get("description_quality", "") or "",
+        "wiki_article": attraction.get("wiki_article", "") or "",
+        "thumbnail_url": attraction.get("thumbnail_url", "") or "",
+        # Truncated description for keyword matching in rerank
+        "description": (attraction.get("description", "") or "")[:500],
     }
 
 
@@ -167,9 +195,10 @@ def main():
     logger.info(f"✓ ChromaDB knowledge base built: {count} documents")
 
     # Quick sanity check — search for something
-    from app.rag.retriever import retrieve_by_preferences
+    from app.rag.retriever import retrieve_by_preferences, retrieve
 
     async def _run_tests():
+        # Test 1: City-based retrieval
         test_cities = ["重庆", "北京", "成都"]
         for city in test_cities:
             t0 = time.time()
@@ -180,6 +209,33 @@ def main():
                 logger.info(f"  Test '{city}': {top_names} ({elapsed:.3f}s)")
             else:
                 logger.warning(f"  Test '{city}': no results ({elapsed:.3f}s)")
+
+        # Test 2: P0-1 fix — preference recall (keyword matching)
+        logger.info("  --- P0-1 Preference Recall Tests ---")
+        test_queries = [
+            ({"destination": "成都", "tags": ["熊猫", "亲子"]}, "熊猫基地/亲子"),
+            ({"destination": "北京", "tags": ["历史", "皇家"]}, "历史皇家"),
+            ({"destination": "西安", "tags": ["古迹", "文物"]}, "古迹文物"),
+            ({"destination": "重庆", "tags": ["夜景", "网红"]}, "夜景网红"),
+        ]
+        for profile, desc in test_queries:
+            t0 = time.time()
+            items = await retrieve(
+                query=f"{profile['destination']}好玩的地方",
+                user_profile=profile,
+                top_k=5,
+            )
+            elapsed = time.time() - t0
+            if items:
+                top_names = [item.get("metadata", {}).get("name", "?") for item in items[:3]]
+                scores = [item.get("_score_breakdown", {}) for item in items[:3]]
+                keyword_hits = [s.get("keyword_hit", 0) for s in scores]
+                logger.info(
+                    f"  Pref '{desc}': {top_names} | "
+                    f"keyword_hits={keyword_hits} ({elapsed:.3f}s)"
+                )
+            else:
+                logger.warning(f"  Pref '{desc}': no results ({elapsed:.3f}s)")
 
     import asyncio
     asyncio.run(_run_tests())

@@ -13,6 +13,9 @@ pytestmark = pytest.mark.asyncio
 @pytest.fixture(autouse=True)
 def mock_all_agents():
     """Mock orchestrator 模块级的惰性子 agent 引用。"""
+    # Pre-import the module to avoid lazy loading issues
+    import app.agents.orchestrator  # noqa: F401
+    
     patches = {
         "_extract_profile": AsyncMock(return_value={
             "destination": "重庆", "tags": ["美食", "夜景"],

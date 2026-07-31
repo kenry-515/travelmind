@@ -1,5 +1,7 @@
 """
 API 集成测试 — Health Endpoint
+
+Phase 12.30: 真实 DB 测试模式。
 """
 
 import pytest
@@ -16,6 +18,4 @@ async def test_health_returns_ok():
         resp = await client.get("/api/v1/health")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["status"] == "ok" or data["status"] == "degraded"
-        assert "services" in data
-        assert data["services"]["api"] == "healthy"
+        assert data["status"] == "ok"

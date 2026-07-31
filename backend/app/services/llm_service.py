@@ -1,6 +1,12 @@
 """
 TravelMind Agent — LLM Service
 DeepSeek provider implementation using OpenAI-compatible SDK.
+
+Phase 16.6 stability enhancements:
+- Concurrency control (Semaphore): prevents 429 rate limiting under load
+- Timeout stratification: structured calls get 1.5x timeout (heavier JSON gen)
+- JSON repair fallback: reuses llm_json_utils to recover malformed output
+- thinking/tool_choice conflict handling: auto-degrades when thinking is on
 """
 
 import asyncio
@@ -13,6 +19,7 @@ from openai import AsyncOpenAI
 
 from app.config.settings import settings
 from app.core import BaseLLMProvider
+from app.services.llm_json_utils import parse_structured_output
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +57,7 @@ class DeepSeekProvider(BaseLLMProvider):
         max_tokens: int = 4096,
         timeout: Optional[float] = None,
         thinking: bool = False,
+        max_concurrent: Optional[int] = None,
     ):
         self.model = model or settings.LLM_MODEL
         self.temperature = temperature
@@ -69,14 +77,29 @@ class DeepSeekProvider(BaseLLMProvider):
 
         # trust_env=False: ignore the Windows system proxy — a stale local
         # proxy breaks httpx TLS, while api.deepseek.com is reachable directly.
-        timeout = timeout or settings.LLM_TIMEOUT
+        self._timeout = timeout or settings.LLM_TIMEOUT
         self.client = AsyncOpenAI(
             api_key=key,
             base_url=base_url or settings.DEEPSEEK_BASE_URL,
-            timeout=timeout,
+            timeout=self._timeout,
             max_retries=2,
-            http_client=httpx.AsyncClient(trust_env=False, timeout=timeout),
+            http_client=httpx.AsyncClient(trust_env=False, timeout=self._timeout),
         )
+
+        # Phase 16.6: 结构化调用超时 — 生成复杂 JSON 需更长时间
+        self._structured_timeout = self._timeout * settings.LLM_STRUCTURED_TIMEOUT_MULT
+
+        # Phase 16.6: 并发限流器 — 懒初始化以兼容测试中的多事件循环
+        # 单例 provider 共享一个 Semaphore，生产环境全局生效；
+        # 测试中每个 provider 实例独立，互不干扰。
+        self._max_concurrent = max_concurrent or settings.LLM_MAX_CONCURRENT
+        self._concurrency: Optional[asyncio.Semaphore] = None
+
+    def _get_semaphore(self) -> asyncio.Semaphore:
+        """懒创建并发限流器（在首次异步调用时绑定当前事件循环）。"""
+        if self._concurrency is None:
+            self._concurrency = asyncio.Semaphore(self._max_concurrent)
+        return self._concurrency
 
     def _thinking_extra_body(self) -> Dict[str, Any]:
         """Request body extension: explicitly toggle DeepSeek V4 thinking mode."""
@@ -88,26 +111,33 @@ class DeepSeekProvider(BaseLLMProvider):
         system_prompt: Optional[str] = None,
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
+        timeout: Optional[float] = None,
         **kwargs,
     ) -> str:
-        """Send a chat completion and return the response text."""
+        """Send a chat completion and return the response text.
+
+        Phase 16.6: 加入并发限流与按调用超时覆盖。
+        """
         full_messages = self._build_messages(messages, system_prompt)
+        call_timeout = timeout if timeout is not None else self._timeout
 
-        try:
-            response = await self.client.chat.completions.create(
-                model=self.model,
-                messages=full_messages,  # type: ignore
-                temperature=temperature if temperature is not None else self.temperature,
-                max_tokens=max_tokens if max_tokens is not None else self.max_tokens,
-                extra_body=self._thinking_extra_body(),
-                **kwargs,
-            )
-            content = response.choices[0].message.content
-            return content or ""
+        async with self._get_semaphore():
+            try:
+                response = await self.client.chat.completions.create(
+                    model=self.model,
+                    messages=full_messages,  # type: ignore
+                    temperature=temperature if temperature is not None else self.temperature,
+                    max_tokens=max_tokens if max_tokens is not None else self.max_tokens,
+                    timeout=call_timeout,
+                    extra_body=self._thinking_extra_body(),
+                    **kwargs,
+                )
+                content = response.choices[0].message.content
+                return content or ""
 
-        except Exception as e:
-            logger.error(f"DeepSeek chat error: {e}")
-            raise
+            except Exception as e:
+                logger.error(f"DeepSeek chat error: {e}")
+                raise
 
     async def chat_stream(
         self,
@@ -115,29 +145,36 @@ class DeepSeekProvider(BaseLLMProvider):
         system_prompt: Optional[str] = None,
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
+        timeout: Optional[float] = None,
         **kwargs,
     ) -> AsyncIterator[str]:
-        """Send a streaming chat completion, yielding text chunks."""
+        """Send a streaming chat completion, yielding text chunks.
+
+        Phase 16.6: 加入并发限流与按调用超时覆盖。
+        """
         full_messages = self._build_messages(messages, system_prompt)
+        call_timeout = timeout if timeout is not None else self._timeout
 
-        try:
-            stream = await self.client.chat.completions.create(
-                model=self.model,
-                messages=full_messages,  # type: ignore
-                temperature=temperature if temperature is not None else self.temperature,
-                max_tokens=max_tokens if max_tokens is not None else self.max_tokens,
-                stream=True,
-                extra_body=self._thinking_extra_body(),
-                **kwargs,
-            )
-            async for chunk in stream:
-                delta = chunk.choices[0].delta
-                if delta.content:
-                    yield delta.content
+        async with self._get_semaphore():
+            try:
+                stream = await self.client.chat.completions.create(
+                    model=self.model,
+                    messages=full_messages,  # type: ignore
+                    temperature=temperature if temperature is not None else self.temperature,
+                    max_tokens=max_tokens if max_tokens is not None else self.max_tokens,
+                    stream=True,
+                    timeout=call_timeout,
+                    extra_body=self._thinking_extra_body(),
+                    **kwargs,
+                )
+                async for chunk in stream:
+                    delta = chunk.choices[0].delta
+                    if delta.content:
+                        yield delta.content
 
-        except Exception as e:
-            logger.error(f"DeepSeek stream error: {e}")
-            raise
+            except Exception as e:
+                logger.error(f"DeepSeek stream error: {e}")
+                raise
 
     async def chat_structured(
         self,
@@ -145,12 +182,22 @@ class DeepSeekProvider(BaseLLMProvider):
         output_schema: Dict[str, Any],
         system_prompt: Optional[str] = None,
         temperature: float = 0.3,
+        timeout: Optional[float] = None,
         **kwargs,
     ) -> Dict[str, Any]:
         """Send a chat request and return structured JSON output.
 
         Uses tool-calling with a single 'output' function whose parameters
-        are defined by output_schema. The model is forced to call this function.
+        are defined by output_schema.
+
+        Phase 16.6 stability enhancements:
+        - 并发限流：Semaphore 防止高并发触发 429
+        - 超时分层：默认 1.5x LLM_TIMEOUT（结构化生成更重）
+        - JSON 修复回退：tool_call 参数或 content 解析失败时，走
+          parse_structured_output 全流程（markdown 剥离、尾逗号清理、
+          单引号转双引号），大幅降低 JSONDecodeError 抛出率
+        - thinking/tool_choice 冲突：thinking 模式下强制 tool_choice 会被
+          DeepSeek 拒绝，自动改用 "auto" 并依赖 content+repair 兜底
         """
         full_messages = self._build_messages(messages, system_prompt)
 
@@ -177,42 +224,62 @@ class DeepSeekProvider(BaseLLMProvider):
             },
         }]
 
-        try:
-            response = await self.client.chat.completions.create(
-                model=self.model,
-                messages=full_messages,  # type: ignore
-                temperature=temperature,
-                tools=tools,  # type: ignore
-                tool_choice={"type": "function", "function": {"name": "output"}},
-                extra_body=self._thinking_extra_body(),
-                **kwargs,
-            )
+        # Phase 16.6: thinking 模式拒绝强制 tool_choice，改用 auto + content 兜底
+        if self.thinking:
+            tool_choice: Any = "auto"
+        else:
+            tool_choice = {"type": "function", "function": {"name": "output"}}
 
-            # Phase 14e: Log token usage
-            usage = getattr(response, "usage", None)
-            if usage:
-                logger.info(
-                    "LLM tokens — prompt=%d completion=%d total=%d",
-                    usage.prompt_tokens, usage.completion_tokens, usage.total_tokens,
+        call_timeout = timeout if timeout is not None else self._structured_timeout
+
+        async with self._get_semaphore():
+            try:
+                response = await self.client.chat.completions.create(
+                    model=self.model,
+                    messages=full_messages,  # type: ignore
+                    temperature=temperature,
+                    tools=tools,  # type: ignore
+                    tool_choice=tool_choice,
+                    timeout=call_timeout,
+                    extra_body=self._thinking_extra_body(),
+                    **kwargs,
                 )
 
-            tool_calls = response.choices[0].message.tool_calls
-            if tool_calls and tool_calls[0].function.arguments:
-                return json.loads(tool_calls[0].function.arguments)
+                # Phase 14e: Log token usage
+                usage = getattr(response, "usage", None)
+                if usage:
+                    logger.info(
+                        "LLM tokens — prompt=%d completion=%d total=%d",
+                        usage.prompt_tokens, usage.completion_tokens, usage.total_tokens,
+                    )
 
-            # Fallback: try to parse content as JSON
-            content = response.choices[0].message.content
-            if content:
-                return json.loads(content)
+                # 1. 优先走 tool_call 参数（最可靠的结构化路径）
+                tool_calls = response.choices[0].message.tool_calls
+                if tool_calls and tool_calls[0].function.arguments:
+                    args_str = tool_calls[0].function.arguments
+                    # Phase 16.6: 容错解析 tool_call 参数（偶发带 markdown/尾逗号）
+                    result = parse_structured_output(args_str)
+                    if result is not None:
+                        return result
+                    logger.warning(
+                        "tool_call arguments JSON parse failed, trying content fallback"
+                    )
 
-            raise ValueError("chat_structured failed to parse LLM output")
+                # 2. 回退：解析 content（带完整修复流程）
+                content = response.choices[0].message.content
+                if content:
+                    result = parse_structured_output(content)
+                    if result is not None:
+                        logger.info(
+                            "Structured output recovered via content + JSON repair"
+                        )
+                        return result
 
-        except json.JSONDecodeError as e:
-            logger.error(f"Failed to parse structured output: {e}")
-            raise ValueError("chat_structured failed to parse LLM output") from e
-        except Exception as e:
-            logger.error(f"DeepSeek structured output error: {e}")
-            raise
+                raise ValueError("chat_structured failed to parse LLM output")
+
+            except Exception as e:
+                logger.error(f"DeepSeek structured output error: {e}")
+                raise
 
     def _build_messages(
         self,
@@ -249,3 +316,9 @@ async def get_llm_provider() -> DeepSeekProvider:
         if _llm_provider is None:
             _llm_provider = DeepSeekProvider()
     return _llm_provider
+
+
+def reset_llm_provider() -> None:
+    """测试用：重置工厂单例。"""
+    global _llm_provider
+    _llm_provider = None

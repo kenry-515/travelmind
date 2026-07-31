@@ -35,6 +35,9 @@ chroma_data/
 *.log
 *.pid
 
+# Session store (SQLite dev backend)
+backend/.sessions/
+
 # Test / debug artifacts
 *-smoke.json
 .webbridge-req-*.json

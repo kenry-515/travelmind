@@ -162,31 +162,16 @@ export function ChatPage() {
     }
   }, [])
 
-  const { getPlacesForPrompt, addPlace } = useSavedPlaces()
+  const { getPlacesForPrompt } = useSavedPlaces()
   const getPlacesForPromptRef = useRef(getPlacesForPrompt)
   useEffect(() => { getPlacesForPromptRef.current = getPlacesForPrompt }, [getPlacesForPrompt])
-
-  // Phase 14: 行程生成后自动收藏 POI 到侧边栏
-  useEffect(() => {
-    if (dialog.stage === 'delivered' && dialog.itinerary) {
-      const seen = new Set<string>()
-      for (const day of dialog.itinerary.days || []) {
-        for (const item of day.items || []) {
-          const name = item.poi || ''
-          if (name && !seen.has(name)) {
-            seen.add(name)
-            addPlace({ name, city: dialog.slots?.city || '', tags: [], note: '', source: 'chat' })
-          }
-        }
-      }
-    }
-  }, [dialog.stage, dialog.itinerary, dialog.slots?.city, addPlace])
 
   const sendText = useCallback(
     async (text: string) => {
       setMessages((prev) => [...prev, { id: genId(), role: 'user', content: text }])
       setLoading(true)
-      const savedPrompt = getPlacesForPromptRef.current()
+      // Phase 15.4: Only send saved places that match current city context
+      const savedPrompt = getPlacesForPromptRef.current(dialog.slots?.city ?? undefined)
       const enrichedText = savedPrompt ? `${text}\n\n${savedPrompt}` : text
       try {
         const d = await sendDialogMessage({
@@ -203,7 +188,7 @@ export function ChatPage() {
         setLoading(false)
       }
     },
-    [dialog.sessionId, applyResponse]
+    [dialog.sessionId, dialog.slots?.city, applyResponse]
   )
 
   // 首页带 q 进入
@@ -350,14 +335,14 @@ export function ChatPage() {
       <header className="glass relative flex items-center gap-2 border-b border-border-light px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
         <Link
           to="/"
-          className="rounded-xl p-1.5 text-slate-500 transition-colors hover:bg-brand-50 hover:text-brand-600"
+          className="rounded-xl p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-600 dark:hover:text-brand-400"
           aria-label="返回首页"
         >
           <ArrowLeft size={20} />
         </Link>
         <div className="min-w-0 flex-1">
-          <h2 className="text-sm font-semibold text-slate-800">对话式规划</h2>
-          <p className="hidden text-xs text-slate-400 sm:block">
+          <h2 className="text-sm font-semibold text-slate-800 dark:text-slate-200">对话式规划</h2>
+          <p className="hidden text-xs text-slate-400 dark:text-slate-500 sm:block">
             {dialog.stage === 'delivered'
               ? '行程已生成 · 直接说修改意见'
               : dialog.stage === 'refused'
@@ -367,7 +352,7 @@ export function ChatPage() {
         </div>
         <Link
           to="/history"
-          className="flex items-center gap-1 rounded-xl px-2 py-1.5 text-xs text-slate-400 transition-colors hover:bg-brand-50 hover:text-brand-600"
+          className="flex items-center gap-1 rounded-xl px-2 py-1.5 text-xs text-slate-400 dark:text-slate-500 transition-colors hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-600 dark:hover:text-brand-400"
           aria-label="我的行程"
         >
           <List size={14} />
@@ -376,7 +361,7 @@ export function ChatPage() {
         {(messages.length > 0 || dialog.sessionId) && (
           <button
             onClick={clearAll}
-            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-slate-400 transition-colors hover:bg-slate-100 hover:text-red-500"
+            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-slate-400 dark:text-slate-500 transition-colors hover:bg-slate-100 dark:bg-slate-800 hover:text-red-500"
             aria-label="清空对话"
           >
             <Trash2 size={14} />
@@ -403,7 +388,7 @@ export function ChatPage() {
                 <button
                   key={s.label || s.text}
                   onClick={() => sendText(s.text || s.label)}
-                  className="rounded-full border border-brand-200 bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-700 transition-all hover:bg-brand-100 hover:shadow-sm"
+                  className="rounded-full border border-brand-200 dark:border-brand-800 bg-brand-50 dark:bg-brand-900/30 px-3 py-1.5 text-xs font-medium text-brand-700 dark:text-brand-300 transition-all hover:bg-brand-100 dark:hover:bg-brand-900/50 hover:shadow-sm"
                 >
                   {s.label}
                 </button>
@@ -413,9 +398,9 @@ export function ChatPage() {
 
           {/* Phase 8.1: 拒答卡片 — KB外城市 */}
           {dialog.refused && (
-            <div className="mb-3 rounded-2xl border border-amber-200 bg-amber-50 p-4">
-              <p className="text-sm font-medium text-amber-800">⚠️ 暂不支持该目的地</p>
-              <p className="mt-1 text-xs text-amber-700">
+            <div className="mb-3 rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 p-4">
+              <p className="text-sm font-medium text-amber-800 dark:text-amber-300">⚠️ 暂不支持该目的地</p>
+              <p className="mt-1 text-xs text-amber-700 dark:text-amber-400">
                 {dialog.refuse_reason || '该城市暂不在知识库覆盖范围内，建议选择以下支持的城市。'}
               </p>
               {dialog.suggestions && dialog.suggestions.length > 0 && (
@@ -424,7 +409,7 @@ export function ChatPage() {
                     <button
                       key={i}
                       onClick={() => sendText(s.text || s.label || `我想去${s.city}玩${s.days}天`)}
-                      className="rounded-full border border-amber-300 bg-white px-3 py-1.5 text-xs font-medium text-amber-700 transition-colors hover:bg-amber-100"
+                      className="rounded-full border border-amber-300 dark:border-amber-700 bg-white dark:bg-slate-900 px-3 py-1.5 text-xs font-medium text-amber-700 dark:text-amber-400 transition-colors hover:bg-amber-100 dark:hover:bg-amber-900/30"
                     >
                       {s.label || s.city}
                     </button>
@@ -436,7 +421,7 @@ export function ChatPage() {
 
           {/* Phase 8.1: 覆盖降级提示条 */}
           {dialog.coverage_warning && dialog.itinerary && (
-            <div className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-700">
+            <div className="mb-3 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 px-4 py-2 text-xs text-amber-700 dark:text-amber-400">
               ⚠️ {dialog.coverage_warning}
             </div>
           )}
@@ -455,7 +440,7 @@ export function ChatPage() {
           {/* 生成中：真实管线阶段进度（SSE） */}
           {generating && (
             <div className="card mb-3 p-4">
-              <div className="flex items-center gap-2 text-sm font-semibold text-brand-600">
+              <div className="flex items-center gap-2 text-sm font-semibold text-brand-600 dark:text-brand-400">
                 <Loader2 size={16} className="animate-spin" />
                 正在生成行程，约需 30-60 秒
               </div>
@@ -474,16 +459,16 @@ export function ChatPage() {
                     <span
                       className={
                         s.status === 'pending'
-                          ? 'text-slate-300'
+                          ? 'text-slate-300 dark:text-slate-600'
                           : s.status === 'running'
-                          ? 'font-medium text-slate-800'
-                          : 'text-slate-500'
+                          ? 'font-medium text-slate-800 dark:text-slate-200'
+                          : 'text-slate-500 dark:text-slate-400'
                       }
                     >
                       {s.label}
                     </span>
                     {s.status === 'running' && s.message && (
-                      <span className="truncate text-slate-400">{s.message}</span>
+                      <span className="truncate text-slate-400 dark:text-slate-500">{s.message}</span>
                     )}
                   </li>
                 ))}
@@ -495,25 +480,25 @@ export function ChatPage() {
           {dialog.stage === 'delivered' && dialog.itinerary && (
             <>
               <button onClick={openItinerary} className="card hover-lift mb-2 w-full p-4 text-left">
-                <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
+                <div className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-slate-100">
                   <MapPin size={16} className="text-brand-500" />
                   {dialog.itinerary.trip.title}
                 </div>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {dialog.itinerary.trip.stats.slice(0, 4).map((s, i) => (
-                    <span key={i} className="rounded-lg bg-surface-secondary px-2 py-1 text-xs text-slate-600">
+                    <span key={i} className="rounded-lg bg-surface-secondary px-2 py-1 text-xs text-slate-600 dark:text-slate-400">
                       {s.value} · {s.label}
                     </span>
                   ))}
                 </div>
                 <div className="mt-2 space-y-1">
                   {dialog.itinerary.days.map((d) => (
-                    <p key={d.day} className="text-xs text-slate-500">
-                      <span className="font-medium text-slate-700">D{d.day}</span> {d.theme} · {d.title}
+                    <p key={d.day} className="text-xs text-slate-500 dark:text-slate-400">
+                      <span className="font-medium text-slate-700 dark:text-slate-300">{d.theme}</span> · {d.title}
                     </p>
                   ))}
                 </div>
-                <p className="mt-2 text-xs font-semibold text-brand-600">点击查看完整行程 →</p>
+                <p className="mt-2 text-xs font-semibold text-brand-600 dark:text-brand-400">点击查看完整行程 →</p>
               </button>
 
               {/* Phase 14.4: 节奏模板快速调整 */}
@@ -526,10 +511,10 @@ export function ChatPage() {
                   <button
                     key={t.id}
                     onClick={() => sendText(t.msg)}
-                    className="flex-1 rounded-xl border border-border-light bg-white px-2 py-2 text-center text-xs transition-all hover:border-brand-200 hover:bg-brand-50"
+                    className="flex-1 rounded-xl border border-border-light bg-white dark:bg-slate-900 px-2 py-2 text-center text-xs transition-all hover:border-brand-200 dark:hover:border-brand-700 hover:bg-brand-50 dark:hover:bg-brand-900/30"
                   >
                     <span className="block text-sm">{t.icon}</span>
-                    <span className="mt-0.5 block font-medium text-slate-600">{t.label}</span>
+                    <span className="mt-0.5 block font-medium text-slate-600 dark:text-slate-400">{t.label}</span>
                   </button>
                 ))}
               </div>

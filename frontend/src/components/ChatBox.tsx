@@ -58,7 +58,7 @@ function MessageBubble({ msg }: { msg: Message }) {
         className={`max-w-[75%] text-sm leading-relaxed ${
           isUser
             ? 'rounded-2xl rounded-tr-sm bg-gradient-to-br from-brand-500 to-brand-600 px-4 py-2.5 text-white shadow-sm'
-            : 'glass rounded-2xl rounded-tl-sm border border-border-light px-4 py-2.5 text-slate-700 shadow-card'
+            : 'glass rounded-2xl rounded-tl-sm border border-border-light px-4 py-2.5 text-slate-700 dark:text-slate-300 shadow-card'
         }`}
       >
         {isUser ? (
@@ -115,10 +115,10 @@ export function ChatBox({ messages, loading, onStarterSelect }: ChatBoxProps) {
         <div className="mx-auto flex h-full max-w-3xl flex-col justify-center">
           {/* 欢迎泡泡：像朋友先开口打招呼 */}
           <div className="flex gap-3 animate-fade-in-up">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 shadow-sm">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 dark:from-slate-700 dark:to-slate-800 shadow-sm">
               <Bot size={18} className="text-brand-500" />
             </div>
-            <div className="glass max-w-[85%] rounded-2xl rounded-tl-sm border border-border-light px-4 py-3 text-sm leading-relaxed text-slate-700 shadow-card">
+            <div className="glass max-w-[85%] rounded-2xl rounded-tl-sm border border-border-light px-4 py-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300 shadow-card">
               嗨，我是小旅 👋 你的旅行搭子～想去哪儿玩、玩几天、喜欢什么，
               随便聊聊就行，剩下的交给我！不知道说啥的话，点下面随便一个👇
             </div>
@@ -129,7 +129,7 @@ export function ChatBox({ messages, loading, onStarterSelect }: ChatBoxProps) {
                 <button
                   key={s.text}
                   onClick={() => onStarterSelect(s.text)}
-                  className="hover-lift flex items-center gap-2.5 rounded-2xl border border-border bg-white px-4 py-3 text-left text-sm text-slate-700 shadow-card hover:border-brand-300 hover:bg-brand-50/50"
+                  className="hover-lift flex items-center gap-2.5 rounded-2xl border border-border bg-white dark:bg-slate-900 px-4 py-3 text-left text-sm text-slate-700 dark:text-slate-300 shadow-card hover:border-brand-300 dark:hover:border-brand-700 hover:bg-brand-50/50 dark:hover:bg-brand-900/30"
                 >
                   <span className="text-lg">{s.icon}</span>
                   <span>{s.text}</span>

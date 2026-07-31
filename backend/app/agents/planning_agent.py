@@ -17,12 +17,19 @@ logged and {} is returned so the orchestrator can accumulate it.
 import asyncio
 import json
 import logging
-from datetime import date, timedelta
+import re
+from datetime import date, datetime, time, timedelta
 from typing import Any, Dict, List, Optional, Set
 
+from app.services.llm_json_utils import (
+    extract_first_json_object,
+    parse_json_tolerant,
+    repair_json,
+)
 from app.services.llm_service import get_llm_provider
 
 from app.agents.itinerary_contract import (
+    beautify_and_sanitize_day_items,
     budget_sum_mismatch,
     classify_poi_indoor,
     compute_weather_fit,
@@ -41,15 +48,31 @@ from app.agents.itinerary_contract import (
     weather_coverage_errors,
 )
 from app.agents.route_optimizer import optimize_itinerary
+from app.agents.time_aware_planner import (
+    build_enhanced_planning_prompt,
+    build_multi_day_time_schedules,
+    build_time_aware_hint,
+    build_time_slot_prompt_block,
+    rerank_places_by_time,
+    resolve_time_slot,
+)
 from app.config.settings import settings
 from app.services.name_normalizer import normalize_poi_name
 
 logger = logging.getLogger(__name__)
 
 MAX_RETRIES = 2  # 2 retries → 3 attempts total; then structured failure
+MAX_RETRIES_LONG = 4  # More retries for long itineraries (>=4 days)
 
 # Phase 8.1: Feasibility thresholds
 MAX_PLACES_PER_DAY = 8  # Warn if more than 8 visit items per day
+LONG_ITINERARY_THRESHOLD = 4  # Days threshold for "long itinerary" special handling
+
+
+# ── JSON Repair Utilities (Phase 14.1 → 16.6 提取为共享模块) ──
+# 实现已迁移到 app.services.llm_json_utils，此处保留向后兼容别名，
+# 供已有测试与外部引用继续可用。新代码请直接从 llm_json_utils 导入。
+_repair_json = repair_json
 
 
 def _check_feasibility(
@@ -92,51 +115,10 @@ def _check_feasibility(
     return {"feasible": True, "warning": None, "severity": "info"}
 
 
-# ── Tolerant JSON parsing ────────────────────────────────
-
-def _extract_first_json_object(text: str) -> Optional[str]:
-    """Extract the first balanced {...} block, respecting strings/escapes."""
-    start = text.find("{")
-    if start == -1:
-        return None
-    depth = 0
-    in_str = False
-    escape = False
-    for i in range(start, len(text)):
-        ch = text[i]
-        if escape:
-            escape = False
-            continue
-        if ch == "\\":
-            escape = True
-            continue
-        if ch == '"':
-            in_str = not in_str
-            continue
-        if in_str:
-            continue
-        if ch == "{":
-            depth += 1
-        elif ch == "}":
-            depth -= 1
-            if depth == 0:
-                return text[start : i + 1]
-    return None
-
-
-def _parse_json_tolerant(text: str) -> Optional[Dict[str, Any]]:
-    """Parse JSON, falling back to the first balanced object on failure."""
-    try:
-        return json.loads(text)
-    except json.JSONDecodeError:
-        pass
-    candidate = _extract_first_json_object(text)
-    if candidate and candidate != text:
-        try:
-            return json.loads(candidate)
-        except json.JSONDecodeError:
-            pass
-    return None
+# ── Tolerant JSON parsing (Phase 16.6: 提取为共享模块) ────
+# 向后兼容别名；实现见 app.services.llm_json_utils
+_extract_first_json_object = extract_first_json_object
+_parse_json_tolerant = parse_json_tolerant
 
 
 # ── LLM client ───────────────────────────────────────────
@@ -146,21 +128,61 @@ async def _call_llm(
     user_prompt: str,
     tool_schema: Dict[str, Any],
     tool_description: str,
+    temperature: float = 0.5,
 ) -> Optional[Dict[str, Any]]:
-    """Single structured LLM call → tolerant-parsed JSON dict or None."""
+    """Single structured LLM call → tolerant-parsed JSON dict or None.
+    
+    Phase 14.1: Added fallback to chat + JSON repair when structured output fails.
+    Phase 15.2: Added temperature parameter for stability control.
+    """
     provider = await get_llm_provider()
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
+    
+    # 1. Try structured output first (preferred)
     try:
         result = await provider.chat_structured(
             messages=messages,
             output_schema=tool_schema,
-            temperature=0.5,
+            temperature=temperature,
         )
-        return result or None
-    except Exception:
+        if result and isinstance(result, dict):
+            return result
+        logger.debug("Structured output returned non-dict or None, falling back to text + repair")
+    except Exception as e:
+        logger.debug(f"Structured output failed: {e}, falling back to text + repair")
+    
+    # 2. Fallback: try plain text + JSON repair
+    try:
+        # Add explicit instruction to return valid JSON
+        repair_instruction = (
+            "IMPORTANT: Return ONLY the raw JSON object, no markdown, no explanation, no code fences. "
+            "The JSON must be valid and match the required schema."
+        )
+        enhanced_user_prompt = f"{user_prompt}\n\n{repair_instruction}"
+        
+        raw_text = await provider.chat(
+            messages=messages,
+            system_prompt=None,  # system prompt is already in messages
+            temperature=temperature,
+        )
+        
+        if not raw_text:
+            logger.warning("Fallback chat returned empty response")
+            return None
+        
+        repaired = _repair_json(raw_text)
+        if repaired and isinstance(repaired, dict):
+            logger.info("Successfully repaired JSON from text output")
+            return repaired
+        
+        logger.warning("JSON repair failed on fallback text")
+        return None
+        
+    except Exception as e:
+        logger.error(f"Fallback chat + repair failed: {e}")
         return None
 
 
@@ -209,18 +231,29 @@ def _format_places(places: List[Dict[str, Any]], limit: int = 15) -> str:
         elif isinstance(pr, dict) and pr.get("max", 0) == 0 and pr.get("min", 0) == 0:
             price = "免费"
         else:
-            # Fallback to legacy price_level label
-            price = p.get("price_level", "") or p.get("metadata", {}).get("price_level", "")
+            # Fallback to legacy price_level label or truthful notice
+            level = p.get("price_level", "") or p.get("metadata", {}).get("price_level", "")
+            if level:
+                price = level
+            else:
+                price = "价格待核实"
 
         # Phase 12.13: KB-verified marker
-        kb_verified = "✓" if (p.get("kb_verified") or p.get("metadata", {}).get("kb_verified") or name) else ""
+        kb_verified = p.get("kb_verified") or p.get("metadata", {}).get("kb_verified")
+        runtime_verified = p.get("runtime_verified") or p.get("metadata", {}).get("runtime_verified")
+        if kb_verified:
+            verified_marker = "✓"  # KB-verified
+        elif runtime_verified:
+            verified_marker = "◆"  # Runtime-verified (lower confidence)
+        else:
+            verified_marker = "○"  # Unverified
 
         # Phase 12.15: Indoor/outdoor marker from tags or name
         classification = classify_poi_indoor(name, kb_tags=tags_p if isinstance(tags_p, list) else None)
         io_marker = {"indoor": "🏠室内", "semi": "🏛 semi", "outdoor": "☀️户外"}.get(classification, "")
 
         lines.append(
-            f"{i + 1}. ✓ {name} [{io_marker}] "
+            f"{i + 1}. {verified_marker} {name} [{io_marker}] "
             f"(标签: {', '.join(tags_p[:5])}; 适合: {suitable}; "
             f"最佳时间: {best_time}; 门票: {price}; 推荐分: {score:.2f})"
         )
@@ -228,9 +261,17 @@ def _format_places(places: List[Dict[str, Any]], limit: int = 15) -> str:
 
 
 def _format_weather(weather: Optional[Dict[str, Any]]) -> str:
-    """Render the daily forecast block for weather-adaptive scheduling."""
+    """Render the daily forecast block for weather-adaptive scheduling.
+    
+    Handles both dict format and WeatherForecast object format.
+    """
     if not weather:
         return ""
+    
+    # Handle WeatherForecast object
+    if hasattr(weather, 'to_dict'):
+        weather = weather.to_dict()
+    
     daily = weather.get("daily") or []
     if not daily:
         return ""
@@ -238,6 +279,8 @@ def _format_weather(weather: Optional[Dict[str, Any]]) -> str:
     has_high_temp = False
     has_rain = False
     for d in daily[:7]:
+        if hasattr(d, 'to_dict'):
+            d = d.to_dict()
         tmax = d.get('temp_max', 30)
         tmin = d.get('temp_min', 20)
         precip = d.get('precipitation', 0)
@@ -288,13 +331,22 @@ def _format_rainy_days(weather: Optional[Dict[str, Any]], days: int) -> str:
     The LLM tends to treat rain constraints as an abstract quota and still
     schedules famous outdoor landmarks on rainy days. Naming the exact
     rainy day numbers makes the constraint concrete and actionable.
+    
+    Handles both dict format and WeatherForecast object format.
     """
     if not weather:
         return ""
+    
+    # Handle WeatherForecast object
+    if hasattr(weather, 'to_dict'):
+        weather = weather.to_dict()
+    
     daily = weather.get("daily") or []
     rainy = []
     has_severe = False
     for i, d in enumerate(daily[: max(days, 1)]):
+        if hasattr(d, 'to_dict'):
+            d = d.to_dict()
         desc = d.get("weather_desc", "") or ""
         precip = d.get("precipitation") or 0
         if any(w in desc for w in ("雨", "雷", "雪", "雹")) or precip > 0.5:
@@ -319,49 +371,65 @@ def _format_rainy_days(weather: Optional[Dict[str, Any]], days: int) -> str:
     )
 
 
-_QUALITY_REQUIREMENTS = """【规划要求】
-0.【POI 名称优先规则】推荐列表中带「✓」标记的景点名称已经过系统验证，
-   请优先使用其准确的完整名称作为 items[].poi。如需使用不在列表中的景点，
-   请从「更多已验证景点」中选取。不要随意修改已验证景点的名称。
-   【poi 必须是真实场所】items[].poi 只能是真实存在的场所名称（景区、博物馆、
-   商场、餐厅、街区等），禁止把菜品名（如「过桥米线」）、小吃名、活动名当作 poi；
-   餐饮体验要么用推荐列表中的真实餐厅名，要么写入 eat「每日一味」，不要塞进 items。
-1. 每天必须有明确区域主题：theme 写「DAY n · 区域名」（如「DAY 1 · 老城厢」），title 写当天主目的地
-2. 同一天内的地点在地理上必须顺路，避免来回折返
-3. 每天条目数按用户节奏分档：休闲/慢节奏 2-4 个（留白午休与机动时间），适中 3-5 个，
-   紧凑/特种兵 4-6 个；time 用 24 小时制 HH:MM；note 必须是一句"为什么这个时间点去"的理由
-   （人少/光线/场次/闭馆时间/预约时段等），禁止泛泛而谈
-4. 需要提前预约购票的项目，必须在 poi 或 note 里写清（如「需提前在官方公众号预约」）
-5. eat 写"每日一味"：具体餐厅 + 招牌菜（如「豫园『南翔馒头店』蟹粉小笼」）
-6. budget 按 餐饮/门票/交通/购物 等分类输出 amount（元，整数），各项加总必须等于人均总预算，
-   并在 stats 中给出「人均预算」一项；不需要输出 percent（后端计算）
-7. checklist 给 3-12 条行前准备（实名证件/预约票/必备 App/装备），done 一律 false
-8. tips 给 2-6 条实用提示，必须具体可执行（写清 App 名、价格、时间），禁止空泛建议
-9. stats 给 2-6 项概览统计（天数/人均预算/预计日均步数等由你估算；
-   地点数由系统统计，你填的数值会被后端覆盖为真实值）
-10. 行程张弛有度；有老人小孩同行时控制步行强度
-11.【天气自适应】高温日（≥35°C）午后 12:00-16:00 禁止排户外景点，每个高温日至少 2 个室内项目；
-   降雨/雷暴日：户外项目数不得超过室内项目数（户外 ≤ 室内），每个降雨日至少 2 个室内/半室内项目；
-   知名户外地标（山岳/湖泊/公园/岛屿类）在降雨日必须让位于室内替代项，不得因名气大而保留；
-   tips 中必须包含当季天气应对建议（遮阳/雨具/室内备选方案）
-12.【POI名称不可重复 — 强制】整个行程中（所有天加起来）每个POI名称只能出现一次。第1天用了"故宫"，第2/3/4天就不能再用"故宫"。如果需要描述类似体验，换一个不同的景点（如第2天用"天坛"代替"故宫"）。这将严格验证。
-13.【标签大类多样性】景点应覆盖至少3个不同标签大类（自然/人文/美食/购物/娱乐/运动/艺术）。
-14.【极端预算场景】预算极低时优先免费景点和路边摊，一天中至少一半以上免费活动。
-15.【矛盾需求处理】有矛盾需求时优先安全可行性，tips中说明可能无法全部满足。
-16.【特殊人群】老人/小孩/孕妇：无剧烈运动、少阶梯、有空调、近医疗设施。
-17.【极寒/极热】冬季极寒户外不超60分钟；夏季酷暑午后仅排室内项目。
-18.【到达日安排】如果用户提供到达时间，当天从到达时间开始安排：到达前写[行]出发/到达/办入住/休整；下午轻松活动不超过3个。凌晨/深夜到达(23-06点)当天只安排到达休息。长途旅行后第一个半天安排轻松活动。必须包含入住酒店环节。
-19.【离开日安排】如果用户提供离开时间：活动在离开前2-3小时结束，最后写[行]前往机场/车站。轻量活动不超过3个，包含退房/寄存行李环节。
-20.【三餐规则】每顿餐作为独立行程项，写真实餐厅名：早饭07-09点，午饭11:30-13:00，晚饭17:30-19:00。每餐写1-2道推荐菜。
-21.【体力节奏】用户精力有限：每天最多4-6个活动(不含三餐休息)。每2-3活动后安排一段休息/自由活动。夏季12-15点安排1-2小时午休。剧烈活动(爬山/徒步)后有休息缓冲。
-22.【项目类型标注】每个item的note开头标注类型标记：
-   [景]景点游览 [吃]用餐/美食
-   [休]休息/自由活动/午休
-   [行]交通：飞机/高铁/火车/公交/自驾/打车（具体写明工具，如"[行]高铁前往成都"）
-   [住]住宿：酒店/民宿/青旅（具体写明类型，如"[住]入住解放碑附近酒店"或"[住]住进特色民宿"）
-   [到]到达/出发（如"[到]抵达重庆江北机场"）
-23.【指定地点排入】用户提到的must_visit地方必须排进行程(如洪崖洞/解放碑)，放在最顺路的天和时间段，以[景]类型出现。
-"""
+_QUALITY_REQUIREMENTS = """【规划要求 — 分层约束】
+
+═══ 强制约束层（违反将导致严重质量问题）═══
+
+F1.【时间-内容一致性 — 最优先】每个item的time、poi、note必须严格对应时间段：
+   · 07:00-12:00(上午) → 早餐/早茶、博物馆、景点游览、古镇、寺庙、自然公园
+     严禁出现：晚餐/夜宵/酒吧/夜市/夜总会等夜间内容
+   · 12:00-14:00(中午) → 午餐、短暂休息
+   · 14:00-18:00(下午) → 博物馆、美术馆、购物中心、咖啡馆、室内活动
+     严禁安排长时间户外暴晒活动(登山/沙漠/徒步)
+   · 18:00-22:00(晚上) → 晚餐、夜景、夜市、游轮、酒吧、放松活动
+     严禁出现：早餐/早茶/上午景点等日间内容
+   · note内容必须与time一致：time=08:00时note不能写"晚餐推荐"
+
+F2.【POI 名称规则】poi必须是真实存在的场所名称（景区/博物馆/商场/餐厅/街区），
+   禁止将菜品名、活动名当作poi；餐饮内容写入eat字段
+   整个行程中每个POI名称只能出现一次（严禁重复）
+
+F3.【酒店安排】默认全程同一家酒店；仅在以下情况换酒店：
+   (a)用户明确要求 (b)跨城市移动 (c)行程中说明原因
+   stay字段必须包含具体酒店名称，如"西安钟楼亚朵S酒店"
+
+F4.【三餐规则】每顿餐作为独立行程项，写真实餐厅名和推荐菜：
+   早餐07:00-09:00，午餐11:30-13:00，晚餐17:30-19:00
+
+F5.【天气自适应 — 强制】
+   · 高温日(≥35°C)午后12:00-16:00禁止户外项目，至少2个室内项目
+   · 降雨日：户外项目数≤室内项目数，至少2个室内项目
+   · 知名户外地标在降雨日必须让位于室内替代项
+   · tips中必须包含当季天气应对建议
+
+F6.【到达/离开日安排】
+   · 到达日：从到达时间开始安排，凌晨到达(23-06点)仅安排休息
+   · 离开日：活动在离开前2-3小时结束，包含退房/寄存行李
+
+F7.【体力节奏】
+   · 每天最多4-6个活动(不含三餐休息)
+   · 每2-3个活动后安排休息
+   · 夏季12:00-15:00安排1-2小时午休
+   · 有老人/小孩同行时减少步行强度
+
+═══ 指导优化层（提升行程质量）═══
+
+G1. 每天有明确区域主题：theme写「DAY n · 区域名」，同一天地点地理顺路
+G2. 节奏分档：休闲2-4项，适中3-5项，紧凑4-6项
+G3. 需要预约的项目在poi或note里注明
+G4. eat字段：每天1-2家推荐餐厅和推荐菜
+G5. budget按餐饮/门票/交通/购物分类，加总=人均总预算
+G6. checklist: 3-12条目的地专属准备（结合天气/景点/文化特点）
+G7. tips: 2-6条具体可执行的实用建议（含App名/价格/时间）
+G8. 标签多样性：景点覆盖至少3个不同大类
+G9. 特殊人群：老人/小孩/孕妇无剧烈运动、少阶梯
+G10. 【项目类型标注】每个item的note开头标注：
+    [景]景点 [吃]用餐 [休]休息 [行]交通 [住]住宿 [到]到达/出发
+G11. 【精细字段】每个item额外输出：
+    · time_slot: 根据time标注(morning/afternoon/evening/night)
+    · transportation: 从上一地点到本地点的交通建议
+    · estimated_cost: {ticket, transport, total}
+G12. 指定地点(must_visit)必须排进最顺路的天和时间段"""
 
 
 # ── KB-aware POI catalog ──────────────────────────────────
@@ -580,6 +648,10 @@ async def _build_planning_prompt(
     weather: Optional[Dict[str, Any]] = None,
 ) -> str:
     """Build the user prompt for full-itinerary generation."""
+    # Normalize weather to dict format (handle WeatherForecast object)
+    if weather is not None and hasattr(weather, 'to_dict'):
+        weather = weather.to_dict()
+    
     dest = profile.get("destination", "未知城市")
     days = profile.get("days", 3)
     budget = profile.get("budget_level", "") or profile.get("budget", "") or "中等"
@@ -713,17 +785,19 @@ async def _build_planning_prompt(
 {_format_places(places)}
 {_format_weather(weather)}
 
+{{_TIME_AWARE_HINT}}
+
 {_QUALITY_REQUIREMENTS}"""
 
 
-_SYSTEM_PROMPT_FULL = """你是 TravelMind 高级旅行规划师。根据用户需求、推荐景点（带 ✓ 标记的经系统验证）和天气，
+_SYSTEM_PROMPT_FULL = """你是 TravelMind 高级旅行规划师。根据用户需求、推荐景点和天气，
 生成严格符合 output 函数 JSON 结构的行程。
 
 【POI 名称规范】
-推荐列表中带「✓」的景点名称已经过系统验证，请优先使用其准确名称作为 items[].poi。
-如果某个你熟知的热门景点未出现在推荐列表中，说明系统暂未收录该景点数据，
-请从推荐列表或「更多已验证景点」中选取最接近的替代。
-eat（每日一味）可使用真实存在的餐厅名，不受此限制。
+推荐列表中带「✓」的景点名称已经过系统知识库验证，请优先使用其准确名称作为 items[].poi。
+带「◆」的景点由实时 API 查询获取，也是真实存在的POI，请使用其名称。
+带「○」的景点未经核实，请尽量避免使用。
+eat（餐饮推荐）可使用真实存在的餐厅名，不受此限制。
 
 你必须调用 'output' 函数返回结构化结果，不要返回纯文本。"""
 
@@ -745,9 +819,15 @@ def _normalize_nested_json(data: Any) -> Any:
 
 def _unwrap_tool_envelope(data: Any) -> Any:
     """模型偶发回显整个工具定义（{"name": "output", "parameters": {...}}）
-    或 arguments 字符串——剥掉信封取真正的行程对象。"""
+    或 arguments 字符串——剥掉信封取真正的行程对象。
+    
+    Phase 14.1: Extended to handle more wrapper formats like {"stats": {...}}
+    and {"output": {...}} from LLM structured output.
+    """
     if not isinstance(data, dict):
         return data
+    
+    # 1. Handle known tool call envelopes
     if isinstance(data.get("parameters"), dict):
         data = data["parameters"]
     elif isinstance(data.get("parameters"), str):
@@ -764,7 +844,93 @@ def _unwrap_tool_envelope(data: Any) -> Any:
                 pass
         if isinstance(args, dict):
             data = args
+    
+    # 2. Handle nested wrapper formats ({"stats": {...}}, {"output": {...}}, etc.)
+    # The itinerary must have "trip" or "days" key at top level
+    if isinstance(data, dict) and "trip" not in data and "days" not in data:
+        # Look for a nested dict that contains the itinerary
+        for key in ("stats", "output", "result", "data", "plan", "itinerary"):
+            if key in data and isinstance(data[key], dict):
+                nested = data[key]
+                if "trip" in nested or "days" in nested:
+                    return nested
+    
     return data
+
+
+# ── Time-content consistency validation ──────────────────────────
+
+# Keywords that should NOT appear in certain time slots
+_TIME_CONTENT_RULES: Dict[str, Dict[str, List[str]]] = {
+    "morning": {
+        "forbidden": ["晚餐", "夜宵", "酒吧", "夜市", "夜总会", "夜店", "深夜", "火锅"],
+        "mandatory_hint": "上午时段应安排早餐/早茶、景点游览、博物馆、寺庙、古镇等日间活动",
+    },
+    "afternoon": {
+        "forbidden": ["早餐", "早茶", "夜宵", "夜市", "酒吧"],
+        "mandatory_hint": "下午时段应安排博物馆、美术馆、购物中心、咖啡馆等室内活动",
+    },
+    "evening": {
+        "forbidden": ["早餐", "早茶", "晨光", "日出", "上午"],
+        "mandatory_hint": "晚上时段应安排晚餐、夜景、夜市、游轮等放松活动",
+    },
+    "night": {
+        "forbidden": ["早餐", "早茶", "日出", "晨练", "上午"],
+        "mandatory_hint": "夜间时段应以休息为主",
+    },
+}
+
+
+def _infer_time_slot(time_str: str) -> str:
+    """Infer time slot from HH:MM string."""
+    try:
+        parts = time_str.strip().split(":")
+        hour = int(parts[0])
+    except (ValueError, IndexError):
+        return "afternoon"
+    if 5 <= hour < 12:
+        return "morning"
+    elif 12 <= hour < 14:
+        return "noon"
+    elif 14 <= hour < 18:
+        return "afternoon"
+    elif 18 <= hour < 22:
+        return "evening"
+    else:
+        return "night"
+
+
+def _validate_time_content_consistency(data: Dict[str, Any]) -> List[str]:
+    """Validate that each item's time matches its content (poi/note).
+
+    Returns a list of error messages for mismatched items.
+    """
+    errors: List[str] = []
+    days = data.get("days", [])
+    if not days:
+        return errors
+
+    for day_idx, day in enumerate(days, 1):
+        items = day.get("items", [])
+        for item_idx, item in enumerate(items):
+            time_str = item.get("time", "")
+            if not time_str:
+                continue
+
+            slot = _infer_time_slot(time_str)
+            poi = (item.get("poi", "") or "").lower()
+            note = (item.get("note", "") or "").lower()
+            combined = f"{poi} {note}"
+
+            rules = _TIME_CONTENT_RULES.get(slot, {})
+            for kw in rules.get("forbidden", []):
+                if kw in combined:
+                    errors.append(
+                        f"第{day_idx}天第{item_idx + 1}项({time_str}): "
+                        f"时间-内容不一致 — {slot}时段出现禁止关键词'{kw}'"
+                    )
+
+    return errors
 
 
 # ── Validation helper ────────────────────────────────────
@@ -775,9 +941,11 @@ def _full_validate(
     weather: Optional[Dict[str, Any]] = None,
 ) -> List[str]:
     """Pre-injection validation: LLM-facing schema (percent not yet present)
-    + day continuity + budget-sum + month/season + weather coverage."""
+    + day continuity + budget-sum + month/season + weather coverage
+    + time-content consistency."""
     errors = validate_pre_injection(data)
     errors += validate_day_continuity(data)
+    errors += _validate_time_content_consistency(data)
     if budget_sum_mismatch(data):
         total = sum(b.get("amount", 0) for b in data.get("budget", []))
         errors.append(
@@ -787,6 +955,333 @@ def _full_validate(
     if weather and trip_has_rain(weather, len(data.get("days", []))):
         errors += weather_coverage_errors(data)
     return errors
+
+
+def _backfill_empty_days(
+    data: Dict[str, Any],
+    recommendations: List[Dict[str, Any]],
+    min_items_per_day: int = 2,
+) -> int:
+    """Backfill empty or sparse days with POIs from recommendations.
+    
+    Phase 14.2: Fixes the "第X天POI过少: 0个" issue by automatically
+    adding POIs from the candidate pool to days with insufficient items.
+    
+    Returns the number of items added.
+    """
+    days = data.get("days", [])
+    if not days:
+        return 0
+    
+    # Extract POI names from recommendations pool
+    poi_pool = []
+    seen_names = set()
+    for rec in recommendations:
+        name = rec.get("name", "") or rec.get("metadata", {}).get("name", "")
+        if name and name not in seen_names:
+            poi_pool.append(rec)
+            seen_names.add(name)
+    
+    if not poi_pool:
+        return 0
+    
+    # Track what's already in the itinerary to avoid duplicates
+    existing_poi_names = set()
+    for day in days:
+        for item in day.get("items", []):
+            poi_name = item.get("poi", "") or item.get("name", "")
+            if poi_name:
+                existing_poi_names.add(poi_name)
+    
+    added_count = 0
+    pool_idx = 0
+    
+    for day_idx, day in enumerate(days):
+        items = day.get("items", [])
+        
+        # Count actual visit items (exclude "transport" or "meal" types if needed)
+        visit_items = [i for i in items if i.get("type") == "attraction" or i.get("poi")]
+        current_count = len(visit_items)
+        
+        if current_count < min_items_per_day:
+            needed = min_items_per_day - current_count
+            
+            while needed > 0 and pool_idx < len(poi_pool):
+                rec = poi_pool[pool_idx]
+                pool_idx += 1
+                
+                rec_name = rec.get("name", "") or rec.get("metadata", {}).get("name", "")
+                if not rec_name or rec_name in existing_poi_names:
+                    continue
+                
+                # Create a proper item structure
+                tags = rec.get("tags", []) or rec.get("metadata", {}).get("tags", [])
+                if isinstance(tags, str):
+                    tags = [t.strip() for t in tags.split(",") if t.strip()]
+                
+                item = {
+                    "poi": rec_name,
+                    "type": "attraction",
+                    "duration": 60,  # Default 1 hour
+                    "tags": tags[:3] if tags else [],
+                    "price_level": rec.get("price_level", ""),
+                    "description": rec.get("description", "")[:100] if rec.get("description") else "",
+                }
+                
+                items.append(item)
+                existing_poi_names.add(rec_name)
+                added_count += 1
+                needed -= 1
+            
+            # Update the day's items
+            day["items"] = items
+            
+            if needed > 0:
+                logger.warning(
+                    f"Day {day_idx + 1} still has {needed} missing items after backfill (pool exhausted)"
+                )
+    
+    if added_count > 0:
+        logger.info(f"Backfilled {added_count} POIs to empty/sparse days")
+    
+    return added_count
+
+
+# Phase 4.2: Cross-day deduplication
+_DUPLICATE_ALLOWED_TYPES = {"餐饮", "餐厅", "美食", "小吃", "火锅", "酒店", "住宿", "民宿"}
+
+def _deduplicate_poi_across_days(data: Dict[str, Any]) -> int:
+    """Remove duplicate POIs that appear across different days.
+    
+    Phase 4.2: Prevents the same attraction from appearing on multiple days
+    (e.g., 解放碑步行街 on Day 1 and Day 4). Restaurants and accommodations
+    are exempted since it's normal to dine at the same place or stay at the
+    same hotel across multiple days.
+    
+    Returns the number of duplicate items removed.
+    """
+    days = data.get("days", [])
+    if len(days) <= 1:
+        return 0
+    
+    # Track first occurrence of each POI
+    first_seen: Dict[str, int] = {}  # poi_name -> first day index
+    removed_count = 0
+    
+    for day_idx, day in enumerate(days):
+        items = day.get("items", [])
+        new_items = []
+        
+        for item in items:
+            poi_name = item.get("poi", "") or item.get("name", "")
+            if not poi_name:
+                new_items.append(item)
+                continue
+            
+            # Check if this is a duplicate
+            if poi_name in first_seen:
+                prev_day = first_seen[poi_name]
+                current_day = day_idx
+                
+                # Check if it's an allowed duplicate type (restaurant, hotel, etc.)
+                item_tags = set(item.get("tags", []))
+                item_type = item.get("type", "")
+                
+                is_allowed_duplicate = (
+                    item_type in _DUPLICATE_ALLOWED_TYPES or
+                    bool(item_tags & _DUPLICATE_ALLOWED_TYPES)
+                )
+                
+                if not is_allowed_duplicate:
+                    # It's a duplicate attraction - remove it
+                    logger.debug(
+                        f"Removing duplicate POI '{poi_name}' from Day {day_idx + 1} "
+                        f"(first seen on Day {first_seen[poi_name] + 1})"
+                    )
+                    removed_count += 1
+                    continue
+                else:
+                    # Keep allowed duplicates but mark them
+                    item["note"] = item.get("note", "") or "（再次前往）"
+                    new_items.append(item)
+            else:
+                # First time seeing this POI
+                first_seen[poi_name] = day_idx
+                new_items.append(item)
+        
+        day["items"] = new_items
+    
+    if removed_count > 0:
+        logger.info(f"Deduplicated {removed_count} duplicate POIs across days")
+    
+    return removed_count
+
+
+def _fix_month_references(
+    data: Dict[str, Any],
+    target_month: int,
+) -> int:
+    """Fix inconsistent month references in tips/checklists.
+    
+    Phase 14.3: The LLM sometimes mentions dates from weather API (e.g., 8月1日)
+    instead of the actual trip month (e.g., 7月). This function replaces incorrect
+    month references in text fields (tips, checklist items, notes) with the 
+    correct target month.
+    
+    Returns the number of replacements made.
+    """
+    target_month_str = f"{target_month}月"
+    replacements = 0
+    
+    # Fields that might contain month references
+    text_fields_to_check = []
+    
+    # 1. Tips
+    for tip in data.get("tips", []):
+        if isinstance(tip, str):
+            text_fields_to_check.append(("tips", tip))
+    
+    # 2. Checklist items
+    for item in data.get("checklist", []):
+        if isinstance(item, dict):
+            text = item.get("text", "") or item.get("item", "")
+            if text:
+                text_fields_to_check.append(("checklist", text))
+        elif isinstance(item, str):
+            text_fields_to_check.append(("checklist", item))
+    
+    # 3. Notes
+    if isinstance(data.get("notes"), str):
+        text_fields_to_check.append(("notes", data["notes"]))
+    
+    # 4. Daily notes and eat fields
+    for day in data.get("days", []):
+        if isinstance(day, dict):
+            note = day.get("note", "") or day.get("notes", "")
+            if note:
+                text_fields_to_check.append((f"day_{day.get('day', '?')}_note", note))
+            
+            # Phase 14.4: Also check day.eat field (restaurant recommendations)
+            eat = day.get("eat", "")
+            if eat and isinstance(eat, str):
+                text_fields_to_check.append((f"day_{day.get('day', '?')}_eat", eat))
+            
+            # Phase 14.4: Also check item.note fields
+            for item in day.get("items", []):
+                if isinstance(item, dict):
+                    item_note = item.get("note", "")
+                    if item_note and isinstance(item_note, str):
+                        text_fields_to_check.append((f"item_{day.get('day', '?')}_{item.get('poi', '')[:10]}_note", item_note))
+    
+    # Process each text field
+    for field_name, text in text_fields_to_check:
+        if not isinstance(text, str):
+            continue
+        
+        # Phase 14.5: Protect date ranges before replacing months
+        # Date ranges like "7月30日-8月2日" should be preserved as-is
+        # since they represent real weather forecast periods
+        protected_ranges = []
+        
+        def _protect_range(match):
+            protected_ranges.append(match.group(0))
+            return f"__RANGE_{len(protected_ranges)-1}__"
+        
+        # Protect date range patterns
+        temp_text = re.sub(
+            r'\d{1,2}月\d{1,2}日?\s*[-—–~至到]\s*\d{1,2}月\d{1,2}日?',
+            _protect_range,
+            text
+        )
+        temp_text = re.sub(
+            r'\d{1,2}月\s*[-—–~至到]\s*\d{1,2}月',
+            _protect_range,
+            temp_text
+        )
+        
+        # Find all month references (1月-12月) - on protected text
+        def _replace_match(match):
+            nonlocal replacements
+            month_str = match.group(0)
+            # Check if this is NOT the target month
+            if month_str != target_month_str:
+                replacements += 1
+                return target_month_str
+            return month_str
+        
+        # Match Chinese month patterns like "7月", "8月份"
+        # Pattern: digit + 月 (optionally followed by份)
+        new_text = re.sub(r'(\d{1,2})月份?', _replace_match, temp_text)
+        
+        # Also replace Chinese month names
+        chinese_months = ["一月", "二月", "三月", "四月", "五月", "六月", 
+                         "七月", "八月", "九月", "十月", "十一月", "十二月"]
+        target_chinese = chinese_months[target_month - 1] if 1 <= target_month <= 12 else ""
+        
+        if target_chinese:
+            for i, cn_month in enumerate(chinese_months):
+                if i + 1 != target_month:
+                    new_text = new_text.replace(cn_month, target_chinese)
+                    # Also handle "七月份" -> target
+                    new_text = new_text.replace(cn_month + "份", target_chinese)
+        
+        # Restore protected ranges
+        for i, range_text in enumerate(protected_ranges):
+            new_text = new_text.replace(f"__RANGE_{i}__", range_text)
+        
+        # Update the field back
+        if field_name.startswith("day_"):
+            # Parse field type: day_{num}_note, day_{num}_eat
+            parts = field_name.split("_")
+            day_num = parts[1]
+            field_type = parts[2] if len(parts) > 2 else "note"
+            
+            for day in data.get("days", []):
+                if str(day.get("day", "")) == day_num:
+                    if field_type == "eat":
+                        day["eat"] = new_text
+                    elif "note" in field_type:
+                        if "note" in day:
+                            day["note"] = new_text
+                        elif "notes" in day:
+                            day["notes"] = new_text
+                    break
+        elif field_name.startswith("item_"):
+            # Parse: item_{day}_{poi_name}_note
+            # item_7_somepoi_note
+            parts = field_name.split("_")
+            day_num = parts[1]
+            for day in data.get("days", []):
+                if str(day.get("day", "")) == day_num:
+                    for item in day.get("items", []):
+                        if isinstance(item, dict) and "note" in item:
+                            item["note"] = new_text
+                            break
+                    break
+        elif field_name == "tips":
+            # Need to update the specific tip in the list
+            tips = data.get("tips", [])
+            for i, t in enumerate(tips):
+                if isinstance(t, str) and t == text:
+                    tips[i] = new_text
+                    break
+        elif field_name == "checklist":
+            checklist = data.get("checklist", [])
+            for i, c in enumerate(checklist):
+                if isinstance(c, str) and c == text:
+                    checklist[i] = new_text
+                elif isinstance(c, dict):
+                    if c.get("text") == text:
+                        c["text"] = new_text
+                    elif c.get("item") == text:
+                        c["item"] = new_text
+        elif field_name == "notes":
+            data["notes"] = new_text
+    
+    if replacements > 0:
+        logger.info(f"Fixed {replacements} month references to {target_month_str}")
+    
+    return replacements
 
 
 # ── Public API ───────────────────────────────────────────
@@ -806,6 +1301,10 @@ async def generate_itinerary(
         logger.warning("No recommendations to plan — returning empty itinerary")
         return {}
 
+    # Normalize weather to dict format (handle WeatherForecast object)
+    if weather is not None and hasattr(weather, 'to_dict'):
+        weather = weather.to_dict()
+
     if not settings.DEEPSEEK_API_KEY:
         logger.error("DEEPSEEK_API_KEY not configured — cannot generate itinerary")
         return {}
@@ -819,20 +1318,99 @@ async def generate_itinerary(
     trip_month = date.today().month
     top_n = min(len(recommendations), 30)
     places = recommendations[:top_n]
+
+    # Phase 16.7: Multi-day time-slot planning (分时推荐)
+    # Generate per-day, per-time-slot re-ranked POI lists directly from
+    # original recommendations — no intermediate single-slot rerank needed.
+    arrival_time = profile.get("arrival_time", "") or ""
+    reference_dt = datetime.now()
+    time_slot: Optional[str] = None
+    if arrival_time:
+        m = re.match(r"(\d{1,2})(?::(\d{2}))?", arrival_time.strip())
+        if m:
+            time_slot = resolve_time_slot(int(m.group(1)))
+        else:
+            time_slot = resolve_time_slot(reference_dt.hour)
+    else:
+        time_slot = resolve_time_slot(reference_dt.hour)
+
+    day_start = profile.get("arrival_date", "") or ""
+    arrival_date_obj = None
+    if day_start:
+        try:
+            arrival_date_obj = date.fromisoformat(day_start)
+        except ValueError:
+            pass
+
+    try:
+        time_schedules = build_multi_day_time_schedules(
+            places, days, arrival_date_obj, weather, profile
+        )
+        slot_prompt_block = build_time_slot_prompt_block(time_schedules, weather)
+        logger.info(
+            f"Built multi-day time schedules: {days} days, "
+            f"{len(time_schedules)} day entries, time_slot={time_slot}"
+        )
+    except Exception as e:
+        logger.warning(f"Multi-day time scheduling failed (non-fatal): {e}")
+        time_schedules = {}
+        slot_prompt_block = ""
+
+    # Augment prompt with time-aware hints AND slot-specific recommendations
+    time_aware_hint = build_time_aware_hint(time_slot or "afternoon", weather)
     prompt = await _build_planning_prompt(profile, places, weather)
+
+    # First, replace the _TIME_AWARE_HINT placeholder with actual content
+    full_hint = f"{time_aware_hint}\n{slot_prompt_block}"
+    time_marker = "{_TIME_AWARE_HINT}"
+    if time_marker in prompt:
+        prompt = prompt.replace(time_marker, full_hint)
+    else:
+        # If placeholder not found, insert before quality requirements
+        marker = "{_QUALITY_REQUIREMENTS}"
+        if marker in prompt:
+            prompt = prompt.replace(marker, f"{full_hint}\n\n{marker}")
+        else:
+            prompt += f"\n\n{full_hint}"
     tool_schema = schema_for_llm()
 
+    # Phase 15.2: For long itineraries, add more retries and use simplified prompt
+    is_long_itinerary = days >= LONG_ITINERARY_THRESHOLD
+    max_retries = MAX_RETRIES_LONG if is_long_itinerary else MAX_RETRIES
+    
+    if is_long_itinerary:
+        logger.info(f"Long itinerary detected ({days} days): using {max_retries} retries")
+        # Add stability hints to prompt for long itineraries
+        prompt += f"""
+
+【长天数行程稳定性提示 - {days}天行程】
+请特别注意：
+1. 每天只安排4-6个景点，不要超过6个
+2. 景点之间要有合理的交通时间（至少30分钟）
+3. 每天必须有上午、下午、晚上三个时段的活动
+4. 必须包含餐饮安排（午餐和晚餐）
+5. JSON格式必须正确，不能有语法错误
+6. time_slot字段必须填写：morning/afternoon/evening/night
+7. transportation字段：第一个item为null，后续每个item填写从上一地点到该地点的交通建议
+8. estimated_cost字段：每个item填写预估费用{{ticket, transport, total}}
+"""
+
     last_error: Any = None
-    for attempt in range(MAX_RETRIES + 1):
+    for attempt in range(max_retries + 1):
         logger.info(
             f"Planning itinerary: {days}d from {len(places)} places"
             + (f" (attempt {attempt + 1})" if attempt else "")
         )
         cur_prompt = prompt + ("\n[Prev error: " + str(last_error)[:200] + "]" if attempt > 0 and last_error else "")
+        
+        # Phase 15.2: For long itineraries, use lower temperature for more stable output
+        temperature = 0.3 if is_long_itinerary else 0.5
+        
         try:
             data = await _call_llm(
                 _SYSTEM_PROMPT_FULL, cur_prompt, tool_schema,
                 f"Return the {days}-day itinerary as structured JSON.",
+                temperature=temperature,
             )
             if not data:
                 last_error = "empty/unparseable LLM response"
@@ -846,6 +1424,25 @@ async def generate_itinerary(
                 logger.warning(
                     f"Planning attempt {attempt + 1}: {len(errors)} validation errors — "
                     f"first: {errors[0][:120]}"
+                )
+                continue
+
+            # Phase 14.2: Auto-backfill empty/sparse days
+            _backfill_empty_days(data, places, min_items_per_day=2)
+            
+            # Phase 4.2: Remove duplicate POIs across different days
+            _deduplicate_poi_across_days(data)
+            
+            # Phase 14.3: Fix month consistency (e.g., weather API dates vs trip month)
+            _fix_month_references(data, trip_month)
+            
+            # Re-validate after backfill and month fix
+            errors = _full_validate(data, trip_month, weather)
+            if errors:
+                last_error = "; ".join(str(e)[:100] for e in errors[:3])
+                logger.warning(
+                    f"Planning attempt {attempt + 1} post-backfill validation failed: "
+                    f"{len(errors)} errors — first: {errors[0][:120]}"
                 )
                 continue
 
@@ -878,14 +1475,20 @@ async def generate_itinerary(
             except Exception as e:
                 logger.warning(f"Dining/stay attach failed (non-fatal): {e}")
 
-            # Phase 7: Price enrichment from knowledge base (non-LLM, best-effort)
+            # Phase 7: Price enrichment — static KB first, then runtime API queries
             try:
-                from app.services.price_enricher import enrich_prices
+                from app.services.price_enricher import enrich_prices_runtime
                 kb_attractions = await _get_kb_attractions()
                 user_budget = profile.get("budget_level", "") or profile.get("budget", "")
-                enrich_prices(data, kb_attractions, user_budget=user_budget)
+                await enrich_prices_runtime(data, kb_attractions, user_budget=user_budget)
             except Exception as e:
                 logger.warning(f"Price enrichment failed (non-fatal): {e}")
+
+            # UX 修复：补 [吃][住][休] 前缀 + 按时间排序 + 去重时间点 + 午晚餐间补午休
+            try:
+                beautify_and_sanitize_day_items(data)
+            except Exception as e:
+                logger.warning(f"UX beautify failed (non-fatal): {e}")
 
             inject_computed_fields(data)
 
@@ -977,9 +1580,15 @@ async def regenerate_day(
 【可用景点】（按推荐度排序）
 {_format_places(places)}
 
+{{_TIME_AWARE_HINT}}
+
 {_QUALITY_REQUIREMENTS}
 
 只输出这一天的新安排（day 保持为 {day_no}），不要输出其他天。"""
+
+    # Replace placeholders with actual content
+    time_hint = build_time_aware_hint("afternoon")
+    user_prompt = user_prompt.replace("{_TIME_AWARE_HINT}", time_hint)
 
     system_prompt = """你是 TravelMind 高级旅行规划师。只重新生成用户反馈的那一天行程，
 严格按 output 函数的 JSON 结构输出单日对象。你必须调用 'output' 函数。"""

@@ -57,14 +57,23 @@ def init_rag_from_data(
     startup. It loads attraction data, fits the embedding provider,
     and connects Chroma.
 
+    Phase 12.31: Fast cold-start — pickles the TF-IDF vectorizer after
+    first fit, then loads it on subsequent restarts (saves ~1.5s).
+
     Args:
-        attractions_path: Path to attractions.json.
+        attractions_path: Path to attractions.json (str or Path).
         tags_path: Path to tags.json (default: data/tags.json).
         max_features: Max TF-IDF features.
 
     Returns:
         True on success, False if RAG is unavailable.
     """
+    import time
+    t0 = time.time()
+
+    if isinstance(attractions_path, str):
+        attractions_path = Path(attractions_path)
+    
     if not attractions_path.exists():
         logger.warning(
             f"{attractions_path} not found — RAG disabled. "
@@ -87,22 +96,55 @@ def init_rag_from_data(
     # Load tag vocabulary
     tag_vocab = _load_tag_vocabulary(tags_path)
 
-    # Initialize embedding provider
-    init_embedding_provider(
-        corpus=documents,
-        tags_list=tags_lists,
-        tag_vocabulary=tag_vocab,
-        max_features=max_features,
-    )
+    # Try to load pre-fitted vectorizer for fast cold-start
+    vectorizer_path = attractions_path.parent / "tfidf_vectorizer.pkl"
+    tfidf = TFIDFEmbeddingProvider(max_features=max_features)
+    
+    loaded_from_disk = False
+    if tfidf.load(str(vectorizer_path)):
+        loaded_from_disk = True
+        logger.info(f"Fast cold-start: loaded TF-IDF from disk ({time.time()-t0:.2f}s)")
+    else:
+        # First run: fit and save for next time
+        tfidf.fit(documents)
+        try:
+            tfidf.save(str(vectorizer_path))
+        except Exception:
+            pass  # Non-critical: next restart will just re-fit
+
+    # Build composite provider with tag one-hot
+    if tag_vocab and tags_lists:
+        provider = CompositeEmbeddingProvider(
+            tfidf=tfidf,
+            tag_vocabulary=tag_vocab,
+        )
+        from app.rag.embedding import _embedding_provider
+        import app.rag.embedding as emb_mod
+        emb_mod._embedding_provider = provider
+    else:
+        from app.rag.embedding import _embedding_provider
+        import app.rag.embedding as emb_mod
+        emb_mod._embedding_provider = tfidf
 
     # Connect Chroma
     store = get_vector_store()
     if not store.is_connected:
         store.connect()
 
+    # Warm-up: embed a dummy query to trigger lazy initialization
+    try:
+        provider = get_embedding_provider()
+        provider.embed_query("博物馆 历史 文化")
+        logger.info("RAG warm-up complete (embedding provider ready)")
+    except Exception as e:
+        logger.warning(f"RAG warm-up failed (non-fatal): {e}")
+
+    elapsed = time.time() - t0
     logger.info(
-        f"RAG initialized: {len(attractions)} attractions, "
+        f"RAG initialized in {elapsed:.2f}s: "
+        f"{len(attractions)} attractions, "
         f"{len(tag_vocab)} tags, Chroma={store.count()} docs"
+        f"{' [fast-start]' if loaded_from_disk else ' [first-fit]'}"
     )
     return True
 

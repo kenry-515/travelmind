@@ -115,10 +115,10 @@ class TestNextAction:
         st = _state()
         st["followups_used"] = 3
         action = next_action(st)
-        assert action["type"] == "confirm"
-        assert st["slots"]["city"] == "重庆"
-        assert st["slots"]["days"] == 3
-        assert "默认值" in action["reply"]
+        # Phase 16.2: 城市为空时不再默认填"重庆"，而是继续追问城市
+        assert action["type"] == "ask"
+        assert st["slots"]["city"] is None
+        assert "重庆" not in action["reply"]
 
     def test_followup_counter_increments(self):
         st = _state()

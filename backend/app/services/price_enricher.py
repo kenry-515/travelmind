@@ -1,18 +1,24 @@
 """
-TravelMind Agent — Price Enricher (Phase 7)
+TravelMind Agent — Price Enricher (Phase 7 + Runtime)
 
 Post-processing module that enriches LLM-generated itineraries with real
-price data from the attraction knowledge base. Runs AFTER LLM generation
-and BEFORE contract validation finalization.
+price data. Runs AFTER LLM generation and BEFORE contract validation.
+
+Two enrichment modes:
+  1. STATIC (enrich_prices) — uses only the pre-fetched knowledge base
+  2. RUNTIME (enrich_prices_runtime) — queries missing prices from external
+     APIs at request time (Bing, Trip.com API, etc.)
 
 Core responsibilities:
   1. Match itinerary POI names to knowledge-base attractions (fuzzy)
   2. Inject price_range, price_source, price_updated_at, booking_url
-  3. Compute price_summary with budget comparison and staleness detection
+  3. Query missing prices at runtime via external APIs
+  4. Compute price_summary with budget comparison and staleness detection
 
-All price data originates from attractions.json — zero hardcoded prices.
+TRUTHFUL DATA ONLY — never fabricate prices.
 """
 
+import asyncio
 import logging
 import re
 from datetime import date, datetime
@@ -45,15 +51,32 @@ def build_booking_url(name: str, city: str = "", amap_id: Optional[str] = None) 
 
     Priority:
       1. Amap POI detail page (if amap_id available)
-      2. Dianping keyword search fallback
+      2. Ctrip ticket search (better for attraction tickets)
+      3. Dianping keyword search fallback
     """
     if amap_id:
         return f"https://uri.amap.com/detail?poiid={amap_id}"
 
-    # Fallback: Dianping search
+    # Prefer Ctrip for attraction ticket search
     search_term = f"{name} {city}".strip() if city else name
     encoded = quote(search_term)
-    return f"https://m.dianping.com/search/keyword/{encoded}"
+    return f"https://piao.ctrip.com/search?q={encoded}"
+
+
+def build_query_links(name: str, city: str = "") -> Dict[str, str]:
+    """Generate multi-platform query links for user self-service.
+
+    Returns a dict of platform → URL for the user to check prices themselves.
+    """
+    search_term = f"{city} {name}".strip() if city else name
+    encoded = quote(search_term)
+    return {
+        "ctrip": f"https://piao.ctrip.com/search?q={encoded}",
+        "fliggy": f"https://s.alitrip.com/search_union.htm?keyword={encoded}",
+        "amap": f"https://uri.amap.com/search?keyword={encoded}",
+        "baidu": f"https://www.baidu.com/s?wd={encoded}+门票价格",
+        "bing": f"https://cn.bing.com/search?q={encoded}+门票",
+    }
 
 
 # ── Price lookup ────────────────────────────────────────────
@@ -127,6 +150,9 @@ def compute_price_summary(
 ) -> Dict[str, Any]:
     """Compute aggregate price statistics for the itinerary.
 
+    TRUTHFUL: Only count verified prices. Unverified prices are
+    excluded from totals (they'll show as "待核实" to the user).
+
     Args:
         data: The enriched itinerary dict (price fields already injected).
         user_budget: The user's budget level string (经济/适中/舒适/高端/奢华).
@@ -136,7 +162,9 @@ def compute_price_summary(
     """
     total_min = 0
     total_max = 0
-    priced_count = 0
+    verified_count = 0
+    free_count = 0
+    unverified_count = 0
     total_count = 0
     stale_count = 0
 
@@ -144,37 +172,45 @@ def compute_price_summary(
         for item in day.get("items", []):
             total_count += 1
             pr = item.get("price_range")
-            if pr and isinstance(pr, dict):
+            is_verified = item.get("price_verifiable", False)
+
+            if pr is not None and isinstance(pr, dict) and is_verified:
                 pmin = pr.get("min", 0)
                 pmax = pr.get("max", 0)
                 if pmax > 0 or pmin > 0:
                     total_min += pmin
                     total_max += pmax
-                    priced_count += 1
+                    verified_count += 1
                 else:
-                    # Free attraction — counted but adds zero
-                    priced_count += 1
-            # Check staleness
+                    # Free but verified
+                    verified_count += 1
+                    free_count += 1
+            else:
+                unverified_count += 1
+
+            # Check staleness for verified prices
             updated = item.get("price_updated_at", "")
-            if is_stale(updated):
+            if is_verified and is_stale(updated):
                 stale_count += 1
 
-    # Budget comparison — Phase 12.29: 使用集中化的 BUDGET_PER_DAY
+    # Budget comparison — only if we have enough verified prices
     from app.core.constants import BUDGET_PER_DAY
     budget_slot = BUDGET_PER_DAY.get(user_budget, BUDGET_PER_DAY["适中"])
-    over_budget = total_max > budget_slot
+    over_budget = total_max > budget_slot if verified_count > 0 else False
     over_budget_warning = ""
     if over_budget:
         over_budget_warning = (
-            f"门票总预算估算 ¥{total_min}-{total_max} 超出您的"
-            f"「{user_budget or '适中'}」预算参考线 ¥{budget_slot}，"
-            f"建议调整景点选择或预算预期。"
+            f"已核实门票合计 ¥{total_min}-{total_max}，"
+            f"超出「{user_budget or '适中'}」预算参考线 ¥{budget_slot}。"
+            f"其余 {unverified_count} 项门票价格待核实，建议自行查询。"
         )
 
     return {
         "total_estimate_min": total_min,
         "total_estimate_max": total_max,
-        "priced_items": priced_count,
+        "verified_items": verified_count,
+        "free_items": free_count,
+        "unverified_items": unverified_count,
         "total_items": total_count,
         "stale_items": stale_count,
         "budget_slot": user_budget or "适中",
@@ -191,11 +227,13 @@ def enrich_prices(
     attractions: List[Dict[str, Any]],
     user_budget: str = "",
 ) -> Dict[str, Any]:
-    """Inject real price data into every day item in the itinerary.
+    """Inject verified price data into every day item in the itinerary.
 
-    Matches POI names against the attraction knowledge base, adds
-    price_range / price_source / price_updated_at / booking_url,
-    and computes a price_summary for the root object.
+    TRUTHFUL DATA ONLY:
+    - If a POI has verified price data → inject it directly
+    - If a POI lacks verified price data → mark as "待核实" with guidance
+      for the user to look up on Amap/Ctrip themselves.
+    - No fabricated estimates are ever injected.
 
     Args:
         data: The LLM-generated itinerary dict (mutated in-place).
@@ -211,6 +249,7 @@ def enrich_prices(
     lookup = _build_lookup(attractions)
     city = (data.get("trip") or {}).get("city", "")
     enriched_count = 0
+    unverified_count = 0
 
     for day in data.get("days", []):
         for item in day.get("items", []):
@@ -220,29 +259,159 @@ def enrich_prices(
 
             matched = _find_attraction(poi_name, lookup)
             if matched:
-                item["price_range"] = matched.get("price_range", {"min": 0, "max": 0})
-                item["price_source"] = matched.get("price_source", "")
-                item["price_updated_at"] = matched.get("price_updated_at", "")
-                item["booking_url"] = build_booking_url(
-                    poi_name,
-                    city=city,
-                    amap_id=matched.get("amap_id"),
-                )
-                enriched_count += 1
+                price = matched.get("price_range")
+                price_verifiable = matched.get("price_verifiable", False)
+
+                if price is not None and price_verifiable:
+                    # Verified price — inject directly
+                    item["price_range"] = price
+                    item["price_source"] = matched.get("price_source", "") or "已核实"
+                    item["price_updated_at"] = matched.get("price_updated_at", "") or ""
+                    item["booking_url"] = build_booking_url(
+                        poi_name,
+                        city=city,
+                        amap_id=matched.get("amap_id"),
+                    )
+                    item["price_verifiable"] = True
+                    enriched_count += 1
+                else:
+                    # Price not verified — do NOT fabricate
+                    # Show guidance for user to look up themselves
+                    item["price_range"] = None
+                    item["price_source"] = "价格未核实，建议自行查询"
+                    item["price_updated_at"] = ""
+                    item["booking_url"] = build_booking_url(poi_name, city=city)
+                    item["query_links"] = build_query_links(poi_name, city=city)
+                    item["price_verifiable"] = False
+                    unverified_count += 1
             else:
-                # No match — set empty defaults
-                item["price_range"] = {"min": 0, "max": 0}
-                item["price_source"] = ""
+                # No match in KB — cannot provide any price
+                item["price_range"] = None
+                item["price_source"] = "价格待核实"
                 item["price_updated_at"] = ""
                 item["booking_url"] = build_booking_url(poi_name, city=city)
+                item["query_links"] = build_query_links(poi_name, city=city)
+                item["price_verifiable"] = False
+                unverified_count += 1
 
     # Compute aggregate summary
     data["price_summary"] = compute_price_summary(data, user_budget)
 
     logger.info(
-        f"Price enrichment: {enriched_count} POIs matched, "
-        f"total estimate ¥{data['price_summary']['total_estimate_min']}"
-        f"-{data['price_summary']['total_estimate_max']}"
+        f"Price enrichment: {enriched_count} verified, "
+        f"{unverified_count} need user lookup"
     )
+
+    return data
+
+
+# ── Runtime price enrichment ────────────────────────────────
+
+
+async def enrich_prices_runtime(
+    data: Dict[str, Any],
+    attractions: List[Dict[str, Any]],
+    user_budget: str = "",
+    max_runtime_queries: int = 10,
+) -> Dict[str, Any]:
+    """Enrich prices with BOTH static KB AND runtime API queries.
+
+    This is the PREFERRED enrichment method for production. It:
+    1. First applies static enrichment (fast, from local KB)
+    2. Then queries unverified items via runtime external APIs
+    3. Updates items that received runtime price data
+    4. Recomputes the price summary
+
+    Args:
+        data: The LLM-generated itinerary dict (mutated in-place).
+        attractions: List of attraction dicts from the KB.
+        user_budget: User's budget level for comparison.
+        max_runtime_queries: Max number of runtime queries (to avoid abuse).
+
+    Returns:
+        The same dict (mutated) with price fields enriched.
+    """
+    if not data:
+        return data
+
+    # Step 1: Static enrichment first (fast)
+    enrich_prices(data, attractions, user_budget)
+
+    # Step 2: Collect items that still need runtime price queries
+    items_to_query = []
+    item_refs = []  # (day_idx, item_idx) for updating results
+
+    for day_idx, day in enumerate(data.get("days", [])):
+        for item_idx, item in enumerate(day.get("items", [])):
+            if not item.get("poi"):
+                continue
+            if item.get("price_verifiable", False):
+                continue  # Already verified, skip
+            # Check if we should try runtime query
+            pr = item.get("price_range")
+            if pr is not None and item.get("price_verifiable", False):
+                continue
+            items_to_query.append(item["poi"])
+            item_refs.append((day_idx, item_idx))
+
+    if not items_to_query:
+        logger.info("All prices verified from static KB, no runtime queries needed")
+        return data
+
+    # Limit the number of runtime queries to avoid slow responses
+    if len(items_to_query) > max_runtime_queries:
+        logger.info(
+            f"Limiting runtime queries from {len(items_to_query)} to {max_runtime_queries}"
+        )
+        items_to_query = items_to_query[:max_runtime_queries]
+        item_refs = item_refs[:max_runtime_queries]
+
+    # Step 3: Run runtime queries concurrently
+    city = (data.get("trip") or {}).get("city", "")
+
+    try:
+        from app.services.price_query_service import query_price_runtime
+
+        tasks = [
+            query_price_runtime(poi_name, city=city)
+            for poi_name in items_to_query
+        ]
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+
+        runtime_hit = 0
+        for i, (result, (day_idx, item_idx)) in enumerate(zip(results, item_refs)):
+            if isinstance(result, Exception):
+                logger.debug(f"Runtime query failed: {result}")
+                continue
+
+            item = data["days"][day_idx]["items"][item_idx]
+
+            if result.get("price_verifiable", False) and result.get("price_range"):
+                # Runtime query found a verified price
+                item["price_range"] = result["price_range"]
+                item["price_source"] = result.get("price_source", "Bing搜索")
+                item["price_updated_at"] = result.get("price_updated_at", "")
+                item["price_verifiable"] = True
+                if result.get("booking_url"):
+                    item["booking_url"] = result["booking_url"]
+                if result.get("query_links"):
+                    item["query_links"] = result["query_links"]
+                runtime_hit += 1
+            else:
+                # Runtime query didn't find a price — keep the fallback links
+                if result.get("booking_url"):
+                    item["booking_url"] = result["booking_url"]
+                if result.get("query_links"):
+                    item["query_links"] = result["query_links"]
+
+        logger.info(
+            f"Runtime price query: {runtime_hit}/{len(items_to_query)} verified"
+        )
+
+    except Exception as e:
+        logger.warning(f"Runtime price query failed (non-fatal): {e}")
+
+    # Step 4: Recompute price summary with updated data
+    data["price_summary"] = compute_price_summary(data, user_budget)
 
     return data

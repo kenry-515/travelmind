@@ -1,0 +1,162 @@
+{
+  "summary": {
+    "total": 7,
+    "passed": 6,
+    "llm_failed": 0,
+    "ux_residual": 1
+  },
+  "details": [
+    {
+      "id": "BJ_FAMILY_3D",
+      "raw_issues": 0,
+      "fixed_issues": 0,
+      "raw_examples": [],
+      "fixed_examples": [],
+      "status": "PASSED"
+    },
+    {
+      "id": "CD_FOODIE_4D",
+      "raw_issues": 3,
+      "fixed_issues": 0,
+      "raw_examples": [
+        {
+          "type": "dup_eat",
+          "day": 1,
+          "poi": "里院传家菜·小庭院川菜",
+          "msg": "第1天 day.eat 中已包含餐厅「里院传家菜·小庭院川菜」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        },
+        {
+          "type": "dup_eat",
+          "day": 3,
+          "poi": "悦百味·品质川菜(优品道店)",
+          "msg": "第3天 day.eat 中已包含餐厅「悦百味·品质川菜(优品道店)」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        },
+        {
+          "type": "dup_eat",
+          "day": 4,
+          "poi": "荣胜和鲜货火锅(郫筒大蜀直营店)",
+          "msg": "第4天 day.eat 中已包含餐厅「荣胜和鲜货火锅(郫筒大蜀直营店)」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        }
+      ],
+      "fixed_examples": [],
+      "status": "PASSED"
+    },
+    {
+      "id": "XA_HISTORY_2D",
+      "raw_issues": 2,
+      "fixed_issues": 0,
+      "raw_examples": [
+        {
+          "type": "dup_eat",
+          "day": 1,
+          "poi": "奔跑吧陕菜·常来长安(钟楼南大街店)",
+          "msg": "第1天 day.eat 中已包含餐厅「奔跑吧陕菜·常来长安(钟楼南大街店)」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        },
+        {
+          "type": "dup_eat",
+          "day": 2,
+          "poi": "醉长安(永宁门店)",
+          "msg": "第2天 day.eat 中已包含餐厅「醉长安(永宁门店)」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        }
+      ],
+      "fixed_examples": [],
+      "status": "PASSED"
+    },
+    {
+      "id": "SH_SHOPPING_3D",
+      "raw_issues": 0,
+      "fixed_issues": 0,
+      "raw_examples": [],
+      "fixed_examples": [],
+      "status": "PASSED"
+    },
+    {
+      "id": "LJ_DEEP_5D",
+      "raw_issues": 6,
+      "fixed_issues": 1,
+      "raw_examples": [
+        {
+          "type": "dup_eat",
+          "day": 1,
+          "poi": "云雪丽·现炒云南菜(大水车店)",
+          "msg": "第1天 day.eat 中已包含餐厅「云雪丽·现炒云南菜(大水车店)」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        },
+        {
+          "type": "dup_eat",
+          "day": 2,
+          "poi": "菌香时·食神餐厅",
+          "msg": "第2天 day.eat 中已包含餐厅「菌香时·食神餐厅」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        },
+        {
+          "type": "dup_eat",
+          "day": 3,
+          "poi": "桥边小楼·手工云南菜·丽江地标美食",
+          "msg": "第3天 day.eat 中已包含餐厅「桥边小楼·手工云南菜·丽江地标美食」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        }
+      ],
+      "fixed_examples": [
+        {
+          "type": "wrong_marker",
+          "day": 4,
+          "poi": "忠顺饭店·特色家常菜(忠义店)",
+          "msg": "第4天 酒店「忠顺饭店·特色家常菜(忠义店)」被误标为 [吃]"
+        }
+      ],
+      "status": "UX_RESIDUAL"
+    },
+    {
+      "id": "XM_BEACH_3D",
+      "raw_issues": 4,
+      "fixed_issues": 0,
+      "raw_examples": [
+        {
+          "type": "dup_eat",
+          "day": 1,
+          "poi": "鼓浪屿",
+          "msg": "第1天 day.eat 中已包含餐厅「鼓浪屿」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        },
+        {
+          "type": "dup_eat",
+          "day": 1,
+          "poi": "林四喜·闽南传家菜(鼓浪屿店)",
+          "msg": "第1天 day.eat 中已包含餐厅「林四喜·闽南传家菜(鼓浪屿店)」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        },
+        {
+          "type": "dup_eat",
+          "day": 2,
+          "poi": "打渔船·老厦门本地菜·姜母鸭(沙坡尾地标美食店)",
+          "msg": "第2天 day.eat 中已包含餐厅「打渔船·老厦门本地菜·姜母鸭(沙坡尾地标美食店)」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        }
+      ],
+      "fixed_examples": [],
+      "status": "PASSED"
+    },
+    {
+      "id": "CQ_HOTPOT_4D",
+      "raw_issues": 4,
+      "fixed_issues": 0,
+      "raw_examples": [
+        {
+          "type": "dup_eat",
+          "day": 1,
+          "poi": "重庆海棠老火锅",
+          "msg": "第1天 day.eat 中已包含餐厅「重庆海棠老火锅」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        },
+        {
+          "type": "dup_eat",
+          "day": 2,
+          "poi": "赵二火锅总店",
+          "msg": "第2天 day.eat 中已包含餐厅「赵二火锅总店」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        },
+        {
+          "type": "dup_eat",
+          "day": 3,
+          "poi": "夜福火锅",
+          "msg": "第3天 day.eat 中已包含餐厅「夜福火锅」，但 items 也有 [吃] 卡片，前端会双重渲染"
+        }
+      ],
+      "fixed_examples": [],
+      "status": "PASSED"
+    }
+  ]
+}

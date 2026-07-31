@@ -3,7 +3,8 @@ TravelMind Agent — API HTTP 集成测试（Phase 12.29d）
 
 使用 httpx.AsyncClient 对 FastAPI 应用发起真实 HTTP 请求。
 每个路由至少一个 smoke test，验证 200/4xx 返回和响应结构。
-零 LLM/DB 依赖 —— 所有外部服务被 mock 或优雅降级。
+
+Phase 12.30: 真实 DB 测试模式 — 不再覆盖 get_db。
 """
 
 import pytest
@@ -48,7 +49,7 @@ async def test_recommend_no_city(client):
         "/api/v1/recommend",
         json={"user_input": "推荐一些好玩的地方", "tags": ["美食"]},
     )
-    assert resp.status_code in (200, 422)  # 422 if city not recognized, 200 if multi-city
+    assert resp.status_code in (200, 422)
 
 
 async def test_recommend_quick(client):
@@ -94,8 +95,6 @@ async def test_agent_profile_empty(client):
 
 async def test_rate_limit_headers(client):
     """Verify rate limit middleware is active."""
-    # A quick call to a non-exempt path should include no rate-limit headers
-    # (the middleware doesn't add headers, just enforces)
     resp = await client.get("/api/v1/weather/cities")
     assert resp.status_code == 200
 
@@ -106,7 +105,7 @@ async def test_invalid_device_id(client):
         "/api/v1/itineraries",
         headers={"X-Device-ID": "../../etc/passwd"},
     )
-    assert resp.status_code == 200  # Safe: invalid device_id → None → empty result
+    assert resp.status_code == 200
     data = resp.json()
     assert data.get("itineraries") == []
 

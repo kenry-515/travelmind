@@ -432,3 +432,30 @@ export async function restoreVersion(
   }>(`/itineraries/${itineraryId}/restore/${versionId}`)
   return data
 }
+
+
+// ── Itinerary Item Operations (Phase 16: 单项删除持久化) ────
+
+export interface RemoveItemResponse {
+  ok: boolean
+  itinerary: TravelItinerary
+  removed_poi: string
+  day_no: number
+}
+
+/** Remove a single item from an itinerary (e.g., when user clicks delete in UI).
+ *  Phase 16: Supports persistence — the deletion is saved to the backend. */
+export async function removeItineraryItem(
+  itineraryId: string,
+  dayIndex: number,
+  itemIndex: number
+): Promise<RemoveItemResponse> {
+  const { data } = await api.patch<RemoveItemResponse>(
+    `/itineraries/${itineraryId}/items`,
+    {
+      day_index: dayIndex,
+      item_index: itemIndex,
+    }
+  )
+  return data
+}

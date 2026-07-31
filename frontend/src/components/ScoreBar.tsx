@@ -35,7 +35,7 @@ export function ScoreBar({ breakdown, compact = false }: ScoreBarProps) {
             style={{ width: `${Math.round(weighted * 100)}%` }}
           />
         </div>
-        <span className="text-xs tabular-nums text-slate-400">
+        <span className="text-xs tabular-nums text-slate-400 dark:text-slate-500">
           {weighted.toFixed(2)}
         </span>
       </div>
@@ -48,16 +48,16 @@ export function ScoreBar({ breakdown, compact = false }: ScoreBarProps) {
         const val = breakdown[f.key] ?? 0
         return (
           <div key={f.key} className="flex items-center gap-2 text-xs">
-            <span className="w-16 shrink-0 text-right tabular-nums text-slate-500">
+            <span className="w-16 shrink-0 text-right tabular-nums text-slate-500 dark:text-slate-400">
               {f.label}
             </span>
-            <div className="h-2 flex-1 rounded-full bg-slate-100">
+            <div className="h-2 flex-1 rounded-full bg-slate-100 dark:bg-slate-800">
               <div
                 className={`h-2 rounded-full ${f.color} transition-all`}
                 style={{ width: `${Math.round(val * 100)}%` }}
               />
             </div>
-            <span className="w-7 shrink-0 tabular-nums font-medium text-slate-700">
+            <span className="w-7 shrink-0 tabular-nums font-medium text-slate-700 dark:text-slate-300">
               {val.toFixed(2)}
             </span>
           </div>

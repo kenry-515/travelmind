@@ -8,6 +8,14 @@
 import { AlertCircle, Wallet } from 'lucide-react'
 import { isPriceStale, type DayItem, type PriceRange, type PriceSummary } from '../lib/api'
 
+/** 后端可能注入的价格扩展字段（契约之外，缺失时不显示）。 */
+interface DayItemPriceExt {
+  price_range?: PriceRange | null
+  price_updated_at?: string
+  booking_url?: string
+  price_source?: string
+}
+
 /** Extract price fields from a day item (backend-injected, may not exist). */
 export function getPriceInfo(item: DayItem): {
   range: PriceRange | null
@@ -17,8 +25,7 @@ export function getPriceInfo(item: DayItem): {
   isFree: boolean
   stale: boolean
 } {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const ext = item as any
+  const ext = item as DayItemPriceExt
   const range: PriceRange | null = ext.price_range || null
   const updatedAt: string = ext.price_updated_at || ''
   const bookingUrl: string = ext.booking_url || ''
@@ -35,11 +42,11 @@ export function PriceBadge({ item }: { item: DayItem }) {
   return (
     <div className="mt-1.5 flex items-center gap-2 flex-wrap">
       {isFree ? (
-        <span className="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">
+        <span className="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-xs font-medium text-slate-500 dark:text-slate-400">
           免费
         </span>
       ) : (
-        <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
+        <span className="inline-flex items-center rounded-full bg-green-50 dark:bg-green-900/30 px-2 py-0.5 text-xs font-medium text-green-700 dark:text-green-300">
           {range.min === range.max ? `¥${range.min}` : `¥${range.min}-${range.max}`}
         </span>
       )}
@@ -53,7 +60,7 @@ export function PriceBadge({ item }: { item: DayItem }) {
           href={bookingUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-0.5 text-xs text-brand-600 hover:text-brand-700 hover:underline"
+          className="inline-flex items-center gap-0.5 text-xs text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 hover:underline"
         >
           去看实时价 →
         </a>
@@ -65,36 +72,36 @@ export function PriceBadge({ item }: { item: DayItem }) {
 export function PriceSummaryCard({ summary }: { summary: PriceSummary }) {
   return (
     <div className="card mt-4 p-5">
-      <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-        <Wallet size={16} className="text-slate-400" />
+      <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-800 dark:text-slate-200">
+        <Wallet size={16} className="text-slate-400 dark:text-slate-500" />
         门票参考
       </h3>
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <div className="rounded-xl bg-surface-secondary p-3 text-center">
-          <p className="text-lg font-bold text-slate-800">
+          <p className="text-lg font-bold text-slate-800 dark:text-slate-200">
             ¥{summary.total_estimate_min}-{summary.total_estimate_max}
           </p>
-          <p className="text-xs text-slate-400">门票估算（人均）</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500">门票估算（人均）</p>
         </div>
         <div className="rounded-xl bg-surface-secondary p-3 text-center">
-          <p className="text-lg font-bold text-slate-800">
+          <p className="text-lg font-bold text-slate-800 dark:text-slate-200">
             {summary.priced_items}/{summary.total_items}
           </p>
-          <p className="text-xs text-slate-400">有价格数据的景点</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500">有价格数据的景点</p>
         </div>
         <div className="rounded-xl bg-surface-secondary p-3 text-center">
-          <p className="text-lg font-bold text-slate-800">{summary.budget_slot}</p>
-          <p className="text-xs text-slate-400">预算档次</p>
+          <p className="text-lg font-bold text-slate-800 dark:text-slate-200">{summary.budget_slot}</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500">预算档次</p>
         </div>
         {summary.stale_items > 0 && (
-          <div className="rounded-lg bg-amber-50 p-3 text-center">
-            <p className="text-lg font-bold text-amber-600">{summary.stale_items}</p>
-            <p className="text-xs text-amber-500">价格可能过期</p>
+          <div className="rounded-lg bg-amber-50 dark:bg-amber-900/30 p-3 text-center">
+            <p className="text-lg font-bold text-amber-600 dark:text-amber-400">{summary.stale_items}</p>
+            <p className="text-xs text-amber-500 dark:text-amber-500">价格可能过期</p>
           </div>
         )}
       </div>
       {summary.over_budget && (
-        <div className="mt-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
+        <div className="mt-3 rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30 px-3 py-2 text-xs text-red-700 dark:text-red-300">
           <AlertCircle size={14} className="mr-1 inline-block" />
           {summary.over_budget_warning}
         </div>

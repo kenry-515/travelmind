@@ -27,17 +27,17 @@ import {
 import type { ValidationReport, PoiValidation } from '../lib/api'
 
 const STATUS_META: Record<PoiValidation['status'], { label: string; cls: string; Icon: typeof CheckCircle2 }> = {
-  verified: { label: '在营', cls: 'text-green-600', Icon: CheckCircle2 },
-  replaced: { label: '已替换', cls: 'text-brand-600', Icon: RefreshCw },
-  unknown: { label: '未核实', cls: 'text-amber-600', Icon: AlertTriangle },
-  closed: { label: '已关闭', cls: 'text-red-500', Icon: XCircle },
+  verified: { label: '在营', cls: 'text-green-600 dark:text-green-400', Icon: CheckCircle2 },
+  replaced: { label: '已替换', cls: 'text-brand-600 dark:text-brand-400', Icon: RefreshCw },
+  unknown: { label: '未核实', cls: 'text-amber-600 dark:text-amber-400', Icon: AlertTriangle },
+  closed: { label: '已关闭', cls: 'text-red-500 dark:text-red-400', Icon: XCircle },
 }
 
 const FIT_META: Record<string, { label: string; cls: string; Icon: typeof Sun }> = {
-  good: { label: '天气适宜', cls: 'border-green-300 bg-green-50 text-green-700', Icon: Sun },
-  fair: { label: '天气一般', cls: 'border-amber-300 bg-amber-50 text-amber-700', Icon: CloudSun },
-  poor: { label: '天气欠佳', cls: 'border-red-300 bg-red-50 text-red-600', Icon: CloudRain },
-  unknown: { label: '天气未知', cls: 'border-slate-200 bg-slate-50 text-slate-500', Icon: Cloud },
+  good: { label: '天气适宜', cls: 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300', Icon: Sun },
+  fair: { label: '天气一般', cls: 'border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300', Icon: CloudSun },
+  poor: { label: '天气欠佳', cls: 'border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400', Icon: CloudRain },
+  unknown: { label: '天气未知', cls: 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400', Icon: Cloud },
 }
 
 export function ValidationReportCard({ report }: { report: ValidationReport }) {
@@ -60,13 +60,13 @@ export function ValidationReportCard({ report }: { report: ValidationReport }) {
         ) : (
           <ShieldAlert size={20} className="shrink-0 text-amber-500" />
         )}
-        <span className="text-sm font-bold text-slate-800">真实数据校验</span>
+        <span className="text-sm font-bold text-slate-800 dark:text-slate-200">真实数据校验</span>
         <div className="ml-1 flex flex-wrap items-center gap-1.5 text-xs">
           <span
             className={`rounded-full border px-2.5 py-0.5 font-medium ${
               allVerified
-                ? 'border-green-200 bg-green-50 text-green-700'
-                : 'border-amber-200 bg-amber-50 text-amber-700'
+                ? 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                : 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
             }`}
           >
             ✓ POI 在营 {report.poi_verified}
@@ -74,8 +74,8 @@ export function ValidationReportCard({ report }: { report: ValidationReport }) {
           <span
             className={`rounded-full border px-2.5 py-0.5 font-medium ${
               report.route_backtrack
-                ? 'border-amber-200 bg-amber-50 text-amber-700'
-                : 'border-green-200 bg-green-50 text-green-700'
+                ? 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
+                : 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300'
             }`}
           >
             {report.route_backtrack ? '⚠ 已优化折返' : '✓ 无折返路线'}
@@ -88,7 +88,7 @@ export function ValidationReportCard({ report }: { report: ValidationReport }) {
             {report.weather_fit === 'unknown' ? fit.label : `天气安全 · ${fit.label}`}
           </span>
         </div>
-        <span className="ml-auto flex items-center gap-1 text-xs text-slate-400">
+        <span className="ml-auto flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500">
           校验于 {report.checked_at}
           {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
         </span>
@@ -98,7 +98,7 @@ export function ValidationReportCard({ report }: { report: ValidationReport }) {
       {expanded && (
         <div className="animate-fade-in border-t border-border-light px-5 py-4">
           {/* POI 存续明细 */}
-          <h4 className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-slate-500">
+          <h4 className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
             <MapPin size={13} />
             景点存续核实（高德地图 · {report.checked_at}）
           </h4>
@@ -109,9 +109,9 @@ export function ValidationReportCard({ report }: { report: ValidationReport }) {
                 <div key={i} className="flex items-start gap-1.5 text-xs" title={p.note || ''}>
                   <meta.Icon size={14} className={`mt-0.5 shrink-0 ${meta.cls}`} />
                   <div className="min-w-0">
-                    <span className="text-slate-700">{p.name}</span>
-                    {p.district && <span className="ml-1 text-slate-400">· {p.district}</span>}
-                    {p.note && <p className="mt-0.5 text-slate-400">{p.note}</p>}
+                    <span className="text-slate-700 dark:text-slate-300">{p.name}</span>
+                    {p.district && <span className="ml-1 text-slate-400 dark:text-slate-500">· {p.district}</span>}
+                    {p.note && <p className="mt-0.5 text-slate-400 dark:text-slate-500">{p.note}</p>}
                   </div>
                 </div>
               )
@@ -119,7 +119,7 @@ export function ValidationReportCard({ report }: { report: ValidationReport }) {
           </div>
 
           {/* 路线结论 */}
-          <h4 className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-slate-500">
+          <h4 className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
             <Route size={13} />
             每日路线
           </h4>
@@ -129,8 +129,8 @@ export function ValidationReportCard({ report }: { report: ValidationReport }) {
                 key={r.day}
                 className={`rounded-xl border px-2.5 py-1 text-xs ${
                   r.backtrack
-                    ? 'border-amber-200 bg-amber-50 text-amber-700'
-                    : 'border-border bg-surface-secondary text-slate-600'
+                    ? 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
+                    : 'border-border bg-surface-secondary dark:bg-slate-800/40 text-slate-600 dark:text-slate-400'
                 }`}
                 title={r.note || ''}
               >
@@ -142,13 +142,13 @@ export function ValidationReportCard({ report }: { report: ValidationReport }) {
           {/* 天气匹配 */}
           {report.weather_notes && report.weather_notes.length > 0 && (
             <>
-              <h4 className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-slate-500">
+              <h4 className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
                 <CloudSun size={13} />
                 天气匹配
               </h4>
               <ul className="space-y-1">
                 {report.weather_notes.map((n, i) => (
-                  <li key={i} className="text-xs text-slate-500">
+                  <li key={i} className="text-xs text-slate-500 dark:text-slate-400">
                     · {n}
                   </li>
                 ))}

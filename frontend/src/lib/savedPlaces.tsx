@@ -24,7 +24,7 @@ interface SavedPlacesContextValue {
   removePlace: (id: string) => void
   togglePlace: (place: Omit<SavedPlace, 'id' | 'addedAt'>) => void
   isSaved: (name: string, city: string) => boolean
-  getPlacesForPrompt: () => string
+  getPlacesForPrompt: (currentCity?: string) => string
   sharePlacesText: () => string
 }
 
@@ -36,7 +36,18 @@ const MAX_PLACES = 50
 function loadSaved(): SavedPlace[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) return JSON.parse(raw)
+    if (raw) {
+      const places: SavedPlace[] = JSON.parse(raw)
+      // Phase 15.5: Filter out auto-saved entries (source: 'chat') —
+      // only keep user-confirmed favorites from recommend/image/manual pages.
+      // 'chat' source entries were auto-saved by the buggy auto-favorite logic.
+      const cleaned = places.filter(p => p.source !== 'chat')
+      if (cleaned.length !== places.length) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned))
+        console.info(`[SavedPlaces] Cleaned ${places.length - cleaned.length} auto-saved entries`)
+      }
+      return cleaned
+    }
   } catch { /* ignore */ }
   return []
 }
@@ -85,11 +96,17 @@ export function SavedPlacesProvider({ children }: { children: ReactNode }) {
     return places.some(p => p.name === name && p.city === city)
   }, [places])
 
-  /** 生成给 AI Prompt 的文本（挂在对话 prompt 尾部） */
-  const getPlacesForPrompt = useCallback(() => {
+  /** 生成给 AI Prompt 的文本（挂在对话 prompt 尾部）
+   *  Phase 15.4: 按当前城市过滤收藏地点，避免跨城市污染。
+   *  currentCity 为空时不附加（防止用旧收藏干扰新目的地）。
+   */
+  const getPlacesForPrompt = useCallback((currentCity?: string): string => {
     if (places.length === 0) return ''
-    const lines = places.map(p => `- ${p.name}（${p.city}）${p.note ? '—' + p.note : ''}`)
-    return `\n【用户收藏的想去地点】\n${lines.join('\n')}\n请将这些地点优先纳入行程规划。`
+    if (!currentCity) return ''
+    const matched = places.filter(p => p.city === currentCity)
+    if (matched.length === 0) return ''
+    const lines = matched.map(p => `- ${p.name}（${p.city}）${p.note ? '—' + p.note : ''}`)
+    return '\n【用户收藏的' + currentCity + '地点】\n' + lines.join('\n')
   }, [places])
 
   /** 生成可分享的纯文本 */

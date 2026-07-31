@@ -57,8 +57,57 @@ function renderItineraryHtml(
 
   const daysHtml = days
     .map(
-      (day) =>
-        `<div style="margin-bottom:16px;padding:16px;background:#fff;border:1px solid #e2e8f0;border-radius:12px">
+      (day) => {
+        // 餐饮卡片
+        let diningHtml = ''
+        if (day.eat) {
+          const eatText = esc(day.eat)
+          // 尝试解析午餐和晚餐
+          const lunchMatch = eatText.match(/午餐[「"]([^」"]+)[」"]/) || eatText.match(/午餐[:：]\s*([^；;·]+)/)
+          const dinnerMatch = eatText.match(/晚餐[「"]([^」"]+)[」"]/) || eatText.match(/晚餐[:：]\s*([^；;·]+)/)
+          
+          const lunchHtml = lunchMatch
+            ? `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;padding:10px;background:#fef3c7;border-radius:8px;border:1px solid #fde68a">
+                 <span style="font-size:11px;font-weight:600;color:#b45309;min-width:40px">12:00</span>
+                 <div>
+                   <span style="font-size:10px;background:#fbbf24;color:#92400e;padding:2px 6px;border-radius:4px;font-weight:600">午餐</span>
+                   <p style="font-size:12px;font-weight:500;color:#1e293b;margin:4px 0 0">${esc(lunchMatch[1])}</p>
+                 </div>
+               </div>`
+            : ''
+          
+          const dinnerHtml = dinnerMatch
+            ? `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;padding:10px;background:#fff7ed;border-radius:8px;border:1px solid #fed7aa">
+                 <span style="font-size:11px;font-weight:600;color:#c2410c;min-width:40px">18:30</span>
+                 <div>
+                   <span style="font-size:10px;background:#fdba74;color:#9a3412;padding:2px 6px;border-radius:4px;font-weight:600">晚餐</span>
+                   <p style="font-size:12px;font-weight:500;color:#1e293b;margin:4px 0 0">${esc(dinnerMatch[1])}</p>
+                 </div>
+               </div>`
+            : ''
+          
+          // 如果没有解析出结构化的午餐/晚餐，显示整体文本
+          if (!lunchMatch && !dinnerMatch) {
+            diningHtml = `<div style="padding:10px;background:#fef9c3;border-radius:8px;border:1px solid #fde047;margin-top:8px">
+              <p style="font-size:11px;color:#854d0e;margin:0">🍜 餐饮推荐：${eatText}</p>
+            </div>`
+          } else {
+            diningHtml = `<div style="margin-top:10px">${lunchHtml}${dinnerHtml}</div>`
+          }
+        }
+        
+        // 住宿卡片
+        const stayHtml = day.stay
+          ? `<div style="display:flex;align-items:flex-start;gap:8px;margin-top:10px;padding:10px;background:#faf5ff;border-radius:8px;border:1px solid #e9d5ff">
+               <span style="font-size:11px;font-weight:600;color:#7c3aed;min-width:40px">21:00</span>
+               <div>
+                 <span style="font-size:10px;background:#ddd6fe;color:#5b21b6;padding:2px 6px;border-radius:4px;font-weight:600">住宿</span>
+                 <p style="font-size:12px;font-weight:500;color:#1e293b;margin:4px 0 0">${esc(day.stay)}</p>
+               </div>
+             </div>`
+          : ''
+        
+        return `<div style="margin-bottom:16px;padding:16px;background:#fff;border:1px solid #e2e8f0;border-radius:12px">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #f1f5f9">
             <span style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:#dbeafe;border-radius:50%;font-size:16px;font-weight:bold;color:#2563eb">${day.day}</span>
             <div>
@@ -78,10 +127,10 @@ function renderItineraryHtml(
                 </div>`
             )
             .join('')}
-          <p style="font-size:11px;color:#d97706;margin:8px 0 0;padding-top:8px;border-top:1px solid #fef3c7">
-            🍜 每日一味：${esc(day.eat)}
-          </p>
+          ${diningHtml}
+          ${stayHtml}
         </div>`
+      }
     )
     .join('')
 

@@ -99,16 +99,16 @@ export function ImageUploader({ onAnalyze, loading }: ImageUploaderProps) {
           className={`flex h-56 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed transition-all focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 ${
             dragOver
               ? 'border-brand-400 bg-brand-50 scale-[1.01]'
-              : 'border-slate-300 bg-white hover:border-brand-300 hover:bg-brand-50/40'
+              : 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-brand-300 hover:bg-brand-50/40'
           }`}
         >
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100">
             <ImagePlus size={32} className="text-brand-500" />
           </div>
-          <p className="text-sm font-medium text-slate-600">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
             拖拽图片到这里，或点击选择
           </p>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-400 dark:text-slate-500">
             支持 png / jpeg / webp / gif，不超过 10MB
           </p>
         </div>
@@ -123,15 +123,15 @@ export function ImageUploader({ onAnalyze, loading }: ImageUploaderProps) {
             <button
               onClick={clearFile}
               disabled={loading}
-              className="absolute right-3 top-3 rounded-full bg-white/90 p-1.5 text-slate-500 shadow transition-colors hover:text-slate-800 disabled:opacity-50"
+              className="absolute right-3 top-3 rounded-full bg-white dark:bg-slate-900/90 p-1.5 text-slate-500 dark:text-slate-400 shadow transition-colors hover:text-slate-800 dark:hover:text-slate-100 disabled:opacity-50"
               aria-label="移除图片"
             >
               <X size={16} />
             </button>
           </div>
           <div className="flex items-center justify-between gap-3 px-4 py-3">
-            <div className="min-w-0 text-sm text-slate-500">
-              <p className="truncate font-medium text-slate-700">{file?.name}</p>
+            <div className="min-w-0 text-sm text-slate-500 dark:text-slate-400">
+              <p className="truncate font-medium text-slate-700 dark:text-slate-300">{file?.name}</p>
               <p className="text-xs">{file && formatSize(file.size)}</p>
             </div>
             <button

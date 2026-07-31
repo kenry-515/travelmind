@@ -1,0 +1,868 @@
+{
+  "trip": {
+    "title": "丽江深度五日 · 盛夏人文自然之旅",
+    "city": "丽江",
+    "dateStart": "7月30日",
+    "dateEnd": "8月3日",
+    "daysCount": 5,
+    "stats": [
+      {
+        "value": "5 天",
+        "label": "行程天数"
+      },
+      {
+        "value": "22 个",
+        "label": "计划地点"
+      },
+      {
+        "value": "¥3,500",
+        "label": "人均预算"
+      },
+      {
+        "value": "6,000 步",
+        "label": "预计日均步数"
+      },
+      {
+        "value": "舒适",
+        "label": "预算档次"
+      }
+    ]
+  },
+  "days": [
+    {
+      "day": 1,
+      "theme": "DAY 1 · 丽江古城·文化探访",
+      "title": "丽江古城·木府·科贡坊",
+      "items": [
+        {
+          "time": "09:00",
+          "time_slot": "morning",
+          "poi": "丽江古城",
+          "note": "[吃] 晚餐，推荐野生菌火锅，7月正值云南菌子季，鲜美无比",
+          "transportation": null,
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 0,
+            "total": 0
+          },
+          "price_range": {
+            "min": 0,
+            "max": 0
+          },
+          "price_source": "免费（基于景点类型判断）",
+          "price_updated_at": "2026-07-29",
+          "booking_url": "https://uri.amap.com/detail?poiid=B0FFJP5HXN",
+          "price_verifiable": true
+        },
+        {
+          "time": "10:30",
+          "time_slot": "morning",
+          "poi": "木府",
+          "note": "[景] 丽江古城的紫禁城，纳西族土司府邸，室内博物馆，雷暴天完全不受影响，建议游览1.5小时",
+          "transportation": "步行约10分钟",
+          "estimated_cost": {
+            "ticket": 40,
+            "transport": 0,
+            "total": 40
+          },
+          "price_range": {
+            "min": 0,
+            "max": 0
+          },
+          "price_source": "免费（基于景点类型判断）",
+          "price_updated_at": "2026-07-29",
+          "booking_url": "https://uri.amap.com/detail?poiid=B0FFLIM534",
+          "price_verifiable": true
+        },
+        {
+          "time": "12:00",
+          "time_slot": "afternoon",
+          "poi": "隔壁老王·家常云南菜(丽江旗舰店)",
+          "note": "[吃] 午餐，推荐招牌纳西烤鱼和鸡豆凉粉，地道云南家常菜",
+          "transportation": "步行约8分钟",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 0,
+            "total": 80
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E9%9A%94%E5%A3%81%E8%80%81%E7%8E%8B%C2%B7%E5%AE%B6%E5%B8%B8%E4%BA%91%E5%8D%97%E8%8F%9C%28%E4%B8%BD%E6%B1%9F%E6%97%97%E8%88%B0%E5%BA%97%29",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E9%9A%94%E5%A3%81%E8%80%81%E7%8E%8B%C2%B7%E5%AE%B6%E5%B8%B8%E4%BA%91%E5%8D%97%E8%8F%9C%28%E4%B8%BD%E6%B1%9F%E6%97%97%E8%88%B0%E5%BA%97%29",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E9%9A%94%E5%A3%81%E8%80%81%E7%8E%8B%C2%B7%E5%AE%B6%E5%B8%B8%E4%BA%91%E5%8D%97%E8%8F%9C%28%E4%B8%BD%E6%B1%9F%E6%97%97%E8%88%B0%E5%BA%97%29",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E9%9A%94%E5%A3%81%E8%80%81%E7%8E%8B%C2%B7%E5%AE%B6%E5%B8%B8%E4%BA%91%E5%8D%97%E8%8F%9C%28%E4%B8%BD%E6%B1%9F%E6%97%97%E8%88%B0%E5%BA%97%29",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E9%9A%94%E5%A3%81%E8%80%81%E7%8E%8B%C2%B7%E5%AE%B6%E5%B8%B8%E4%BA%91%E5%8D%97%E8%8F%9C%28%E4%B8%BD%E6%B1%9F%E6%97%97%E8%88%B0%E5%BA%97%29+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E9%9A%94%E5%A3%81%E8%80%81%E7%8E%8B%C2%B7%E5%AE%B6%E5%B8%B8%E4%BA%91%E5%8D%97%E8%8F%9C%28%E4%B8%BD%E6%B1%9F%E6%97%97%E8%88%B0%E5%BA%97%29+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "13:30",
+          "time_slot": "afternoon",
+          "poi": "科贡坊",
+          "note": "[景] 丽江古城标志性建筑，室内历史展示，了解纳西科举文化，雷雨天安全舒适",
+          "transportation": "步行约5分钟",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 0,
+            "total": 0
+          },
+          "price_range": {
+            "min": 0,
+            "max": 0
+          },
+          "price_source": "免费（基于景点类型判断）",
+          "price_updated_at": "2026-07-29",
+          "booking_url": "https://uri.amap.com/detail?poiid=B0378157W9",
+          "price_verifiable": true
+        },
+        {
+          "time": "15:00",
+          "time_slot": "afternoon",
+          "poi": "和家大院",
+          "note": "[景] 典型纳西族四合院建筑，室内参观，感受丽江大户人家的生活格局，有空调休憩",
+          "transportation": "步行约10分钟",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 0,
+            "total": 0
+          },
+          "price_range": {
+            "min": 0,
+            "max": 0
+          },
+          "price_source": "免费（基于景点类型判断）",
+          "price_updated_at": "2026-07-29",
+          "booking_url": "https://uri.amap.com/detail?poiid=B0378008PR",
+          "price_verifiable": true
+        }
+      ],
+      "eat": "午餐：隔壁老王·家常云南菜(丽江旗舰店)，推荐纳西烤鱼、鸡豆凉粉；晚餐：菌香时·食神餐厅，推荐野生菌火锅 · AI推荐: 晚餐「东巴谷野山菌」",
+      "stay": "Wang Jing Inn"
+    },
+    {
+      "day": 2,
+      "theme": "DAY 2 · 束河古镇·历史寻踪",
+      "title": "束河古镇·洛克故居·普贤寺",
+      "items": [
+        {
+          "time": "09:00",
+          "time_slot": "morning",
+          "poi": "束河古镇",
+          "note": "[吃] 晚餐，推荐滇味小炒和特色米线，环境雅致",
+          "transportation": "打车约20分钟，约¥25",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 25,
+            "total": 25
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%9D%9F%E6%B2%B3%E5%8F%A4%E9%95%87",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%9D%9F%E6%B2%B3%E5%8F%A4%E9%95%87",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E6%9D%9F%E6%B2%B3%E5%8F%A4%E9%95%87",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E6%9D%9F%E6%B2%B3%E5%8F%A4%E9%95%87",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E6%9D%9F%E6%B2%B3%E5%8F%A4%E9%95%87+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%9D%9F%E6%B2%B3%E5%8F%A4%E9%95%87+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "11:00",
+          "time_slot": "afternoon",
+          "poi": "丽江大石桥",
+          "note": "[景] 束河古镇标志性古桥，半室内廊桥结构，可避雨观景，拍照打卡",
+          "transportation": "步行约5分钟",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 0,
+            "total": 0
+          },
+          "price_range": {
+            "min": 0,
+            "max": 0
+          },
+          "price_source": "免费（基于景点类型判断）",
+          "price_updated_at": "2026-07-29",
+          "booking_url": "https://uri.amap.com/detail?poiid=B0FFFDWV16",
+          "price_verifiable": true
+        },
+        {
+          "time": "12:00",
+          "time_slot": "afternoon",
+          "poi": "普贤寺",
+          "note": "[景] 束河古镇内的古寺，室内参观，清幽宁静，适合午后避雨静心",
+          "transportation": "步行约8分钟",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 0,
+            "total": 0
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%99%AE%E8%B4%A4%E5%AF%BA",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%99%AE%E8%B4%A4%E5%AF%BA",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E6%99%AE%E8%B4%A4%E5%AF%BA",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E6%99%AE%E8%B4%A4%E5%AF%BA",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E6%99%AE%E8%B4%A4%E5%AF%BA+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%99%AE%E8%B4%A4%E5%AF%BA+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "13:30",
+          "time_slot": "afternoon",
+          "poi": "云雪丽现炒云南菜(四方街店)",
+          "note": "[吃] 午餐，推荐现炒野生菌和腊排骨火锅，7月菌子正当时",
+          "transportation": "步行约10分钟",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 0,
+            "total": 90
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E4%BA%91%E9%9B%AA%E4%B8%BD%E7%8E%B0%E7%82%92%E4%BA%91%E5%8D%97%E8%8F%9C%28%E5%9B%9B%E6%96%B9%E8%A1%97%E5%BA%97%29",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E4%BA%91%E9%9B%AA%E4%B8%BD%E7%8E%B0%E7%82%92%E4%BA%91%E5%8D%97%E8%8F%9C%28%E5%9B%9B%E6%96%B9%E8%A1%97%E5%BA%97%29",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E4%BA%91%E9%9B%AA%E4%B8%BD%E7%8E%B0%E7%82%92%E4%BA%91%E5%8D%97%E8%8F%9C%28%E5%9B%9B%E6%96%B9%E8%A1%97%E5%BA%97%29",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E4%BA%91%E9%9B%AA%E4%B8%BD%E7%8E%B0%E7%82%92%E4%BA%91%E5%8D%97%E8%8F%9C%28%E5%9B%9B%E6%96%B9%E8%A1%97%E5%BA%97%29",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E4%BA%91%E9%9B%AA%E4%B8%BD%E7%8E%B0%E7%82%92%E4%BA%91%E5%8D%97%E8%8F%9C%28%E5%9B%9B%E6%96%B9%E8%A1%97%E5%BA%97%29+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E4%BA%91%E9%9B%AA%E4%B8%BD%E7%8E%B0%E7%82%92%E4%BA%91%E5%8D%97%E8%8F%9C%28%E5%9B%9B%E6%96%B9%E8%A1%97%E5%BA%97%29+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "15:00",
+          "time_slot": "morning",
+          "poi": "洛克故居",
+          "note": "[景] 室内博物馆，美籍奥地利植物学家约瑟夫·洛克的故居，了解纳西文化研究史，雷暴天安全",
+          "transportation": "步行约15分钟",
+          "estimated_cost": {
+            "ticket": 20,
+            "transport": 0,
+            "total": 20
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%B4%9B%E5%85%8B%E6%95%85%E5%B1%85",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%B4%9B%E5%85%8B%E6%95%85%E5%B1%85",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E6%B4%9B%E5%85%8B%E6%95%85%E5%B1%85",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E6%B4%9B%E5%85%8B%E6%95%85%E5%B1%85",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E6%B4%9B%E5%85%8B%E6%95%85%E5%B1%85+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%B4%9B%E5%85%8B%E6%95%85%E5%B1%85+门票"
+          },
+          "price_verifiable": false
+        }
+      ],
+      "eat": "午餐：云雪丽现炒云南菜(四方街店)，推荐现炒野生菌、腊排骨火锅；晚餐：Lan岚•云南菜•bistro，推荐滇味小炒 · AI推荐: 午餐「菌香时·食神餐厅」· 晚餐「木王宴语·滇藏野菌石锅(花马店)」",
+      "stay": "木家苑客栈"
+    },
+    {
+      "day": 3,
+      "theme": "DAY 3 · 黑龙潭·文峰寺",
+      "title": "黑龙潭·文峰寺·宝山石头城",
+      "items": [
+        {
+          "time": "08:30",
+          "time_slot": "morning",
+          "poi": "丽江黑龙潭",
+          "note": "[吃] 晚餐，推荐云南家常菜，性价比高",
+          "transportation": "打车约15分钟，约¥20",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 20,
+            "total": 20
+          },
+          "price_range": {
+            "min": 0,
+            "max": 60
+          },
+          "price_source": "公开资料(黑龙潭公园免费/60元)",
+          "price_updated_at": "2026-07-29",
+          "booking_url": "https://uri.amap.com/detail?poiid=B037815A42",
+          "price_verifiable": true
+        },
+        {
+          "time": "10:00",
+          "time_slot": "evening",
+          "poi": "百岁桥",
+          "note": "[景] 丽江古城内的古桥，室内廊桥结构，傍晚散步，感受古城慢生活",
+          "transportation": "包车返回古城约1小时，约¥150/车",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 75,
+            "total": 75
+          },
+          "price_range": {
+            "min": 0,
+            "max": 0
+          },
+          "price_source": "免费（基于景点类型判断）",
+          "price_updated_at": "2026-07-29",
+          "booking_url": "https://uri.amap.com/detail?poiid=B0FFHCYRO9",
+          "price_verifiable": true
+        },
+        {
+          "time": "12:00",
+          "time_slot": "afternoon",
+          "poi": "桥边小楼·手工云南菜·丽江地标美食",
+          "note": "[吃] 午餐，推荐手工云南菜和特色小吃",
+          "transportation": "打车约15分钟，约¥20",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 20,
+            "total": 80
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%A1%A5%E8%BE%B9%E5%B0%8F%E6%A5%BC%C2%B7%E6%89%8B%E5%B7%A5%E4%BA%91%E5%8D%97%E8%8F%9C%C2%B7%E4%B8%BD%E6%B1%9F%E5%9C%B0%E6%A0%87%E7%BE%8E%E9%A3%9F",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%A1%A5%E8%BE%B9%E5%B0%8F%E6%A5%BC%C2%B7%E6%89%8B%E5%B7%A5%E4%BA%91%E5%8D%97%E8%8F%9C%C2%B7%E4%B8%BD%E6%B1%9F%E5%9C%B0%E6%A0%87%E7%BE%8E%E9%A3%9F",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E6%A1%A5%E8%BE%B9%E5%B0%8F%E6%A5%BC%C2%B7%E6%89%8B%E5%B7%A5%E4%BA%91%E5%8D%97%E8%8F%9C%C2%B7%E4%B8%BD%E6%B1%9F%E5%9C%B0%E6%A0%87%E7%BE%8E%E9%A3%9F",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E6%A1%A5%E8%BE%B9%E5%B0%8F%E6%A5%BC%C2%B7%E6%89%8B%E5%B7%A5%E4%BA%91%E5%8D%97%E8%8F%9C%C2%B7%E4%B8%BD%E6%B1%9F%E5%9C%B0%E6%A0%87%E7%BE%8E%E9%A3%9F",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E6%A1%A5%E8%BE%B9%E5%B0%8F%E6%A5%BC%C2%B7%E6%89%8B%E5%B7%A5%E4%BA%91%E5%8D%97%E8%8F%9C%C2%B7%E4%B8%BD%E6%B1%9F%E5%9C%B0%E6%A0%87%E7%BE%8E%E9%A3%9F+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%A1%A5%E8%BE%B9%E5%B0%8F%E6%A5%BC%C2%B7%E6%89%8B%E5%B7%A5%E4%BA%91%E5%8D%97%E8%8F%9C%C2%B7%E4%B8%BD%E6%B1%9F%E5%9C%B0%E6%A0%87%E7%BE%8E%E9%A3%9F+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "13:30",
+          "time_slot": "morning",
+          "poi": "文峰寺",
+          "note": "[景] 丽江著名藏传佛教寺院，室内参观，建筑精美，可俯瞰丽江坝子",
+          "transportation": "打车约20分钟，约¥30",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 30,
+            "total": 30
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%96%87%E5%B3%B0%E5%AF%BA",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%96%87%E5%B3%B0%E5%AF%BA",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E6%96%87%E5%B3%B0%E5%AF%BA",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E6%96%87%E5%B3%B0%E5%AF%BA",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E6%96%87%E5%B3%B0%E5%AF%BA+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%96%87%E5%B3%B0%E5%AF%BA+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "17:00",
+          "time_slot": "afternoon",
+          "poi": "宝山石头城",
+          "note": "[景] 半室内/室内参观，建于巨石上的纳西古村落，了解纳西族建筑智慧，小阵雨可撑伞游览",
+          "transportation": "包车前往约1小时，约¥150/车",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 75,
+            "total": 75
+          },
+          "price_range": {
+            "min": 0,
+            "max": 0
+          },
+          "price_source": "免费（基于景点类型判断）",
+          "price_updated_at": "2026-07-29",
+          "booking_url": "https://uri.amap.com/detail?poiid=B0FFJFXS58",
+          "price_verifiable": true
+        }
+      ],
+      "eat": "午餐：桥边小楼·手工云南菜·丽江地标美食；晚餐：外婆味道·云南菜大当家(丽江玉水坊店) · AI推荐: 午餐「云雪丽·现炒云南菜(大水车店)」· 晚餐「呆呆妈妈私房菜(龙泉路店)」",
+      "stay": "忆时光留影客栈"
+    },
+    {
+      "day": 4,
+      "theme": "DAY 4 · 古城深处·人文探秘",
+      "title": "方国瑜故居·白马龙潭寺·大宝积宫",
+      "items": [
+        {
+          "time": "09:00",
+          "time_slot": "morning",
+          "poi": "方国瑜故居",
+          "note": "[吃] 晚餐，推荐滇藏野菌石锅，7月菌子季必吃",
+          "transportation": "步行约10分钟",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 0,
+            "total": 0
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%96%B9%E5%9B%BD%E7%91%9C%E6%95%85%E5%B1%85",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%96%B9%E5%9B%BD%E7%91%9C%E6%95%85%E5%B1%85",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E6%96%B9%E5%9B%BD%E7%91%9C%E6%95%85%E5%B1%85",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E6%96%B9%E5%9B%BD%E7%91%9C%E6%95%85%E5%B1%85",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E6%96%B9%E5%9B%BD%E7%91%9C%E6%95%85%E5%B1%85+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E6%96%B9%E5%9B%BD%E7%91%9C%E6%95%85%E5%B1%85+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "10:30",
+          "time_slot": "morning",
+          "poi": "白马龙潭寺",
+          "note": "[景] 室内古寺，位于狮子山脚下，环境清幽，有古井和壁画，雷雨天安全",
+          "transportation": "步行约15分钟",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 0,
+            "total": 0
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E7%99%BD%E9%A9%AC%E9%BE%99%E6%BD%AD%E5%AF%BA",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E7%99%BD%E9%A9%AC%E9%BE%99%E6%BD%AD%E5%AF%BA",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E7%99%BD%E9%A9%AC%E9%BE%99%E6%BD%AD%E5%AF%BA",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E7%99%BD%E9%A9%AC%E9%BE%99%E6%BD%AD%E5%AF%BA",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E7%99%BD%E9%A9%AC%E9%BE%99%E6%BD%AD%E5%AF%BA+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E7%99%BD%E9%A9%AC%E9%BE%99%E6%BD%AD%E5%AF%BA+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "12:00",
+          "time_slot": "afternoon",
+          "poi": "忠顺饭店·特色家常菜(忠义店)",
+          "note": "[吃] 午餐，推荐纳西家常菜和特色小炒",
+          "transportation": "步行约10分钟",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 0,
+            "total": 70
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E5%BF%A0%E9%A1%BA%E9%A5%AD%E5%BA%97%C2%B7%E7%89%B9%E8%89%B2%E5%AE%B6%E5%B8%B8%E8%8F%9C%28%E5%BF%A0%E4%B9%89%E5%BA%97%29",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E5%BF%A0%E9%A1%BA%E9%A5%AD%E5%BA%97%C2%B7%E7%89%B9%E8%89%B2%E5%AE%B6%E5%B8%B8%E8%8F%9C%28%E5%BF%A0%E4%B9%89%E5%BA%97%29",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E5%BF%A0%E9%A1%BA%E9%A5%AD%E5%BA%97%C2%B7%E7%89%B9%E8%89%B2%E5%AE%B6%E5%B8%B8%E8%8F%9C%28%E5%BF%A0%E4%B9%89%E5%BA%97%29",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E5%BF%A0%E9%A1%BA%E9%A5%AD%E5%BA%97%C2%B7%E7%89%B9%E8%89%B2%E5%AE%B6%E5%B8%B8%E8%8F%9C%28%E5%BF%A0%E4%B9%89%E5%BA%97%29",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E5%BF%A0%E9%A1%BA%E9%A5%AD%E5%BA%97%C2%B7%E7%89%B9%E8%89%B2%E5%AE%B6%E5%B8%B8%E8%8F%9C%28%E5%BF%A0%E4%B9%89%E5%BA%97%29+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E5%BF%A0%E9%A1%BA%E9%A5%AD%E5%BA%97%C2%B7%E7%89%B9%E8%89%B2%E5%AE%B6%E5%B8%B8%E8%8F%9C%28%E5%BF%A0%E4%B9%89%E5%BA%97%29+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "13:30",
+          "time_slot": "afternoon",
+          "poi": "古城区文化馆",
+          "note": "[景] 室内文化场馆，了解丽江非遗文化，有空调避暑，雷暴天理想去处",
+          "transportation": "打车约15分钟，约¥20",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 20,
+            "total": 20
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E5%8F%A4%E5%9F%8E%E5%8C%BA%E6%96%87%E5%8C%96%E9%A6%86%20%E4%B8%BD%E6%B1%9F",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E5%8F%A4%E5%9F%8E%E5%8C%BA%E6%96%87%E5%8C%96%E9%A6%86",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E5%8F%A4%E5%9F%8E%E5%8C%BA%E6%96%87%E5%8C%96%E9%A6%86",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E5%8F%A4%E5%9F%8E%E5%8C%BA%E6%96%87%E5%8C%96%E9%A6%86",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E5%8F%A4%E5%9F%8E%E5%8C%BA%E6%96%87%E5%8C%96%E9%A6%86+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E5%8F%A4%E5%9F%8E%E5%8C%BA%E6%96%87%E5%8C%96%E9%A6%86+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "15:30",
+          "time_slot": "afternoon",
+          "poi": "大宝积宫与琉璃殿",
+          "note": "[景] 室内参观，明代建筑瑰宝，保存有精美的明代壁画，艺术价值极高，有空调",
+          "transportation": "打车约20分钟，约¥25",
+          "estimated_cost": {
+            "ticket": 30,
+            "transport": 25,
+            "total": 55
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E5%A4%A7%E5%AE%9D%E7%A7%AF%E5%AE%AB%E4%B8%8E%E7%90%89%E7%92%83%E6%AE%BF%20%E4%B8%BD%E6%B1%9F",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E5%A4%A7%E5%AE%9D%E7%A7%AF%E5%AE%AB%E4%B8%8E%E7%90%89%E7%92%83%E6%AE%BF",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E5%A4%A7%E5%AE%9D%E7%A7%AF%E5%AE%AB%E4%B8%8E%E7%90%89%E7%92%83%E6%AE%BF",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E5%A4%A7%E5%AE%9D%E7%A7%AF%E5%AE%AB%E4%B8%8E%E7%90%89%E7%92%83%E6%AE%BF",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E5%A4%A7%E5%AE%9D%E7%A7%AF%E5%AE%AB%E4%B8%8E%E7%90%89%E7%92%83%E6%AE%BF+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E5%A4%A7%E5%AE%9D%E7%A7%AF%E5%AE%AB%E4%B8%8E%E7%90%89%E7%92%83%E6%AE%BF+门票"
+          },
+          "price_verifiable": false
+        }
+      ],
+      "eat": "午餐：忠顺饭店·特色家常菜(忠义店)；晚餐：木王宴语·滇藏野菌石锅(花马店)，推荐野生菌石锅 · AI推荐: 午餐「Lan岚•云南菜•bistro」· 晚餐「大成轩风味餐厅」",
+      "stay": "蝶惜客栈"
+    },
+    {
+      "day": 5,
+      "theme": "DAY 5 · 古城拾遗·悠闲告别",
+      "title": "狮子山·普济寺·返程",
+      "items": [
+        {
+          "time": "08:30",
+          "time_slot": "morning",
+          "poi": "丽江文庙",
+          "note": "原户外项目因雷暴安全起见替换为室内（系统调整）",
+          "transportation": "步行约15分钟",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 0,
+            "total": 0
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%E6%96%87%E5%BA%99%20%E4%B8%BD%E6%B1%9F",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E6%96%87%E5%BA%99",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E6%96%87%E5%BA%99",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E6%96%87%E5%BA%99",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E6%96%87%E5%BA%99+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E6%96%87%E5%BA%99+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "10:00",
+          "time_slot": "afternoon",
+          "poi": "丽江三义机场",
+          "note": "[行] 前往丽江三义机场，结束丽江之旅（建议提前2小时到达机场）",
+          "transportation": "打车约40分钟，约¥80",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 80,
+            "total": 80
+          },
+          "price_range": null,
+          "price_source": "价格待核实",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%E4%B8%89%E4%B9%89%E6%9C%BA%E5%9C%BA%20%E4%B8%BD%E6%B1%9F",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E4%B8%89%E4%B9%89%E6%9C%BA%E5%9C%BA",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E4%B8%89%E4%B9%89%E6%9C%BA%E5%9C%BA",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E4%B8%89%E4%B9%89%E6%9C%BA%E5%9C%BA",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E4%B8%89%E4%B9%89%E6%9C%BA%E5%9C%BA+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E4%B8%89%E4%B9%89%E6%9C%BA%E5%9C%BA+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "11:30",
+          "time_slot": "morning",
+          "poi": "则瓦米线·云南小吃集合(花巷店)",
+          "note": "[吃] 午餐，推荐云南过桥米线和特色小吃，作为告别丽江的最后一餐",
+          "transportation": "打车约15分钟，约¥20",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 20,
+            "total": 50
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E5%88%99%E7%93%A6%E7%B1%B3%E7%BA%BF%C2%B7%E4%BA%91%E5%8D%97%E5%B0%8F%E5%90%83%E9%9B%86%E5%90%88%28%E8%8A%B1%E5%B7%B7%E5%BA%97%29%20%E4%B8%BD%E6%B1%9F",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E5%88%99%E7%93%A6%E7%B1%B3%E7%BA%BF%C2%B7%E4%BA%91%E5%8D%97%E5%B0%8F%E5%90%83%E9%9B%86%E5%90%88%28%E8%8A%B1%E5%B7%B7%E5%BA%97%29",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E5%88%99%E7%93%A6%E7%B1%B3%E7%BA%BF%C2%B7%E4%BA%91%E5%8D%97%E5%B0%8F%E5%90%83%E9%9B%86%E5%90%88%28%E8%8A%B1%E5%B7%B7%E5%BA%97%29",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E5%88%99%E7%93%A6%E7%B1%B3%E7%BA%BF%C2%B7%E4%BA%91%E5%8D%97%E5%B0%8F%E5%90%83%E9%9B%86%E5%90%88%28%E8%8A%B1%E5%B7%B7%E5%BA%97%29",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E5%88%99%E7%93%A6%E7%B1%B3%E7%BA%BF%C2%B7%E4%BA%91%E5%8D%97%E5%B0%8F%E5%90%83%E9%9B%86%E5%90%88%28%E8%8A%B1%E5%B7%B7%E5%BA%97%29+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E5%88%99%E7%93%A6%E7%B1%B3%E7%BA%BF%C2%B7%E4%BA%91%E5%8D%97%E5%B0%8F%E5%90%83%E9%9B%86%E5%90%88%28%E8%8A%B1%E5%B7%B7%E5%BA%97%29+门票"
+          },
+          "price_verifiable": false
+        },
+        {
+          "time": "15:00",
+          "time_slot": "morning",
+          "poi": "丽江普济寺",
+          "note": "[景] 室内古寺，丽江著名佛教寺院，建筑古朴，环境清幽，适合静心",
+          "transportation": "打车约15分钟，约¥20",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 20,
+            "total": 20
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "booking_url": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%E6%99%AE%E6%B5%8E%E5%AF%BA%20%E4%B8%BD%E6%B1%9F",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E6%99%AE%E6%B5%8E%E5%AF%BA",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E6%99%AE%E6%B5%8E%E5%AF%BA",
+            "amap": "https://uri.amap.com/search?keyword=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E6%99%AE%E6%B5%8E%E5%AF%BA",
+            "baidu": "https://www.baidu.com/s?wd=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E6%99%AE%E6%B5%8E%E5%AF%BA+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E4%B8%BD%E6%B1%9F%20%E4%B8%BD%E6%B1%9F%E6%99%AE%E6%B5%8E%E5%AF%BA+门票"
+          },
+          "price_verifiable": false
+        }
+      ],
+      "eat": "午餐：则瓦米线·云南小吃集合(花巷店)，推荐过桥米线 · AI推荐: 午餐「品味泸沽湖餐厅」· 晚餐「淳味云南特色菜」",
+      "stay": "丽江王府饭店"
+    }
+  ],
+  "budget": [
+    {
+      "label": "餐饮",
+      "amount": 1200,
+      "percent": 34
+    },
+    {
+      "label": "门票",
+      "amount": 200,
+      "percent": 6
+    },
+    {
+      "label": "交通",
+      "amount": 800,
+      "percent": 23
+    },
+    {
+      "label": "住宿",
+      "amount": 1000,
+      "percent": 29
+    },
+    {
+      "label": "购物及其他",
+      "amount": 300,
+      "percent": 8
+    }
+  ],
+  "checklist": [
+    {
+      "text": "身份证/学生证等有效证件",
+      "done": false
+    },
+    {
+      "text": "折叠伞/雨衣（7月丽江多雷暴降雨，必备）",
+      "done": false
+    },
+    {
+      "text": "防晒霜+遮阳帽（7月丽江紫外线强，即使雨天也需防晒）",
+      "done": false
+    },
+    {
+      "text": "薄外套/冲锋衣（7月丽江气温13-22°C，早晚偏凉）",
+      "done": false
+    },
+    {
+      "text": "防滑鞋（雨天古城石板路湿滑）",
+      "done": false
+    },
+    {
+      "text": "手机充电宝+数据线",
+      "done": false
+    },
+    {
+      "text": "常用药品（感冒药、肠胃药、创可贴）",
+      "done": false
+    },
+    {
+      "text": "下载丽江离线地图（部分区域信号不稳定）",
+      "done": false
+    },
+    {
+      "text": "提前预订往返机票/火车票",
+      "done": false
+    },
+    {
+      "text": "预订前3晚住宿（7月为丽江旅游旺季）",
+      "done": false
+    }
+  ],
+  "tips": [
+    "🌧️ 7月丽江正值雨季，每天都有雷暴/阵雨，务必随身携带折叠伞，户外活动尽量安排在上午8-11点或傍晚17-19点",
+    "☀️ 7月丽江虽气温不高（13-22°C），但紫外线极强，需涂抹SPF50+防晒霜并戴遮阳帽",
+    "🏠 雷暴天气严禁户外登山（玉龙雪山等），本行程已全部安排室内/半室内项目，安全第一",
+    "🍄 7月是云南野生菌旺季，推荐品尝菌香时·食神餐厅的野生菌火锅和木王宴语的滇藏野菌石锅",
+    "🚕 丽江古城内打车可用滴滴或高德，到束河约¥25，到机场约¥80，建议提前叫车",
+    "💊 建议携带藿香正气水和肠胃药，以防温差变化引起不适，同时应对可能的高原反应"
+  ],
+  "price_summary": {
+    "total_estimate_min": 0,
+    "total_estimate_max": 60,
+    "verified_items": 8,
+    "free_items": 7,
+    "unverified_items": 16,
+    "total_items": 24,
+    "stale_items": 0,
+    "budget_slot": "舒适",
+    "over_budget": false,
+    "over_budget_warning": ""
+  },
+  "schemaVersion": "1.0",
+  "validation_report": {
+    "poi": [
+      {
+        "name": "丽江古城",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "木府",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "隔壁老王·家常云南菜(丽江旗舰店)",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "科贡坊",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "和家大院",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "束河古镇",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "丽江大石桥",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "普贤寺",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "云雪丽现炒云南菜(四方街店)",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "洛克故居",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "丽江黑龙潭",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "百岁桥",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "桥边小楼·手工云南菜·丽江地标美食",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "文峰寺",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "宝山石头城",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "方国瑜故居",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "白马龙潭寺",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "古城区文化馆",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "大宝积宫与琉璃殿",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "狮子山狮乳泉",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "丽江三义机场",
+        "status": "verified",
+        "district": "丽江"
+      },
+      {
+        "name": "丽江普济寺",
+        "status": "verified",
+        "district": "丽江"
+      }
+    ],
+    "poi_verified": "22/22",
+    "routes": [
+      {
+        "day": 1,
+        "total_km": 1.9,
+        "backtrack": false
+      },
+      {
+        "day": 2,
+        "total_km": 17.4,
+        "backtrack": true,
+        "note": "检测到折返，已按地理顺路重排"
+      },
+      {
+        "day": 3,
+        "total_km": 88.9,
+        "backtrack": true,
+        "note": "检测到折返，已按地理顺路重排"
+      },
+      {
+        "day": 4,
+        "total_km": 11.2,
+        "backtrack": true,
+        "note": "检测到折返，已按地理顺路重排"
+      },
+      {
+        "day": 5,
+        "total_km": 7.5,
+        "backtrack": true,
+        "note": "检测到折返，已按地理顺路重排"
+      }
+    ],
+    "route_backtrack": true,
+    "checked_at": "2026-07-30",
+    "weather_fit": "good",
+    "weather_notes": [
+      "第1天冰雹雷暴，以 5 个室内项目为主，安排合理",
+      "第2天冰雹雷暴，以 5 个室内项目为主，安排合理",
+      "第3天小阵雨（评分70%），夏季阵雨影响有限，行程可正常进行",
+      "第4天雷暴，以 5 个室内项目为主，安排合理",
+      "第5天雷暴，以 4 个室内项目为主，安排合理"
+    ]
+  }
+}

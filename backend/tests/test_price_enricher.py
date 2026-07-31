@@ -27,7 +27,10 @@ from app.services.name_normalizer import poi_names_match as _name_matches
 
 @pytest.fixture
 def sample_attractions():
-    """A minimal set of KB attractions with price fields."""
+    """A minimal set of KB attractions with price fields.
+
+    Truthful data: prices are only injected when price_verifiable=True.
+    """
     return [
         {
             "name": "豫园",
@@ -37,6 +40,7 @@ def sample_attractions():
             "price_range": {"min": 30, "max": 40},
             "price_source": "高德POI",
             "price_updated_at": "2026-07-15",
+            "price_verifiable": True,
         },
         {
             "name": "外滩",
@@ -44,8 +48,9 @@ def sample_attractions():
             "amap_id": "B0FFFHT1K3",
             "amap_verified": True,
             "price_range": {"min": 0, "max": 0},
-            "price_source": "免费",
+            "price_source": "免费（基于景点类型判断）",
             "price_updated_at": "2026-07-15",
+            "price_verifiable": True,
         },
         {
             "name": "东方明珠广播电视塔",
@@ -55,6 +60,7 @@ def sample_attractions():
             "price_range": {"min": 100, "max": 200},
             "price_source": "高德POI",
             "price_updated_at": "2026-01-01",  # stale (>90 days)
+            "price_verifiable": True,
         },
         {
             "name": "上海博物馆",
@@ -62,8 +68,9 @@ def sample_attractions():
             "amap_id": "",
             "amap_verified": False,
             "price_range": {"min": 0, "max": 0},
-            "price_source": "免费",
+            "price_source": "免费（基于景点类型判断）",
             "price_updated_at": "2026-06-01",
+            "price_verifiable": True,
         },
     ]
 
@@ -145,14 +152,137 @@ class TestBookingURL:
         assert "uri.amap.com/detail" in url
         assert "poiid=B0FFFHT1K2" in url
 
-    def test_dianping_fallback(self):
+    def test_ctrip_fallback(self):
         url = build_booking_url("豫园", city="上海", amap_id=None)
-        assert "m.dianping.com/search" in url
+        assert "piao.ctrip.com/search" in url
         assert "%E8%B1%AB%E5%9B%AD" in url  # URL-encoded "豫园"
 
     def test_no_city_fallback(self):
         url = build_booking_url("测试景点", amap_id=None)
-        assert "m.dianping.com/search" in url
+        assert "piao.ctrip.com/search" in url
+
+
+# ── Query Links ────────────────────────────────────────
+
+
+class TestQueryLinks:
+    def test_build_query_links(self):
+        from app.services.price_enricher import build_query_links
+        links = build_query_links("豫园", city="上海")
+        assert "ctrip" in links
+        assert "fliggy" in links
+        assert "amap" in links
+        assert "baidu" in links
+        assert "bing" in links
+        assert "%E8%B1%AB%E5%9B%AD" in links["ctrip"]  # 豫园 URL-encoded
+
+    def test_query_links_contains_city(self):
+        from app.services.price_enricher import build_query_links
+        links = build_query_links("故宫", city="北京")
+        # URL is URL-encoded: 故宫 → %E6%95%85%E5%AE%AB, 北京 → %E5%8C%97%E4%BA%AC
+        assert "%E6%95%85%E5%AE%AB" in links["ctrip"]  # 故宫 encoded
+        assert "%E5%8C%97%E4%BA%AC" in links["ctrip"]  # 北京 encoded
+
+    def test_query_links_no_city(self):
+        from app.services.price_enricher import build_query_links
+        links = build_query_links("西湖")
+        assert "ctrip" in links
+        assert "fliggy" in links
+
+
+# ── Runtime Query Service ──────────────────────────────
+
+
+class TestPriceQueryService:
+    def test_generate_query_links(self):
+        from app.services.price_query_service import generate_query_links
+        links = generate_query_links("黄山", city="黄山")
+        assert len(links) >= 5
+        assert "ctrip" in links
+        assert "piao.ctrip.com" in links["ctrip"]
+        # URL-encoded: 黄山 → %E9%BB%84%E5%B1%B1
+        assert "%E9%BB%84%E5%B1%B1" in links["ctrip"]
+
+    def test_build_best_booking_url_with_amap(self):
+        from app.services.price_query_service import build_best_booking_url
+        url = build_best_booking_url("景点", amap_id="POI123")
+        assert "uri.amap.com/detail" in url
+        assert "POI123" in url
+
+    def test_build_best_booking_url_without_amap(self):
+        from app.services.price_query_service import build_best_booking_url
+        url = build_best_booking_url("景点")
+        assert "piao.ctrip.com" in url
+
+    def test_extract_price_from_text(self):
+        from app.services.price_query_service import _extract_price
+        result = _extract_price("黄山门票190-230元")
+        assert result is not None
+        assert result["min"] == 190
+        assert result["max"] == 230
+
+    def test_extract_single_price(self):
+        from app.services.price_query_service import _extract_price
+        result = _extract_price("故宫门票60元")
+        assert result is not None
+        assert result["min"] == 60
+        assert result["max"] == 60
+
+    def test_extract_free_price(self):
+        from app.services.price_query_service import _extract_price
+        result = _extract_price("景区免费开放，免票入场")
+        assert result is not None
+        assert result["min"] == 0
+        assert result["max"] == 0
+
+    def test_extract_no_price(self):
+        from app.services.price_query_service import _extract_price
+        result = _extract_price("这是一个关于景点的描述，没有价格信息")
+        assert result is None
+
+    def test_extract_renminbi_per_person(self):
+        from app.services.price_query_service import _extract_price
+        result = _extract_price("门票80元/人")
+        assert result is not None
+        assert result["min"] == 80
+        assert result["max"] == 80
+
+    def test_extract_price_range_patterns(self):
+        from app.services.price_query_service import _extract_price
+        result = _extract_price("成人票120-180元")
+        assert result is not None
+        assert result["min"] == 120
+        assert result["max"] == 180
+
+    def test_cache_operations(self):
+        from app.services.price_query_service import (
+            _get_cached,
+            _set_cached,
+            _load_cache,
+            _save_cache,
+            get_cache_stats,
+            clear_price_cache,
+        )
+        # Set a test entry
+        _set_cached("测试景点", "测试城市", {
+            "price_range": {"min": 100, "max": 200},
+            "price_source": "test",
+        })
+
+        # Get it back
+        result = _get_cached("测试景点", "测试城市")
+        assert result is not None
+        assert result["price_range"]["min"] == 100
+
+        # Stats should show it
+        stats = get_cache_stats()
+        assert stats["total_entries"] >= 1
+
+        # Clear
+        count = clear_price_cache()
+        assert count >= 1
+        stats = get_cache_stats()
+        assert stats["total_entries"] == 0
 
 
 # ── Staleness ──────────────────────────────────────────
@@ -190,36 +320,42 @@ class TestEnrichPrices:
         result = enrich_prices(sample_itinerary.copy(), sample_attractions)
         day_items = result["days"][0]["items"]
 
-        # Matched POI: 豫园
+        # Matched POI: 豫园 (verified price)
         assert day_items[0]["price_range"] == {"min": 30, "max": 40}
         assert day_items[0]["price_source"] == "高德POI"
         assert day_items[0]["price_updated_at"] == "2026-07-15"
+        assert day_items[0]["price_verifiable"] is True
         assert "uri.amap.com" in day_items[0]["booking_url"]
 
-        # Matched POI: 外滩 (free)
+        # Matched POI: 外滩 (free, verified)
         assert day_items[1]["price_range"] == {"min": 0, "max": 0}
-        assert day_items[1]["price_source"] == "免费"
+        assert day_items[1]["price_verifiable"] is True
 
-        # Unmatched POI: gets defaults
-        assert day_items[3]["price_range"] == {"min": 0, "max": 0}
-        assert day_items[3]["price_source"] == ""
+        # Unmatched POI: truthful — no fake price injected
+        assert day_items[3]["price_range"] is None
+        assert day_items[3]["price_verifiable"] is False
+        assert "待核实" in day_items[3]["price_source"]
 
     def test_enrich_adds_price_summary(self, sample_itinerary, sample_attractions):
         result = enrich_prices(sample_itinerary.copy(), sample_attractions)
         ps = result.get("price_summary")
         assert ps is not None
-        assert ps["priced_items"] == 4  # all 4 items
+        assert ps["verified_items"] == 3  # 豫园 + 外滩 + 东方明珠 (上海博物馆 not matched)
+        assert ps["unverified_items"] == 1  # unmatched POI
         assert ps["total_items"] == 4
-        # 豫园 max 40 + 东方明珠 max 200 = 240 max (外滩 free, unmatched free)
+        # 豫园 max 40 + 东方明珠 max 200 = 240 max (外滩 free)
         assert ps["total_estimate_max"] == 240
         assert ps["total_estimate_min"] == 130  # 30 + 0 + 100 + 0
-        # 东方明珠 has stale price (2026-01-01 > 90 days from 2026-07-21)
+        # 东方明珠 has stale price (2026-01-01 > 90 days)
         assert ps["stale_items"] >= 1
 
     def test_free_attraction_zero_range(self, sample_itinerary, sample_attractions):
         result = enrich_prices(sample_itinerary.copy(), sample_attractions)
-        assert result["days"][0]["items"][1]["price_range"]["min"] == 0
-        assert result["days"][0]["items"][1]["price_range"]["max"] == 0
+        item = result["days"][0]["items"][1]  # 外滩
+        assert item["price_range"] is not None
+        assert item["price_range"]["min"] == 0
+        assert item["price_range"]["max"] == 0
+        assert item["price_verifiable"] is True
 
     def test_enrich_preserves_original_fields(self, sample_itinerary, sample_attractions):
         result = enrich_prices(sample_itinerary.copy(), sample_attractions)
@@ -255,16 +391,19 @@ class TestPriceSummary:
         assert result["price_summary"]["over_budget"] is False
 
     def test_budget_comparison_under(self, sample_itinerary, sample_attractions):
-        # Set a very low budget
+        # Set a very low budget and multiple expensive items
         itinerary = sample_itinerary.copy()
-        # Make all items expensive
-        itinerary["days"][0]["items"][0]["poi"] = "东方明珠"  # ¥100-200
-        itinerary["days"][0]["items"][1]["poi"] = "东方明珠"
-        itinerary["days"][0]["items"][2]["poi"] = "东方明珠"
-        itinerary["days"][0]["items"][3]["poi"] = "东方明珠"
+        # Use "豫园" for all items — it has a verified price of ¥30-40
+        # But we need a known expensive attraction. Let's use "东方明珠广播电视塔"
+        # which matches the fixture and has ¥100-200 verified price
+        itinerary["days"][0]["items"][0]["poi"] = "东方明珠广播电视塔"
+        itinerary["days"][0]["items"][1]["poi"] = "东方明珠广播电视塔"
+        itinerary["days"][0]["items"][2]["poi"] = "东方明珠广播电视塔"
+        itinerary["days"][0]["items"][3]["poi"] = "东方明珠广播电视塔"
         result = enrich_prices(itinerary, sample_attractions, user_budget="经济")
-        # 4 × 东方明珠 (max ¥200 each) = ¥800
+        # 4 × 东方明珠广播电视塔 (max ¥200 each) = ¥800
         assert result["price_summary"]["total_estimate_max"] == 800
+        assert result["price_summary"]["verified_items"] == 4
         assert result["price_summary"]["over_budget"] is True
         assert "超出" in result["price_summary"]["over_budget_warning"]
 

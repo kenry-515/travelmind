@@ -6,13 +6,18 @@ POST /api/v1/agent/plan                — Run the full orchestrated workflow.
 POST /api/v1/agent/plan/stream         — Run workflow with SSE progress events.
 POST /api/v1/agent/profile             — Standalone profile extraction.
 POST /api/v1/agent/plan/regenerate-day — Rebuild one day of an itinerary.
+GET  /api/v1/agent/plan/status/{task_id} — Poll for stream task status.
+POST /api/v1/agent/itinerary/share/{itinerary_id} — Create share link.
+GET  /api/v1/agent/share/{share_id} — Get shared itinerary.
+DELETE /api/v1/agent/share/{share_id} — Delete share link.
 """
 
 import json
 import logging
+import uuid
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 
 from app.api.errors import error_response
@@ -26,6 +31,9 @@ from app.database import connection as db_conn
 from app.rag.retriever import retrieve
 from app.services.user_service import get_or_create_user
 from app.services import itinerary_service
+from app.services import plan_status_store as pss
+from app.services import share_service
+from app.services import local_itinerary_store
 
 logger = logging.getLogger(__name__)
 
@@ -82,6 +90,13 @@ class PlanResponse(BaseModel):
     error: Optional[str]
     messages: List[Dict[str, str]]
     itinerary_id: Optional[str] = None  # DB ID when auto-saved
+
+
+class PlanStatusResponse(BaseModel):
+    """Response for plan generation status polling."""
+    task_id: str
+    status: str  # "generating", "completed", "error", "not_found"
+    data: Optional[Dict[str, Any]] = None
 
 
 class ProfileResponse(BaseModel):
@@ -281,6 +296,20 @@ async def agent_regenerate_day(request: RegenerateDayRequest):
     return RegenerateDayResponse(itinerary=updated)
 
 
+@router.get("/agent/plan/status/{task_id}", response_model=PlanStatusResponse)
+async def agent_plan_status(task_id: str):
+    """Get the status of a plan generation task (for SSE fallback polling)."""
+    status_data = await pss.get_status(task_id)
+    if not status_data:
+        return PlanStatusResponse(task_id=task_id, status="not_found")
+    
+    return PlanStatusResponse(
+        task_id=task_id,
+        status=status_data["status"],
+        data=status_data.get("data"),
+    )
+
+
 @router.post("/agent/plan/stream")
 async def agent_plan_stream(
     request: PlanRequest,
@@ -289,30 +318,50 @@ async def agent_plan_stream(
     """Run the full multi-agent workflow with SSE progress streaming.
 
     Returns text/event-stream with two event types:
-      - progress: {step, status, message} — one per pipeline step
+      - progress: {step, status, message, task_id} — one per pipeline step
       - result: {data: PlanResponse} — final full state (includes itinerary_id if saved)
     """
     logger.info(f"Agent plan stream: {request.user_input[:80]}...")
+    
+    # Generate a unique task_id for this generation
+    task_id = str(uuid.uuid4())
 
     async def event_generator():
         state: Dict[str, Any] = {}
+        # Set initial status
+        await pss.set_status(task_id, "generating")
+        
         try:
             async for event in run_travel_workflow_stream(
                 user_input=request.user_input,
                 messages=request.messages,
             ):
+                # Add task_id to the first progress event
+                if event.get("event") == "progress" and "task_id" not in event:
+                    event["task_id"] = task_id
+
                 # Capture the final state for post-stream save
                 if event.get("event") == "result" and isinstance(event.get("data"), dict):
                     state = event["data"]
+                    # Update status to completed with the final data
+                    await pss.set_status(task_id, "completed", state)
+
                 yield f"data: {json.dumps(event, ensure_ascii=False)}\n\n".encode("utf-8")
         except Exception as e:
             logger.error(f"Stream workflow error: {e}", exc_info=True)
+            # Update status to error
+            await pss.set_status(task_id, "error", {"message": str(e)})
             yield f"data: {json.dumps({'event': 'error', 'message': '行程规划服务暂时不可用，请稍后重试。'}, ensure_ascii=False)}\n\n".encode("utf-8")
             return
 
         # Auto-save after all events are yielded (best-effort)
         saved_id = await _save_itinerary(state, device_id)
         if saved_id:
+            # Update status with saved_id
+            if state:
+                state["itinerary_id"] = saved_id
+                await pss.set_status(task_id, "completed", state)
+                
             # Yield a supplemental event with the itinerary_id
             yield f"data: {json.dumps({'event': 'saved', 'itinerary_id': saved_id}, ensure_ascii=False)}\n\n".encode("utf-8")
 
@@ -325,3 +374,144 @@ async def agent_plan_stream(
             "X-Accel-Buffering": "no",  # disable nginx buffering
         },
     )
+
+
+# ── Share Endpoints ──────────────────────────────────────
+
+class ShareResponse(BaseModel):
+    """Response for share creation."""
+    share_id: str
+    share_url: str
+    expires_days: int
+
+
+class SharedItineraryResponse(BaseModel):
+    """Response for getting a shared itinerary."""
+    share_id: str
+    itinerary: Dict[str, Any]
+    title: str
+    city: str
+    days: int
+    created_at: str
+
+
+@router.post("/agent/itinerary/share/{itinerary_id}", response_model=ShareResponse)
+async def create_share(
+    itinerary_id: str,
+    expires_days: int = 30,
+    device_id: Optional[str] = Depends(get_device_id),
+):
+    """Create a share link for an itinerary."""
+    if not device_id:
+        raise error_response(400, "INVALID_INPUT", "Device ID is required for sharing.")
+    
+    # Try to get itinerary from local store first, then DB
+    itinerary_data = local_itinerary_store.get_itinerary(device_id, itinerary_id)
+    
+    # Also try to get from DB if local not found
+    if not itinerary_data and db_conn.DB_HEALTHY:
+        try:
+            async with db_conn.async_session() as db:
+                user = await get_or_create_user(db, device_id)
+                itinerary_obj = await itinerary_service.get_itinerary(db, user.id, itinerary_id)
+                if itinerary_obj:
+                    itinerary_data = {
+                        "plan": itinerary_obj.itinerary_data,
+                        "title": itinerary_obj.title,
+                        "city": itinerary_obj.city,
+                        "days": len(itinerary_obj.itinerary_data.get("days", [])),
+                    }
+        except Exception as e:
+            logger.warning(f"Failed to fetch itinerary from DB: {e}")
+    
+    if not itinerary_data:
+        raise error_response(404, "NOT_FOUND", f"Itinerary {itinerary_id} not found.")
+    
+    share_id = share_service.create_share(device_id, itinerary_id, expires_days)
+    
+    # Build share URL
+    # In production, this would use the actual domain
+    share_url = f"/share/{share_id}"
+    
+    return ShareResponse(
+        share_id=share_id,
+        share_url=share_url,
+        expires_days=expires_days,
+    )
+
+
+@router.get("/agent/share/{share_id}", response_model=SharedItineraryResponse)
+async def get_shared_itinerary(
+    share_id: str,
+    device_id: Optional[str] = Depends(get_device_id),
+):
+    """Get a shared itinerary by share ID."""
+    share_record = share_service.get_share(share_id)
+    
+    if not share_record:
+        raise error_response(404, "NOT_FOUND", "Share link not found or has expired.")
+    
+    # Get the original itinerary
+    owner_device_id = share_record.get("device_id", "")
+    itinerary_id = share_record.get("itinerary_id", "")
+    
+    itinerary_data = None
+    
+    # Try local store
+    if owner_device_id:
+        itinerary_data = local_itinerary_store.get_itinerary(owner_device_id, itinerary_id)
+    
+    # Try DB
+    if not itinerary_data and db_conn.DB_HEALTHY:
+        try:
+            async with db_conn.async_session() as db:
+                if owner_device_id:
+                    user = await get_or_create_user(db, owner_device_id)
+                    itinerary_obj = await itinerary_service.get_itinerary(db, user.id, itinerary_id)
+                    if itinerary_obj:
+                        itinerary_data = {
+                            "plan": itinerary_obj.itinerary_data,
+                            "title": itinerary_obj.title,
+                            "city": itinerary_obj.city,
+                            "days": len(itinerary_obj.itinerary_data.get("days", [])),
+                        }
+        except Exception as e:
+            logger.warning(f"Failed to fetch shared itinerary from DB: {e}")
+    
+    if not itinerary_data:
+        raise error_response(404, "NOT_FOUND", "Original itinerary not found.")
+    
+    plan = itinerary_data.get("plan", {})
+    trip = plan.get("trip", {})
+    
+    return SharedItineraryResponse(
+        share_id=share_id,
+        itinerary=plan,
+        title=itinerary_data.get("title") or trip.get("title", "共享行程"),
+        city=itinerary_data.get("city") or trip.get("city", ""),
+        days=itinerary_data.get("days") or trip.get("daysCount", len(plan.get("days", []))),
+        created_at=share_record.get("created_at", ""),
+    )
+
+
+@router.delete("/agent/share/{share_id}")
+async def delete_share(
+    share_id: str,
+    device_id: Optional[str] = Depends(get_device_id),
+):
+    """Delete a share link. Only the owner can delete."""
+    share_record = share_service.get_share(share_id)
+    
+    if not share_record:
+        raise error_response(404, "NOT_FOUND", "Share link not found.")
+    
+    # Check ownership
+    if share_record.get("device_id") != device_id:
+        raise error_response(403, "FORBIDDEN", "Only the owner can delete this share link.")
+    
+    deleted = share_service.delete_share(share_id)
+    
+    if deleted:
+        return {"message": "Share link deleted successfully."}
+    else:
+        raise error_response(500, "INTERNAL_ERROR", "Failed to delete share link.")

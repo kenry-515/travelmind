@@ -17,7 +17,7 @@ def mock_llm():
     provider = AsyncMock()
     provider.chat.return_value = "重庆火锅非常出名，推荐去解放碑附近吃！"
     provider.model = "deepseek-v4-flash"
-    with patch("app.agents.chat_agent.get_llm_provider", return_value=provider):
+    with patch("app.services.llm_service.get_llm_provider", return_value=provider):
         yield provider
 
 

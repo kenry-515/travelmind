@@ -134,29 +134,81 @@ def _detect_search_intent(tags: List[str], user_input: str = "") -> str:
 
 
 def _diversity_penalty(places: List[Dict[str, Any]], max_same_area: int = 2) -> List[float]:
-    """Apply diversity penalty to prevent too many POIs from the same area.
+    """Apply diversity penalty to prevent too many POIs from the same area or tag category.
 
     Returns a list of penalty multipliers (0.0-1.0) for each place.
-    Later places in the same area get progressively lower multipliers.
+    Later places in the same area/category get progressively lower multipliers.
+
+    Phase 12.30: Added tag-category diversity alongside geographic diversity
+    to address tag_category_diversity metric (56% → target ≥80%).
+    POIs without tags are exempt from tag-category penalty to avoid
+    penalizing un-enriched data.
     """
     penalties = []
     area_counts: Dict[str, int] = {}
+    category_counts: Dict[str, int] = {}
     for p in places:
-        # Phase 12.21: 兼容 RAG/Chroma 嵌套结构（name 在 metadata 里）。
-        # 旧代码 p.get("name") 对嵌套候选恒为 ""，所有候选共享 area_key，
-        # 从第 3 个起被统一 ×0.7 —— 多样性惩罚实际上从未按设计生效。
-        name = _extract_metadata(p)["name"]
-        # Extract base area from name (first 4 chars as rough area key)
+        meta = _extract_metadata(p)
+        name = meta["name"]
+        tags = meta.get("tags", []) or []
+
+        # Geographic diversity (area key = first 4 chars of name)
         area_key = name[:4] if len(name) >= 4 else name
         count = area_counts.get(area_key, 0)
         area_counts[area_key] = count + 1
+
+        # Tag category diversity (only for POIs with tags)
+        penalty = 1.0
+
         if count >= max_same_area:
-            penalties.append(0.7)  # Penalize beyond diversity threshold
+            penalty *= 0.5  # Strong penalty for same area
         elif count >= 1:
-            penalties.append(0.9)  # Slight penalty for same area
-        else:
-            penalties.append(1.0)
+            penalty *= 0.85  # Mild penalty
+
+        if tags:
+            cat_key = _tag_category_key(tags)
+            cat_count = category_counts.get(cat_key, 0)
+            category_counts[cat_key] = cat_count + 1
+            if cat_count >= 3:
+                penalty *= 0.6  # Strong penalty for 3+ in same category
+            elif cat_count >= 2:
+                penalty *= 0.8  # Mild penalty for 2 in same category
+
+        penalties.append(max(0.3, penalty))
     return penalties
+
+
+# Tag → broad category mapping for diversity enforcement (Phase 12.30)
+_TAG_CATEGORY_MAP: Dict[str, str] = {
+    # 自然/户外
+    "自然": "outdoor", "爬山": "outdoor", "湖泊": "outdoor", "森林": "outdoor",
+    "海岛": "outdoor", "海滩": "outdoor", "瀑布": "outdoor", "峡谷": "outdoor",
+    "日出": "outdoor", "日落": "outdoor", "赏花": "outdoor", "红叶": "outdoor",
+    "草原": "outdoor", "雪山": "outdoor", "徒步": "outdoor", "骑行": "outdoor",
+    # 文化/历史
+    "历史": "culture", "博物馆": "culture", "古镇": "culture", "寺庙": "culture",
+    "遗址": "culture", "建筑": "culture", "文化": "culture", "传统": "culture",
+    "园林": "culture", "故居": "culture", "纪念馆": "culture",
+    # 美食
+    "美食": "food", "火锅": "food", "小吃": "food", "烧烤": "food",
+    "海鲜": "food", "早茶": "food", "川菜": "food", "粤菜": "food",
+    "面食": "food", "夜市": "food", "甜品": "food", "咖啡": "food",
+    # 购物/城市
+    "购物": "shopping", "网红打卡": "shopping", "打卡": "shopping",
+    "夜生活": "shopping", "酒吧": "shopping", "商场": "shopping",
+    # 室内/休闲
+    "亲子": "indoor", "情侣": "indoor", "家庭": "indoor", "休闲": "indoor",
+    "温泉": "indoor", "美术馆": "indoor", "图书馆": "indoor",
+}
+
+
+def _tag_category_key(tags: List[str]) -> str:
+    """Map a list of POI tags to a broad category key for diversity scoring."""
+    for tag in tags:
+        cat = _TAG_CATEGORY_MAP.get(tag)
+        if cat:
+            return cat
+    return "other"
 
 from app.core.constants import (
     BUDGET_MAP,
@@ -201,13 +253,35 @@ def _parse_months_from_best_time(best_time: str) -> set:
 
 SOURCE_RELIABILITY = {
     "wikidata+amap": 0.9,
-    "wikidata": 0.7,
+    "wikidata": 0.85,
     "amap": 0.8,
+    "kb-curated": 0.75,
+    "osm-overpass": 0.55,
+    "amap-food": 0.75,
+    "web-social+osm-overpass": 0.5,
+    "web-verified-coords": 0.65,
+}
+
+# Map data_reliability labels to scores
+RELIABILITY_SCORES = {
+    "high": 0.9,
+    "medium": 0.7,
+    "low": 0.5,
+    "poor": 0.3,
+    "unknown": 0.5,
 }
 
 
-def _get_reliability(source: str) -> float:
-    """Return reliability score for a data source."""
+def _get_reliability(source: str, data_reliability: str = "") -> float:
+    """Return reliability score from source and data_reliability.
+
+    Uses data_reliability (computed from verifiable signals) when available,
+    falls back to source-based reliability.
+    """
+    # Prefer data_reliability label (from computed signals)
+    if data_reliability and data_reliability in RELIABILITY_SCORES:
+        return RELIABILITY_SCORES[data_reliability]
+    # Fall back to source-based lookup
     if not source:
         return 0.5
     return SOURCE_RELIABILITY.get(source.lower(), 0.5)
@@ -246,13 +320,17 @@ def _score_preference(user_tags: List[str], place_tags: List[str]) -> float:
 
 
 def _score_budget(user_budget: str, place_price: str) -> float:
-    """Score budget match: 1.0 exact, 0.6 one level off, 0.2 two levels off."""
+    """Score budget match: 1.0 exact, 0.6 one level off, 0.2 two levels off.
+
+    TRUTHFUL: If price_level is empty/unset, return neutral 0.5
+    instead of guessing based on fake data.
+    """
     if not user_budget:
         return 0.5  # neutral
 
     user_level = normalize_budget_level(user_budget)
     if not place_price or place_price not in BUDGET_LEVELS:
-        return 0.5  # neutral — place price unknown
+        return 0.5  # neutral — price level unknown, don't guess
 
     try:
         user_idx = BUDGET_LEVELS.index(user_level)
@@ -295,31 +373,37 @@ def _extract_metadata(place: Dict[str, Any]) -> Dict[str, Any]:
 
     Candidate places come from RAG/Chroma with metadata nested under 'metadata' key.
     Original attractions from the data pipeline have flat keys.
+
+    TRUTHFUL: Price range is only shown when price_verifiable is True.
     """
     meta = place.get("metadata", {})
     if meta:
         # Phase 7: Reconstruct price_range from flat Chroma metadata fields
         pr_min = meta.get("price_range_min")
         pr_max = meta.get("price_range_max")
+        price_verifiable = meta.get("price_verifiable", False)
         price_range = None
-        if pr_min is not None or pr_max is not None:
+        if price_verifiable and (pr_min is not None or pr_max is not None):
             price_range = {"min": int(pr_min or 0), "max": int(pr_max or 0)}
 
         return {
             "name": meta.get("name", place.get("name", "")),
             "city": meta.get("city", place.get("city", "")),
             "tags": _parse_tags(meta.get("tags", "")),
-            "price_level": meta.get("price_level", "适中"),
-            "price_range": price_range or meta.get("price_range") or place.get("price_range"),
+            "price_level": meta.get("price_level", ""),
+            "price_range": price_range,
             "price_source": meta.get("price_source", ""),
             "price_updated_at": meta.get("price_updated_at", ""),
+            "price_verifiable": price_verifiable,
             "amap_id": meta.get("amap_id", ""),
-            "popularity_score": _safe_float(meta.get("popularity_score"), 5),
-            "best_time": meta.get("best_time", "全年"),
+            "popularity_score": _safe_float(meta.get("popularity_score"), 0),
+            "best_time": meta.get("best_time", ""),
             "suitable_for": meta.get("suitable_for", ""),
             "source": meta.get("source", place.get("source", "")),
             "lat": _safe_float(meta.get("lat")),
             "lon": _safe_float(meta.get("lon")),
+            "internal_rating": _safe_float(meta.get("internal_rating"), 0),
+            "data_reliability": meta.get("data_reliability", "unknown"),
             # Preserve original data
             "_original": place,
         }
@@ -328,13 +412,14 @@ def _extract_metadata(place: Dict[str, Any]) -> Dict[str, Any]:
         "name": place.get("name", ""),
         "city": place.get("city", ""),
         "tags": place.get("tags", []) or [],
-        "price_level": place.get("price_level", "适中"),
+        "price_level": place.get("price_level", ""),
         "price_range": place.get("price_range"),
         "price_source": place.get("price_source", ""),
         "price_updated_at": place.get("price_updated_at", ""),
+        "price_verifiable": place.get("price_verifiable", False),
         "amap_id": place.get("amap_id", ""),
-        "popularity_score": _safe_float(place.get("popularity_score"), 5),
-        "best_time": place.get("best_time", "全年"),
+        "popularity_score": _safe_float(place.get("popularity_score"), 0),
+        "best_time": place.get("best_time", ""),
         "suitable_for": place.get("suitable_for", ""),
         "source": place.get("source", ""),
         "lat": _safe_float(place.get("lat")),
@@ -380,6 +465,7 @@ async def recommend(
         candidates: List of candidate attractions from RAG retrieval.
         trends: Optional pre-loaded trend data from trend_agent.
         weather: Optional weather forecast (Phase 12.16, for indoor boost).
+            Can be dict or WeatherForecast object.
 
     Returns:
         Candidates sorted by total_score (descending), each with
@@ -388,6 +474,10 @@ async def recommend(
     if not candidates:
         logger.warning("No candidates to score")
         return []
+    
+    # Normalize weather to dict format (handle WeatherForecast object)
+    if weather is not None and hasattr(weather, 'to_dict'):
+        weather = weather.to_dict()
 
     # ── Phase 9: 过滤健康检查标记为 inactive 的 POI ─────
     try:
@@ -524,7 +614,10 @@ async def recommend(
         time_match = _score_time(travel_month, place["best_time"])
 
         # Factor 6: Data Reliability
-        reliability = _get_reliability(place["source"])
+        reliability = _get_reliability(
+            place["source"],
+            place.get("data_reliability", ""),
+        )
 
         # Weighted total (Phase 12.2: adaptive weights + diversity)
         total = (

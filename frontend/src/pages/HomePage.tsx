@@ -26,7 +26,7 @@ export function HomePage() {
 
       {/* Header */}
       <div className="relative mb-6 animate-fade-in-up text-center">
-        <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-brand-200 bg-white/70 px-3 py-1 text-xs font-medium text-brand-600 backdrop-blur">
+        <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-brand-200 bg-white dark:bg-slate-900/70 px-3 py-1 text-xs font-medium text-brand-600 backdrop-blur">
           <Sparkles size={12} />
           AI 多智能体 · 真实数据校验
         </div>
@@ -34,8 +34,8 @@ export function HomePage() {
           <span className="align-middle">✈️</span>{' '}
           <span className="text-gradient">TravelMind</span>
         </h1>
-        <p className="text-base leading-relaxed text-slate-500 sm:text-lg">
-          AI 智能旅行规划助手 — <span className="font-medium text-slate-700">一句话，生成完美旅程</span>
+        <p className="text-base leading-relaxed text-slate-500 dark:text-slate-400 sm:text-lg">
+          AI 智能旅行规划助手 — <span className="font-medium text-slate-700 dark:text-slate-300">一句话，生成完美旅程</span>
         </p>
       </div>
 
@@ -60,14 +60,14 @@ export function HomePage() {
             <span className={`flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br ${tint}`}>
               <Icon size={18} />
             </span>
-            <span className="text-sm font-bold text-slate-800">{label}</span>
-            <span className="text-xs leading-relaxed text-slate-400">{desc}</span>
+            <span className="text-sm font-bold text-slate-800 dark:text-slate-200">{label}</span>
+            <span className="text-xs leading-relaxed text-slate-400 dark:text-slate-500">{desc}</span>
           </Link>
         ))}
       </div>
 
       {/* Footer */}
-      <footer className="relative mt-8 text-center text-xs text-slate-400">
+      <footer className="relative mt-8 text-center text-xs text-slate-400 dark:text-slate-500">
         <p>TravelMind Agent · Multi-Agent Travel Planner</p>
         <p className="mt-1">Powered by DeepSeek · Kimi Vision · Open-Meteo · Amap · Chroma</p>
       </footer>

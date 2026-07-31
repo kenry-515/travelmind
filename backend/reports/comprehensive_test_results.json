@@ -1,0 +1,113 @@
+{
+  "summary": {
+    "total": 7,
+    "passed": 6,
+    "partial": 0,
+    "failed": 1
+  },
+  "details": [
+    {
+      "name": "北京3天亲子历史游",
+      "status": "PASSED",
+      "days": 3,
+      "items_per_day": [
+        4,
+        4,
+        4
+      ],
+      "total_items": 12,
+      "restaurants": 3,
+      "tips": 6,
+      "time": "30.6s",
+      "issues": []
+    },
+    {
+      "name": "成都4天美食之旅",
+      "status": "PASSED",
+      "days": 4,
+      "items_per_day": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "total_items": 20,
+      "restaurants": 7,
+      "tips": 6,
+      "time": "20.9s",
+      "issues": []
+    },
+    {
+      "name": "西安2天历史游",
+      "status": "PASSED",
+      "days": 2,
+      "items_per_day": [
+        5,
+        5
+      ],
+      "total_items": 10,
+      "restaurants": 2,
+      "tips": 6,
+      "time": "20.0s",
+      "issues": []
+    },
+    {
+      "name": "上海3天购物休闲游",
+      "status": "PASSED",
+      "days": 3,
+      "items_per_day": [
+        4,
+        4,
+        4
+      ],
+      "total_items": 12,
+      "restaurants": 4,
+      "tips": 6,
+      "time": "25.0s",
+      "issues": []
+    },
+    {
+      "name": "丽江5天深度游",
+      "status": "FAILED",
+      "error": "planning: 行程生成失败（已达重试上限）",
+      "time": "286.2s"
+    },
+    {
+      "name": "厦门3天海边度假",
+      "status": "PASSED",
+      "days": 3,
+      "items_per_day": [
+        4,
+        4,
+        4
+      ],
+      "total_items": 12,
+      "restaurants": 3,
+      "tips": 6,
+      "time": "21.6s",
+      "issues": []
+    },
+    {
+      "name": "重庆4天网红打卡游",
+      "status": "PASSED",
+      "days": 4,
+      "items_per_day": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "total_items": 20,
+      "restaurants": 6,
+      "tips": 6,
+      "time": "23.7s",
+      "issues": []
+    }
+  ],
+  "quality_metrics": {
+    "avg_days": 2.7,
+    "avg_items_per_day": 4.5,
+    "restaurant_coverage": 3.6,
+    "tip_coverage": 5.1
+  }
+}

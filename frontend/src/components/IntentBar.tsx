@@ -64,7 +64,7 @@ export function IntentBar({ slots, onSlotChange, disabled }: IntentBarProps) {
   return (
     <div className="glass border-b border-border-light px-4 py-2">
       <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-2">
-        <span className="text-xs font-medium text-slate-400">意图</span>
+        <span className="text-xs font-medium text-slate-400 dark:text-slate-500">意图</span>
         {CHIP_DEFS.map((chip) => {
           const value = chip.format(slots[chip.key])
           const isEmpty = value === '未定'
@@ -75,12 +75,12 @@ export function IntentBar({ slots, onSlotChange, disabled }: IntentBarProps) {
               disabled={disabled}
               className={`group flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs transition-all ${
                 isEmpty
-                  ? 'border-dashed border-slate-300 text-slate-400 hover:border-brand-300 hover:text-brand-600'
-                  : 'border-border bg-surface-secondary text-slate-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700'
+                  ? 'border-dashed border-slate-300 dark:border-slate-700 text-slate-400 dark:text-slate-500 hover:border-brand-300 dark:hover:border-brand-600 hover:text-brand-600 dark:hover:text-brand-400'
+                  : 'border-border bg-surface-secondary dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-brand-300 dark:hover:border-brand-600 hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-700 dark:hover:text-brand-300'
               }`}
               title={`点击修改${chip.label}`}
             >
-              <span className="text-slate-400">{chip.label}</span>
+              <span className="text-slate-400 dark:text-slate-500">{chip.label}</span>
               <span className="font-medium">{value}</span>
               <Pencil size={10} className="opacity-0 transition-opacity group-hover:opacity-50" />
             </button>
@@ -97,7 +97,7 @@ export function IntentBar({ slots, onSlotChange, disabled }: IntentBarProps) {
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && submit()}
             placeholder={`输入${editing.label}${editing.key === 'tags' ? '（顿号分隔）' : ''}`}
-            className="w-56 rounded-xl border border-border px-2.5 py-1.5 text-xs focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+            className="w-56 rounded-xl border border-border px-2.5 py-1.5 text-xs focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
             autoFocus
           />
           <button
@@ -108,7 +108,7 @@ export function IntentBar({ slots, onSlotChange, disabled }: IntentBarProps) {
           </button>
           <button
             onClick={() => setEditing(null)}
-            className="rounded-lg px-2 py-1.5 text-xs text-slate-400 hover:text-slate-600"
+            className="rounded-lg px-2 py-1.5 text-xs text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
           >
             取消
           </button>

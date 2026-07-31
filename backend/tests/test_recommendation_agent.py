@@ -64,7 +64,13 @@ class TestReliability:
     def test_known_sources(self):
         assert ra._get_reliability("wikidata+amap") == 0.9
         assert ra._get_reliability("amap") == 0.8
-        assert ra._get_reliability("wikidata") == 0.7
+        assert ra._get_reliability("wikidata") == 0.85
+
+    def test_data_reliability_overrides_source(self):
+        # data_reliability "high" (0.9) overrides source "osm-overpass" (0.55)
+        assert ra._get_reliability("osm-overpass", "high") == 0.9
+        # data_reliability "poor" (0.3) overrides source "wikidata" (0.85)
+        assert ra._get_reliability("wikidata", "poor") == 0.3
 
     def test_unknown_neutral(self):
         assert ra._get_reliability("whatever") == 0.5
@@ -137,11 +143,38 @@ class TestDiversityPenaltyNested:
         names = ["张家界国家森林公园大门", "张家界国家森林公园索道", "张家界国家森林公园餐厅"]
         nested = [{"id": str(i), "metadata": {"name": n, "tags": ""}}
                   for i, n in enumerate(names)]
-        assert ra._diversity_penalty(nested) == [1.0, 0.9, 0.7]
+        # Phase 12.30: penalty factors updated — mild=0.85, strong=0.5
+        assert ra._diversity_penalty(nested) == [1.0, 0.85, 0.5]
 
     def test_flat_shape_unchanged(self):
         places = [{"name": n} for n in ["洪崖洞", "磁器口", "长江索道"]]
         assert ra._diversity_penalty(places) == [1.0, 1.0, 1.0]
+
+    def test_tag_category_diversity_penalty(self):
+        """Phase 12.30: Same tag category should incur diversity penalty after 2 items."""
+        places = [
+            {"name": "景点A", "tags": ["自然", "爬山"]},   # outdoor (1st)
+            {"name": "景点B", "tags": ["博物馆", "历史"]}, # culture (1st)
+            {"name": "景点C", "tags": ["自然", "徒步"]},   # outdoor (2nd, no penalty)
+            {"name": "景点D", "tags": ["自然", "湖泊"]},   # outdoor (3rd, mild penalty)
+            {"name": "景点E", "tags": ["自然"]},            # outdoor (4th, strong penalty)
+        ]
+        result = ra._diversity_penalty(places)
+        assert result[0] == 1.0  # 1st outdoor
+        assert result[1] == 1.0  # 1st culture
+        assert result[2] == 1.0  # 2nd outdoor, no penalty yet
+        assert result[3] < 1.0   # 3rd outdoor, mild penalty (>=2)
+        assert result[4] < result[3]  # 4th outdoor, stronger penalty (>=3)
+
+    def test_tag_category_different_no_penalty(self):
+        """Phase 12.30: Different tag categories should not be penalized."""
+        places = [
+            {"name": "景点A", "tags": ["自然", "爬山"]},      # outdoor
+            {"name": "景点B", "tags": ["博物馆", "历史"]},    # culture
+            {"name": "景点C", "tags": ["火锅", "美食"]},      # food
+        ]
+        result = ra._diversity_penalty(places)
+        assert result == [1.0, 1.0, 1.0]
 
 
 class TestMultiCityLocation:

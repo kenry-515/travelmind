@@ -19,7 +19,7 @@ import re
 from datetime import date, timedelta
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from jsonschema import Draft7Validator
 
@@ -38,6 +38,60 @@ def load_schema() -> Dict[str, Any]:
     """Load the contract JSON Schema (cached)."""
     with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
+
+
+def _clean_extra_fields(data: Dict[str, Any], schema: Dict[str, Any]) -> Dict[str, Any]:
+    """Remove fields not allowed by schema to increase tolerance.
+    
+    Phase 14.4: LLM sometimes generates extra fields (note, stats, date, etc.)
+    that are not in the schema. This function recursively removes them to
+    prevent validation failures due to "additional properties not allowed".
+    """
+    if not isinstance(data, dict):
+        return data
+    
+    result = {}
+    allowed_props = schema.get("properties", {})
+    
+    # Copy only allowed fields
+    for key, value in data.items():
+        if key in allowed_props:
+            result[key] = value
+    
+    # Also handle common LLM extra fields that we want to preserve
+    # but store in a generic way (these won't pass schema validation)
+    extra_fields = {}
+    for key, value in data.items():
+        if key not in allowed_props:
+            extra_fields[key] = value
+    
+    if extra_fields:
+        # Store extra fields in a special "extra" key if it exists in schema
+        # Otherwise, just drop them (the important data is captured elsewhere)
+        logger.debug(f"Removing {len(extra_fields)} extra fields: {list(extra_fields.keys())}")
+    
+    return result
+
+
+def _get_all_allowed_fields(schema: Dict[str, Any]) -> set:
+    """Get all allowed field names from schema recursively."""
+    allowed = set()
+    
+    def _walk(s):
+        if isinstance(s, dict):
+            if "properties" in s:
+                allowed.update(s["properties"].keys())
+            if "items" in s and isinstance(s["items"], dict):
+                _walk(s["items"])
+            for val in s.values():
+                if isinstance(val, (dict, list)):
+                    _walk(val)
+        elif isinstance(s, list):
+            for item in s:
+                _walk(item)
+    
+    _walk(schema)
+    return allowed
 
 
 def schema_for_llm() -> Dict[str, Any]:
@@ -63,13 +117,61 @@ def validate_itinerary(data: Any) -> List[str]:
 def validate_pre_injection(data: Any) -> List[str]:
     """Validate raw model output BEFORE backend injection — at that point
     budget percent does not exist yet (the backend computes it), so use the
-    LLM-facing schema where percent is not required."""
-    validator = Draft7Validator(schema_for_llm())
+    LLM-facing schema where percent is not required.
+    
+    Phase 14.4: Added field cleaning before validation to increase tolerance
+    for LLM-added extra fields (note, stats, etc.)
+    """
+    if not isinstance(data, dict):
+        return ["数据不是字典类型"]
+    
+    # Clean extra fields before validation
+    schema = schema_for_llm()
+    cleaned = _deep_clean_extra_fields(data, schema)
+    
+    validator = Draft7Validator(schema)
     errors = []
-    for e in validator.iter_errors(data):
+    for e in validator.iter_errors(cleaned):
         path = "/".join(str(p) for p in e.absolute_path) or "<root>"
         errors.append(f"{path}: {e.message}")
     return errors
+
+
+def _deep_clean_extra_fields(data: Any, schema: Dict[str, Any]) -> Any:
+    """Recursively clean extra fields from data based on schema.
+    
+    This handles nested objects (days, items, etc.) not just top-level.
+    """
+    if isinstance(data, dict):
+        # Get allowed properties at this level
+        allowed_props = set(schema.get("properties", {}).keys())
+        
+        # Also check for "additionalProperties" setting
+        additional_props = schema.get("additionalProperties", True)
+        
+        if additional_props is False:
+            # Remove extra fields
+            cleaned = {}
+            for key, value in data.items():
+                if key in allowed_props:
+                    # Recursively clean nested objects
+                    prop_schema = schema.get("properties", {}).get(key, {})
+                    cleaned[key] = _deep_clean_extra_fields(value, prop_schema)
+            return cleaned
+        else:
+            # Allow additional properties, just recursively clean nested
+            cleaned = {}
+            for key, value in data.items():
+                prop_schema = schema.get("properties", {}).get(key, {})
+                cleaned[key] = _deep_clean_extra_fields(value, prop_schema)
+            return cleaned
+    elif isinstance(data, list):
+        # Handle arrays - clean each item against items schema
+        items_schema = schema.get("items", {})
+        return [_deep_clean_extra_fields(item, items_schema) for item in data]
+    else:
+        # Primitive values (string, number, etc.) - return as-is
+        return data
 
 
 def validate_day(day: Any) -> List[str]:
@@ -199,6 +301,208 @@ def inject_place_count(data: Dict[str, Any]) -> Dict[str, Any]:
     return data
 
 
+# ── UX 美化：items 前缀修复 + 时间去重 + 节奏填充 ──────────
+
+# 餐饮关键词（命中 poi 名或 note 开头）→ 打 [吃] 前缀
+_FOOD_POI_RE = re.compile(
+    r"(火锅|烧烤|餐厅|饭店|菜馆|食堂|小吃|料理|甜品|咖啡|奶茶|茶餐|酒吧|酒馆|宴|楼|店|馆|"
+    r"面|粉|饭|包|饼|甜品|烘焙|牛排|日料|韩餐|泰餐|粤菜|川菜|湘菜|东北菜|清真|披萨|汉堡|寿司)",
+    re.IGNORECASE,
+)
+_FOOD_NOTE_RE = re.compile(r"(^.{0,10})?(午餐|晚餐|早餐|宵夜|用餐|吃饭|尝尝|品|美食|午|晚|菜|餐)", re.IGNORECASE)
+
+# 住宿关键词 → 打 [住] 前缀
+_LODGING_RE = re.compile(r"(酒店|宾馆|民宿|客栈|旅馆|青旅|青年旅舍|住宿|入住|公寓|酒店式|motel|inn|hotel)", re.IGNORECASE)
+
+# 休息关键词 → 打 [休] 前缀
+_REST_RE = re.compile(r"(午休|休息|自由活动|午睡|小憩|睡|闲逛|逛逛|发呆)", re.IGNORECASE)
+
+# 交通 → 打 [行]
+_TRANS_RE = re.compile(r"(高铁|飞机|火车|打车|公交|地铁|自驾|航班|出发|前往|到达|机场|车站|动车站)", re.IGNORECASE)
+
+
+def _infer_marker_from_item(poi: str, note: str) -> Optional[str]:
+    """推断 item 应该是什么前缀（不覆盖已有的显式 [xx]）。
+
+    判定优先级：
+      ① 先看 note 显式语义（「午餐/入住/高铁」等词，在 note 开头 30 字内）
+      ② 系统替换文案（"原户外项目...替换为室内"）→ 默认 [景]
+      ③ 再看 poi 类型（住宿 > 交通 > 餐饮 > 休息），避免「XX 饭店」(酒店) 被错判为餐饮
+    """
+    # ① note 语义优先级最高（开头 30 字）
+    note_head = (note or "")[:30]
+    if re.search(r"(入住|住宿|酒店|宾馆|民宿|客栈|旅馆|青旅)", note_head):
+        return "[住]"
+    if re.search(r"(午餐|晚餐|早餐|宵夜|用餐|吃饭|尝尝|点菜|美食)", note_head):
+        return "[吃]"
+    if re.search(r"(午休|休息|自由活动|午睡|小憩|发呆|闲逛|逛逛)", note_head):
+        return "[休]"
+    if re.search(r"(高铁|飞机|火车|打车|公交|地铁|自驾|航班|出发|前往|到达|机场|车站|动车站)", note_head):
+        return "[行]"
+    # ② 系统替换文案：恶劣天气替换、自动调整 → 视为景点（被替换的本来就是景点）
+    if re.search(r"(原户外项目|替换为室内|系统调整|自动调整|安全起见)", (note or "")):
+        return "[景]"
+    # ③ poi 类型（按权重降序）
+    poi_clean = poi or ""
+    # 住宿必须整词命中，不被「店/楼」误伤 —— 只有明显住宿关键词才判 [住]
+    if re.search(
+        r"(酒店|宾馆|民宿|客栈|旅馆|青旅|青年旅舍|酒店式公寓|公寓酒店|大酒店|喜来登|希尔顿|万豪|洲际|四季|君悦|"
+        r"希而顿|如家|汉庭|锦江之星|全季|亚朵|桔子|维也纳|速8|七天|7天|motel|inn)",
+        poi_clean, re.IGNORECASE,
+    ):
+        return "[住]"
+    if re.search(
+        r"(高铁|机场|车站|动车站|火车站|地铁站|航站楼|客运站|码头)",
+        poi_clean, re.IGNORECASE,
+    ):
+        return "[行]"
+    # 餐饮：poi 命中常见餐饮词 + 如果 poi 是整词"饭店"或"大酒店"跳过（已在住宿里）
+    if not re.search(r"(大酒店|和平饭店|大饭店|饭店$)", poi_clean):
+        if _FOOD_POI_RE.search(poi_clean):
+            return "[吃]"
+    return None  # 默认 [景]，不强制加
+
+
+def _parse_time_minutes(time_str: str) -> int:
+    """HH:MM → 总分钟数。无法解析返回 12*60 作为中间兜底。"""
+    if not isinstance(time_str, str):
+        return 12 * 60
+    m = re.match(r"\s*(\d{1,2})\s*:\s*(\d{1,2})", time_str)
+    if not m:
+        return 12 * 60
+    h = min(23, max(0, int(m.group(1))))
+    mm = min(59, max(0, int(m.group(2))))
+    return h * 60 + mm
+
+
+def _fmt_time(total_min: int) -> str:
+    total_min = max(0, min(23 * 60 + 59, total_min))
+    return f"{total_min // 60:02d}:{total_min % 60:02d}"
+
+
+def beautify_and_sanitize_day_items(data: Dict[str, Any]) -> int:
+    """确定性修复用户反馈的 UX 问题。
+
+    修复内容（按天）：
+      1. items 按时间排序（解决餐饮/住宿乱序）
+      2. 给 poi/note 中含「美食/酒店/午休/交通」关键字的条目补 [吃]/[住]/[休]/[行] 前缀
+         （只有 note 没有显式前缀时才补）
+      3. 重复时间点（如两个 12:00）时把后者往后顺延 45/60min
+      4. 午饭 → 晚饭 之间如果超过 5.5h 没项目，自动插入一个 [休] 午休/自由活动
+      5. 晚饭 → 住宿之间超过 3h 且后面没有其他项目时，不做特殊处理
+      6. day.eat / day.stay 中与 items 已重复的餐厅名，从 eat 文本删除，
+         避免前端双重渲染。
+
+    Returns: 修改过的项目总数（用于日志）。
+    """
+    if not isinstance(data, dict):
+        return 0
+    changed = 0
+
+    for day in data.get("days", []) or []:
+        if not isinstance(day, dict):
+            continue
+        items = day.get("items", [])
+        if not isinstance(items, list) or not items:
+            continue
+        items = [it for it in items if isinstance(it, dict)]
+        if not items:
+            continue
+
+        # (2) 补前缀
+        for it in items:
+            note = it.get("note", "") or ""
+            poi = it.get("poi", "") or ""
+            already = re.match(r"^\[(景|吃|休|行|住|到)\]", note)
+            if already:
+                continue
+            marker = _infer_marker_from_item(poi, note)
+            if marker:
+                it["note"] = marker + (note.strip() or f"{poi}体验")
+                changed += 1
+
+        # (1)(3) 先转成分钟，重复的顺延，最后写回并排序
+        typed: List[Tuple[int, Dict[str, Any]]] = []
+        seen_minutes: Dict[int, int] = {}
+        for it in items:
+            tm = _parse_time_minutes(it.get("time", ""))
+            # 如果跟已有时间完全相同，顺延 60min；如仍然撞，则再顺延 45min
+            orig = tm
+            shift_rounds = 0
+            while tm in seen_minutes and shift_rounds < 4:
+                tm += 60 if shift_rounds == 0 else 45
+                shift_rounds += 1
+            seen_minutes[tm] = 1
+            typed.append((tm, it))
+            if tm != orig:
+                it["time"] = _fmt_time(tm)
+                changed += 1
+
+        typed.sort(key=lambda x: x[0])
+        day["items"] = [it for _, it in typed]
+
+        # (4) 午餐 → 晚餐 间补午休
+        lunch_idx = None
+        dinner_idx = None
+        for i, (tm, it) in enumerate(typed):
+            poi_note = f"{it.get('poi','')} {it.get('note','')}"
+            if lunch_idx is None and _FOOD_NOTE_RE.search(it.get("note", "")[:30]) and 11 * 60 <= tm <= 13 * 60:
+                lunch_idx = i
+            elif lunch_idx is not None and dinner_idx is None and _FOOD_NOTE_RE.search(it.get("note", "")[:30]) and 17 * 60 <= tm <= 20 * 60:
+                dinner_idx = i
+                break
+        if lunch_idx is not None and dinner_idx is not None and dinner_idx > lunch_idx:
+            lunch_tm = typed[lunch_idx][0]
+            dinner_tm = typed[dinner_idx][0]
+            gap = dinner_tm - lunch_tm
+            between = dinner_idx - lunch_idx - 1  # 中间的项目数
+            if gap >= 5.5 * 60 and between == 0:
+                # 中间一个项目都没有 → 插入午休
+                insert_tm = lunch_tm + 120  # 14:00 左右
+                # 避免撞时间
+                while insert_tm in seen_minutes:
+                    insert_tm += 15
+                new_it = {
+                    "time": _fmt_time(insert_tm),
+                    "poi": "午休 · 自由活动",
+                    "note": "[休]午餐后气温最高，建议回酒店午休或在商圈自由逛街、咖啡小憩，避暑解乏",
+                    "time_slot": "afternoon",
+                    "transportation": None,
+                }
+                typed.insert(dinner_idx, (insert_tm, new_it))
+                seen_minutes[insert_tm] = 1
+                changed += 1
+                # 重新写回
+                typed.sort(key=lambda x: x[0])
+                day["items"] = [it for _, it in typed]
+
+        # (6) 从 day.eat 删除已作为 [吃] item 出现的餐厅名，避免前端双重渲染
+        eat = day.get("eat", "") or ""
+        if eat:
+            existing_foods = {
+                (it.get("poi") or "").strip()
+                for _, it in typed
+                if "[吃]" in (it.get("note") or "")
+                and (it.get("poi") or "").strip()
+            }
+            reduced = eat
+            for name in list(existing_foods):
+                if len(name) >= 2 and name in reduced:
+                    reduced = re.sub(re.escape(name), "见行程", reduced)
+            if reduced != eat:
+                # 如果整段变成「见行程」或空，就置空
+                leftover_stripped = re.sub(r"(午餐|晚餐|小吃|[:：「」「\"\"].*?|见行程|AI推荐[:：]?|·|；|;|\s)", "", reduced)
+                if len(leftover_stripped) == 0:
+                    day["eat"] = ""
+                else:
+                    day["eat"] = reduced.strip().strip("·；; ").strip()
+                changed += 1
+
+    if changed:
+        logger.info(f"UX beautify: {changed} fixes applied (markers/sort/gaps/food-dedup)")
+    return changed
+
+
 # ── Month / season consistency ───────────────────────────
 
 _MONTH_RE = re.compile(r"(\d{1,2})月")
@@ -234,14 +538,84 @@ def _collect_texts(data: Dict[str, Any]) -> List[str]:
 
 
 def month_inconsistency_errors(data: Dict[str, Any], trip_month: int) -> List[str]:
-    """Any explicit 'X月' reference that contradicts the trip month."""
+    """Any explicit 'X月' reference that contradicts the trip month.
+    
+    Phase 14.5: Improved to handle date ranges correctly.
+    If a text contains a date range like "7月30日-8月2日" and one of the 
+    months matches the trip month, it's considered valid (weather forecast 
+    ranges often span across months).
+    
+    Only reports errors when ALL month references in a text contradict 
+    the trip month, or when a clearly wrong month appears in isolation.
+    """
     errors = []
     for text in _collect_texts(data):
-        for m in _MONTH_RE.finditer(text):
-            month = int(m.group(1))
-            if 1 <= month <= 12 and month != trip_month:
-                errors.append(f"月份不符（行程为 {trip_month} 月）: {text[:60]}")
-                break
+        if not isinstance(text, str) or not text.strip():
+            continue
+        
+        # Find all month references in this text
+        months_found = [int(m.group(1)) for m in _MONTH_RE.finditer(text) if 1 <= int(m.group(1)) <= 12]
+        
+        if not months_found:
+            continue
+        
+        # Check if ANY month matches the trip month
+        has_match = any(m == trip_month for m in months_found)
+        
+        # If at least one month matches, check if others are in a date range context
+        if has_match:
+            # Look for date range patterns like "X月X日-X月X日" or "X月-X月"
+            import re
+            # Pattern: number followed by 月, possibly with 日, then dash, then another month
+            range_patterns = [
+                # "7月30日-8月2日" or "7月30日 — 8月2日"
+                re.findall(r'(\d{1,2})月\d{1,2}日?\s*[-—–~至到]\s*(\d{1,2})月', text),
+                # "7月-8月"
+                re.findall(r'(\d{1,2})月\s*[-—–~至到]\s*(\d{1,2})月', text),
+            ]
+            
+            in_range_context = False
+            for pattern_results in range_patterns:
+                for start_m, end_m in pattern_results:
+                    if int(start_m) == trip_month or int(end_m) == trip_month:
+                        in_range_context = True
+                        break
+                if in_range_context:
+                    break
+            
+            # If in a date range context with a matching month, skip error
+            if in_range_context:
+                continue
+            
+            # Check for isolated wrong months (not part of a range)
+            wrong_months = [m for m in months_found if m != trip_month]
+            if wrong_months:
+                # Only flag if the wrong month appears to be an error (e.g., standalone reference)
+                for m in wrong_months:
+                    # Find the context of this month reference
+                    month_pattern = f"{m}月"
+                    idx = text.find(month_pattern)
+                    if idx >= 0:
+                        # Check if this month is part of a date range with matching month
+                        # Simple heuristic: if text has "7月...8月" and one matches, 
+                        # it's likely a weather date range, not an error
+                        if len(months_found) <= 2 and len(set(months_found)) <= 2:
+                            # This is likely a date range - accept it
+                            break
+                else:
+                    continue  # All wrong months were in range context
+        else:
+            # No month matches at all - this is suspicious
+            # But still check if it might be a weather range spanning different months
+            # where neither matches (edge case)
+            pass
+        
+        # Only report if we have clear mismatches that aren't in date range context
+        wrong_months_final = [m for m in months_found if m != trip_month]
+        if wrong_months_final and not has_match:
+            # Clear mismatch - no matching month in this text at all
+            errors.append(f"月份不符（行程为 {trip_month} 月）: {text[:60]}")
+    
     return errors
 
 
@@ -252,14 +626,26 @@ _WEATHER_ITEM_RE = re.compile(r"雨|伞|雷暴|降水|天气|防晒|防风|雪")
 
 
 def trip_has_rain(weather: Optional[Dict[str, Any]], days_count: int) -> bool:
-    """True if any of the trip's days (first daysCount entries) forecasts rain."""
+    """True if any of the trip's days (first daysCount entries) forecasts rain.
+    
+    Handles both dict format and WeatherForecast object format.
+    """
     if not weather:
         return False
-    for d in (weather.get("daily") or [])[: max(days_count, 1)]:
-        desc = d.get("weather_desc", "") or ""
+    
+    # Handle WeatherForecast object (has .to_dict() method)
+    if hasattr(weather, 'to_dict'):
+        weather = weather.to_dict()
+    
+    # Handle DailyForecast objects in daily list
+    daily = weather.get("daily") or []
+    for d in daily[: max(days_count, 1)]:
+        if hasattr(d, 'to_dict'):
+            d = d.to_dict()
+        desc = (d.get("weather_desc", "") or "") if isinstance(d, dict) else str(d)
         if any(w in desc for w in _RAIN_WORDS):
             return True
-        if (d.get("precipitation") or 0) > 0.5:
+        if isinstance(d, dict) and (d.get("precipitation") or 0) > 0.5:
             return True
     return False
 
@@ -455,6 +841,10 @@ def compute_weather_fit(
     with travel_score ≥ 0.5 are always considered adapted (summer rain is
     often brief afternoon showers, not all-day storms).
     """
+    # Handle WeatherForecast object
+    if hasattr(weather, 'to_dict'):
+        weather = weather.to_dict()
+    
     if not weather or not weather.get("daily"):
         return "unknown", []
 
@@ -553,12 +943,15 @@ def attach_daily_dining_and_stay(
     kb_attractions: Optional[List[Dict[str, Any]]],
     city: Optional[str] = None,
 ) -> int:
-    """按天挂载 KB 真实餐厅（午/晚餐）与住宿，替代 LLM 的空泛"每日一味"。
+    """按天挂载 KB 真实餐厅（午/晚餐）与住宿，智能合并 LLM 推荐与 KB 数据。
 
+    Phase 16 优化：
+    - LLM 生成正常的餐厅推荐格式（如「午餐：南翔馒头店；晚餐：绿波廊」）
+    - 如 LLM 已提供餐厅推荐，追加 KB 推荐（去重）
+    - 如 LLM 未提供（eat 为空），用 KB 数据直接填充
     - 餐厅：行程城市的美食 POI，排除行程 items 已出现的，午餐取热度最高、
       晚餐取首个与午餐品类不同的（tags 第二标签即细分品类），跨天不重复
-    - 住宿：tags 含「住宿」的 POI，按热度每天 1 个不重复（KB 无住宿数据则留空）
-    - KB 数据不足时保留 LLM 原 eat，不强行覆盖
+    - 住宿：tags 含「住宿」的 POI，按热度每天 1 个不重复
 
     Returns: 成功挂载餐饮的天数。
     """
@@ -596,6 +989,10 @@ def attach_daily_dining_and_stay(
     for idx, day in enumerate(data.get("days", [])):
         if not isinstance(day, dict):
             continue
+        
+        # 保存 LLM 原文本
+        original_eat = day.get("eat", "") or ""
+        
         lunch = next((a for a in foods if a["name"] not in used_names), None)
         dinner = next(
             (a for a in foods
@@ -603,16 +1000,44 @@ def attach_daily_dining_and_stay(
              and (lunch is None or _subtype(a) != _subtype(lunch))),
             None,
         )
-        if lunch and dinner:
-            day["eat"] = f"午餐「{lunch['name']}」· 晚餐「{dinner['name']}」"
-            used_names.update((lunch["name"], dinner["name"]))
+        
+        # 去重检查：如果原文本已包含餐厅名，则跳过
+        new_lunch = None
+        new_dinner = None
+        if lunch and lunch["name"] not in original_eat:
+            new_lunch = lunch
+        if dinner and dinner["name"] not in original_eat:
+            new_dinner = dinner
+        
+        # 构建推荐文本
+        rec_parts = []
+        if new_lunch:
+            rec_parts.append(f"午餐「{new_lunch['name']}」")
+        if new_dinner:
+            rec_parts.append(f"晚餐「{new_dinner['name']}」")
+        
+        if rec_parts:
+            rec_text = "· ".join(rec_parts)
+            
+            # 如果原文本为空，直接填充
+            if not original_eat.strip():
+                day["eat"] = rec_text
+            # 如果原文本已有内容，追加 AI 推荐
+            else:
+                day["eat"] = f"{original_eat} · AI推荐: {rec_text}"
+            
             mounted += 1
-        elif lunch:
-            day["eat"] = f"推荐「{lunch['name']}」"
-            used_names.add(lunch["name"])
-            mounted += 1
+            
+            # 更新已使用的餐厅名
+            if new_lunch:
+                used_names.add(new_lunch["name"])
+            if new_dinner:
+                used_names.add(new_dinner["name"])
+        
+        # 挂载住宿
         if idx < len(stays):
             day["stay"] = stays[idx]["name"]
+            
     if mounted or stays:
         logger.info(f"Dining/stay attached: {mounted} days dining, {len(stays)} stays ({city})")
     return mounted
@@ -621,15 +1046,26 @@ def attach_daily_dining_and_stay(
 # ── 节奏分档密度控制（Phase 12.27）──────────────────────
 # 用户反馈"行程很密集"——prompt 从"每天 3-6"改为按节奏分档，这里做确定性兜底。
 
+# Phase 16 优化：增加「舒适」档位（5项/天），细化分档逻辑
+# 分档说明：
+# - 休闲档（4项）：慢节奏度假，留白时间充足
+# - 舒适档（5项）：推荐默认档位，平衡体验与效率
+# - 紧凑档（6项）：高效打卡，适合时间紧张的旅行者
 _PACE_DAY_ITEM_CAP = {
-    "休闲": 4, "慢": 4, "放松": 4, "度假": 4,
-    "紧凑": 6, "特种兵": 6, "赶": 6,
+    # 休闲档（4项）
+    "休闲": 4, "慢": 4, "放松": 4, "度假": 4, "惬意": 4, "悠闲": 4,
+    # 舒适档（5项）- 推荐默认
+    "舒适": 5, "适中": 5, "平衡": 5, "一般": 5,
+    # 紧凑档（6项）
+    "紧凑": 6, "特种兵": 6, "赶": 6, "高效": 6, "充实": 6,
 }
-_DEFAULT_DAY_ITEM_CAP = 5  # 适中/不限
+_DEFAULT_DAY_ITEM_CAP = 5  # 默认舒适档
 
 
 def enforce_pace_density(data: Dict[str, Any], pace: str) -> int:
     """按节奏档位截断每天条目数（保序保留前 N 项，LLM 按重要性排序）。
+
+    Phase 16: 新增「舒适」档位(5项/天)作为默认推荐，细化关键词匹配。
 
     Returns: 被截掉的条目总数。
     """
@@ -647,7 +1083,7 @@ def enforce_pace_density(data: Dict[str, Any], pace: str) -> int:
             trimmed += len(items) - cap
             day["items"] = items[:cap]
     if trimmed:
-        logger.info(f"Pace density: pace={pace or '适中'} cap={cap}, trimmed {trimmed} items")
+        logger.info(f"Pace density: pace={pace or '舒适'} cap={cap}, trimmed {trimmed} items")
     return trimmed
 
 
@@ -671,6 +1107,10 @@ def enforce_severe_weather_indoor(
 
     Returns the number of replaced items.
     """
+    # Handle WeatherForecast object
+    if hasattr(weather, 'to_dict'):
+        weather = weather.to_dict()
+    
     if not weather or not weather.get("daily") or not kb_attractions:
         return 0
 

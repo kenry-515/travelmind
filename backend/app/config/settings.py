@@ -23,6 +23,10 @@ class Settings(BaseSettings):
     LLM_TIMEOUT: float = 60.0
     # deepseek-chat 名称已于 2026-07-24 弃用，对应 deepseek-v4-flash 非思考模式
     LLM_MODEL: str = "deepseek-v4-flash"
+    # Phase 16.6: 并发控制 — 限制同时进行的 LLM 调用数，防止触发 429 限流
+    LLM_MAX_CONCURRENT: int = 4
+    # Phase 16.6: 结构化输出超时倍数 — chat_structured 生成复杂 JSON 需更长时间
+    LLM_STRUCTURED_TIMEOUT_MULT: float = 1.5
 
     # --- Vision ---
     VISION_PROVIDER: str = "kimi"
@@ -47,7 +51,11 @@ class Settings(BaseSettings):
     DATABASE_URL_SYNC: str = "postgresql://postgres:postgres@localhost:5432/travelmind_db"
 
     # --- Session Store ---
-    SESSION_STORE: str = "memory"  # memory | redis
+    # memory: 仅测试/临时（进程内，重启丢）
+    # sqlite: dev 默认（文件持久化，WAL 多 worker 读，零额外依赖）
+    # redis:  生产（多 worker，TTL，重启恢复）
+    SESSION_STORE: str = "sqlite"
+    SESSION_SQLITE_PATH: str = "./.sessions/sessions.db"
     REDIS_URL: str = "redis://localhost:6379/0"
 
     # --- Chroma ---

@@ -97,6 +97,48 @@ class TFIDFEmbeddingProvider(BaseEmbeddingProvider):
         )
         return self
 
+    def save(self, path: str) -> None:
+        """Save the fitted vectorizer to disk for fast cold-start.
+
+        Pickles the sklearn TfidfVectorizer so subsequent restarts
+        skip the corpus fitting step (saves ~1-2s).
+        """
+        if not self._fitted or self._vectorizer is None:
+            raise RuntimeError("TFIDFEmbeddingProvider not fitted. Cannot save.")
+        import pickle
+        with open(path, "wb") as f:
+            pickle.dump({
+                "vectorizer": self._vectorizer,
+                "max_features": self._max_features,
+            }, f)
+        logger.info(f"TF-IDF vectorizer saved to {path}")
+
+    def load(self, path: str) -> bool:
+        """Load a pre-fitted vectorizer from disk.
+
+        Returns True on success, False if file doesn't exist or is invalid.
+        """
+        import os
+        if not os.path.exists(path):
+            return False
+        try:
+            import pickle
+            with open(path, "rb") as f:
+                data = pickle.load(f)
+            self._vectorizer = data["vectorizer"]
+            self._max_features = data.get("max_features", self._max_features)
+            self._fitted = True
+            logger.info(
+                f"TF-IDF loaded from {path}, "
+                f"vocab size: {len(self._vectorizer.vocabulary_)}"
+            )
+            return True
+        except Exception as e:
+            logger.warning(f"Failed to load TF-IDF from {path}: {e}")
+            self._vectorizer = None
+            self._fitted = False
+            return False
+
     def embed(
         self, texts: List[str], tags_list: Optional[List[List[str]]] = None
     ) -> List[List[float]]:
@@ -126,7 +168,7 @@ class CompositeEmbeddingProvider(BaseEmbeddingProvider):
         self,
         tfidf: TFIDFEmbeddingProvider,
         tag_vocabulary: List[str],
-        tfidf_weight: float = 0.7,
+        tfidf_weight: float = 0.6,
     ):
         self._tfidf = tfidf
         self._tag_vocab = tag_vocabulary

@@ -12,7 +12,7 @@
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, MapPin, Clock, DollarSign, Users, Flame, Database, Heart } from 'lucide-react'
 import { ScoreBar } from './ScoreBar'
-import type { PlaceItem } from '../lib/api'
+import type { PlaceItem, ScoreBreakdown } from '../lib/api'
 import { useSavedPlaces } from '../lib/savedPlaces'
 
 interface PlaceCardProps {
@@ -21,9 +21,15 @@ interface PlaceCardProps {
 }
 
 /** 后端可能注入的可选扩展字段（契约之外，缺失时不显示，不编造）。 */
+interface PlaceExt {
+  trend_source?: string
+  trend?: string
+  data_source?: string
+  source?: string
+}
+
 function getPlaceExt(place: PlaceItem): { trendSource: string; dataSource: string } {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const ext = place as any
+  const ext = place as PlaceExt
   const trendSource: string = ext.trend_source || ext.trend || ''
   const dataSource: string = ext.data_source || ext.source || ''
   return { trendSource, dataSource }
@@ -43,6 +49,28 @@ function dataSourceLabel(raw: string): string {
   return DATA_SOURCE_LABELS[raw.toLowerCase()] || raw
 }
 
+/** Phase 16.4: 从 score_breakdown 中提取得分最高的 N 个维度 */
+function getTopFactors(
+  breakdown: ScoreBreakdown | undefined,
+  n: number
+): { key: string; label: string; value: number }[] {
+  if (!breakdown) return []
+  const FACTOR_LABELS: Record<string, string> = {
+    preference_match: '偏好匹配',
+    trend_heat: '热度趋势',
+    budget_match: '预算匹配',
+    location_efficiency: '位置便利',
+    time_match: '时节匹配',
+    weather: '天气匹配',
+    data_reliability: '数据可靠',
+  }
+  return Object.entries(breakdown)
+    .filter(([_, v]) => typeof v === 'number')
+    .map(([k, v]) => ({ key: k, label: FACTOR_LABELS[k] || k, value: v as number }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, n)
+}
+
 export function PlaceCard({ place, rank }: PlaceCardProps) {
   const [expanded, setExpanded] = useState(false)
   const { togglePlace, isSaved } = useSavedPlaces()
@@ -56,6 +84,10 @@ export function PlaceCard({ place, rank }: PlaceCardProps) {
   const city = place.city
   const tags = place.tags || []
 
+  // Phase 16.4: 提取 TOP 评分维度用于卡片预览
+  const breakdown = place.score_breakdown
+  const topFactors = getTopFactors(breakdown, 3)
+
   return (
     <div className="card hover-lift animate-fade-in-up p-4">
       {/* Header */}
@@ -67,11 +99,11 @@ export function PlaceCard({ place, rank }: PlaceCardProps) {
                 {rank}
               </span>
             )}
-            <h3 className="truncate text-base font-bold text-slate-900">
+            <h3 className="truncate text-base font-bold text-slate-900 dark:text-slate-100">
               {place.name}
             </h3>
           </div>
-          <div className="mt-1 flex items-center gap-1 text-xs text-slate-400">
+          <div className="mt-1 flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500">
             <MapPin size={12} />
             <span>{place.city}</span>
           </div>
@@ -80,7 +112,7 @@ export function PlaceCard({ place, rank }: PlaceCardProps) {
           <button
             onClick={() => togglePlace({ name: place.name, city, tags, note: '', source: 'recommend' })}
             className={`rounded-lg p-1.5 transition-all ${
-              saved ? 'text-red-400 hover:text-red-500' : 'text-slate-300 hover:text-red-400'
+              saved ? 'text-red-400 hover:text-red-500' : 'text-slate-300 dark:text-slate-600 hover:text-red-400 dark:hover:text-red-400'
             }`}
             aria-label={saved ? '取消收藏' : '收藏'}
             title={saved ? '已收藏' : '收藏'}
@@ -110,7 +142,7 @@ export function PlaceCard({ place, rank }: PlaceCardProps) {
           {place.tags.slice(0, 6).map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700"
+              className="rounded-full bg-brand-50 dark:bg-brand-900/30 px-2 py-0.5 text-xs font-medium text-brand-700 dark:text-brand-300"
             >
               {tag}
             </span>
@@ -119,7 +151,7 @@ export function PlaceCard({ place, rank }: PlaceCardProps) {
       )}
 
       {/* Meta info */}
-      <div className="mt-3 flex flex-wrap gap-3 text-xs text-slate-500">
+      <div className="mt-3 flex flex-wrap gap-3 text-xs text-slate-500 dark:text-slate-400">
         {place.price_level && (
           <span className="flex items-center gap-1">
             <DollarSign size={12} />
@@ -140,10 +172,32 @@ export function PlaceCard({ place, rank }: PlaceCardProps) {
         )}
       </div>
 
+      {/* Phase 16.4: TOP 评分维度预览 — 不用展开就能看到为什么得分高 */}
+      {topFactors.length > 0 && !expanded && (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {topFactors.map((f) => (
+            <span
+              key={f.key}
+              className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-brand-50 to-accent-50 px-2 py-0.5 text-[11px] font-medium text-slate-600 dark:text-slate-400"
+            >
+              <span className={`font-bold ${
+                f.value >= 0.8 ? 'text-brand-600' :
+                f.value >= 0.6 ? 'text-amber-600' : 'text-slate-500 dark:text-slate-400'
+              }`}>
+                {f.label}
+              </span>
+              <span className="tabular-nums text-slate-400 dark:text-slate-500">
+                {Math.round(f.value * 100)}
+              </span>
+            </span>
+          ))}
+        </div>
+      )}
+
       {/* Expand toggle */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="mt-3 flex w-full items-center justify-center gap-1 rounded-xl py-1.5 text-xs text-slate-400 transition-colors hover:bg-brand-50 hover:text-brand-600"
+        className="mt-3 flex w-full items-center justify-center gap-1 rounded-xl py-1.5 text-xs text-slate-400 dark:text-slate-500 transition-colors hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-600 dark:hover:text-brand-400"
       >
         {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
         {expanded ? '收起评分' : '查看评分明细'}
@@ -151,14 +205,14 @@ export function PlaceCard({ place, rank }: PlaceCardProps) {
 
       {/* Expanded score breakdown */}
       {expanded && (
-        <div className="mt-2 animate-fade-in rounded-xl bg-surface-tertiary p-3">
+        <div className="mt-2 animate-fade-in rounded-xl bg-surface-tertiary dark:bg-slate-800/40 p-3">
           <ScoreBar breakdown={place.score_breakdown} />
         </div>
       )}
 
       {/* POI 数据来源可追溯脚注 — 字段缺失则不显示 */}
       {dataSource && (
-        <p className="mt-2 flex items-center gap-1 border-t border-border-light pt-2 text-[11px] text-slate-400">
+        <p className="mt-2 flex items-center gap-1 border-t border-border-light pt-2 text-[11px] text-slate-400 dark:text-slate-500">
           <Database size={10} />
           数据来源：{dataSourceLabel(dataSource)}
         </p>

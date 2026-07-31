@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* ── Phase 12.28d: Tailwind v4 — Class-based dark mode ──
+   让 dark: 前缀基于 .dark 类而非 prefers-color-scheme。 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ── TravelMind Design Tokens (Tailwind v4 @theme) ─────────
    年轻化视觉体系：活力珊瑚橙主色 + 青碧辅助色，
    大圆角、柔和阴影、玻璃拟态、细腻微动效。 */
@@ -26,6 +30,8 @@
   --color-accent-500: #14b8a6;
   --color-accent-600: #0f766e;
   --color-accent-700: #115e59;
+  --color-accent-800: #0d5148;
+  --color-accent-900: #0a3d37;
 
   /* Surface / background layers — 暖纸感底色 */
   --color-surface: #ffffff;
@@ -430,6 +436,44 @@ li {
   color: #e2e8f0;
 }
 
+/* Dark mode theme tokens (override the light tokens for .dark) */
+.dark {
+  --color-surface: #1e293b;
+  --color-surface-secondary: #0f172a;
+  --color-surface-tertiary: #334155;
+
+  --color-ink: #f1f5f9;
+  --color-ink-secondary: #cbd5e1;
+  --color-ink-tertiary: #64748b;
+
+  --color-border: #334155;
+  --color-border-light: #1e293b;
+
+  /* Brand colors for dark mode */
+  --color-brand-50: #4a1f14;
+  --color-brand-100: #5c2518;
+  --color-brand-200: #6e2c1d;
+  --color-brand-300: #8a3723;
+  --color-brand-400: #a8452c;
+  --color-brand-500: #d9371e;
+  --color-brand-600: #ff5a3c;
+  --color-brand-700: #ff7a5e;
+  --color-brand-800: #ff9980;
+  --color-brand-900: #ffb8a3;
+
+  /* Accent colors for dark mode — inverted hierarchy: 50=darkest, 900=lightest */
+  --color-accent-50: #0f172a;
+  --color-accent-100: #132936;
+  --color-accent-200: #0d3d37;
+  --color-accent-300: #115e59;
+  --color-accent-400: #14b8a6;
+  --color-accent-500: #2dd4bf;
+  --color-accent-600: #5eead4;
+  --color-accent-700: #99f6e4;
+  --color-accent-800: #ccfbf1;
+  --color-accent-900: #f0fdfa;
+}
+
 /* Surface colors in dark mode */
 .dark .bg-surface-primary,
 .dark .bg-surface-primary {
@@ -437,11 +481,11 @@ li {
 }
 .dark .bg-surface-secondary,
 .dark .bg-surface-secondary {
-  background-color: #334155;
+  background-color: #0f172a;
 }
 .dark .bg-surface-tertiary,
 .dark .bg-surface-tertiary {
-  background-color: #475569;
+  background-color: #334155;
 }
 
 /* Cards in dark mode */
@@ -457,16 +501,16 @@ li {
 }
 
 /* Text colors in dark mode */
-.dark .text-slate-700,
-.dark .text-slate-800,
-.dark .text-slate-900 {
+.dark .text-slate-700 dark:text-slate-300,
+.dark .text-slate-800 dark:text-slate-200,
+.dark .text-slate-900 dark:text-slate-100 {
   color: #e2e8f0;
 }
-.dark .text-slate-500,
-.dark .text-slate-600 {
+.dark .text-slate-500 dark:text-slate-400,
+.dark .text-slate-600 dark:text-slate-400 {
   color: #94a3b8;
 }
-.dark .text-slate-400 {
+.dark .text-slate-400 dark:text-slate-500 {
   color: #64748b;
 }
 .dark .text-slate-300 {
@@ -496,13 +540,56 @@ li {
 
 /* Glass morphism in dark mode */
 .dark .glass {
-  background-color: rgb(30 41 59 / 0.8);
+  background-color: rgb(15 23 42 / 0.85);
+  border-color: rgb(51 65 85 / 0.4);
 }
 
 /* Borders in dark mode */
 .dark .border-border,
 .dark .border-border-light {
   border-color: rgb(71 85 105 / 0.3);
+}
+
+/* Bg variants that don't have dark: prefix - fix common ones */
+.dark .bg-brand-50 {
+  background-color: rgb(247 92 54 / 0.15);
+}
+.dark .bg-brand-100 {
+  background-color: rgb(247 92 54 / 0.25);
+}
+.dark .bg-brand-50\/50 {
+  background-color: rgb(247 92 54 / 0.12);
+}
+.dark .bg-brand-50\/40 {
+  background-color: rgb(247 92 54 / 0.10);
+}
+.dark .bg-amber-50 {
+  background-color: rgb(245 158 11 / 0.15);
+}
+.dark .bg-green-50 {
+  background-color: rgb(34 197 94 / 0.15);
+}
+.dark .bg-red-50 {
+  background-color: rgb(239 68 68 / 0.15);
+}
+.dark .bg-slate-50 {
+  background-color: rgb(51 65 85 / 0.3);
+}
+
+.dark .text-brand-500 {
+  color: #ff7a58;
+}
+.dark .text-brand-600 {
+  color: #ffa88f;
+}
+.dark .text-brand-700 {
+  color: #ffcdbe;
+}
+.dark .border-brand-200 {
+  border-color: rgb(247 92 54 / 0.4);
+}
+.dark .border-brand-300 {
+  border-color: rgb(247 92 54 / 0.5);
 }
 
 /* Shimmer skeleton in dark mode */

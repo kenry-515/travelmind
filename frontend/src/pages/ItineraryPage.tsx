@@ -30,6 +30,7 @@ import {
   Map,
   MoreHorizontal,
   Umbrella,
+  Share2,
 } from 'lucide-react'
 import {
   fetchItineraryDetail,
@@ -40,6 +41,7 @@ import {
   fetchFavorites,
   fetchVersions,
   restoreVersion,
+  removeItineraryItem,
   type TravelItinerary,
   type WeatherForecast,
   type VersionSummary,
@@ -51,6 +53,7 @@ import { DayCard } from '../components/DayCard'
 import { PriceSummaryCard } from '../components/PriceBadge'
 import { SkeletonItinerary } from '../components/Skeleton'
 import { usePlanStream, type StreamState } from '../hooks/usePlanStream'
+import { ShareModal } from '../components/ShareModal'
 
 // ── Helpers ───────────────────────────────────────────────
 
@@ -74,8 +77,8 @@ function LoadingView({ state }: { state: Extract<StreamState, { stage: 'loading'
     <div className="mt-16 mx-auto max-w-sm">
       <div className="text-center mb-8">
         <Loader2 size={40} className="mx-auto mb-4 animate-spin text-brand-500" />
-        <p className="text-slate-500">{state.message}</p>
-        <p className="mt-1 text-xs text-slate-400">完整规划约需 30-60 秒</p>
+        <p className="text-slate-500 dark:text-slate-400">{state.message}</p>
+        <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">完整规划约需 30-60 秒</p>
       </div>
       {/* Step progress */}
       <div className="space-y-1">
@@ -84,10 +87,10 @@ function LoadingView({ state }: { state: Extract<StreamState, { stage: 'loading'
             <span
               className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors ${
                 step.status === 'done'
-                  ? 'bg-green-500 text-white'
+                  ? 'bg-green-500 text-white dark:bg-green-500'
                   : step.status === 'running'
-                  ? 'bg-brand-500 text-white animate-pulse'
-                  : 'bg-slate-200 text-slate-400'
+                  ? 'bg-brand-500 text-white dark:bg-brand-500 animate-pulse'
+                  : 'bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-500'
               }`}
             >
               {step.status === 'done' ? <Check size={10} /> : '·'}
@@ -98,7 +101,7 @@ function LoadingView({ state }: { state: Extract<StreamState, { stage: 'loading'
                   ? 'text-green-600 font-medium'
                   : step.status === 'running'
                   ? 'text-brand-600 font-medium'
-                  : 'text-slate-400'
+                  : 'text-slate-400 dark:text-slate-500'
               }`}
             >
               {step.label}
@@ -116,7 +119,7 @@ function ErrorView({ message, onRetry }: { message: string; onRetry?: () => void
   return (
     <div className="mt-12 text-center">
       <AlertCircle size={40} className="mx-auto mb-3 text-red-500" />
-      <p className="text-slate-600">{message}</p>
+      <p className="text-slate-600 dark:text-slate-400">{message}</p>
       <div className="mt-4 flex items-center justify-center gap-3">
         {onRetry && (
           <button
@@ -183,6 +186,9 @@ export function ItineraryPage() {
   const [pdfExporting, setPdfExporting] = useState(false)
   const [hasRun, setHasRun] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [shareModalOpen, setShareModalOpen] = useState(false)
+  // Phase 16.4: 拖放高亮状态（替代旧的 DOM style 操作）
+  const [dragOverDay, setDragOverDay] = useState<number | null>(null)
 
   // Derive the effective itinerary — from SSE stream or local
   const effectiveState: StreamState | null = state ?? localReady
@@ -353,8 +359,8 @@ export function ItineraryPage() {
 
   // ── Derived values ──────────────────────────────────────
 
-  // Phase 12.27: 单项删除（本地即时生效 + 重算地点数 + 写回 sessionStorage）
-  function handleRemoveItem(dayIndex: number, itemIndex: number) {
+  // Phase 16: 单项删除（本地即时生效 + 后端持久化 + 重算地点数 + 写回 sessionStorage）
+  async function handleRemoveItem(dayIndex: number, itemIndex: number) {
     const ready = effectiveState
     if (ready?.stage !== 'ready') return
     const day = ready.itinerary.days[dayIndex]
@@ -365,6 +371,8 @@ export function ItineraryPage() {
     }
     const removed = day.items[itemIndex]
     if (!removed) return
+
+    // 本地即时更新（乐观更新）
     const updated: TravelItinerary = {
       ...ready.itinerary,
       days: ready.itinerary.days.map((d, i) =>
@@ -390,6 +398,17 @@ export function ItineraryPage() {
       sessionStorage.setItem('travelmind_itinerary', JSON.stringify(updated))
     } catch { /* non-fatal */ }
     toast.success(`已去掉「${removed.poi}」`)
+
+    // Phase 16: 后端持久化（如果行程有 ID）
+    const itineraryId = searchParams.get('id') || ready.itineraryId || null
+    if (itineraryId) {
+      try {
+        await removeItineraryItem(itineraryId, dayIndex, itemIndex)
+      } catch (err) {
+        // 非致命错误：后端保存失败不影响前端展示
+        console.warn('Failed to persist item removal to backend:', err)
+      }
+    }
   }
 
   // Phase 14: 项目上移/下移
@@ -448,12 +467,12 @@ export function ItineraryPage() {
       {/* Header */}
       <header className="glass sticky top-0 z-10 border-b border-border-light">
         <div className="mx-auto flex max-w-4xl items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
-          <Link to="/recommend" className="rounded-xl p-1.5 text-slate-500 transition-colors hover:bg-brand-50 hover:text-brand-600" aria-label="返回推荐">
+          <Link to="/recommend" className="rounded-xl p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-600 dark:hover:text-brand-400" aria-label="返回推荐">
             <ArrowLeft size={20} />
           </Link>
-          <h2 className="text-sm font-semibold text-slate-800">行程规划</h2>
+          <h2 className="text-sm font-semibold text-slate-800 dark:text-slate-200">行程规划</h2>
           {ready && (
-            <span className="hidden text-xs text-slate-400 sm:inline">
+            <span className="hidden text-xs text-slate-400 dark:text-slate-500 sm:inline">
               {ready.itinerary.trip.daysCount} 天行程
             </span>
           )}
@@ -461,11 +480,11 @@ export function ItineraryPage() {
 
           {/* Desktop actions — visible sm+ */}
           <div className="hidden items-center gap-1 sm:flex">
-            <Link to="/history" className="flex items-center gap-1 rounded-xl px-2 py-1.5 text-xs text-slate-400 transition-colors hover:bg-brand-50 hover:text-brand-600" aria-label="我的行程">
+            <Link to="/history" className="flex items-center gap-1 rounded-xl px-2 py-1.5 text-xs text-slate-400 dark:text-slate-500 transition-colors hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-600 dark:hover:text-brand-400" aria-label="我的行程">
               <List size={14} /> 我的行程
             </Link>
             {ready && !ready.preview && searchParams.get('id') && (
-              <button onClick={() => { setVersionPanelOpen(true); loadVersions() }} className="flex items-center gap-1 rounded-xl px-2 py-1.5 text-xs text-slate-400 transition-colors hover:bg-brand-50 hover:text-brand-600" aria-label="版本历史">
+              <button onClick={() => { setVersionPanelOpen(true); loadVersions() }} className="flex items-center gap-1 rounded-xl px-2 py-1.5 text-xs text-slate-400 dark:text-slate-500 transition-colors hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-600 dark:hover:text-brand-400" aria-label="版本历史">
                 <History size={14} /> 历史
               </button>
             )}
@@ -484,7 +503,7 @@ export function ItineraryPage() {
                   finally { setPdfExporting(false) }
                 }}
                 disabled={pdfExporting}
-                className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-slate-400 transition-colors hover:bg-slate-100 hover:text-green-500 disabled:opacity-50"
+                className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-slate-400 dark:text-slate-500 transition-colors hover:bg-slate-100 dark:bg-slate-800 hover:text-green-500 disabled:opacity-50"
                 aria-label="导出 PDF"
               >
                 {pdfExporting ? <Loader2 size={14} className="animate-spin" /> : <FileDown size={14} />}
@@ -495,12 +514,22 @@ export function ItineraryPage() {
               <button
                 onClick={toggleFavorite} disabled={favBusy}
                 className={`flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs transition-colors ${
-                  favorited ? 'text-red-500 hover:bg-red-50' : 'text-slate-400 hover:bg-slate-100 hover:text-red-400'
+                  favorited ? 'text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30' : 'text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:bg-slate-800 hover:text-red-400'
                 }`}
                 aria-label={favorited ? '取消收藏' : '收藏行程'}
               >
                 <Heart size={14} className={favorited ? 'fill-current' : ''} />
                 {favorited ? '已收藏' : '收藏'}
+              </button>
+            )}
+            {ready && !ready.preview && (
+              <button
+                onClick={() => setShareModalOpen(true)}
+                className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-slate-400 dark:text-slate-500 transition-colors hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-600 dark:hover:text-brand-400"
+                aria-label="分享行程"
+              >
+                <Share2 size={14} />
+                分享
               </button>
             )}
           </div>
@@ -509,21 +538,21 @@ export function ItineraryPage() {
           {ready && !ready.preview && (
             <div className="relative sm:hidden">
               <button
-                onClick={() => setMobileMenuOpen((v) => !v)}
-                className="rounded-lg p-1.5 text-slate-500 transition-colors hover:bg-slate-100"
-                aria-label="更多操作"
-              >
+                      onClick={() => setMobileMenuOpen((v) => !v)}
+                      className="rounded-lg p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
+                      aria-label="更多操作"
+                    >
                 <MoreHorizontal size={18} />
               </button>
               {mobileMenuOpen && (
                 <>
                   <div className="fixed inset-0 z-20" onClick={() => setMobileMenuOpen(false)} />
-                  <div className="absolute right-0 top-full z-30 mt-1 w-40 animate-fade-in rounded-2xl border border-border bg-white py-1 shadow-lg">
-                    <Link to="/history" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50">
+                  <div className="absolute right-0 top-full z-30 mt-1 w-40 animate-fade-in rounded-2xl border border-border bg-white dark:bg-slate-900 py-1 shadow-lg">
+                    <Link to="/history" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">
                       <List size={16} /> 我的行程
                     </Link>
                     {searchParams.get('id') && (
-                      <button onClick={() => { setVersionPanelOpen(true); setMobileMenuOpen(false); loadVersions() }} className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50">
+                      <button onClick={() => { setVersionPanelOpen(true); setMobileMenuOpen(false); loadVersions() }} className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">
                         <History size={16} /> 版本历史
                       </button>
                     )}
@@ -539,17 +568,23 @@ export function ItineraryPage() {
                         finally { setPdfExporting(false) }
                       }}
                       disabled={pdfExporting}
-                      className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+                      className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50"
                     >
                       <FileDown size={16} /> 导出 PDF
                     </button>
                     <button
                       onClick={() => { toggleFavorite(); setMobileMenuOpen(false) }}
                       disabled={favBusy}
-                      className={`flex w-full items-center gap-2 px-4 py-2.5 text-sm hover:bg-slate-50 ${favorited ? 'text-red-500' : 'text-slate-600'}`}
+                      className={`flex w-full items-center gap-2 px-4 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800 ${favorited ? 'text-red-500 dark:text-red-400' : 'text-slate-600 dark:text-slate-400'}`}
                     >
                       <Heart size={16} className={favorited ? 'fill-current' : ''} />
                       {favorited ? '取消收藏' : '收藏'}
+                    </button>
+                    <button
+                      onClick={() => { setShareModalOpen(true); setMobileMenuOpen(false) }}
+                      className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
+                    >
+                      <Share2 size={16} /> 分享
                     </button>
                   </div>
                 </>
@@ -581,11 +616,11 @@ export function ItineraryPage() {
         {/* Empty — no itinerary, no query, no id */}
         {!effectiveState && (
           <div className="mt-16 text-center animate-fade-in-up">
-            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-brand-100 to-accent-100 animate-float-slow">
+            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-brand-100 to-accent-100 dark:from-slate-800 dark:to-slate-700 animate-float-slow">
               <Map size={36} className="text-brand-500" />
             </div>
-            <p className="mb-2 font-semibold text-slate-600">尚未生成行程</p>
-            <p className="mb-6 text-sm leading-relaxed text-slate-400">
+            <p className="mb-2 font-semibold text-slate-600 dark:text-slate-400">尚未生成行程</p>
+            <p className="mb-6 text-sm leading-relaxed text-slate-400 dark:text-slate-500">
               通过 AI 对话或智能推荐，一句话即可生成你的专属旅行计划。
             </p>
             <div className="flex items-center justify-center gap-3">
@@ -604,31 +639,31 @@ export function ItineraryPage() {
           <>
             {/* ── 概览统计条 ── */}
             <div className="card mb-6 p-5">
-              <h3 className="text-lg font-extrabold text-slate-900">{ready.itinerary.trip.title}</h3>
-              <p className="mt-0.5 text-xs text-slate-400">
+              <h3 className="text-lg font-extrabold text-slate-900 dark:text-slate-100">{ready.itinerary.trip.title}</h3>
+              <p className="mt-0.5 text-xs text-slate-400 dark:text-slate-500">
                 {ready.itinerary.trip.city} · {ready.itinerary.trip.dateStart} — {ready.itinerary.trip.dateEnd}
               </p>
               <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
                 {ready.itinerary.trip.stats.map((s, i) => (
                   <div key={i} className="rounded-xl bg-surface-secondary px-3 py-2 text-center">
-                    <p className="text-base font-bold text-slate-800">{s.value}</p>
-                    <p className="text-xs text-slate-400">{s.label}</p>
+                    <p className="text-base font-bold text-slate-800 dark:text-slate-200">{s.value}</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500">{s.label}</p>
                   </div>
                 ))}
               </div>
               {weather && (
-                <div className="mt-4 rounded-2xl border border-accent-100 bg-accent-50 p-3">
-                  <div className="flex flex-wrap items-center gap-2 text-sm font-semibold text-accent-700">
+                <div className="mt-4 rounded-2xl border border-accent-100 dark:border-slate-700 bg-accent-50 dark:bg-slate-800/50 p-3">
+                  <div className="flex flex-wrap items-center gap-2 text-sm font-semibold text-accent-700 dark:text-teal-400">
                     <Sun size={16} /> 天气参考
-                    <span className="text-xs font-normal text-accent-600">({weather.city})</span>
+                    <span className="text-xs font-normal text-accent-600 dark:text-teal-500">({weather.city})</span>
                     {/* 天气安全徽章：有降雨/降雪时提示室内安排 */}
                     {weather.daily.some((d) => /雨|雪|雷/.test(d.weather_desc) || d.precipitation >= 5) ? (
-                      <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700">
+                      <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/30 px-2.5 py-0.5 text-xs font-semibold text-amber-700 dark:text-amber-300">
                         <Umbrella size={12} />
                         天气安全 · 有降雨，建议安排室内项目
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 rounded-full border border-green-300 bg-green-50 px-2.5 py-0.5 text-xs font-semibold text-green-700">
+                      <span className="inline-flex items-center gap-1 rounded-full border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-2.5 py-0.5 text-xs font-semibold text-green-700 dark:text-green-300">
                         <Sun size={12} />
                         天气安全 · 整体适宜出行
                       </span>
@@ -636,18 +671,18 @@ export function ItineraryPage() {
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {weather.daily.slice(0, 5).map((d) => (
-                      <div key={d.date} className="rounded-xl bg-white px-3 py-1.5 text-center text-xs shadow-sm">
-                        <p className="font-medium text-slate-700">{d.date.slice(5)}</p>
-                        <p className="text-slate-500">{d.weather_desc}</p>
-                        <p className="tabular-nums text-slate-400">{d.temp_min.toFixed(0)}~{d.temp_max.toFixed(0)}°C</p>
+                      <div key={d.date} className="rounded-xl bg-white dark:bg-slate-900/80 px-3 py-1.5 text-center text-xs shadow-sm">
+                        <p className="font-medium text-slate-700 dark:text-slate-300">{d.date.slice(5)}</p>
+                        <p className="text-slate-500 dark:text-slate-400">{d.weather_desc}</p>
+                        <p className="tabular-nums text-slate-400 dark:text-slate-500">{d.temp_min.toFixed(0)}~{d.temp_max.toFixed(0)}°C</p>
                       </div>
                     ))}
                   </div>
-                  <p className="mt-2 text-xs text-accent-700">{weather.advice}</p>
+                  <p className="mt-2 text-xs text-accent-700 dark:text-slate-400">{weather.advice}</p>
                 </div>
               )}
               {ready.error && (
-                <div className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700">
+                <div className="mt-3 rounded-lg bg-amber-50 dark:bg-amber-900/30 px-3 py-2 text-xs text-amber-700 dark:text-amber-400">
                   <AlertCircle size={14} className="mr-1 inline" />
                   {ready.error}
                 </div>
@@ -665,8 +700,7 @@ export function ItineraryPage() {
                 <div
                   key={`drop-${day.day}-${dayIndex}`}
                   className="relative"
-                  onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'copy'; (e.currentTarget as HTMLDivElement).dataset.dragover = 'true' }}
-                  onDragLeave={(e) => { delete (e.currentTarget as HTMLDivElement).dataset.dragover }}
+                  onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'copy' }}
                   onDrop={(e) => {
                     e.preventDefault()
                     try {
@@ -684,7 +718,6 @@ export function ItineraryPage() {
                         toast.success(`已添加「${data.name}」到第 ${dayIndex + 1} 天`)
                       }
                     } catch { /* */ }
-                    delete (e.currentTarget as HTMLDivElement).dataset.dragover
                   }}
                 >
                   <DayCard
@@ -703,13 +736,18 @@ export function ItineraryPage() {
                     onEditItem={(itemIndex, newName) => handleEditItem(dayIndex, itemIndex, newName)}
                     totalItems={day.items.length}
                   />
-                  {/* Drop zone indicator */}
+                  {/* Drop zone indicator — Phase 16.4: React 状态管理替代 DOM style 操作 */}
                   <div
-                    className="mt-2 h-10 rounded-xl border-2 border-dashed border-transparent text-xs text-transparent transition-all"
-                    onDragOver={(e) => { e.preventDefault(); const el = e.currentTarget; el.style.borderColor = '#818cf8'; el.style.color = '#818cf8'; el.textContent = '📥 松开添加到此天' }}
-                    onDragLeave={(e) => { const el = e.currentTarget; el.style.borderColor = 'transparent'; el.style.color = 'transparent'; el.textContent = '' }}
+                    className={`mt-2 h-10 rounded-xl border-2 border-dashed text-xs transition-all ${
+                      dragOverDay === dayIndex
+                        ? 'border-indigo-400 text-indigo-400'
+                        : 'border-transparent text-transparent'
+                    }`}
+                    onDragOver={(e) => { e.preventDefault(); setDragOverDay(dayIndex) }}
+                    onDragLeave={() => setDragOverDay(null)}
                     onDrop={(e) => {
                       e.preventDefault(); e.stopPropagation()
+                      setDragOverDay(null)
                       try {
                         const data = JSON.parse(e.dataTransfer.getData('text/plain'))
                         if (data && data.name) {
@@ -725,9 +763,10 @@ export function ItineraryPage() {
                           toast.success(`已添加「${data.name}」`)
                         }
                       } catch { /* */ }
-                      const el = e.currentTarget; el.style.borderColor = 'transparent'; el.style.color = 'transparent'; el.textContent = ''
                     }}
-                  />
+                  >
+                    {dragOverDay === dayIndex && '📥 松开添加到此天'}
+                  </div>
                 </div>
               ))}
             </div>
@@ -735,7 +774,7 @@ export function ItineraryPage() {
             {/* ── 预算进度条 ── */}
             {ready.itinerary.budget.length > 0 && (
               <div className="card mt-6 p-5">
-                <h3 className="flex items-center gap-2 text-sm font-bold text-slate-800">
+                <h3 className="flex items-center gap-2 text-sm font-bold text-slate-800 dark:text-slate-200">
                   <Wallet size={16} className="text-green-600" />
                   预算分配（人均）
                 </h3>
@@ -743,8 +782,8 @@ export function ItineraryPage() {
                   {ready.itinerary.budget.map((b) => (
                     <div key={b.label}>
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-medium text-slate-700">{b.label}</span>
-                        <span className="tabular-nums text-slate-400">¥{b.amount} · {b.percent}%</span>
+                        <span className="font-medium text-slate-700 dark:text-slate-300">{b.label}</span>
+                        <span className="tabular-nums text-slate-400 dark:text-slate-500">¥{b.amount} · {b.percent}%</span>
                       </div>
                       <div className="mt-1 h-2 overflow-hidden rounded-full bg-surface-tertiary">
                         <div className="h-full rounded-full bg-gradient-to-r from-green-400 to-green-600" style={{ width: `${Math.min(b.percent, 100)}%` }} />
@@ -763,10 +802,10 @@ export function ItineraryPage() {
             {/* ── 可打勾行前清单 ── */}
             {ready.itinerary.checklist.length > 0 && (
               <div className="card mt-6 p-5">
-                <h3 className="flex items-center gap-2 text-sm font-bold text-slate-800">
+                <h3 className="flex items-center gap-2 text-sm font-bold text-slate-800 dark:text-slate-200">
                   <ClipboardCheck size={16} className="text-brand-500" />
                   行前清单
-                  <span className="text-xs font-normal text-slate-400">
+                  <span className="text-xs font-normal text-slate-400 dark:text-slate-500">
                     {checked.filter(Boolean).length}/{ready.itinerary.checklist.length}
                   </span>
                 </h3>
@@ -777,12 +816,12 @@ export function ItineraryPage() {
                       onClick={() => setChecked((prev) => prev.map((v, j) => (j === i ? !v : v)))}
                       className={`flex items-start gap-2 rounded-xl border px-3 py-2 text-left text-sm transition-all ${
                         checked[i]
-                          ? 'border-green-200 bg-green-50 text-slate-400 line-through'
-                          : 'border-border bg-white text-slate-700 hover:border-brand-300 hover:shadow-sm'
+                          ? 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 text-slate-400 dark:text-slate-500 line-through'
+                          : 'border-border bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-sm'
                       }`}
                     >
                       <span className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
-                        checked[i] ? 'border-green-500 bg-green-500 text-white' : 'border-slate-300'
+                        checked[i] ? 'border-green-500 bg-green-500 text-white' : 'border-slate-300 dark:border-slate-700'
                       }`}>
                         {checked[i] && <Check size={12} />}
                       </span>
@@ -795,14 +834,14 @@ export function ItineraryPage() {
 
             {/* ── tips chips ── */}
             {ready.itinerary.tips.length > 0 && (
-              <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5">
-                <h3 className="flex items-center gap-2 text-sm font-bold text-amber-800">
+              <div className="mt-6 rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 p-5">
+                <h3 className="flex items-center gap-2 text-sm font-bold text-amber-800 dark:text-amber-300">
                   <Lightbulb size={16} />
                   实用提示
                 </h3>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {ready.itinerary.tips.map((tip, i) => (
-                    <span key={i} className="rounded-full bg-white px-3 py-1.5 text-xs text-amber-700 shadow-sm">
+                    <span key={i} className="rounded-full bg-white dark:bg-slate-900 px-3 py-1.5 text-xs text-amber-700 dark:text-amber-400 shadow-sm">
                       {tip}
                     </span>
                   ))}
@@ -814,10 +853,10 @@ export function ItineraryPage() {
             {versionPanelOpen && (
               <div className="fixed inset-0 z-50 flex justify-end">
                 <div className="absolute inset-0 bg-black/30" onClick={() => setVersionPanelOpen(false)} />
-                <div className="relative z-10 flex h-full w-80 flex-col bg-white shadow-xl">
+                <div className="relative z-10 flex h-full w-80 flex-col bg-white dark:bg-slate-900 shadow-xl">
                   <div className="flex items-center justify-between border-b border-border-light px-4 py-3">
-                    <h3 className="text-sm font-bold text-slate-800">版本历史</h3>
-                    <button type="button" onClick={() => setVersionPanelOpen(false)} className="rounded-lg p-1 text-slate-400 hover:bg-slate-100" aria-label="关闭">
+                    <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">版本历史</h3>
+                    <button type="button" onClick={() => setVersionPanelOpen(false)} className="rounded-lg p-1 text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:bg-slate-800" aria-label="关闭">
                       <X size={16} />
                     </button>
                   </div>
@@ -827,33 +866,33 @@ export function ItineraryPage() {
                         <Loader2 size={20} className="animate-spin text-brand-500" />
                       </div>
                     ) : versions.length === 0 ? (
-                      <p className="py-8 text-center text-xs text-slate-400">暂无版本历史。生成行程或修改后自动保存。</p>
+                      <p className="py-8 text-center text-xs text-slate-400 dark:text-slate-500">暂无版本历史。生成行程或修改后自动保存。</p>
                     ) : (
                       <div className="space-y-2">
                         {versions.map((v) => (
                           <div
                             key={v.id}
                             className={`rounded-xl border p-3 ${
-                              v.version_number === maxVersionNum ? 'border-brand-200 bg-brand-50' : 'border-border bg-white'
+                              v.version_number === maxVersionNum ? 'border-brand-200 dark:border-brand-800 bg-brand-50 dark:bg-brand-900/30' : 'border-border bg-white dark:bg-slate-900'
                             }`}
                           >
                             <div className="flex items-center justify-between">
-                              <span className="text-xs font-semibold text-slate-700">
+                              <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                                 V{v.version_number}
                                 {v.version_number === maxVersionNum && (
-                                  <span className="ml-1.5 rounded bg-brand-600 px-1 py-0.5 text-[10px] text-white">当前</span>
+                                  <span className="ml-1.5 rounded bg-brand-600 dark:bg-brand-500 px-1 py-0.5 text-[10px] text-white">当前</span>
                                 )}
                               </span>
-                              <span className="text-[10px] text-slate-400">
+                              <span className="text-[10px] text-slate-400 dark:text-slate-500">
                                 {new Date(v.created_at).toLocaleDateString('zh-CN')}
                               </span>
                             </div>
-                            {v.change_description && <p className="mt-1 text-xs text-slate-500">{v.change_description}</p>}
+                            {v.change_description && <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{v.change_description}</p>}
                             {v.version_number !== maxVersionNum && (
                               <button
                                 onClick={() => handleRestore(v.id, v.version_number)}
                                 disabled={restoreBusy === v.id}
-                                className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-slate-300 px-2 py-1.5 text-xs text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-50"
+                                className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-slate-300 dark:border-slate-700 px-2 py-1.5 text-xs text-slate-600 dark:text-slate-400 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50"
                               >
                                 {restoreBusy === v.id ? <Loader2 size={12} className="animate-spin" /> : <RotateCcw size={12} />}
                                 恢复到此版本
@@ -880,6 +919,16 @@ export function ItineraryPage() {
           </>
         )}
       </main>
+
+      {/* Share Modal */}
+      {ready && (
+        <ShareModal
+          isOpen={shareModalOpen}
+          onClose={() => setShareModalOpen(false)}
+          itineraryId={searchParams.get('id') || ready.itineraryId || ''}
+          title={ready.itinerary.trip.title || '我的行程'}
+        />
+      )}
     </div>
   )
 }

@@ -26,12 +26,12 @@ CHAT_SYSTEM_PROMPT = """你是 TravelMind，一个专业的中国旅行助手。
 4. 如果用户问到天气，结合季节给出穿衣和出行建议
 5. 如果信息不确定，诚实说明而非编造
 6. 用热情但不过分夸张的语气，像一位有经验的当地朋友
-7. 用户只是打招呼或一般性询问（如"你能帮我规划旅行吗"）时，先自然回应并简单介绍你能做什么，不要一次性罗列"去哪个城市、玩几天、预算多少"等一串问题
+7. 用户只是打招呼或一般性询问时，先自然回应，不要一次性罗列"去哪个城市、玩几天、预算多少"等一串问题
 8. 用户让对比两个目的地时，明确说出各自的差异、特色和适合人群，给出有立场的建议，不要和稀泥
-
-当前支持的旅游城市：重庆、成都、北京、上海、广州、西安、杭州、长沙、厦门、大理、三亚、桂林、苏州、张家界、丽江。
-
-如果用户的问题是关于旅行规划的（目的地、天数、预算等），请引导他们使用「对话规划」功能来生成详细行程。"""
+9. 支持全国所有城市和地区，包括直辖市、省会、地级市、县级市、区（如增城、从化、都江堰等）
+10. 严格遵循「当前上下文」中的城市信息：如果上下文已有城市，所有回答必须围绕该城市展开，绝不推荐其他城市！
+11. 用户已经身处对话规划流程中，自然聊天即可，不要提示"使用对话规划功能"或"开始规划"这类引导语
+12. 当用户主动表达"生成行程/做攻略/出路线"等明确意图时，简短回应并交还主控（例如："好嘞，我帮你安排～"），不要继续展开聊天"""
 
 # ── Fallback reply templates (when LLM is unavailable) ───
 
@@ -64,7 +64,7 @@ async def free_chat(
     # Build context from known slots
     ctx_parts = []
     if slots_context.get("city"):
-        ctx_parts.append(f"用户当前规划目的地：{slots_context['city']}")
+        ctx_parts.append(f"【当前规划中的城市：{slots_context['city']}】所有回答必须围绕此城市，禁止推荐其他城市！")
     if slots_context.get("days"):
         ctx_parts.append(f"计划天数：{slots_context['days']}天")
     if slots_context.get("tags"):
@@ -79,9 +79,10 @@ async def free_chat(
         {"role": "system", "content": f"[当前上下文] {context_text}"},
     ]
 
-    # Append conversation history (last 6 turns to stay within context limit)
+    # Append conversation history for multi-turn context
+    # Phase 16.1: Use all available history (up to 20 messages) for better context
     if history:
-        messages.extend(history[-6:])
+        messages.extend(history[-20:])  # Up to 20 messages (~10 turns)
 
     messages.append({"role": "user", "content": user_text})
 

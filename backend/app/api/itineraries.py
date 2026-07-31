@@ -296,6 +296,105 @@ async def _get_user_id(db, device_id: Optional[str]) -> Optional[str]:
     return user.id if user else None
 
 
+# ── 行程部分更新 (Phase 16: 支持前端单项删除持久化) ─────────
+
+class ItineraryItemRemoveRequest(BaseModel):
+    """请求从行程中移除单个项目。"""
+    day_index: int = Field(..., ge=0, description="目标天的索引（0-based）")
+    item_index: int = Field(..., ge=0, description="目标项目的索引（0-based）")
+
+class ItineraryItemRemoveResponse(BaseModel):
+    """删除后的行程数据。"""
+    ok: bool
+    itinerary: dict
+    removed_poi: str = ""
+    day_no: int = 0
+
+@router.patch(
+    "/itineraries/{itinerary_id}/items",
+    response_model=ItineraryItemRemoveResponse,
+)
+async def remove_itinerary_item(
+    itinerary_id: str,
+    req: ItineraryItemRemoveRequest,
+    device_id: Optional[str] = Depends(get_device_id),
+    db=Depends(get_db),
+):
+    """从行程中移除单个项目（如用户在 UI 点击删除按钮）。
+
+    Phase 16: 支持前端单项删除持久化——删除后同步到数据库，
+    并自动创建一个版本快照用于回退。
+    """
+    if not device_id:
+        raise error_response(400, "AUTH_REQUIRED", "缺少设备标识")
+
+    # 获取现有行程
+    if db is None:
+        from app.services import local_itinerary_store
+        detail = local_itinerary_store.get_itinerary(device_id, itinerary_id)
+        if detail is None:
+            raise error_response(404, "NOT_FOUND", "行程未找到")
+        plan = detail.get("plan", {})
+    else:
+        user = await get_or_create_user(db, device_id)
+        user_id = user.id if user else None
+        detail = await itinerary_service.get_itinerary(db, itinerary_id, user_id=user_id)
+        if detail is None:
+            raise error_response(404, "NOT_FOUND", "行程未找到")
+        plan = detail.get("plan", {})
+
+    # 执行删除
+    days = plan.get("days", [])
+    if req.day_index >= len(days):
+        raise error_response(400, "INVALID_REQUEST", f"day_index 超出范围（共 {len(days)} 天）")
+
+    day = days[req.day_index]
+    items = day.get("items", [])
+    if req.item_index >= len(items):
+        raise error_response(400, "INVALID_REQUEST", f"item_index 超出范围（第 {req.day_index + 1} 天共 {len(items)} 项）")
+
+    # 当天只剩一项不允许删除
+    if len(items) <= 1:
+        raise error_response(400, "INVALID_REQUEST", "当天只剩一个项目，无法删除。请使用「重新安排」功能。")
+
+    # 保存被删除的项目信息
+    removed_item = items[req.item_index]
+    removed_poi = removed_item.get("poi", "")
+    day_no = day.get("day", req.day_index + 1)
+
+    # 执行删除
+    del items[req.item_index]
+
+    # 重算地点数统计
+    from app.agents.itinerary_contract import inject_computed_fields
+    inject_computed_fields(plan)
+
+    # 保存更新后的行程
+    if db is not None:
+        # 创建版本快照用于回退
+        try:
+            from app.services.itinerary_version_service import create_version
+            await create_version(
+                db, itinerary_id, plan,
+                change_description=f"移除「{removed_poi}」",
+            )
+        except Exception as e:
+            logger.warning(f"Version snapshot creation skipped (non-fatal): {e}")
+
+        # 更新主记录
+        await itinerary_service.update_itinerary_plan(db, itinerary_id, plan)
+    else:
+        from app.services import local_itinerary_store
+        local_itinerary_store.update_itinerary(device_id, itinerary_id, plan)
+
+    return {
+        "ok": True,
+        "itinerary": plan,
+        "removed_poi": removed_poi,
+        "day_no": day_no,
+    }
+
+
 @router.delete("/itineraries/{itinerary_id}")
 async def delete_itinerary(
     itinerary_id: str,

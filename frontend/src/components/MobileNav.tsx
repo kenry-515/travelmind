@@ -29,8 +29,8 @@ export function MobileNav() {
               to={to}
               className={`flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-xs transition-all ${
                 active
-                  ? 'bg-brand-50 text-brand-600'
-                  : 'text-slate-400 hover:text-slate-600'
+                  ? 'bg-brand-50 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400'
+                  : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
               }`}
               aria-label={label}
               aria-current={active ? 'page' : undefined}

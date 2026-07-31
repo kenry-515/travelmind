@@ -37,6 +37,7 @@ export function HistoryPage() {
   const navigate = useNavigate()
   const [state, setState] = useState<PageState>({ stage: 'loading' })
   const [deleting, setDeleting] = useState<string | null>(null)
+  const [confirmingId, setConfirmingId] = useState<string | null>(null)
 
   useEffect(() => {
     loadData()
@@ -108,14 +109,14 @@ export function HistoryPage() {
         <div className="mx-auto flex max-w-4xl items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
           <Link
             to="/"
-            className="rounded-xl p-1.5 text-slate-500 transition-colors hover:bg-brand-50 hover:text-brand-600"
+            className="rounded-xl p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-brand-50 hover:text-brand-600"
             aria-label="返回首页"
           >
             <ArrowLeft size={20} />
           </Link>
-          <h2 className="text-sm font-semibold text-slate-800">我的行程</h2>
+          <h2 className="text-sm font-semibold text-slate-800 dark:text-slate-200">我的行程</h2>
           {state.stage === 'ready' && (
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-slate-400 dark:text-slate-500">
               {state.itineraries.length} 条记录
             </span>
           )}
@@ -134,7 +135,7 @@ export function HistoryPage() {
         {state.stage === 'error' && (
           <div className="mt-12 text-center">
             <AlertCircle size={40} className="mx-auto mb-3 text-red-500" />
-            <p className="text-slate-600">{state.message}</p>
+            <p className="text-slate-600 dark:text-slate-400">{state.message}</p>
             <button
               onClick={loadData}
               className="btn-primary mt-4 px-4 py-2 text-sm"
@@ -150,8 +151,8 @@ export function HistoryPage() {
             <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-brand-100 to-accent-100 animate-float-slow">
               <MapPin size={36} className="text-brand-500" />
             </div>
-            <p className="font-semibold text-slate-600">还没有保存的行程</p>
-            <p className="mt-1 text-sm text-slate-400">规划好的行程会自动保存在这里</p>
+            <p className="font-semibold text-slate-600 dark:text-slate-400">还没有保存的行程</p>
+            <p className="mt-1 text-sm text-slate-400 dark:text-slate-500">规划好的行程会自动保存在这里</p>
             <Link
               to="/chat"
               className="btn-primary mt-4 inline-flex px-6 py-3 text-sm"
@@ -167,7 +168,9 @@ export function HistoryPage() {
             {state.itineraries.map((item) => (
               <div
                 key={item.id}
-                className="card hover-lift group flex items-center gap-4 p-4"
+                className={`card hover-lift group flex items-center gap-4 p-4 transition-colors ${
+                  confirmingId === item.id ? 'ring-2 ring-red-300 dark:ring-red-800 bg-red-50/50 dark:bg-red-900/20' : ''
+                }`}
               >
                 {/* Clickable main area */}
                 <button
@@ -179,14 +182,14 @@ export function HistoryPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-slate-900 truncate">
+                      <h3 className="font-bold text-slate-900 dark:text-slate-100 truncate">
                         {item.title}
                       </h3>
                       {favoriteItineraryIds.has(item.id) && (
                         <Heart size={14} className="shrink-0 fill-red-400 text-red-400" />
                       )}
                     </div>
-                    <div className="mt-1 flex flex-wrap gap-3 text-xs text-slate-400">
+                    <div className="mt-1 flex flex-wrap gap-3 text-xs text-slate-400 dark:text-slate-500">
                       {item.city && (
                         <span className="flex items-center gap-1">
                           <MapPin size={11} />
@@ -205,18 +208,38 @@ export function HistoryPage() {
                   </div>
                 </button>
 
-                {/* Delete button */}
+                {/* Delete button — Phase 16.4: 二次确认机制 */}
+                {confirmingId === item.id && (
+                  <span className="mr-1 text-xs font-medium text-red-500 whitespace-nowrap animate-pulse">
+                    再点一次确认删除
+                  </span>
+                )}
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    handleDelete(item.id, item.title)
+                    if (deleting === item.id) return
+                    if (confirmingId === item.id) {
+                      setConfirmingId(null)
+                      handleDelete(item.id, item.title)
+                    } else {
+                      setConfirmingId(item.id)
+                      setTimeout(() => {
+                        setConfirmingId((prev) => (prev === item.id ? null : prev))
+                      }, 3000)
+                    }
                   }}
                   disabled={deleting === item.id}
-                  className="shrink-0 rounded-lg p-2 text-slate-300 opacity-0 transition-all hover:bg-red-50 hover:text-red-500 group-hover:opacity-100 disabled:opacity-50"
+                  className={`shrink-0 rounded-lg p-2 transition-all disabled:opacity-50 ${
+                    confirmingId === item.id
+                      ? 'bg-red-500 text-white opacity-100 animate-pulse'
+                      : 'text-slate-300 dark:text-slate-600 opacity-0 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 dark:hover:text-red-400 group-hover:opacity-100'
+                  }`}
                   aria-label="删除行程"
                 >
                   {deleting === item.id ? (
                     <Loader2 size={16} className="animate-spin" />
+                  ) : confirmingId === item.id ? (
+                    <Trash2 size={16} className="animate-bounce" />
                   ) : (
                     <Trash2 size={16} />
                   )}

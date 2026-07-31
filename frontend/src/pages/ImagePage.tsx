@@ -8,10 +8,10 @@
  */
 
 import { useEffect, useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {
-  ArrowLeft, AlertCircle, MapPin, Tag, FileText, Landmark, Loader2, TrendingUp,
+  ArrowLeft, AlertCircle, MapPin, Tag, FileText, Landmark, Loader2, TrendingUp, Sparkles, MessageCircle,
 } from 'lucide-react'
 import { ImageUploader } from '../components/ImageUploader'
 import { PlaceCard } from '../components/PlaceCard'
@@ -49,6 +49,7 @@ export function ImagePage() {
   const [state, setState] = useState<PageState>({ stage: 'idle' })
   const [recState, setRecState] = useState<RecState>({ stage: 'idle' })
   const recommendSentRef = useRef(false)
+  const navigate = useNavigate()
 
   const handleAnalyze = async (file: File) => {
     setState({ stage: 'loading' })
@@ -101,13 +102,13 @@ export function ImagePage() {
         <div className="mx-auto flex max-w-5xl items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
           <Link
             to="/"
-            className="rounded-xl p-1.5 text-slate-500 transition-colors hover:bg-brand-50 hover:text-brand-600"
+            className="rounded-xl p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-600 dark:hover:text-brand-400"
             aria-label="返回首页"
           >
             <ArrowLeft size={20} />
           </Link>
-          <h2 className="text-sm font-semibold text-slate-800">图片识别</h2>
-          <span className="hidden text-xs text-slate-400 sm:inline">
+          <h2 className="text-sm font-semibold text-slate-800 dark:text-slate-200">图片识别</h2>
+          <span className="hidden text-xs text-slate-400 dark:text-slate-500 sm:inline">
             上传旅行照片，AI 识别地点与风格标签
           </span>
         </div>
@@ -126,21 +127,21 @@ export function ImagePage() {
 
         {/* Analysis result */}
         {state.stage === 'done' && (
-          <div className="mt-6 animate-fade-in-up space-y-4 rounded-2xl border border-border bg-white p-5 shadow-card">
+          <div className="mt-6 animate-fade-in-up space-y-4 rounded-2xl border border-border bg-white dark:bg-slate-900 p-5 shadow-card">
             {/* Location */}
             <div className="flex items-start gap-3">
               <MapPin size={18} className="mt-0.5 shrink-0 text-brand-500" />
               <div>
-                <p className="text-xs font-medium text-slate-400">识别地点</p>
+                <p className="text-xs font-medium text-slate-400 dark:text-slate-500">识别地点</p>
                 {state.result.location ? (
-                  <p className="text-base font-bold text-slate-800">
+                  <p className="text-base font-bold text-slate-800 dark:text-slate-200">
                     {state.result.location}
-                    <span className="ml-2 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-600">
+                    <span className="ml-2 rounded-full bg-brand-50 dark:bg-brand-900/30 px-2 py-0.5 text-xs font-medium text-brand-600 dark:text-brand-400">
                       置信度 {confidencePercent(state.result.confidence)}
                     </span>
                   </p>
                 ) : (
-                  <p className="text-sm text-slate-500">未能识别出具体地点</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">未能识别出具体地点</p>
                 )}
               </div>
             </div>
@@ -150,8 +151,8 @@ export function ImagePage() {
               <div className="flex items-start gap-3">
                 <Landmark size={18} className="mt-0.5 shrink-0 text-amber-500" />
                 <div>
-                  <p className="text-xs font-medium text-slate-400">地标特征</p>
-                  <p className="text-sm text-slate-700">{state.result.landmark_features}</p>
+                  <p className="text-xs font-medium text-slate-400 dark:text-slate-500">地标特征</p>
+                  <p className="text-sm text-slate-700 dark:text-slate-300">{state.result.landmark_features}</p>
                 </div>
               </div>
             )}
@@ -159,10 +160,10 @@ export function ImagePage() {
             {/* Description */}
             {state.result.description && (
               <div className="flex items-start gap-3">
-                <FileText size={18} className="mt-0.5 shrink-0 text-slate-400" />
+                <FileText size={18} className="mt-0.5 shrink-0 text-slate-400 dark:text-slate-500" />
                 <div>
-                  <p className="text-xs font-medium text-slate-400">图片描述</p>
-                  <p className="text-sm text-slate-700">{state.result.description}</p>
+                  <p className="text-xs font-medium text-slate-400 dark:text-slate-500">图片描述</p>
+                  <p className="text-sm text-slate-700 dark:text-slate-300">{state.result.description}</p>
                 </div>
               </div>
             )}
@@ -172,12 +173,12 @@ export function ImagePage() {
               <div className="flex items-start gap-3">
                 <Tag size={18} className="mt-0.5 shrink-0 text-green-500" />
                 <div>
-                  <p className="text-xs font-medium text-slate-400">风格标签</p>
+                  <p className="text-xs font-medium text-slate-400 dark:text-slate-500">风格标签</p>
                   <div className="mt-1 flex flex-wrap gap-2">
                     {state.result.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700"
+                        className="rounded-full bg-green-50 dark:bg-green-900/30 px-3 py-1 text-xs font-medium text-green-700 dark:text-green-300"
                       >
                         {tag}
                       </span>
@@ -189,14 +190,41 @@ export function ImagePage() {
           </div>
         )}
 
+        {/* Phase 16.4: 识别后衔接行程规划 */}
+        {state.stage === 'done' && (state.result.location || state.result.tags.length > 0) && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {state.result.location && (
+              <button
+                onClick={() => navigate(`/itinerary?q=${encodeURIComponent(state.result.location!)}`)}
+                className="btn-primary inline-flex items-center gap-1.5 px-4 py-2 text-sm"
+              >
+                <Sparkles size={16} />
+                为「{state.result.location}」生成行程
+              </button>
+            )}
+            <button
+              onClick={() => {
+                const q = [state.result.location, ...state.result.tags]
+                  .filter(Boolean)
+                  .join('、')
+                navigate(`/chat?q=${encodeURIComponent(q)}`)
+              }}
+              className="btn-secondary inline-flex items-center gap-1.5 px-4 py-2 text-sm"
+            >
+              <MessageCircle size={16} />
+              去对话规划
+            </button>
+          </div>
+        )}
+
         {/* Similar attractions — cross-city search (Phase 12) */}
         {state.stage === 'done' && (
-          <div className="mt-6 rounded-2xl border border-border bg-white p-5 shadow-card">
-            <div className="flex items-center gap-2 text-sm font-bold text-slate-800">
+          <div className="mt-6 rounded-2xl border border-border bg-white dark:bg-slate-900 p-5 shadow-card">
+            <div className="flex items-center gap-2 text-sm font-bold text-slate-800 dark:text-slate-200">
               <TrendingUp size={16} className="text-brand-500" />
               找相似景点
             </div>
-            <p className="mt-1 text-xs text-slate-400">
+            <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
               用图片的风格标签，全知识库跨城搜索相似景点
               {recState.stage === 'done' && recState.data.cities_covered.length > 0 &&
                 `（覆盖 ${recState.data.cities_covered.length} 个城市）`}
@@ -205,7 +233,7 @@ export function ImagePage() {
             {recState.stage === 'loading' && (
               <div className="mt-4 text-center py-4">
                 <Loader2 size={24} className="mx-auto mb-2 animate-spin text-brand-500" />
-                <p className="text-sm text-slate-500">全库搜索中...</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">全库搜索中...</p>
               </div>
             )}
 
@@ -238,14 +266,14 @@ export function ImagePage() {
                     ))}
                   </div>
                   {recState.data.filtered_results < recState.data.total_results && (
-                    <p className="mt-3 text-xs text-slate-400">
+                    <p className="mt-3 text-xs text-slate-400 dark:text-slate-500">
                       已过滤 {recState.data.total_results - recState.data.filtered_results} 个低分结果
                       （阈值 {recState.data.filtered_results > 0 ? '0.4' : '-'}）
                     </p>
                   )}
                 </>
               ) : (
-                <p className="mt-4 text-sm text-slate-500">
+                <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
                   全库未找到匹配景点，换个图片或标签试试。
                   {recState.data.total_results > 0 && recState.data.filtered_results === 0 &&
                     `（${recState.data.total_results} 个候选均未达到最低匹配分数）`}
@@ -256,7 +284,7 @@ export function ImagePage() {
 
         {/* Hint */}
         {state.stage === 'idle' && (
-          <p className="mt-6 text-center text-xs text-slate-400">
+          <p className="mt-6 text-center text-xs text-slate-400 dark:text-slate-500">
             识别结果中的标签可直接用于智能推荐，帮你找到相似风格的景点
           </p>
         )}

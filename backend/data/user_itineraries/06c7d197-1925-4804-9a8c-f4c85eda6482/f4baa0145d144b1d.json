@@ -1,0 +1,527 @@
+{
+  "id": "f4baa0145d144b1d",
+  "title": "盛夏重庆 · 三日休闲美食之旅",
+  "city": "重庆",
+  "days": 3,
+  "plan": {
+    "trip": {
+      "title": "盛夏重庆 · 三日休闲美食之旅",
+      "city": "重庆",
+      "dateStart": "7月29日",
+      "dateEnd": "7月31日",
+      "daysCount": 3,
+      "stats": [
+        {
+          "value": "3 天",
+          "label": "行程天数"
+        },
+        {
+          "value": "12 个",
+          "label": "计划地点"
+        },
+        {
+          "value": "¥1,800",
+          "label": "人均预算"
+        },
+        {
+          "value": "6,000 步",
+          "label": "预计日均步数"
+        },
+        {
+          "value": "舒适",
+          "label": "旅行风格"
+        }
+      ]
+    },
+    "days": [
+      {
+        "day": 1,
+        "theme": "DAY 1 · 渝中母城",
+        "title": "解放碑 · 洪崖洞 · 湖广会馆",
+        "items": [
+          {
+            "time": "10:00",
+            "poi": "抗战胜利纪功碑暨人民解放纪念碑",
+            "note": "[景] 雷暴日全天室内，解放碑是重庆精神地标，上午10点游客较少，可在商场连廊内避雨观赏",
+            "price_range": {
+              "min": 20,
+              "max": 120
+            },
+            "price_source": "估算（基于价格等级）",
+            "price_updated_at": "2026-07-25",
+            "booking_url": "https://m.dianping.com/search/keyword/%E6%8A%97%E6%88%98%E8%83%9C%E5%88%A9%E7%BA%AA%E5%8A%9F%E7%A2%91%E6%9A%A8%E4%BA%BA%E6%B0%91%E8%A7%A3%E6%94%BE%E7%BA%AA%E5%BF%B5%E7%A2%91%20%E9%87%8D%E5%BA%86"
+          },
+          {
+            "time": "11:30",
+            "poi": "洪崖洞",
+            "note": "原户外项目因雷暴安全起见替换为室内（系统调整）",
+            "price_range": {
+              "min": 0,
+              "max": 0
+            },
+            "price_source": "free",
+            "price_updated_at": "2026-07-26",
+            "booking_url": "https://m.dianping.com/search/keyword/%E6%B4%AA%E5%B4%96%E6%B4%9E%20%E9%87%8D%E5%BA%86"
+          },
+          {
+            "time": "13:00",
+            "poi": "重庆湖广会馆",
+            "note": "[景] 🏠室内/半室内，明清古建筑群，下午雷暴天完美室内项目，有空调，可细品移民文化",
+            "price_range": {
+              "min": 20,
+              "max": 120
+            },
+            "price_source": "高德POI",
+            "price_updated_at": "2026-07-25",
+            "booking_url": "https://uri.amap.com/detail?poiid=B0FFJ11B13"
+          },
+          {
+            "time": "15:00",
+            "poi": "美心洋人街",
+            "note": "[景] 🏠室内，大型室内购物美食街区，雷暴日安全选择，有空调，可逛吃拍照",
+            "price_range": {
+              "min": 20,
+              "max": 120
+            },
+            "price_source": "高德POI",
+            "price_updated_at": "2026-07-25",
+            "booking_url": "https://uri.amap.com/detail?poiid=B0FFK7OF2M"
+          }
+        ],
+        "eat": "午餐「磁器口古镇」· 晚餐「联防食店家常菜(铁路一村店)」",
+        "stay": "希尔顿酒店"
+      },
+      {
+        "day": 2,
+        "theme": "DAY 2 · 南岸滨江",
+        "title": "重庆工业博物馆 · 南滨路",
+        "items": [
+          {
+            "time": "09:00",
+            "poi": "重庆工业博物馆",
+            "note": "[景] 🏠室内，小毛毛雨天首选，大型室内博物馆，有空调，了解重庆工业史，需提前在官方公众号预约",
+            "price_range": {
+              "min": 0,
+              "max": 30
+            },
+            "price_source": "高德POI",
+            "price_updated_at": "2026-07-25",
+            "booking_url": "https://uri.amap.com/detail?poiid=B0FFL8GJE2"
+          },
+          {
+            "time": "11:30",
+            "poi": "打伙·江西菜(重庆首店)",
+            "note": "[休/吃] 午后避暑休憩点，室内有空调，品尝江西风味菜，慢节奏午餐",
+            "price_range": {
+              "min": 20,
+              "max": 120
+            },
+            "price_source": "高德POI",
+            "price_updated_at": "2026-07-25",
+            "booking_url": "https://uri.amap.com/detail?poiid=B0LAHUFPPM"
+          },
+          {
+            "time": "13:00",
+            "poi": "灶东家民间菜(新牌坊店)",
+            "note": "[休] 下午茶歇，室内有空调，品尝民间菜小吃，避暑休整",
+            "price_range": {
+              "min": 20,
+              "max": 120
+            },
+            "price_source": "高德POI",
+            "price_updated_at": "2026-07-25",
+            "booking_url": "https://uri.amap.com/detail?poiid=B0FFJN3PBJ"
+          },
+          {
+            "time": "15:00",
+            "poi": "口未餐家常菜",
+            "note": "[吃] 午餐，地道家常菜，室内空调舒适",
+            "price_range": {
+              "min": 20,
+              "max": 120
+            },
+            "price_source": "高德POI",
+            "price_updated_at": "2026-07-25",
+            "booking_url": "https://uri.amap.com/detail?poiid=B0JABZTOFZ"
+          }
+        ],
+        "eat": "午餐「老甘家小龙虾螃蟹江湖菜(洋河地标总店)」· 晚餐「遇疆兰·新疆大锅抓饭(微电园店)」",
+        "stay": "重庆东方花苑饭店"
+      },
+      {
+        "day": 3,
+        "theme": "DAY 3 · 渝中漫步",
+        "title": "史迪威博物馆 · 山城美食",
+        "items": [
+          {
+            "time": "09:00",
+            "poi": "史迪威博物馆",
+            "note": "[景] 🏠室内，小毛毛雨天完美室内项目，有空调，了解二战史迪威公路历史",
+            "price_range": {
+              "min": 20,
+              "max": 120
+            },
+            "price_source": "高德POI",
+            "price_updated_at": "2026-07-25",
+            "booking_url": "https://uri.amap.com/detail?poiid=B001701F02"
+          },
+          {
+            "time": "11:30",
+            "poi": "廖壳子烂蹄花·家常菜(较场口店)",
+            "note": "[吃] 午餐，品尝招牌烂蹄花，室内空调舒适",
+            "price_range": {
+              "min": 20,
+              "max": 120
+            },
+            "price_source": "高德POI",
+            "price_updated_at": "2026-07-25",
+            "booking_url": "https://uri.amap.com/detail?poiid=B0LG0SXRWL"
+          },
+          {
+            "time": "13:00",
+            "poi": "重庆市人民大礼堂",
+            "note": "[景] 🏠室内/半室内，地标建筑，可入内参观，有空调，午后避暑好去处",
+            "price_range": {
+              "min": 0,
+              "max": 50
+            },
+            "price_source": "估算（基于价格等级）",
+            "price_updated_at": "2026-07-25",
+            "booking_url": "https://m.dianping.com/search/keyword/%E9%87%8D%E5%BA%86%E5%B8%82%E4%BA%BA%E6%B0%91%E5%A4%A7%E7%A4%BC%E5%A0%82%20%E9%87%8D%E5%BA%86"
+          },
+          {
+            "time": "15:00",
+            "poi": "徐鼎盛民间菜(南桥寺店)",
+            "note": "[休/吃] 下午茶歇，室内有空调，品尝民间菜，避暑休整",
+            "price_range": {
+              "min": 20,
+              "max": 120
+            },
+            "price_source": "高德POI",
+            "price_updated_at": "2026-07-25",
+            "booking_url": "https://uri.amap.com/detail?poiid=B0FFFPRRJG"
+          }
+        ],
+        "eat": "午餐「八嬢家常菜(南坪南湖店)」· 晚餐「老甘家小龙虾江湖菜(时代天街地标店)」",
+        "stay": "恺瑞酒店"
+      }
+    ],
+    "budget": [
+      {
+        "label": "餐饮",
+        "amount": 720,
+        "percent": 40
+      },
+      {
+        "label": "门票",
+        "amount": 300,
+        "percent": 17
+      },
+      {
+        "label": "交通",
+        "amount": 280,
+        "percent": 15
+      },
+      {
+        "label": "购物",
+        "amount": 300,
+        "percent": 17
+      },
+      {
+        "label": "住宿",
+        "amount": 200,
+        "percent": 11
+      }
+    ],
+    "checklist": [
+      {
+        "text": "身份证/学生证等有效证件",
+        "done": false
+      },
+      {
+        "text": "折叠伞（7月重庆多雷雨，必备）",
+        "done": false
+      },
+      {
+        "text": "遮阳帽+防晒霜（7月盛夏高温防晒）",
+        "done": false
+      },
+      {
+        "text": "饮用水/水壶（每日补充水分防中暑）",
+        "done": false
+      },
+      {
+        "text": "藿香正气水/清凉油（防暑应急）",
+        "done": false
+      },
+      {
+        "text": "舒适防滑凉鞋（雨天+阶梯路面）",
+        "done": false
+      },
+      {
+        "text": "手机充电宝（导航+预约门票）",
+        "done": false
+      },
+      {
+        "text": "下载「重庆轨道交通」App或支付宝乘车码",
+        "done": false
+      }
+    ],
+    "tips": [
+      "🌧️ 7月重庆雷雨频繁，随身带折叠伞，雷暴日（第1天）避免任何户外活动，全部走室内项目",
+      "🥵 7月高温（37-39°C），12:00-16:00严格待在室内空调场所，随身携带藿香正气水和充足饮用水",
+      "🚇 推荐使用「重庆轨道交通」或支付宝乘车码扫码乘车，避开地面堵车和日晒雨淋",
+      "🎫 重庆工业博物馆需提前在官方公众号预约免费门票，史迪威博物馆现场购票约¥15",
+      "🍜 解放碑周边美食密集，推荐聂发财江湖菜、龚记民国江湖菜等已验证餐厅，人均¥60-120",
+      "⚠️ 「美心洋人街」原址（南岸区）已停业搬迁至涪陵美心红酒小镇，请出行前重新规划该景点"
+    ],
+    "price_summary": {
+      "total_estimate_min": 180,
+      "total_estimate_max": 1160,
+      "priced_items": 12,
+      "total_items": 12,
+      "stale_items": 0,
+      "budget_slot": "舒适",
+      "over_budget": true,
+      "over_budget_warning": "门票总预算估算 ¥180-1160 超出您的「舒适」预算参考线 ¥800，建议调整景点选择或预算预期。"
+    },
+    "schemaVersion": "1.0",
+    "validation_report": {
+      "poi": [
+        {
+          "name": "抗战胜利纪功碑暨人民解放纪念碑",
+          "status": "verified",
+          "district": "重庆"
+        },
+        {
+          "name": "聂发财江湖菜(解放碑店)",
+          "status": "verified",
+          "district": "重庆"
+        },
+        {
+          "name": "重庆湖广会馆",
+          "status": "verified",
+          "district": "重庆"
+        },
+        {
+          "name": "美心洋人街",
+          "status": "closed",
+          "note": "已确认停业/搬迁"
+        },
+        {
+          "name": "重庆工业博物馆",
+          "status": "verified",
+          "district": "重庆"
+        },
+        {
+          "name": "打伙·江西菜(重庆首店)",
+          "status": "verified",
+          "district": "重庆"
+        },
+        {
+          "name": "灶东家民间菜(新牌坊店)",
+          "status": "verified",
+          "district": "重庆"
+        },
+        {
+          "name": "口未餐家常菜",
+          "status": "verified",
+          "district": "重庆"
+        },
+        {
+          "name": "史迪威博物馆",
+          "status": "verified",
+          "district": "重庆"
+        },
+        {
+          "name": "廖壳子烂蹄花·家常菜(较场口店)",
+          "status": "verified",
+          "district": "重庆"
+        },
+        {
+          "name": "重庆市人民大礼堂",
+          "status": "verified",
+          "district": "重庆"
+        },
+        {
+          "name": "徐鼎盛民间菜(南桥寺店)",
+          "status": "verified",
+          "district": "重庆"
+        }
+      ],
+      "poi_verified": "11/12",
+      "routes": [
+        {
+          "day": 1,
+          "total_km": 1.6,
+          "backtrack": false
+        },
+        {
+          "day": 2,
+          "total_km": 19.1,
+          "backtrack": true,
+          "note": "检测到折返，已按地理顺路重排"
+        },
+        {
+          "day": 3,
+          "total_km": 14.6,
+          "backtrack": false
+        }
+      ],
+      "route_backtrack": true,
+      "checked_at": "2026-07-29",
+      "weather_fit": "good",
+      "weather_notes": [
+        "第1天雷暴，以 4 个室内项目为主，安排合理",
+        "第2天小毛毛雨（评分55%），夏季阵雨影响有限，行程可正常进行",
+        "第3天小毛毛雨（评分55%），夏季阵雨影响有限，行程可正常进行"
+      ]
+    }
+  },
+  "validation_report": {
+    "poi": [
+      {
+        "name": "抗战胜利纪功碑暨人民解放纪念碑",
+        "status": "verified",
+        "district": "重庆"
+      },
+      {
+        "name": "聂发财江湖菜(解放碑店)",
+        "status": "verified",
+        "district": "重庆"
+      },
+      {
+        "name": "重庆湖广会馆",
+        "status": "verified",
+        "district": "重庆"
+      },
+      {
+        "name": "美心洋人街",
+        "status": "closed",
+        "note": "已确认停业/搬迁"
+      },
+      {
+        "name": "重庆工业博物馆",
+        "status": "verified",
+        "district": "重庆"
+      },
+      {
+        "name": "打伙·江西菜(重庆首店)",
+        "status": "verified",
+        "district": "重庆"
+      },
+      {
+        "name": "灶东家民间菜(新牌坊店)",
+        "status": "verified",
+        "district": "重庆"
+      },
+      {
+        "name": "口未餐家常菜",
+        "status": "verified",
+        "district": "重庆"
+      },
+      {
+        "name": "史迪威博物馆",
+        "status": "verified",
+        "district": "重庆"
+      },
+      {
+        "name": "廖壳子烂蹄花·家常菜(较场口店)",
+        "status": "verified",
+        "district": "重庆"
+      },
+      {
+        "name": "重庆市人民大礼堂",
+        "status": "verified",
+        "district": "重庆"
+      },
+      {
+        "name": "徐鼎盛民间菜(南桥寺店)",
+        "status": "verified",
+        "district": "重庆"
+      }
+    ],
+    "poi_verified": "11/12",
+    "routes": [
+      {
+        "day": 1,
+        "total_km": 1.6,
+        "backtrack": false
+      },
+      {
+        "day": 2,
+        "total_km": 19.1,
+        "backtrack": true,
+        "note": "检测到折返，已按地理顺路重排"
+      },
+      {
+        "day": 3,
+        "total_km": 14.6,
+        "backtrack": false
+      }
+    ],
+    "route_backtrack": true,
+    "checked_at": "2026-07-29",
+    "weather_fit": "good",
+    "weather_notes": [
+      "第1天雷暴，以 4 个室内项目为主，安排合理",
+      "第2天小毛毛雨（评分55%），夏季阵雨影响有限，行程可正常进行",
+      "第3天小毛毛雨（评分55%），夏季阵雨影响有限，行程可正常进行"
+    ]
+  },
+  "profile_snapshot": {
+    "slots": {
+      "city": "重庆",
+      "days": 3,
+      "date": "下周",
+      "companions": "不限",
+      "budget_level": "舒适",
+      "tags": [],
+      "pace": "休闲"
+    },
+    "user_input": "重庆3日游，节奏休闲，预算舒适"
+  },
+  "weather_snapshot": {
+    "city": "重庆",
+    "lat": 29.563,
+    "lon": 106.5516,
+    "daily": [
+      {
+        "date": "2026-07-29",
+        "temp_max": 37.1,
+        "temp_min": 28.1,
+        "precipitation": 2.6,
+        "weather_code": 95,
+        "weather_desc": "雷暴",
+        "wind_speed_max": 14.7,
+        "travel_score": 0.04999999999999996
+      },
+      {
+        "date": "2026-07-30",
+        "temp_max": 38.4,
+        "temp_min": 29.3,
+        "precipitation": 0.2,
+        "weather_code": 51,
+        "weather_desc": "小毛毛雨",
+        "wind_speed_max": 14.5,
+        "travel_score": 0.55
+      },
+      {
+        "date": "2026-07-31",
+        "temp_max": 38.8,
+        "temp_min": 30.0,
+        "precipitation": 0.3,
+        "weather_code": 51,
+        "weather_desc": "小毛毛雨",
+        "wind_speed_max": 16.8,
+        "travel_score": 0.55
+      }
+    ],
+    "overall_score": 0.38,
+    "advice": "近期天气不太理想，建议关注天气预报，适当调整出行计划。 ⚠️ 2026-07-29 有雷暴，避免户外活动。 天气炎热，注意防暑降温。",
+    "_rain_ratio": 1.0
+  },
+  "created_at": "2026-07-29T11:06:37",
+  "updated_at": "2026-07-29T11:06:37",
+  "store": "local-file"
+}

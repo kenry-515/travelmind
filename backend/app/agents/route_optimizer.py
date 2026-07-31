@@ -147,6 +147,20 @@ _INDOOR_RE = re.compile(
 _RAIN_WORDS = ("雨", "雷", "雪", "雹")
 
 
+def _ensure_weather_dict(weather) -> Dict[str, Any]:
+    """Convert WeatherForecast object to dict if needed.
+    
+    Handles both dict format and WeatherForecast object format.
+    """
+    if weather is None:
+        return {}
+    if hasattr(weather, 'to_dict'):
+        return weather.to_dict()
+    if isinstance(weather, dict):
+        return weather
+    return {}
+
+
 def _optimize_weather_fit(
     days: List[Dict[str, Any]],
     weather: Dict[str, Any],
@@ -165,6 +179,7 @@ def _optimize_weather_fit(
         天气相关的 tips 列表（供 optimize_itinerary 追加到 result["tips"]）。
     """
     tips: List[str] = []
+    weather = _ensure_weather_dict(weather)
     daily_forecast = weather.get("daily", [])
     if not daily_forecast:
         return tips
@@ -747,6 +762,9 @@ async def optimize_itinerary(
     tips: List[str] = result.setdefault("tips", [])
     city = city or (result.get("trip") or {}).get("city", "")
     replaced_notes: Dict[str, str] = {}  # 新 POI 名 → 替换说明（报告用）
+    
+    # Normalize weather to dict format
+    weather = _ensure_weather_dict(weather)
 
     # ── Step 1: 并发核实所有游览点 ───────────────────────
     poi_set: List[str] = []

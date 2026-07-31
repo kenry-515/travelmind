@@ -200,6 +200,12 @@ async def _rag_retrieval(state: TravelState) -> TravelState:
 
     Phase 12.16: Passes weather forecast to the retriever for indoor/outdoor
     scoring boost — when rain is forecast, indoor POIs rank higher.
+
+    Phase 13 (Hybrid POI Pool): After RAG retrieval, builds a hybrid POI
+    pool for ALL cities using get_hybrid_poi_pool(), which fuses static KB
+    data with runtime API queries. This ensures both KB cities (32 known
+    cities) and non-KB cities (any city in China) get supplemented with
+    real-time POI data from Wikipedia, Bing, etc.
     """
     logger.info("Orchestrator → RAG Retrieval")
     state["current_step"] = "rag_retrieval"
@@ -218,6 +224,52 @@ async def _rag_retrieval(state: TravelState) -> TravelState:
         candidates = await _retrieve(profile, query, top_k=20, weather=weather)
         state["candidate_places"] = candidates
         logger.info(f"RAG retrieved {len(candidates)} candidates")
+
+        # Phase 13: Hybrid POI pool for ALL cities (KB + runtime fusion)
+        dest = profile.get("destination", "") or ""
+        if dest and len(candidates) < 30:
+            try:
+                from app.services.runtime_poi_service import (
+                    get_hybrid_poi_pool,
+                )
+                logger.info(
+                    f"Building hybrid POI pool for '{dest}' "
+                    f"(KB base + runtime supplement)"
+                )
+                hybrid_pool = await get_hybrid_poi_pool(
+                    dest,
+                    categories=["attractions", "restaurants"],
+                    limit_per_category=15,
+                )
+                hybrid_items = (
+                    hybrid_pool.get("attractions", {}).get("items", [])
+                    + hybrid_pool.get("restaurants", {}).get("items", [])
+                )
+                if hybrid_items:
+                    # Merge hybrid POIs into candidates with dedup
+                    existing_names = {
+                        c.get("name", "") for c in candidates
+                    }
+                    added = 0
+                    for poi in hybrid_items:
+                        name = poi.get("name", "")
+                        if name and name not in existing_names:
+                            poi.setdefault("metadata", {})
+                            if poi.get("source") == "kb":
+                                poi["kb_verified"] = True
+                            else:
+                                poi["kb_verified"] = False
+                                poi["runtime_verified"] = True
+                            candidates.append(poi)
+                            existing_names.add(name)
+                            added += 1
+                    logger.info(
+                        f"Added {added} hybrid POIs for '{dest}' "
+                        f"(total candidates: {len(candidates)})"
+                    )
+                    state["candidate_places"] = candidates
+            except Exception as e:
+                logger.warning(f"Hybrid POI pool failed (non-fatal): {e}")
 
         # Phase 8.1: Detect low evidence — <3 candidates = degraded
         if len(candidates) < 3:
@@ -364,6 +416,8 @@ async def _response_aggregator(state: TravelState) -> TravelState:
         parts.append(f"行程已规划 ({plan_len} 天)")
 
     weather = state.get("weather") or {}
+    if hasattr(weather, 'to_dict'):
+        weather = weather.to_dict()
     if isinstance(weather, dict) and weather.get("advice"):
         parts.append(f"🌤️ 天气: {weather['advice']}")
 

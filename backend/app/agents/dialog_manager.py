@@ -15,6 +15,7 @@ TravelMind Agent — Dialog Manager (对话式规划的意图状态机)
 """
 
 import json
+import logging
 import re
 import time
 import uuid
@@ -22,6 +23,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from app.services.session_store import get_session_store
+
+logger = logging.getLogger(__name__)
 
 # ── 常量 ────────────────────────────────────────────────
 
@@ -73,6 +76,10 @@ def _get_kb_cities() -> Set[str]:
 def check_city_coverage(city: str) -> Tuple[bool, str]:
     """检测城市是否在 KB 覆盖范围内。
 
+    Phase 16.1: Enhanced fuzzy matching to handle district-level inputs
+    like "增城" (Guangzhou district), "都江堰" (Chengdu prefecture), etc.
+    Strategy: extract the base city name from district-level queries.
+
     Returns:
         (is_covered, reason) — is_covered=False 时 reason 是面向用户的提示。
     """
@@ -81,11 +88,41 @@ def check_city_coverage(city: str) -> Tuple[bool, str]:
     kb = _get_kb_cities()
     if city in kb:
         return True, ""
-    # 模糊匹配：城市名是否包含在任意 KB 城市中（或反向）
+    # Fuzzy match 1: direct substring (e.g., "北京" matches "北京")
     for kb_city in kb:
         if city in kb_city or kb_city in city:
-            return True, ""  # 如 "北京" 匹配 "北京"
-    # 生成建议列表
+            return True, ""
+    # Phase 16.1: Fuzzy match 2 — extract base city from district-level names
+    # e.g., "增城" → match "广州" by trying common province/city prefixes
+    _DISTRICT_SUFFIXES = ("区", "县", "市辖区", "新区", "县级市")
+    for kb_city in kb:
+        # If input contains KB city name (e.g., "广州增城" contains "广州")
+        if kb_city in city:
+            return True, ""
+        # If KB city is contained in input (e.g., input="广州增城", KB="广州")
+        if city in kb_city:
+            return True, ""
+    # Phase 16.1: Fuzzy match 3 — try to match district name to its parent city
+    # Common mappings for well-known districts
+    _DISTRICT_PARENTS = {
+        "增城": "广州", "从化": "广州", "番禺": "广州", "花都": "广州",
+        "南沙": "广州", "越秀": "广州", "天河": "广州", "海珠": "广州",
+        "荔湾": "广州", "白云": "广州", "黄埔": "广州", "龙岗": "深圳",
+        "福田": "深圳", "南山": "深圳", "罗湖": "深圳", "盐田": "深圳",
+        "都江堰": "成都", "彭州": "成都", "邛崃": "成都", "崇州": "成都",
+        "简阳": "成都", "金堂": "成都", "双流": "成都", "温江": "成都",
+        "即墨": "青岛", "胶州": "青岛", "平度": "青岛", "莱西": "青岛",
+        "长兴": "湖州", "德清": "湖州", "安吉": "湖州",
+        "义乌": "金华", "东阳": "金华", "永康": "金华", "兰溪": "金华",
+        "昆山": "苏州", "常熟": "苏州", "张家港": "苏州", "太仓": "苏州",
+        "萧山": "杭州", "余杭": "杭州", "富阳": "杭州", "临平": "杭州",
+    }
+    for district, parent in _DISTRICT_PARENTS.items():
+        if district in city or city in district:
+            if parent in kb:
+                return True, ""
+
+    # Generate suggestion list
     sorted_cities = sorted(kb)
     suggestions = "、".join(sorted_cities[:8])
     more = f"等{len(kb)}个城市" if len(kb) > 8 else ""
@@ -125,6 +162,7 @@ async def get_session(session_id: Optional[str]) -> Tuple[str, Dict[str, Any]]:
         "followups_used": 0,
         "itinerary": None,
         "queued": [],
+        "messages": [],
         "touched": time.time(),
     }
     await store.set(sid, state, SESSION_TTL_SECONDS)
@@ -135,6 +173,45 @@ async def save_session(session_id: str, state: Dict[str, Any]) -> None:
     """把内存中修改过的 state 显式写回存储（并重置 TTL）。"""
     state["touched"] = time.time()
     await get_session_store().set(session_id, state, SESSION_TTL_SECONDS)
+
+
+# ── 对话历史管理（Phase 16.1）──────────────────────────
+
+MAX_HISTORY_MESSAGES = 20  # 保留最近 20 条（约 10 轮）
+
+
+def append_message(state: Dict[str, Any], role: str, content: str) -> None:
+    """追加一条消息到 state['messages']，自动截断到 MAX_HISTORY_MESSAGES。
+
+    Args:
+        state: 会话状态 dict
+        role: 'user' 或 'assistant'
+        content: 消息文本
+    """
+    if "messages" not in state:
+        state["messages"] = []
+    state["messages"].append({"role": role, "content": content})
+    # Trim oldest if over limit (keep pairs intact)
+    while len(state["messages"]) > MAX_HISTORY_MESSAGES:
+        state["messages"].pop(0)
+
+
+def get_history(state: Dict[str, Any], max_turns: int = 10) -> List[Dict[str, str]]:
+    """获取最近 N 轮对话历史（用于传给 LLM 作为上下文）。
+
+    Args:
+        state: 会话状态 dict
+        max_turns: 最多保留的对话轮数（user+assistant 各算一条）
+
+    Returns:
+        List of {'role': 'user'|'assistant', 'content': str}
+    """
+    messages = state.get("messages", [])
+    if not messages:
+        return []
+    # Each turn is 2 messages (user + assistant), so max_turns * 2
+    max_msgs = max_turns * 2
+    return messages[-max_msgs:]
 
 
 # ── 槽位合并（确定性，非空才覆盖）──────────────────────
@@ -185,15 +262,43 @@ def _tag_grounded(tag: str, text: str) -> bool:
     return bool(cues) and any(c in text for c in cues)
 
 
+# 城市名线索：当用户没有在当前输入中明确提到城市时，
+# LLM 可能会幻觉出一个错误的 destination（如返回"重庆"），
+# 这里用已知的 KB 城市名做简单匹配，没提到就清空。
+_KNOWN_CITY_NAMES = [
+    "重庆", "成都", "北京", "上海", "广州", "西安", "杭州", "长沙",
+    "厦门", "大理", "三亚", "桂林", "苏州", "张家界", "丽江",
+    "深圳", "南京", "武汉", "青岛", "大连", "昆明", "香格里拉",
+    "珠海", "佛山", "东莞", "中山", "惠州", "江门", "肇庆",
+    "增城", "从化", "番禺", "花都", "南沙", "越秀", "天河",
+    "海珠", "荔湾", "白云", "黄埔", "龙岗", "福田", "南山",
+    "都江堰", "彭州", "邛崃", "崇州", "简阳",
+    "青羊", "锦江", "武侯", "西湖", "上城", "下城", "滨江",
+    "凤凰", "古城", "镇北", "古镇",
+]
+_CITY_NAME_RE = re.compile("|".join(re.escape(c) for c in sorted(_KNOWN_CITY_NAMES, key=len, reverse=True)))
+
+
+def _has_city_reference(text: str) -> bool:
+    """检查用户当前输入是否包含城市名引用。"""
+    return bool(_CITY_NAME_RE.search(text or ""))
+
+
 def ground_extraction(extracted: Dict[str, Any], text: str) -> Dict[str, Any]:
     """过滤 LLM 提取结果中没有原文依据的槽位值（接地校验）。
 
-    只放行：城市（merge 阶段另有覆盖校验兜底）、有天数线索的天数、
+    只放行：有城市线索的 destination、有天数线索的天数、
     有同义/字面线索的标签、有线索的同行/预算/节奏。
     对话专用；/agent/plan 单发规划不受影响（那里需要 LLM 自由推断）。
     """
     text = text or ""
     out = dict(extracted)
+
+    # destination 接地校验：用户当前输入未提城市名 → 清空，防止 LLM 幻觉
+    dest = (out.get("destination") or "").strip()
+    if dest and not _has_city_reference(text):
+        logger.debug(f"Grounding: clearing destination '{dest}' — no city reference in user text")
+        out["destination"] = ""
 
     days = out.get("days")
     if isinstance(days, int) and not _DAYS_CUE_RE.search(text):
@@ -216,10 +321,20 @@ def merge_slots(state: Dict[str, Any], extracted: Dict[str, Any]) -> List[str]:
     slots = state["slots"]
     changed = []
 
+    # Phase 15.3: City protection — once city is confirmed, don't clear it
+    # unless user explicitly mentions a new city in current input.
+    old_city = slots.get("city")
     city = (extracted.get("destination") or "").strip()
-    if city and city.lower() not in _NULLISH and city != slots["city"]:
-        slots["city"] = city
-        changed.append("city")
+    if city and city.lower() not in _NULLISH:
+        # Only update city if: (1) it's different from current, AND
+        # (2) either current city is empty/unset, OR user explicitly mentioned new city
+        if city != old_city:
+            if not old_city or old_city.lower() in _NULLISH or _has_city_reference(city):
+                slots["city"] = city
+                changed.append("city")
+    elif not city and old_city and old_city.lower() not in _NULLISH:
+        # Don't clear a valid city with empty extraction (LLM hallucination protection)
+        pass  # Keep the old city
 
     days = extracted.get("days")
     if isinstance(days, int) and 1 <= days <= 14 and days != slots["days"]:
@@ -371,10 +486,23 @@ def next_action(state: Dict[str, Any], text: str = "") -> Dict[str, Any]:
         }
 
     # 追问完成（或被放权）→ 默认值填满并明示
+    # Phase 16.2: 移除硬编码"重庆"默认值——城市必须由用户明确指定，
+    # 不能用"重庆"兜底，这会在城市丢失时产生"重庆幻觉"。
+    # 如果城市为空且用户已放权，回到追问阶段要求明确目的地。
     filled = []
     if not slots["city"]:
-        slots["city"] = "重庆"
-        filled.append("城市=重庆")
+        if not asked.get("city") and state["followups_used"] < MAX_FOLLOWUPS:
+            state["followups_used"] += 1
+            asked["city"] = True
+            return {
+                "type": "ask",
+                "reply": "你想去哪个城市呢？告诉我目的地我才能帮你规划～",
+            }
+        # 追问配额已耗尽，建议用户明确城市
+        return {
+            "type": "ask",
+            "reply": "我需要你明确一下目的地城市哦，否则没法生成行程。你说一个城市名就行～",
+        }
     if not slots["days"]:
         slots["days"] = 3
         filled.append("天数=3")
@@ -536,7 +664,19 @@ _GLOBAL_RE = re.compile(r"整体|全部|全都|整个|所有|总体")
 _DAY_RE = re.compile(r"第\s*[一二两三四五12345]\s*天|[一二两三四五]天|首日|末天|最后一天")
 _SLOT_DAYS_RE = re.compile(r"(?:改成|改为|换成|变成)?\s*(\d{1,2})\s*天")
 _BUDGET_RE = re.compile(r"预算.*?(砍半|减半|提高|增加|提升|降低|减少|缩减)")
-_CITY_CHANGE_RE = re.compile(r"(?:改去|换成|不去.+?了?去|改到)([\u4e00-\u9fa5]{2,4})")
+# Phase 16.4: 扩展城市变更检测——覆盖自然表达：
+# "改去X"/"换成X"/"不去Y了去X"/"改到X" + 新增 "我想去X"/"要去X"/"去X玩"/"去X吧"
+_CITY_CHANGE_RE = re.compile(
+    r"(?:改去|换成|不去.+?了?去|改到|我想去|要去|想去|打算去|不如去|还是去)([\u4e00-\u9fa5]{2,4})(?:玩|旅游|旅行|度假|吧|了|看看|怎么样|了?玩)?"
+)
+# 已知城市名（用于城市变更检测时的二次校验，避免误匹配非城市词）
+_CITY_CHANGE_KNOWN = _KNOWN_CITY_NAMES + [
+    "增城", "都江堰", "从化", "番禺", "花都", "南沙",
+]
+# 城市变更的触发动词（仅明确的变更/表达意图动词，不含单独的"去"——太宽泛）
+_CITY_CHANGE_VERB_RE = re.compile(r"改去|换成|改到|我想去|要去|想去|打算去|不如去|还是去")
+# POI 后缀——城市名后跟这些词时不是城市变更（如"重庆火锅店"/"成都小吃"）
+_POI_SUFFIX_RE = re.compile(r"(?:火锅|小[吃食]|面|粉|菜|店|街|路|桥|塔|寺|馆|楼|院)")
 
 
 def _day_index_of(text: str) -> Optional[int]:
@@ -601,9 +741,37 @@ def classify_modification(text: str, itinerary: Optional[Dict[str, Any]] = None)
             }
         m = _CITY_CHANGE_RE.search(text)
         if m:
+            candidate = m.group(1)
+            # Phase 16.4: 二次校验——候选词必须是已知城市名，避免"去吃饭"误匹配
+            if candidate in _CITY_CHANGE_KNOWN:
+                # 排除"重庆火锅"这类 POI 名（城市名 + POI 后缀）
+                if not _POI_SUFFIX_RE.search(text[text.find(candidate) + len(candidate):text.find(candidate) + len(candidate) + 2]):
+                    return {
+                        "type": "slot_change",
+                        "slot_updates": {"city": candidate},
+                        "reason": "city-change",
+                    }
+        # Phase 16.4: 直接匹配已知城市名 + 明确变更动词（更可靠，避免贪婪匹配问题）
+        if _CITY_CHANGE_VERB_RE.search(text):
+            # 按城市名长度降序匹配，优先长名（如"香格里拉"优先于"香"）
+            for city in sorted(_CITY_CHANGE_KNOWN, key=len, reverse=True):
+                idx = text.find(city)
+                if idx >= 0:
+                    # 排除"重庆火锅店"这类——城市名后紧跟 POI 后缀
+                    after = text[idx + len(city):idx + len(city) + 2]
+                    if not _POI_SUFFIX_RE.search(after):
+                        return {
+                            "type": "slot_change",
+                            "slot_updates": {"city": city},
+                            "reason": "city-change",
+                        }
+        # Phase 16.4: "去X玩/吧/旅游/看看" — 单独"去"+城市+旅游后缀也是目的地变更
+        _GO_TRAVEL_RE = re.compile(r"去([\u4e00-\u9fa5]{2,4})(?:玩|旅游|旅行|度假|吧|看看|怎么样|走走)")
+        m_go = _GO_TRAVEL_RE.search(text)
+        if m_go and m_go.group(1) in _CITY_CHANGE_KNOWN:
             return {
                 "type": "slot_change",
-                "slot_updates": {"city": m.group(1)},
+                "slot_updates": {"city": m_go.group(1)},
                 "reason": "city-change",
             }
 

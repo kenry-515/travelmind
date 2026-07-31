@@ -118,6 +118,11 @@
                   "pattern": "^\\d{2}:\\d{2}$",
                   "description": "24 小时制，如 08:30"
                 },
+                "time_slot": {
+                  "type": "string",
+                  "enum": ["morning", "afternoon", "evening", "night"],
+                  "description": "时间段：morning上午(6-12点)、afternoon下午(12-18点)、evening傍晚(18-21点)、night夜间(21点+)"
+                },
                 "poi": {
                   "type": "string",
                   "description": "地点/活动，需提前预约的要写清"
@@ -126,10 +131,36 @@
                   "type": "string",
                   "description": "一句理由：为什么这个时间点去（人少/光线/场次/闭馆时间等）"
                 },
-                "price_range": {
-                  "type": "object",
+                "transportation": {
+                  "type": ["string", "null"],
+                  "description": "从上一地点到此地点的交通建议，如'地铁2号线坐3站'或'打车约20分钟'。第一个item为null。"
+                },
+                "estimated_cost": {
+                  "type": ["object", "null"],
                   "additionalProperties": false,
-                  "description": "门票价格区间，后端从知识库注入，非模型输出",
+                  "description": "本项预估费用明细",
+                  "properties": {
+                    "ticket": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "门票费用(元)"
+                    },
+                    "transport": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "交通费用(元)"
+                    },
+                    "total": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "本项总费用(元)"
+                    }
+                  }
+                },
+                "price_range": {
+                  "type": ["object", "null"],
+                  "additionalProperties": false,
+                  "description": "门票价格区间，后端从知识库注入。null 表示价格未核实，建议自行查询。",
                   "properties": {
                     "min": {
                       "type": "integer",
@@ -143,15 +174,26 @@
                 },
                 "price_source": {
                   "type": "string",
-                  "description": "价格数据来源，如'高德POI'或'估算（基于价格等级）'"
+                  "description": "价格数据来源说明，如'免费（基于景点类型判断）'或'价格未核实，建议自行查询'"
                 },
                 "price_updated_at": {
-                  "type": "string",
-                  "description": "价格数据更新时间 ISO 日期，如'2026-07-21'"
+                  "type": ["string", "null"],
+                  "description": "价格数据更新时间 ISO 日期，如'2026-07-29'。null 表示未核实。"
+                },
+                "price_verifiable": {
+                  "type": "boolean",
+                  "description": "价格是否已核实。false 时 price_range 为 null，用户需自行查询。"
                 },
                 "booking_url": {
                   "type": "string",
                   "description": "预订/查看实时价格跳转链接"
+                },
+                "query_links": {
+                  "type": "object",
+                  "description": "多平台价格查询直达链接，供用户自行核实票价",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -342,16 +384,28 @@
       "properties": {
         "total_estimate_min": {
           "type": "integer",
-          "minimum": 0
+          "minimum": 0,
+          "description": "已核实价格合计下限"
         },
         "total_estimate_max": {
           "type": "integer",
-          "minimum": 0
+          "minimum": 0,
+          "description": "已核实价格合计上限"
         },
-        "priced_items": {
+        "verified_items": {
           "type": "integer",
           "minimum": 0,
-          "description": "有价格数据的 POI 数"
+          "description": "已核实价格的 POI 数"
+        },
+        "free_items": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "免费 POI 数"
+        },
+        "unverified_items": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "价格未核实的 POI 数，需用户自行查询"
         },
         "total_items": {
           "type": "integer",
@@ -369,11 +423,11 @@
         },
         "over_budget": {
           "type": "boolean",
-          "description": "行程花费是否超出用户预算"
+          "description": "已核实价格是否超出用户预算"
         },
         "over_budget_warning": {
           "type": "string",
-          "description": "超预算时的人类可读提示"
+          "description": "超预算时的人类可读提示，包含未核实项数"
         }
       }
     }

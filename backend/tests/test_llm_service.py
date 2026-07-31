@@ -27,6 +27,9 @@ def mock_settings():
         mock.DEEPSEEK_API_KEY = "sk-test-key"
         mock.DEEPSEEK_BASE_URL = "https://api.deepseek.com"
         mock.LLM_TIMEOUT = 60.0
+        # Phase 16.6: 新增的稳定性配置
+        mock.LLM_MAX_CONCURRENT = 4
+        mock.LLM_STRUCTURED_TIMEOUT_MULT = 1.5
         yield mock
 
 

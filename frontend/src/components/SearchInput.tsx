@@ -24,7 +24,7 @@ export function SearchInput({ onSearch, placeholder }: SearchInputProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder || '你想去哪里旅行？输入你的需求...'}
-          className="w-full rounded-2xl border border-border bg-white px-4 py-3.5 pr-14 text-base text-slate-800 shadow-card transition-all placeholder:text-slate-400 focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-100 sm:px-5 sm:py-4 sm:text-lg"
+          className="w-full rounded-2xl border border-border bg-white dark:bg-slate-900 px-4 py-3.5 pr-14 text-base text-slate-800 dark:text-slate-200 shadow-card transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-100 dark:focus:ring-brand-900/40 sm:px-5 sm:py-4 sm:text-lg"
         />
         <button
           type="submit"

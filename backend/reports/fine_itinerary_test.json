@@ -1,0 +1,394 @@
+{
+  "trip": {
+    "title": "盛夏杭州 · 避暑文化之旅",
+    "city": "杭州",
+    "dateStart": "7月30日",
+    "dateEnd": "7月31日",
+    "daysCount": 2,
+    "stats": [
+      {
+        "value": "2 天",
+        "label": "行程天数"
+      },
+      {
+        "value": "¥2,400",
+        "label": "人均预算"
+      },
+      {
+        "value": "6,000 步",
+        "label": "预计日均步数"
+      },
+      {
+        "value": "8 个",
+        "label": "游览地点"
+      }
+    ]
+  },
+  "days": [
+    {
+      "day": 1,
+      "theme": "DAY 1 · 西湖文化",
+      "title": "西湖 · 灵隐寺",
+      "items": [
+        {
+          "time": "08:30",
+          "time_slot": "morning",
+          "poi": "灵隐寺",
+          "note": "[景] 晚间凉爽，逛古街夜市，品尝小吃，买伴手礼，半室内街区有顶棚遮雨",
+          "transportation": null,
+          "estimated_cost": {
+            "ticket": 75,
+            "transport": 0,
+            "total": 75
+          },
+          "price_range": {
+            "min": 30,
+            "max": 45
+          },
+          "price_source": "官方公告(飞来峰45/灵隐寺30元)",
+          "price_updated_at": "2026-07-29",
+          "price_verifiable": true,
+          "booking_url": "https://piao.ctrip.com/search?q=%E7%81%B5%E9%9A%90%E5%AF%BA%20%E6%9D%AD%E5%B7%9E",
+          "query_links": {
+            "携程": "https://www.ctrip.com",
+            "美团": "https://www.meituan.com"
+          }
+        },
+        {
+          "time": "10:30",
+          "time_slot": "morning",
+          "poi": "法喜寺",
+          "note": "[景] 灵隐寺步行可达，网红求姻缘寺庙，适合情侣打卡",
+          "transportation": "步行约15分钟",
+          "estimated_cost": {
+            "ticket": 10,
+            "transport": 0,
+            "total": 10
+          },
+          "price_range": null,
+          "price_source": "价格待核实",
+          "price_updated_at": "",
+          "price_verifiable": false,
+          "booking_url": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E6%B3%95%E5%96%9C%E5%AF%BA",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E6%B3%95%E5%96%9C%E5%AF%BA",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E6%9D%AD%E5%B7%9E%20%E6%B3%95%E5%96%9C%E5%AF%BA",
+            "amap": "https://uri.amap.com/search?keyword=%E6%9D%AD%E5%B7%9E%20%E6%B3%95%E5%96%9C%E5%AF%BA",
+            "baidu": "https://www.baidu.com/s?wd=%E6%9D%AD%E5%B7%9E%20%E6%B3%95%E5%96%9C%E5%AF%BA+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E6%9D%AD%E5%B7%9E%20%E6%B3%95%E5%96%9C%E5%AF%BA+门票"
+          }
+        },
+        {
+          "time": "12:00",
+          "time_slot": "afternoon",
+          "poi": "西湖博览会博物馆",
+          "note": "[景] 午后高温时段室内参观，空调舒适，了解西湖博览会历史，建筑本身也很美",
+          "transportation": "步行约5分钟",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 0,
+            "total": 0
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "price_verifiable": false,
+          "booking_url": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E8%A5%BF%E6%B9%96%E5%8D%9A%E8%A7%88%E4%BC%9A%E5%8D%9A%E7%89%A9%E9%A6%86",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E8%A5%BF%E6%B9%96%E5%8D%9A%E8%A7%88%E4%BC%9A%E5%8D%9A%E7%89%A9%E9%A6%86",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E6%9D%AD%E5%B7%9E%20%E8%A5%BF%E6%B9%96%E5%8D%9A%E8%A7%88%E4%BC%9A%E5%8D%9A%E7%89%A9%E9%A6%86",
+            "amap": "https://uri.amap.com/search?keyword=%E6%9D%AD%E5%B7%9E%20%E8%A5%BF%E6%B9%96%E5%8D%9A%E8%A7%88%E4%BC%9A%E5%8D%9A%E7%89%A9%E9%A6%86",
+            "baidu": "https://www.baidu.com/s?wd=%E6%9D%AD%E5%B7%9E%20%E8%A5%BF%E6%B9%96%E5%8D%9A%E8%A7%88%E4%BC%9A%E5%8D%9A%E7%89%A9%E9%A6%86+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E6%9D%AD%E5%B7%9E%20%E8%A5%BF%E6%B9%96%E5%8D%9A%E8%A7%88%E4%BC%9A%E5%8D%9A%E7%89%A9%E9%A6%86+门票"
+          }
+        },
+        {
+          "time": "13:30",
+          "time_slot": "afternoon",
+          "poi": "印湖杭味·创意杭帮菜(西湖店)",
+          "note": "[吃] 午餐时间，空调环境避暑，推荐西湖醋鱼、龙井虾仁，情侣用餐氛围好",
+          "transportation": "打车约15分钟¥20",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 20,
+            "total": 200
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "price_verifiable": false,
+          "booking_url": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E5%8D%B0%E6%B9%96%E6%9D%AD%E5%91%B3%C2%B7%E5%88%9B%E6%84%8F%E6%9D%AD%E5%B8%AE%E8%8F%9C%28%E8%A5%BF%E6%B9%96%E5%BA%97%29",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E5%8D%B0%E6%B9%96%E6%9D%AD%E5%91%B3%C2%B7%E5%88%9B%E6%84%8F%E6%9D%AD%E5%B8%AE%E8%8F%9C%28%E8%A5%BF%E6%B9%96%E5%BA%97%29",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E6%9D%AD%E5%B7%9E%20%E5%8D%B0%E6%B9%96%E6%9D%AD%E5%91%B3%C2%B7%E5%88%9B%E6%84%8F%E6%9D%AD%E5%B8%AE%E8%8F%9C%28%E8%A5%BF%E6%B9%96%E5%BA%97%29",
+            "amap": "https://uri.amap.com/search?keyword=%E6%9D%AD%E5%B7%9E%20%E5%8D%B0%E6%B9%96%E6%9D%AD%E5%91%B3%C2%B7%E5%88%9B%E6%84%8F%E6%9D%AD%E5%B8%AE%E8%8F%9C%28%E8%A5%BF%E6%B9%96%E5%BA%97%29",
+            "baidu": "https://www.baidu.com/s?wd=%E6%9D%AD%E5%B7%9E%20%E5%8D%B0%E6%B9%96%E6%9D%AD%E5%91%B3%C2%B7%E5%88%9B%E6%84%8F%E6%9D%AD%E5%B8%AE%E8%8F%9C%28%E8%A5%BF%E6%B9%96%E5%BA%97%29+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E6%9D%AD%E5%B7%9E%20%E5%8D%B0%E6%B9%96%E6%9D%AD%E5%91%B3%C2%B7%E5%88%9B%E6%84%8F%E6%9D%AD%E5%B8%AE%E8%8F%9C%28%E8%A5%BF%E6%B9%96%E5%BA%97%29+门票"
+          }
+        }
+      ],
+      "eat": "午餐：印湖杭味·创意杭帮菜(西湖店)，推荐西湖醋鱼、龙井虾仁；晚餐：新周记·巷子里的江南味(平海路店)，推荐东坡肉、叫花鸡 · AI推荐: 午餐「河坊街」",
+      "stay": "新宇城市酒店"
+    },
+    {
+      "day": 2,
+      "theme": "DAY 2 · 运河古韵",
+      "title": "京杭大运河 · 宋城",
+      "items": [
+        {
+          "time": "08:30",
+          "time_slot": "morning",
+          "poi": "京杭大运河（杭州段）",
+          "note": "[吃] 晚餐时间，地道杭帮菜馆，推荐四灶儿红烧肉、西湖莼菜汤",
+          "transportation": null,
+          "estimated_cost": {
+            "ticket": 3,
+            "transport": 3,
+            "total": 6
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "price_verifiable": false,
+          "booking_url": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E4%BA%AC%E6%9D%AD%E5%A4%A7%E8%BF%90%E6%B2%B3%EF%BC%88%E6%9D%AD%E5%B7%9E%E6%AE%B5%EF%BC%89",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E4%BA%AC%E6%9D%AD%E5%A4%A7%E8%BF%90%E6%B2%B3%EF%BC%88%E6%9D%AD%E5%B7%9E%E6%AE%B5%EF%BC%89",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E6%9D%AD%E5%B7%9E%20%E4%BA%AC%E6%9D%AD%E5%A4%A7%E8%BF%90%E6%B2%B3%EF%BC%88%E6%9D%AD%E5%B7%9E%E6%AE%B5%EF%BC%89",
+            "amap": "https://uri.amap.com/search?keyword=%E6%9D%AD%E5%B7%9E%20%E4%BA%AC%E6%9D%AD%E5%A4%A7%E8%BF%90%E6%B2%B3%EF%BC%88%E6%9D%AD%E5%B7%9E%E6%AE%B5%EF%BC%89",
+            "baidu": "https://www.baidu.com/s?wd=%E6%9D%AD%E5%B7%9E%20%E4%BA%AC%E6%9D%AD%E5%A4%A7%E8%BF%90%E6%B2%B3%EF%BC%88%E6%9D%AD%E5%B7%9E%E6%AE%B5%EF%BC%89+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E6%9D%AD%E5%B7%9E%20%E4%BA%AC%E6%9D%AD%E5%A4%A7%E8%BF%90%E6%B2%B3%EF%BC%88%E6%9D%AD%E5%B7%9E%E6%AE%B5%EF%BC%89+门票"
+          }
+        },
+        {
+          "time": "10:00",
+          "time_slot": "morning",
+          "poi": "浙江自然博物院",
+          "note": "[景] 室内博物馆空调足，科普展览丰富，适合情侣慢慢逛，避暑又避雨",
+          "transportation": "打车约15分钟¥20",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 20,
+            "total": 20
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "price_verifiable": false,
+          "booking_url": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E6%B5%99%E6%B1%9F%E8%87%AA%E7%84%B6%E5%8D%9A%E7%89%A9%E9%99%A2",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E6%B5%99%E6%B1%9F%E8%87%AA%E7%84%B6%E5%8D%9A%E7%89%A9%E9%99%A2",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E6%9D%AD%E5%B7%9E%20%E6%B5%99%E6%B1%9F%E8%87%AA%E7%84%B6%E5%8D%9A%E7%89%A9%E9%99%A2",
+            "amap": "https://uri.amap.com/search?keyword=%E6%9D%AD%E5%B7%9E%20%E6%B5%99%E6%B1%9F%E8%87%AA%E7%84%B6%E5%8D%9A%E7%89%A9%E9%99%A2",
+            "baidu": "https://www.baidu.com/s?wd=%E6%9D%AD%E5%B7%9E%20%E6%B5%99%E6%B1%9F%E8%87%AA%E7%84%B6%E5%8D%9A%E7%89%A9%E9%99%A2+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E6%9D%AD%E5%B7%9E%20%E6%B5%99%E6%B1%9F%E8%87%AA%E7%84%B6%E5%8D%9A%E7%89%A9%E9%99%A2+门票"
+          }
+        },
+        {
+          "time": "12:00",
+          "time_slot": "afternoon",
+          "poi": "老头儿油爆虾(杭州湖滨in77D区店)",
+          "note": "[吃] 午餐时间，商场内空调餐厅，推荐油爆虾、干炸带鱼",
+          "transportation": "打车约15分钟¥20",
+          "estimated_cost": {
+            "ticket": 0,
+            "transport": 20,
+            "total": 180
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "price_verifiable": false,
+          "booking_url": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E8%80%81%E5%A4%B4%E5%84%BF%E6%B2%B9%E7%88%86%E8%99%BE%28%E6%9D%AD%E5%B7%9E%E6%B9%96%E6%BB%A8in77D%E5%8C%BA%E5%BA%97%29",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E8%80%81%E5%A4%B4%E5%84%BF%E6%B2%B9%E7%88%86%E8%99%BE%28%E6%9D%AD%E5%B7%9E%E6%B9%96%E6%BB%A8in77D%E5%8C%BA%E5%BA%97%29",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E6%9D%AD%E5%B7%9E%20%E8%80%81%E5%A4%B4%E5%84%BF%E6%B2%B9%E7%88%86%E8%99%BE%28%E6%9D%AD%E5%B7%9E%E6%B9%96%E6%BB%A8in77D%E5%8C%BA%E5%BA%97%29",
+            "amap": "https://uri.amap.com/search?keyword=%E6%9D%AD%E5%B7%9E%20%E8%80%81%E5%A4%B4%E5%84%BF%E6%B2%B9%E7%88%86%E8%99%BE%28%E6%9D%AD%E5%B7%9E%E6%B9%96%E6%BB%A8in77D%E5%8C%BA%E5%BA%97%29",
+            "baidu": "https://www.baidu.com/s?wd=%E6%9D%AD%E5%B7%9E%20%E8%80%81%E5%A4%B4%E5%84%BF%E6%B2%B9%E7%88%86%E8%99%BE%28%E6%9D%AD%E5%B7%9E%E6%B9%96%E6%BB%A8in77D%E5%8C%BA%E5%BA%97%29+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E6%9D%AD%E5%B7%9E%20%E8%80%81%E5%A4%B4%E5%84%BF%E6%B2%B9%E7%88%86%E8%99%BE%28%E6%9D%AD%E5%B7%9E%E6%B9%96%E6%BB%A8in77D%E5%8C%BA%E5%BA%97%29+门票"
+          }
+        },
+        {
+          "time": "13:30",
+          "time_slot": "afternoon",
+          "poi": "宋城",
+          "note": "[景] 全室内主题乐园，雷暴天完美替代户外项目，看《宋城千古情》演出，空调舒适",
+          "transportation": "打车约25分钟¥35",
+          "estimated_cost": {
+            "ticket": 320,
+            "transport": 35,
+            "total": 355
+          },
+          "price_range": null,
+          "price_source": "价格未核实，建议自行查询",
+          "price_updated_at": "",
+          "price_verifiable": false,
+          "booking_url": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E5%AE%8B%E5%9F%8E",
+          "query_links": {
+            "ctrip": "https://piao.ctrip.com/search?q=%E6%9D%AD%E5%B7%9E%20%E5%AE%8B%E5%9F%8E",
+            "fliggy": "https://s.alitrip.com/search_union.htm?keyword=%E6%9D%AD%E5%B7%9E%20%E5%AE%8B%E5%9F%8E",
+            "amap": "https://uri.amap.com/search?keyword=%E6%9D%AD%E5%B7%9E%20%E5%AE%8B%E5%9F%8E",
+            "baidu": "https://www.baidu.com/s?wd=%E6%9D%AD%E5%B7%9E%20%E5%AE%8B%E5%9F%8E+门票价格",
+            "bing": "https://cn.bing.com/search?q=%E6%9D%AD%E5%B7%9E%20%E5%AE%8B%E5%9F%8E+门票"
+          }
+        }
+      ],
+      "eat": "午餐：老头儿油爆虾(杭州湖滨in77D区店)，推荐油爆虾、干炸带鱼；晚餐：四灶儿·地道杭帮菜(湖墅南路店)，推荐四灶儿红烧肉、西湖莼菜汤 · AI推荐: 午餐「新周记·巷子里的江南味(平海路店)」· 晚餐「桐湾大院·桐庐菜·夜宵烧烤(滨康路店)」",
+      "stay": "雷迪森广场"
+    }
+  ],
+  "budget": [
+    {
+      "label": "餐饮",
+      "amount": 720,
+      "percent": 30
+    },
+    {
+      "label": "门票",
+      "amount": 810,
+      "percent": 34
+    },
+    {
+      "label": "交通",
+      "amount": 240,
+      "percent": 10
+    },
+    {
+      "label": "购物",
+      "amount": 400,
+      "percent": 17
+    },
+    {
+      "label": "住宿",
+      "amount": 230,
+      "percent": 9
+    }
+  ],
+  "checklist": [
+    {
+      "text": "身份证/学生证等有效证件",
+      "done": false
+    },
+    {
+      "text": "折叠伞（7月夏季多雷雨，必备）",
+      "done": false
+    },
+    {
+      "text": "遮阳帽、太阳镜、防晒霜（7月盛夏高温防晒）",
+      "done": false
+    },
+    {
+      "text": "便携小风扇/湿巾（高温天降温必备）",
+      "done": false
+    },
+    {
+      "text": "饮用水/水壶（户外及时补水）",
+      "done": false
+    },
+    {
+      "text": "藿香正气水/清凉油（防中暑）",
+      "done": false
+    },
+    {
+      "text": "灵隐寺门票提前在官方公众号预约购票",
+      "done": false
+    },
+    {
+      "text": "宋城《千古情》演出票提前1天预订",
+      "done": false
+    },
+    {
+      "text": "浙江自然博物院需提前在公众号预约",
+      "done": false
+    },
+    {
+      "text": "舒适透气运动鞋（夏季步行）",
+      "done": false
+    }
+  ],
+  "tips": [
+    "🌧️ 7月杭州多雷雨，两天均有雨，随身带折叠伞，雷暴时避免在空旷处停留，宋城、博物馆等室内场所是最佳选择",
+    "☀️ 7月高温达40°C，户外活动安排在10:00前和17:00后，12:00-16:00严格待在室内空调场所，随身携带藿香正气水",
+    "🚇 杭州地铁已覆盖西湖、运河等主要景区，下载「杭州通」App或支付宝乘车码即可刷码乘车",
+    "🎫 灵隐寺门票75元（含飞来峰），建议提前在「杭州灵隐寺」公众号预约购票，避免现场排队",
+    "🏛️ 浙江自然博物院免费但需在公众号提前预约，周一闭馆，注意安排时间",
+    "⚠️ 「法喜寺」未在知识库中找到坐标，建议出行前通过地图 App 确认位置和营业状态"
+  ],
+  "price_summary": {
+    "total_estimate_min": 30,
+    "total_estimate_max": 45,
+    "verified_items": 1,
+    "free_items": 0,
+    "unverified_items": 7,
+    "total_items": 8,
+    "stale_items": 0,
+    "budget_slot": "舒适",
+    "over_budget": false,
+    "over_budget_warning": ""
+  },
+  "schemaVersion": "1.0",
+  "validation_report": {
+    "poi": [
+      {
+        "name": "灵隐寺",
+        "status": "verified",
+        "district": "杭州"
+      },
+      {
+        "name": "法喜寺",
+        "status": "unknown",
+        "note": "知识库未找到坐标，建议出行前通过地图App确认"
+      },
+      {
+        "name": "西湖博览会博物馆",
+        "status": "verified",
+        "district": "杭州"
+      },
+      {
+        "name": "印湖杭味·创意杭帮菜(西湖店)",
+        "status": "verified",
+        "district": "杭州"
+      },
+      {
+        "name": "京杭大运河（杭州段）",
+        "status": "verified",
+        "district": "杭州"
+      },
+      {
+        "name": "浙江自然博物院",
+        "status": "verified",
+        "district": "杭州"
+      },
+      {
+        "name": "老头儿油爆虾(杭州湖滨in77D区店)",
+        "status": "verified",
+        "district": "杭州"
+      },
+      {
+        "name": "宋城",
+        "status": "verified",
+        "district": "杭州"
+      }
+    ],
+    "poi_verified": "7/8",
+    "routes": [
+      {
+        "day": 1,
+        "total_km": 6.1,
+        "backtrack": true,
+        "note": "检测到折返，已按地理顺路重排"
+      },
+      {
+        "day": 2,
+        "total_km": 15.2,
+        "backtrack": false
+      }
+    ],
+    "route_backtrack": true,
+    "checked_at": "2026-07-30",
+    "weather_fit": "good",
+    "weather_notes": [
+      "第1天中毛毛雨（评分55%），夏季阵雨影响有限，行程可正常进行",
+      "第2天雷暴，以 4 个室内项目为主，安排合理"
+    ]
+  }
+}

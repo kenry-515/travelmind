@@ -119,3 +119,39 @@ def delete_itinerary(device_id: str, itinerary_id: str) -> bool:
         return False
     path.unlink()
     return True
+
+
+def update_itinerary(device_id: str, itinerary_id: str, new_plan: Dict[str, Any]) -> bool:
+    """Update an existing itinerary's plan and metadata.
+    
+    Phase 16: Added to support front-end item deletion persistence.
+    Returns True if update succeeds.
+    """
+    safe_id = "".join(c for c in itinerary_id if c.isalnum() or c in "-_")
+    path = _user_dir(device_id) / f"{safe_id}.json"
+    if not path.exists():
+        return False
+    
+    # Read existing record
+    with open(path, "r", encoding="utf-8") as f:
+        record = json.load(f)
+    
+    # Update plan and metadata
+    record["plan"] = new_plan
+    record["updated_at"] = _now_iso()
+    
+    # Update days count and title if changed
+    trip = new_plan.get("trip", {})
+    if trip.get("title"):
+        record["title"] = trip["title"]
+    if trip.get("city"):
+        record["city"] = trip["city"]
+    if trip.get("daysCount"):
+        record["days"] = trip["daysCount"]
+    
+    # Write back
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(record, f, ensure_ascii=False, indent=2)
+    
+    logger.info(f"Local itinerary updated: {safe_id}")
+    return True

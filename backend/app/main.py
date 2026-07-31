@@ -120,8 +120,8 @@ async def lifespan(app: FastAPI):
         store = get_vector_store()
         if store.is_connected:
             store.close()
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"ChromaDB close error (non-fatal): {e}")
     await engine.dispose()
 
 

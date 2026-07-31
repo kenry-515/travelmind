@@ -44,7 +44,7 @@ async def get_or_create_user(
         logger.info(f"Created new anonymous user: {user.id} (device={device_id[:12]}...)")
     else:
         # Phase 12.29: Touch last_active_at for analytics/cleanup
-        user.last_active_at = datetime.now(timezone.utc)
+        user.last_active_at = datetime.now(timezone.utc).replace(tzinfo=None)
         await db.commit()
 
     return user
