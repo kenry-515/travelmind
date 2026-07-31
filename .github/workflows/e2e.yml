@@ -1,0 +1,120 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - 'frontend/e2e/**'
+      - 'frontend/playwright.config.ts'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - 'frontend/e2e/**'
+      - 'frontend/playwright.config.ts'
+
+# 串行依赖 backend 跑完才跑 E2E（需要 backend 在 8000）
+jobs:
+  e2e:
+    name: Playwright E2E (Real Backend)
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: travelmind_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/travelmind_db
+      DATABASE_URL_SYNC: postgresql://postgres:postgres@postgres:5432/travelmind_db
+      SESSION_STORE: memory
+      APP_ENV: development
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install backend deps
+        working-directory: backend
+        run: |
+          uv venv --python 3.11 .venv
+          uv pip install -r requirements.txt -r requirements-prod.txt
+
+      - name: Start backend
+        working-directory: backend
+        run: |
+          .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 &
+          BACKEND_PID=$!
+          echo "BACKEND_PID=$BACKEND_PID"
+          # 等 backend healthy
+          for i in {1..30}; do
+            sleep 2
+            if curl -s http://127.0.0.1:8000/api/v1/health 2>/dev/null | grep -q '"status":"ok"'; then
+              echo "✅ Backend healthy"
+              exit 0
+            fi
+          done
+          echo "❌ Backend failed to start in 60s"
+          kill $BACKEND_PID 2>/dev/null || true
+          exit 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend deps
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright E2E
+        working-directory: frontend
+        env:
+          CI: true
+        run: npx playwright test --project=chromium
+
+      - name: Upload test results on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: frontend/test-results/
+          retention-days: 7
+
+      - name: Cleanup backend
+        if: always()
+        run: pkill -f uvicorn || true
