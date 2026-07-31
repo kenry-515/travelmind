@@ -1,35 +1,131 @@
 /**
- * TravelMind Agent — API Client
- * Axios instance with base URL + typed API functions.
- */
+ /** TravelMind Agent — API Client
+  * Axios instance with base URL + typed API functions.
+  */
 
-import axios from 'axios'
-import { getDeviceId } from './deviceId'
+ import axios, { AxiosError } from 'axios'
+ import { getDeviceId } from './deviceId'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1'
+ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1'
 
-export const api = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 30000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
+ export const api = axios.create({
+   baseURL: API_BASE_URL,
+   timeout: 30000,
+   headers: {
+     'Content-Type': 'application/json',
+   },
+ })
 
-// Inject X-Device-ID header on every request for anonymous user identity
-api.interceptors.request.use((config) => {
-  config.headers['X-Device-ID'] = getDeviceId()
-  return config
-})
+ // Inject X-Device-ID header on every request for anonymous user identity
+ api.interceptors.request.use((config) => {
+   config.headers['X-Device-ID'] = getDeviceId()
+   return config
+ })
 
-// Response interceptor for error handling
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    console.error('[API Error]', error.response?.data || error.message)
-    return Promise.reject(error)
-  }
-)
+ // ── Unified APIError (Phase 18 M5.1) ────────────────────
+ // 后端所有错误响应统一结构：
+ //   { error: { code, message, suggestion, retryable, details } }
+ // 前端拿到这个结构后,UI 可显示：message + 可点击 suggestion + retryable 时显示重试按钮。
+
+ export interface APIErrorPayload {
+   code: string
+   message: string
+   suggestion: string | null
+   retryable: boolean
+   details?: Record<string, unknown> | null
+ }
+
+ export class APIError extends Error {
+   readonly code: string
+   readonly suggestion: string | null
+   readonly retryable: boolean
+   readonly details: Record<string, unknown> | null
+   readonly status: number
+   readonly endpoint: string
+
+   constructor(payload: APIErrorPayload, status: number, endpoint: string) {
+     super(payload.message)
+     this.name = 'APIError'
+     this.code = payload.code
+     this.suggestion = payload.suggestion
+     this.retryable = payload.retryable
+     this.details = payload.details ?? null
+     this.status = status
+     this.endpoint = endpoint
+   }
+
+   /** 获取用户友好的完整提示文本(suggestion + message)。 */
+   get userMessage(): string {
+     return this.suggestion
+       ? `${this.message}\n\n💡 ${this.suggestion}`
+       : this.message
+   }
+ }
+
+ function extractAPIErrorPayload(data: unknown): APIErrorPayload | null {
+   if (!data || typeof data !== 'object') return null
+   const d = data as Record<string, unknown>
+   const err = (d.error || d.detail) as Record<string, unknown> | undefined
+   if (!err || typeof err !== 'object') return null
+   // 兼容 FastAPI 默认 { detail: "..." } 形式
+   if (typeof err.message === 'string') {
+     return {
+       code: (err.code as string) || 'UNKNOWN',
+       message: err.message,
+       suggestion: (err.suggestion as string | null) ?? null,
+       retryable: (err.retryable as boolean) ?? false,
+       details: (err.details as Record<string, unknown> | null) ?? null,
+     }
+   }
+   if (typeof err.detail === 'string') {
+     return {
+       code: 'VALIDATION_FAILED',
+       message: err.detail,
+       suggestion: null,
+       retryable: false,
+       details: null,
+     }
+   }
+   return null
+ }
+
+ // Response interceptor: 把后端统一错误结构转成前端可用的 APIError
+ api.interceptors.response.use(
+   (response) => response,
+   (error: AxiosError) => {
+     const endpoint = error.config?.url || 'unknown'
+     const status = error.response?.status ?? 0
+     const data = error.response?.data
+
+     const payload = extractAPIErrorPayload(data)
+     if (payload) {
+       const apiErr = new APIError(payload, status, endpoint)
+       if (status >= 500 || status === 429) {
+         console.error('[API Error]', apiErr.code, '|', apiErr.message, '| retryable:', apiErr.retryable)
+       } else {
+         console.warn('[API]', apiErr.code, '|', apiErr.message)
+       }
+       return Promise.reject(apiErr)
+     }
+
+     // 无法解析的错误(网络中断、CORS 等)
+     const fallback = new APIError(
+       {
+         code: 'NETWORK_ERROR',
+         message: error.message || '网络请求失败',
+         suggestion: '请检查网络连接后重试',
+         retryable: true,
+         details: null,
+       },
+       status,
+       endpoint,
+     )
+     console.error('[API Network]', fallback.message)
+     return Promise.reject(fallback)
+   }
+ )
+
+ export { extractAPIErrorPayload }
 
 // ── Types ────────────────────────────────────────────────
 
@@ -395,6 +491,187 @@ export async function addFavorite(
 /** Remove a favorite. */
 export async function removeFavorite(id: string): Promise<void> {
   await api.delete(`/favorites/${id}`)
+}
+
+// ── Guide API (AI虚拟导游) ───────────────────────────────
+
+export interface FeaturedPOI {
+  name: string
+  tags: string[]
+  price_level: string
+  popularity_score: number
+  address: string
+  thumbnail_url?: string | null
+}
+
+export interface GuideNarration {
+  found: boolean
+  message?: string
+  poi?: {
+    name: string
+    name_en: string
+    city: string
+    address: string
+    tags: string[]
+    lat: number | null
+    lon: number | null
+    description: string
+    thumbnail_url: string | null
+    price_level: string
+    price_range: { min: number; max: number } | null
+    best_time: string
+    suitable_for: string
+    popularity_score: number
+  }
+  narration: string
+  practical: {
+    price_level: string
+    price_range: { min: number; max: number } | null
+    address: string
+    best_time: string
+    suitable_for: string
+  }
+  nearby: Array<{
+    name: string
+    tags: string[]
+    price_level: string
+    address: string
+  }>
+}
+
+/** 获取精选景点列表 */
+export async function getFeaturedPOIs(
+  city: string = '广州',
+  limit: number = 8
+): Promise<{ city: string; pois: FeaturedPOI[] }> {
+  const { data } = await api.get('/guide/featured', { params: { city, limit } })
+  return data
+}
+
+/** 搜索景点 */
+export async function searchGuidePOIs(
+  query: string,
+  city?: string,
+  limit: number = 10
+): Promise<FeaturedPOI[]> {
+  const { data } = await api.get('/guide/search', {
+    params: { q: query, city, limit },
+  })
+  return data
+}
+
+/** 获取景点导游讲解 */
+export async function getGuideNarration(
+  poiName: string,
+  city?: string
+): Promise<GuideNarration> {
+  const { data } = await api.get(
+    `/guide/narration/${encodeURIComponent(poiName)}`,
+    { params: { city } }
+  )
+  return data
+}
+
+/** 导游模式追问 */
+export async function chatWithGuide(
+  poiName: string,
+  message: string,
+  city?: string,
+  history?: Array<{ role: string; content: string }>
+): Promise<{ reply: string; poi_name: string }> {
+  const { data } = await api.post('/guide/chat', {
+    poi_name: poiName,
+    message,
+    city,
+    history,
+  })
+  return data
+}
+
+
+// ── Resources API (景区资源调度管理) ─────────────────────
+
+/** 调度建议（基于真实热度启发式生成，非编造） */
+export interface ScheduleAdvice {
+  level: string
+  tag: string
+  advice: string
+}
+
+/** 资源总览仪表盘数据 */
+export interface ResourcesOverview {
+  city: string
+  total: number
+  avg_popularity: number
+  with_coords: number
+  price_distribution: Record<string, number>
+  popularity_distribution: Record<string, number>
+  district_distribution: Record<string, number>
+  unlocated_count: number
+  top_tags: Array<{ tag: string; count: number }>
+  top_popular: Array<{
+    name: string
+    popularity: number | null
+    price_level: string
+    price_range: { min: number; max: number } | null
+    address: string
+    best_time: string
+    thumbnail_url: string | null
+    tags: string[]
+  }>
+  message?: string
+}
+
+/** 资源列表项（含调度建议） */
+export interface ResourceItem {
+  name: string
+  tags: string[]
+  price_level: string
+  price_range: { min: number; max: number } | null
+  popularity_score: number | null
+  address: string
+  best_time: string
+  suitable_for: string
+  thumbnail_url: string | null
+  lat: number | null
+  lon: number | null
+  schedule_advice: ScheduleAdvice
+}
+
+/** 获取景区资源调度总览 */
+export async function fetchResourcesOverview(
+  city: string = '广州'
+): Promise<ResourcesOverview> {
+  const { data } = await api.get<ResourcesOverview>('/resources/overview', {
+    params: { city },
+  })
+  return data
+}
+
+/** 获取景区资源列表（带调度建议） */
+export async function fetchResourcesList(params: {
+  city?: string
+  sortBy?: 'popularity' | 'price' | 'name'
+  district?: string
+  limit?: number
+}): Promise<ResourceItem[]> {
+  const { data } = await api.get<ResourceItem[]>('/resources/list', {
+    params: {
+      city: params.city || '广州',
+      sort_by: params.sortBy || 'popularity',
+      district: params.district,
+      limit: params.limit || 50,
+    },
+  })
+  return data
+}
+
+/** 获取有景区分布的区域列表 */
+export async function fetchDistricts(
+  city: string = '广州'
+): Promise<{ city: string; districts: string[] }> {
+  const { data } = await api.get('/resources/districts', { params: { city } })
+  return data
 }
 
 

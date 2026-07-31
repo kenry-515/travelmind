@@ -56,7 +56,7 @@ interface DialogState {
 }
 
 const EMPTY_SLOTS: DialogSlots = {
-  city: null,
+  city: '广州',
   days: null,
   date: '下周',
   companions: '不限',
@@ -131,13 +131,15 @@ export function ChatPage() {
     }
   }, [messages, dialog, storedLoaded])
 
-  // Phase 12.29b: 组件卸载时取消 SSE 请求，防止 unmount 后继续更新状态
+  // 组件卸载时取消 SSE 请求，防止 unmount 后继续更新状态
   useEffect(() => {
     return () => {
-      abortRef.current?.abort()
+      if (abortRef.current && generating) {
+        abortRef.current.abort()
+      }
       abortRef.current = null
     }
-  }, [])
+  }, [generating])
 
   const applyResponse = useCallback((d: import('../lib/api').DialogResponse) => {
     setDialog((prev) => ({
@@ -167,29 +169,52 @@ export function ChatPage() {
   useEffect(() => { getPlacesForPromptRef.current = getPlacesForPrompt }, [getPlacesForPrompt])
 
   const sendText = useCallback(
-    async (text: string) => {
-      setMessages((prev) => [...prev, { id: genId(), role: 'user', content: text }])
-      setLoading(true)
-      // Phase 15.4: Only send saved places that match current city context
-      const savedPrompt = getPlacesForPromptRef.current(dialog.slots?.city ?? undefined)
-      const enrichedText = savedPrompt ? `${text}\n\n${savedPrompt}` : text
-      try {
-        const d = await sendDialogMessage({
-          sessionId: dialog.sessionId || undefined,
-          text: enrichedText,
-        })
-        applyResponse(d)
-      } catch {
-        setMessages((prev) => [
-          ...prev,
-          { id: genId(), role: 'assistant', content: '抱歉，服务暂时不可用，请稍后重试。' },
-        ])
-      } finally {
-        setLoading(false)
-      }
-    },
-    [dialog.sessionId, dialog.slots?.city, applyResponse]
-  )
+      async (text: string) => {
+        const userMsg = { id: genId(), role: 'user' as const, content: text }
+        const errorMsgId = genId()
+        setMessages((prev) => [...prev, userMsg])
+        setLoading(true)
+        // Phase 15.4: Only send saved places that match current city context
+        const savedPrompt = getPlacesForPromptRef.current(dialog.slots?.city ?? undefined)
+        const enrichedText = savedPrompt ? `${text}\n\n${savedPrompt}` : text
+        try {
+          const d = await sendDialogMessage({
+            sessionId: dialog.sessionId || undefined,
+            text: enrichedText,
+          })
+          applyResponse(d)
+        } catch (err) {
+                // Phase 18 M5.1: 用 APIError 显示后端 suggestion + retryable
+                const apiErr = err && typeof err === 'object' && 'code' in err
+                  ? (err as { code: unknown; message?: string; suggestion?: string | null; retryable?: boolean })
+                  : null
+                const message = apiErr?.message || '抱歉,服务暂时不可用'
+                const suggestion = apiErr?.suggestion ?? '请稍后重试'
+                const retryable = apiErr?.retryable ?? true
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: errorMsgId,
+              role: 'assistant',
+              content: message,
+              isError: true,
+              isRetryable: retryable,
+              errorSuggestion: suggestion,
+              onRetry: retryable
+                ? () => {
+                    // 移除错误消息并重发同一文本
+                    setMessages((prev) => prev.filter((m) => m.id !== errorMsgId))
+                    sendText(text)
+                  }
+                : undefined,
+            },
+          ])
+        } finally {
+          setLoading(false)
+        }
+      },
+      [dialog.sessionId, dialog.slots?.city, applyResponse]
+    )
 
   // 首页带 q 进入
   useEffect(() => {

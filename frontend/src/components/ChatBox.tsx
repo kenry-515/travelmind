@@ -6,6 +6,11 @@ export interface Message {
   role: 'user' | 'assistant' | 'system'
   content: string
   isStreaming?: boolean
+  /** Phase 18 M5.1: 标记错误消息,带可重试状态与回调。 */
+  isError?: boolean
+  isRetryable?: boolean
+  errorSuggestion?: string | null
+  onRetry?: () => void
 }
 
 interface ChatBoxProps {
@@ -39,6 +44,34 @@ function formatContent(text: string): string {
 
 function MessageBubble({ msg }: { msg: Message }) {
   const isUser = msg.role === 'user'
+
+  // Phase 18 M5.1: 错误消息样式与重试按钮
+  if (msg.isError) {
+    return (
+      <div className="flex gap-3 animate-fade-in-up">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700 shadow-sm dark:bg-red-900/30 dark:text-red-300">
+          <Bot size={16} />
+        </div>
+        <div className="max-w-[75%] rounded-2xl rounded-tl-sm border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-700 shadow-sm dark:border-red-800 dark:bg-red-900/20 dark:text-red-300">
+          <div className="font-medium">{msg.content}</div>
+          {msg.errorSuggestion && (
+            <div className="mt-1.5 flex items-start gap-1.5 text-xs text-red-600 dark:text-red-400">
+              <span>💡</span>
+              <span>{msg.errorSuggestion}</span>
+            </div>
+          )}
+          {msg.isRetryable && msg.onRetry && (
+            <button
+              onClick={() => msg.onRetry?.()}
+              className="mt-2 inline-flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-red-700"
+            >
+              ↻ 重试
+            </button>
+          )}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={`flex gap-3 animate-fade-in-up ${isUser ? 'flex-row-reverse' : ''}`}>
@@ -93,10 +126,10 @@ function LoadingDots() {
 }
 
 const STARTERS = [
-  { icon: '🌶️', text: '想吃遍重庆，3天怎么安排？' },
-  { icon: '🏖️', text: '推荐适合情侣的三亚三日游' },
-  { icon: '📸', text: '我想去适合拍照的小众景点' },
-  { icon: '🐼', text: '周末去成都看熊猫吃火锅' },
+  { icon: '🏮', text: '广州西关文化一日游，怎么安排？' },
+  { icon: '🌃', text: '推荐广州情侣珠江夜游路线' },
+  { icon: '📸', text: '广州适合拍照的小众景点有哪些？' },
+  { icon: '🍵', text: '广州美食寻味，早茶文化攻略' },
 ]
 
 const MessageBubbleMemo = memo(MessageBubble)

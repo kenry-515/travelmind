@@ -1,7 +1,8 @@
 {
-  "name": "frontend",
+  "name": "yangcheng-zhiyou",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "羊城智游 - 广州专属 AI 旅行规划助手 | AI+旅游休闲大赛",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -26,7 +27,7 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "@playwright/test": "^1.62.0",
+    "@playwright/test": "^1.62.1",
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",

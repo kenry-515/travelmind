@@ -26,7 +26,7 @@ test.describe('RecommendPage', () => {
     await page.goto('/recommend')
     await page.waitForLoadState('networkidle')
     // Look for example/suggestion chips
-    const chips = page.locator('button:has-text("北京"), button:has-text("成都"), button:has-text("上海")')
+    const chips = page.locator('button:has-text("广州")')
     const count = await chips.count()
     if (count > 0) {
       await chips.first().click()
