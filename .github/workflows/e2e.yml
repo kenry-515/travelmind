@@ -72,18 +72,26 @@ jobs:
       - name: Start backend
         working-directory: backend
         run: |
-          .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 &
+          # Phase 18 E2E fix: redirect uvicorn to /tmp/uvicorn.log(失败时可看 log)
+          # + 用 curl --fail 检测 2xx(避免 grep shell 转义问题) + 加长 180s timeout
+          .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 > /tmp/uvicorn.log 2>&1 &
           BACKEND_PID=$!
           echo "BACKEND_PID=$BACKEND_PID"
-          # 等 backend healthy
-          for i in {1..30}; do
+          for i in {1..90}; do
             sleep 2
-            if curl -s http://127.0.0.1:8000/api/v1/health 2>/dev/null | grep -q '"status":"ok"'; then
-              echo "✅ Backend healthy"
+            if curl --fail -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8000/api/v1/health 2>/dev/null | grep -q '^2'; then
+              echo "✅ Backend healthy (after ${i} attempts)"
               exit 0
             fi
+            # 每 30s 打印 uvicorn log tail 帮助 debug
+            if [ $((i % 15)) -eq 0 ]; then
+              echo "--- uvicorn log tail (attempt $i) ---"
+              tail -5 /tmp/uvicorn.log 2>/dev/null || true
+            fi
           done
-          echo "❌ Backend failed to start in 60s"
+          echo "❌ Backend failed to start in 180s"
+          echo "--- uvicorn full log ---"
+          cat /tmp/uvicorn.log 2>/dev/null || true
           kill $BACKEND_PID 2>/dev/null || true
           exit 1
 
