@@ -8,6 +8,7 @@ on:
       - 'backend/**'
       - 'frontend/e2e/**'
       - 'frontend/playwright.config.ts'
+      - '.github/workflows/e2e.yml'
   pull_request:
     branches: [main]
     paths:
@@ -15,6 +16,7 @@ on:
       - 'backend/**'
       - 'frontend/e2e/**'
       - 'frontend/playwright.config.ts'
+      - '.github/workflows/e2e.yml'
 
 # 串行依赖 backend 跑完才跑 E2E（需要 backend 在 8000）
 jobs:
