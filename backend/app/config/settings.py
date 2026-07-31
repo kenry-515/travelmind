@@ -65,6 +65,8 @@ class Settings(BaseSettings):
         "env_file": ".env",
         "env_file_encoding": "utf-8",
         "case_sensitive": True,
+        # .env.example 包含若干备用 key 占位（如 QWEN_* / TENCENT_*），未知字段不再报错。
+        "extra": "ignore",
     }
 
 

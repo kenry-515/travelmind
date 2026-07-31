@@ -20,7 +20,7 @@ from app.agents.itinerary_contract import (
     weather_coverage_errors,
 )
 
-FIXTURE = Path("D:/TravelMindAgent/docs/itinerary.example.cq.json")
+FIXTURE = Path(__file__).resolve().parent.parent.parent / "docs" / "itinerary.example.cq.json"
 
 
 def _valid_itinerary():
