@@ -8,26 +8,25 @@ import { SkeletonItinerary } from './components/Skeleton'
 import { SavedPlacesProvider } from './lib/savedPlaces'
 import { SavedPlacesSidebar } from './components/SavedPlacesSidebar'
 
-// Phase 12.29b: 路由级代码分割 — 每个页面独立 chunk，首屏仅加载首页
+// 羊城智游 — 路由级代码分割
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })))
 const ChatPage = lazy(() => import('./pages/ChatPage').then(m => ({ default: m.ChatPage })))
-const RecommendPage = lazy(() => import('./pages/RecommendPage').then(m => ({ default: m.RecommendPage })))
 const ItineraryPage = lazy(() => import('./pages/ItineraryPage').then(m => ({ default: m.ItineraryPage })))
 const ImagePage = lazy(() => import('./pages/ImagePage').then(m => ({ default: m.ImagePage })))
 const HistoryPage = lazy(() => import('./pages/HistoryPage').then(m => ({ default: m.HistoryPage })))
+const GuidePage = lazy(() => import('./pages/GuidePage').then(m => ({ default: m.GuidePage })))
+const ResourcesPage = lazy(() => import('./pages/ResourcesPage').then(m => ({ default: m.ResourcesPage })))
 
-/** Keyboard shortcut handler (Phase 12.28d). */
+/** Keyboard shortcut handler */
 function KeyboardShortcuts() {
   const navigate = useNavigate()
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      // Ctrl+K → go to chat (quick planning)
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault()
         navigate('/chat')
       }
-      // Esc → close any modal/focus (handled by individual components)
     },
     [navigate],
   )
@@ -66,11 +65,6 @@ function App() {
             <ErrorBoundary><ChatPage /></ErrorBoundary>
           </Suspense>
         } />
-        <Route path="/recommend" element={
-          <Suspense fallback={<div className="p-8"><SkeletonItinerary /></div>}>
-            <ErrorBoundary><RecommendPage /></ErrorBoundary>
-          </Suspense>
-        } />
         <Route path="/itinerary" element={
           <Suspense fallback={<div className="p-8"><SkeletonItinerary /></div>}>
             <ErrorBoundary><ItineraryPage /></ErrorBoundary>
@@ -84,6 +78,16 @@ function App() {
         <Route path="/history" element={
           <Suspense fallback={<div className="p-8"><SkeletonItinerary /></div>}>
             <ErrorBoundary><HistoryPage /></ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/guide" element={
+          <Suspense fallback={<div className="p-8"><SkeletonItinerary /></div>}>
+            <ErrorBoundary><GuidePage /></ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/resources" element={
+          <Suspense fallback={<div className="p-8"><SkeletonItinerary /></div>}>
+            <ErrorBoundary><ResourcesPage /></ErrorBoundary>
           </Suspense>
         } />
       </Routes>

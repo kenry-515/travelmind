@@ -11,53 +11,15 @@ import { BookmarkCheck, X, MapPin, Heart, Trash2, PlusCircle, Share2, Flame } fr
 import { useSavedPlaces } from '../lib/savedPlaces'
 import { toast } from './Toast'
 
-// Phase 14.4: 热门 POI 推荐（按城市分组的热度高且用户未收藏的）
+// Phase 14.4: 热门 POI 推荐（广州专用）
 const POPULAR_PLACES: Record<string, { name: string; tags: string[] }[]> = {
-  '重庆': [
-    { name: '洪崖洞', tags: ['夜景', '地标'] },
-    { name: '解放碑', tags: ['美食', '购物'] },
-    { name: '磁器口', tags: ['古镇', '美食'] },
-  ],
-  '成都': [
-    { name: '大熊猫基地', tags: ['亲子', '自然'] },
-    { name: '宽窄巷子', tags: ['历史', '美食'] },
-    { name: '都江堰', tags: ['历史', '自然'] },
-  ],
-  '北京': [
-    { name: '故宫博物院', tags: ['历史', '博物馆'] },
-    { name: '长城', tags: ['历史', '自然'] },
-  ],
-  '上海': [
-    { name: '外滩', tags: ['地标', '夜景'] },
-    { name: '迪士尼', tags: ['亲子', '娱乐'] },
-  ],
-  '西安': [
-    { name: '兵马俑', tags: ['历史', '博物馆'] },
-    { name: '大唐不夜城', tags: ['夜景', '打卡'] },
-  ],
   '广州': [
     { name: '广州塔', tags: ['地标', '夜景'] },
     { name: '沙面', tags: ['建筑', '文艺'] },
-  ],
-  '杭州': [
-    { name: '西湖', tags: ['自然', '摄影'] },
-    { name: '灵隐寺', tags: ['寺庙', '历史'] },
-  ],
-  '深圳': [
-    { name: '世界之窗', tags: ['地标', '娱乐'] },
-    { name: '欢乐港湾', tags: ['地标', '购物'] },
-  ],
-  '长沙': [
-    { name: '岳麓山', tags: ['自然', '历史'] },
-    { name: '橘子洲', tags: ['地标', '自然'] },
-  ],
-  '大理': [
-    { name: '洱海', tags: ['自然', '摄影'] },
-    { name: '大理古城', tags: ['古镇', '文艺'] },
-  ],
-  '喀什': [
-    { name: '喀什古城', tags: ['古镇', '历史'] },
-    { name: '艾提尕尔清真寺', tags: ['寺庙', '建筑'] },
+    { name: '陈家祠', tags: ['文化', '非遗'] },
+    { name: '永庆坊', tags: ['历史', '骑楼'] },
+    { name: '长隆欢乐世界', tags: ['亲子', '娱乐'] },
+    { name: '珠江新城', tags: ['地标', '夜景'] },
   ],
 }
 

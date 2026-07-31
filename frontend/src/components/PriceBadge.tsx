@@ -6,7 +6,7 @@
  */
 
 import { AlertCircle, Wallet } from 'lucide-react'
-import { isPriceStale, type DayItem, type PriceRange, type PriceSummary } from '../lib/api'
+import { isPriceStale, type PriceRange, type PriceSummary } from '../lib/api'
 
 /** 后端可能注入的价格扩展字段（契约之外，缺失时不显示）。 */
 interface DayItemPriceExt {
@@ -16,8 +16,20 @@ interface DayItemPriceExt {
   price_source?: string
 }
 
+/**
+ * 价格组件接受的 item 类型：结构化类型，只声明价格相关字段，
+ * 兼容 DayCard 的 ItineraryItem（note/price_range 可选且 price_range 可为 null）
+ * 与全局 DayItem。note 等非价格字段价格组件不使用，故不约束。
+ */
+export type PriceItem = {
+  price_range?: PriceRange | null
+  price_updated_at?: string
+  booking_url?: string
+  price_source?: string
+}
+
 /** Extract price fields from a day item (backend-injected, may not exist). */
-export function getPriceInfo(item: DayItem): {
+export function getPriceInfo(item: PriceItem): {
   range: PriceRange | null
   source: string
   updatedAt: string
@@ -34,7 +46,7 @@ export function getPriceInfo(item: DayItem): {
   return { range, source: ext.price_source || '', updatedAt, bookingUrl, isFree, stale }
 }
 
-export function PriceBadge({ item }: { item: DayItem }) {
+export function PriceBadge({ item }: { item: PriceItem }) {
   const { range, updatedAt, bookingUrl, isFree, stale } = getPriceInfo(item)
 
   if (!range) return null
@@ -70,6 +82,7 @@ export function PriceBadge({ item }: { item: DayItem }) {
 }
 
 export function PriceSummaryCard({ summary }: { summary: PriceSummary }) {
+  const hasValidPrice = summary.total_estimate_min > 0 || summary.total_estimate_max > 0
   return (
     <div className="card mt-4 p-5">
       <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-800 dark:text-slate-200">
@@ -79,7 +92,7 @@ export function PriceSummaryCard({ summary }: { summary: PriceSummary }) {
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <div className="rounded-xl bg-surface-secondary p-3 text-center">
           <p className="text-lg font-bold text-slate-800 dark:text-slate-200">
-            ¥{summary.total_estimate_min}-{summary.total_estimate_max}
+            {hasValidPrice ? `¥${summary.total_estimate_min}-${summary.total_estimate_max}` : '暂无数据'}
           </p>
           <p className="text-xs text-slate-400 dark:text-slate-500">门票估算（人均）</p>
         </div>

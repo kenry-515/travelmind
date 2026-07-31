@@ -1,18 +1,18 @@
 /**
- * TravelMind Agent — MobileNav
+ * 羊城智游 — MobileNav
  *
  * Fixed bottom navigation bar visible only on small screens (<640px).
- * Mirrors the homepage quick links for consistent primary navigation.
+ * Focused on Guangzhou-specific core features.
  */
 
 import { useLocation, Link } from 'react-router-dom'
-import { Home, Sparkles, MessageCircle, Camera } from 'lucide-react'
+import { Home, MessageCircle, Compass, Award } from 'lucide-react'
 
 const NAV_ITEMS = [
   { to: '/', icon: Home, label: '首页' },
-  { to: '/recommend', icon: Sparkles, label: '推荐' },
-  { to: '/chat', icon: MessageCircle, label: '对话' },
-  { to: '/image', icon: Camera, label: '识图' },
+  { to: '/guide', icon: Compass, label: '导游' },
+  { to: '/chat', icon: MessageCircle, label: '规划' },
+  { to: '/resources', icon: Award, label: '资源' },
 ]
 
 export function MobileNav() {

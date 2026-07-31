@@ -121,7 +121,7 @@ export function SavedPlacesProvider({ children }: { children: ReactNode }) {
     const lines = Object.entries(byCity).map(([city, names]) =>
       `📍 ${city}：${names.join('、')}`
     )
-    return `🗺️ 我的旅行收藏清单\n${lines.join('\n')}\n\n—— 来自 TravelMind Agent`
+    return `🗺️ 我的旅行收藏清单\n${lines.join('\n')}\n\n—— 来自羊城智游`
   }, [places])
 
   return (

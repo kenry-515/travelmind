@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Copy, Check, Link2, Share2, Download, Image } from 'lucide-react';
+import { X, Copy, Check, Link2, Share2, Image } from 'lucide-react';
 import { toast } from './Toast';
 
 interface ShareModalProps {

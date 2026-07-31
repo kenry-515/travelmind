@@ -11,7 +11,7 @@ import { useEffect, useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {
-  ArrowLeft, AlertCircle, MapPin, Tag, FileText, Landmark, Loader2, TrendingUp, Sparkles, MessageCircle,
+  ArrowLeft, AlertCircle, MapPin, Tag, FileText, Landmark, Loader2, TrendingUp, Sparkles, MessageCircle, Compass,
 } from 'lucide-react'
 import { ImageUploader } from '../components/ImageUploader'
 import { PlaceCard } from '../components/PlaceCard'
@@ -107,9 +107,9 @@ export function ImagePage() {
           >
             <ArrowLeft size={20} />
           </Link>
-          <h2 className="text-sm font-semibold text-slate-800 dark:text-slate-200">图片识别</h2>
+          <h2 className="text-sm font-semibold text-slate-800 dark:text-slate-200">拍照识景</h2>
           <span className="hidden text-xs text-slate-400 dark:text-slate-500 sm:inline">
-            上传旅行照片，AI 识别地点与风格标签
+            上传广州旅行照片，AI 识别景点与风格标签
           </span>
         </div>
       </header>
@@ -200,6 +200,15 @@ export function ImagePage() {
               >
                 <Sparkles size={16} />
                 为「{state.result.location}」生成行程
+              </button>
+            )}
+            {state.result.location && (
+              <button
+                onClick={() => navigate(`/guide?q=${encodeURIComponent(state.result.location!)}`)}
+                className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 px-4 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 transition-colors hover:bg-emerald-100 dark:hover:bg-emerald-900/50"
+              >
+                <Compass size={16} />
+                AI 导游讲解
               </button>
             )}
             <button

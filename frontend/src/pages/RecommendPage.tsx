@@ -78,7 +78,7 @@ export function RecommendPage() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="例如：推荐重庆3日游，喜欢夜景和美食..."
+              placeholder="例如：广州3日游，想体验西关文化和早茶..."
               className="w-full rounded-2xl border border-border bg-white dark:bg-slate-900 px-5 py-3.5 pr-14 text-base shadow-card transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-100 dark:focus:ring-brand-900/40"
               disabled={state.stage === 'loading'}
             />
@@ -109,10 +109,10 @@ export function RecommendPage() {
             <p className="mt-1 text-sm text-slate-400 dark:text-slate-500">点一个试试，或直接输入你的需求 👇</p>
             <div className="mx-auto mt-6 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2">
               {[
-                { icon: '🌉', text: '推荐重庆3日游，喜欢夜景和美食' },
-                { icon: '🐼', text: '想去成都看熊猫，吃火锅' },
-                { icon: '🏛️', text: '西安历史文化之旅' },
-                { icon: '👨‍👩‍👧', text: '带父母去杭州休闲游' },
+                { icon: '🏮', text: '推荐广州3日游，体验西关文化和早茶' },
+                { icon: '🌉', text: '珠江夜游加广州塔夜景攻略' },
+                { icon: '🍵', text: '广州美食寻味，老字号早茶' },
+                { icon: '👨‍👩‍👧', text: '带孩子去长隆欢乐世界' },
               ].map((example) => (
                 <button
                   key={example.text}
@@ -173,7 +173,7 @@ export function RecommendPage() {
                   {/* Phase 12.2: Multi-city notice */}
                   {(state.data.trend_summary as { multi_city?: boolean; cities?: string[] }).multi_city && (
                     <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
-                      未识别到具体城市，已展示全库匹配结果。如需生成行程，请在搜索中加入城市名（如"推荐重庆美食"）。
+                      未识别到具体景点，已展示广州全库匹配结果。如需生成行程，请在搜索中加入具体景点名（如"推荐广州早茶美食"）。
                     </p>
                   )}
                 </div>

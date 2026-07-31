@@ -10,7 +10,8 @@
  */
 
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, MapPin, Clock, DollarSign, Users, Flame, Database, Heart } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ChevronDown, ChevronUp, MapPin, Clock, DollarSign, Users, Flame, Database, Heart, Compass, ExternalLink } from 'lucide-react'
 import { ScoreBar } from './ScoreBar'
 import type { PlaceItem, ScoreBreakdown } from '../lib/api'
 import { useSavedPlaces } from '../lib/savedPlaces'
@@ -170,6 +171,28 @@ export function PlaceCard({ place, rank }: PlaceCardProps) {
             {place.suitable_for}
           </span>
         )}
+      </div>
+
+      {/* 联动入口：AI 导游讲解 + 街景查看（大赛主题：导游联动） */}
+      <div className="mt-3 flex gap-2">
+        <Link
+          to={`/guide?q=${encodeURIComponent(place.name)}`}
+          className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-brand-50 dark:bg-brand-900/30 py-1.5 text-xs font-medium text-brand-600 dark:text-brand-400 transition-colors hover:bg-brand-100 dark:hover:bg-brand-900/50"
+          title={`听 AI 导游讲解${place.name}`}
+        >
+          <Compass size={13} />
+          AI 导游
+        </Link>
+        <a
+          href={`https://uri.amap.com/search?keyword=${encodeURIComponent(place.name)}&city=${encodeURIComponent(place.city)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-accent-50 dark:bg-accent-900/30 py-1.5 text-xs font-medium text-accent-600 dark:text-accent-400 transition-colors hover:bg-accent-100 dark:hover:bg-accent-900/50"
+          title={`在高德地图查看${place.name}街景`}
+        >
+          <ExternalLink size={13} />
+          看街景
+        </a>
       </div>
 
       {/* Phase 16.4: TOP 评分维度预览 — 不用展开就能看到为什么得分高 */}

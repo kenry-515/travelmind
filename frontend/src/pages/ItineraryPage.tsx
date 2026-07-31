@@ -131,10 +131,10 @@ function ErrorView({ message, onRetry }: { message: string; onRetry?: () => void
           </button>
         )}
         <Link
-          to="/recommend"
+          to="/chat"
           className="text-sm font-medium text-brand-600 hover:underline"
         >
-          返回推荐页
+          返回规划
         </Link>
       </div>
     </div>
@@ -467,10 +467,10 @@ export function ItineraryPage() {
       {/* Header */}
       <header className="glass sticky top-0 z-10 border-b border-border-light">
         <div className="mx-auto flex max-w-4xl items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
-          <Link to="/recommend" className="rounded-xl p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-600 dark:hover:text-brand-400" aria-label="返回推荐">
+          <Link to="/chat" className="rounded-xl p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:text-brand-600 dark:hover:text-brand-400" aria-label="返回规划">
             <ArrowLeft size={20} />
           </Link>
-          <h2 className="text-sm font-semibold text-slate-800 dark:text-slate-200">行程规划</h2>
+          <h2 className="text-sm font-semibold text-slate-800 dark:text-slate-200">羊城行程 · 广州专属</h2>
           {ready && (
             <span className="hidden text-xs text-slate-400 dark:text-slate-500 sm:inline">
               {ready.itinerary.trip.daysCount} 天行程
@@ -627,8 +627,8 @@ export function ItineraryPage() {
               <Link to="/chat" className="btn-primary px-4 py-2 text-sm">
                 AI 对话规划
               </Link>
-              <Link to="/recommend" className="btn-secondary px-4 py-2 text-sm">
-                智能推荐
+              <Link to="/chat" className="btn-secondary px-4 py-2 text-sm">
+                AI 规划
               </Link>
             </div>
           </div>
@@ -909,8 +909,8 @@ export function ItineraryPage() {
 
             {/* Bottom actions */}
             <div className="mt-8 flex justify-center gap-4 pb-8">
-              <Link to="/recommend" className="btn-secondary px-4 py-2 text-sm">
-                返回推荐
+              <Link to="/chat" className="btn-secondary px-4 py-2 text-sm">
+                返回规划
               </Link>
               <Link to="/" className="btn-primary px-4 py-2 text-sm">
                 规划新行程

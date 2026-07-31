@@ -210,7 +210,7 @@ function renderItineraryHtml(
 
       <!-- Footer -->
       <p style="text-align:center;font-size:10px;color:#cbd5e1;margin-top:24px">
-        TravelMind Agent 生成 · ${new Date().toLocaleDateString('zh-CN')}
+        羊城智游 生成 · ${new Date().toLocaleDateString('zh-CN')}
       </p>
     </div>
   `
