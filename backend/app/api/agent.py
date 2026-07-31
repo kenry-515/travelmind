@@ -20,7 +20,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 
-from app.api.errors import error_response
+from app.api.errors import error_response, ErrorPresets
 from pydantic import BaseModel, Field, field_validator
 
 from app.agents.orchestrator import run_travel_workflow, run_travel_workflow_stream
@@ -288,10 +288,17 @@ async def agent_regenerate_day(request: RegenerateDayRequest):
             places=places,
         )
     except ValueError as e:
-        raise error_response(400, "INVALID_INPUT", str(e))
+        raise error_response(400, "INVALID_INPUT", str(e),
+                             suggestion="请检查输入参数后重试")
     except RuntimeError as e:
         logger.error(f"Day regeneration failed: {e}")
-        raise error_response(502, "UPSTREAM_ERROR", "Day regeneration failed. Please try again.")
+        p = ErrorPresets.get("llm_timeout")
+        raise error_response(
+            502, "UPSTREAM_ERROR",
+            "行程重生成失败,请重试",
+            suggestion=p["suggestion"],
+            retryable=True,
+        )
 
     return RegenerateDayResponse(itinerary=updated)
 
@@ -379,9 +386,15 @@ async def agent_plan_stream(
 # ── Share Endpoints ──────────────────────────────────────
 
 class ShareResponse(BaseModel):
-    """Response for share creation."""
+    """Response for share creation.
+
+    Phase 18 M5.3: 新增 signature + expires_at 字段,前端用这两项
+    构造可验证的分享 URL: /share/{share_id}?sig={signature}&exp={expires_at}
+    """
     share_id: str
     share_url: str
+    signature: str = ""  # HMAC-SHA256(16hex),验签用
+    expires_at: str = ""
     expires_days: int
 
 
@@ -427,15 +440,19 @@ async def create_share(
     if not itinerary_data:
         raise error_response(404, "NOT_FOUND", f"Itinerary {itinerary_id} not found.")
     
-    share_id = share_service.create_share(device_id, itinerary_id, expires_days)
-    
-    # Build share URL
-    # In production, this would use the actual domain
-    share_url = f"/share/{share_id}"
-    
+    share_record = share_service.create_share(device_id, itinerary_id, expires_days)
+
+    # Phase 18 M5.3: 构造带签名的 URL
+    share_id = share_record["share_id"]
+    sig = share_record["signature"]
+    expires_at = share_record["expires_at"]
+    share_url = f"/share/{share_id}?sig={sig}&exp={expires_at}"
+
     return ShareResponse(
         share_id=share_id,
         share_url=share_url,
+        signature=sig,
+        expires_at=expires_at,
         expires_days=expires_days,
     )
 
@@ -443,10 +460,14 @@ async def create_share(
 @router.get("/agent/share/{share_id}", response_model=SharedItineraryResponse)
 async def get_shared_itinerary(
     share_id: str,
+    sig: Optional[str] = None,
     device_id: Optional[str] = Depends(get_device_id),
 ):
-    """Get a shared itinerary by share ID."""
-    share_record = share_service.get_share(share_id)
+    """Get a shared itinerary by share ID + signature.
+
+    Phase 18 M5.3: 验证 ?sig=... 参数,无效签名返回 404(防扫描/暴力枚举)。
+    """
+    share_record = share_service.get_share(share_id, signature=sig)
     
     if not share_record:
         raise error_response(404, "NOT_FOUND", "Share link not found or has expired.")

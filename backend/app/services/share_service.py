@@ -9,8 +9,11 @@ Share flow:
 4. Shares can have optional expiry dates and access controls
 """
 
+import hashlib
+import hmac
 import json
 import logging
+import os
 import time
 import uuid
 from pathlib import Path
@@ -20,6 +23,50 @@ logger = logging.getLogger(__name__)
 
 # Storage root for share links
 _SHARE_ROOT = Path(__file__).resolve().parent.parent.parent / "data" / "shares"
+
+
+def _get_signing_secret() -> bytes:
+    """Get the HMAC signing secret for share link signatures.
+
+    Production: set SHARE_SIGNING_SECRET in env. Development: derive from
+    a stable source so signatures are deterministic across calls within
+    a single process. NEVER use a default secret in production.
+    """
+    secret = os.environ.get("SHARE_SIGNING_SECRET", "").strip()
+    if secret:
+        return secret.encode("utf-8")
+    # Dev fallback: process-stable secret (一次生成,同进程内 create/verify 一致).
+    # 跨进程会变 → 部署时一定要设 SHARE_SIGNING_SECRET。
+    global _DEV_SECRET
+    try:
+        return _DEV_SECRET
+    except NameError:
+        if not getattr(_get_signing_secret, "_warned", False):
+            logger.warning(
+                "SHARE_SIGNING_SECRET not set — using process-stable dev fallback. "
+                "Set SHARE_SIGNING_SECRET in production for cross-process stable signatures."
+            )
+            _get_signing_secret._warned = True
+        _DEV_SECRET = b"dev-only-process-stable-" + os.urandom(32).hex().encode()
+        return _DEV_SECRET
+
+
+def _compute_signature(share_id: str, expires_at: str) -> str:
+    """Compute HMAC-SHA256 signature over share_id + expires_at.
+
+    Returned as URL-safe hex (first 16 chars) for compact URLs.
+    """
+    msg = f"{share_id}|{expires_at}".encode("utf-8")
+    return hmac.new(_get_signing_secret(), msg, hashlib.sha256).hexdigest()[:16]
+
+
+def _verify_signature(share_id: str, expires_at: str, provided_sig: str) -> bool:
+    """Verify a share link signature. Constant-time comparison."""
+    expected = _compute_signature(share_id, expires_at)
+    try:
+        return hmac.compare_digest(expected, provided_sig)
+    except Exception:
+        return False
 
 
 def _ensure_dir():
@@ -40,53 +87,80 @@ def create_share(
     device_id: str,
     itinerary_id: str,
     expires_days: int = 30,
-) -> str:
+) -> Dict[str, str]:
     """Create a share link for an itinerary.
-    
+
+    Phase 18 M5.3: Returns dict with share_id + signature + expires_at,
+    so callers can construct signed URL: /share/{share_id}?sig=...&exp=...
+
     Args:
         device_id: The owner's device ID
         itinerary_id: The itinerary to share
         expires_days: Number of days before the share link expires
-        
+
     Returns:
-        A share_id string (UUID)
+        {"share_id": str, "signature": str, "expires_at": str}
     """
     _ensure_dir()
     share_id = str(uuid.uuid4())
-    
+    expires_at = _now_iso()
+    days_valid = expires_days
+
     record = {
         "share_id": share_id,
         "device_id": device_id,
         "itinerary_id": itinerary_id,
-        "expires_at": _now_iso(),  # Simple timestamp, actual expiry checked by days
-        "days_valid": expires_days,
+        "expires_at": expires_at,
+        "days_valid": days_valid,
         "created_at": _now_iso(),
+        "signature": _compute_signature(share_id, expires_at),
     }
-    
+
     path = _share_path(share_id)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(record, f, ensure_ascii=False, indent=2)
-    
+
     logger.info(f"Share link created: {share_id} for itinerary {itinerary_id}")
-    return share_id
+    return {
+        "share_id": share_id,
+        "signature": record["signature"],
+        "expires_at": expires_at,
+    }
 
 
-def get_share(share_id: str) -> Optional[Dict[str, Any]]:
+def get_share(share_id: str, signature: Optional[str] = None) -> Optional[Dict[str, Any]]:
     """Get a share record by its ID.
-    
-    Returns the share record if found and not expired, or None otherwise.
+
+    Phase 18 M5.3: 验证签名 + 过期检查。
+    签名验证失败 → 返回 None（如同不存在）。
+    为向后兼容：若 signature 参数为空，仅在生产环境要求强制签名。
+
+    Returns the share record if found, signature valid, and not expired.
     """
     path = _share_path(share_id)
     if not path.exists():
         return None
-    
+
     try:
         with open(path, "r", encoding="utf-8") as f:
             record = json.load(f)
     except Exception as e:
         logger.warning(f"Failed to load share {share_id}: {e}")
         return None
-    
+
+    # Phase 18 M5.3: 验证签名
+    expires_at = record.get("expires_at", "")
+    stored_sig = record.get("signature", "")
+    if not stored_sig:
+        # 旧格式无签名记录（兼容旧 share,仅在 dev 环境放行）
+        if os.environ.get("APP_ENV") == "production":
+            logger.warning(f"Share {share_id} has no signature (legacy)")
+            return None
+    else:
+        if not signature or not _verify_signature(share_id, expires_at, signature):
+            logger.warning(f"Share {share_id} signature mismatch")
+            return None
+
     # Check expiry
     days_valid = record.get("days_valid", 30)
     created_at = record.get("created_at", "")
@@ -101,7 +175,7 @@ def get_share(share_id: str) -> Optional[Dict[str, Any]]:
                 return None
         except (ValueError, OverflowError):
             pass  # If we can't parse the date, assume it's still valid
-    
+
     return record
 
 

@@ -19,6 +19,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from app.api.errors import error_response
+from app.middleware.rate_limit import _sanitize_log_value
 from app.agents.dialog_manager import (
     append_message,
     apply_slot_override,
@@ -341,7 +342,7 @@ async def dialog_message(request: DialogMessageRequest):
         re.IGNORECASE
     )
     _CORRECTION_CITY_RE = re.compile(
-        r'[\u4e00-\u9fa5]{2,6}[市区县省镇]|(?:广州|成都|深圳|重庆|北京|上海|杭州|西安|长沙|厦门|大理|三亚|桂林|苏州|张家界|丽江|南京|武汉|青岛|大连|昆明|珠海|佛山|东莞|中山|惠州|增城|都江堰|从化|番禺|花都|南沙|义乌|昆山)',
+        r'[\u4e00-\u9fa5]{2,6}[市区县省镇]|(?:广州|增城|从化|番禺|花都|南沙|佛山|东莞|中山|惠州|深圳)',
         re.IGNORECASE
     )
     _IS_QUESTION_RE = re.compile(r'[？?]$|吗[呢吧]?[？?]?$|呢[？?]?$|吧[？?]?$')
@@ -436,11 +437,15 @@ async def dialog_message(request: DialogMessageRequest):
     else:
         try:
             extracted = await extract_profile(extract_input)
+            logger.info(f"[DEBUG] Extracted: days={extracted.get('days')} (type={type(extracted.get('days')).__name__}), tags={extracted.get('tags')}")
         except Exception as e:
             logger.error(f"Dialog profile extraction failed: {e}")
             return _resp(sid, state, "理解你的意思时出了点问题，能换个说法吗？")
 
-        merge_slots(state, ground_extraction(extracted, text))
+        grounded = ground_extraction(extracted, text, current_city=state["slots"].get("city", "") or "")
+        logger.info(f"[DEBUG] Grounded: days={grounded.get('days')} (type={type(grounded.get('days')).__name__}), tags={grounded.get('tags')}")
+        merge_slots(state, grounded)
+        logger.info(f"[DEBUG] After merge: days={state['slots']['days']} (type={type(state['slots']['days']).__name__}), tags={state['slots']['tags']}")
         action = next_action(state, text)
 
     # Phase 12.20 + 16.1: 状态机定动作，LLM 定语气 + 传入完整历史
@@ -482,7 +487,7 @@ async def dialog_generate(
     state["stage"] = "generating"
     await save_session(sid, state)
     user_input = synthesize_input(state["slots"])
-    logger.info(f"Dialog generate: {user_input}")
+    logger.info(f"Dialog generate: {_sanitize_log_value(user_input)}")
 
     try:
         result = await run_travel_workflow(user_input)
@@ -550,7 +555,7 @@ async def dialog_generate_stream(
     state["stage"] = "generating"
     await save_session(sid, state)
     user_input = synthesize_input(state["slots"])
-    logger.info(f"Dialog generate (stream): {user_input}")
+    logger.info(f"Dialog generate (stream): {_sanitize_log_value(user_input)}")
 
     async def event_generator():
         final: Dict[str, Any] = {}

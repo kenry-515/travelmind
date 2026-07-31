@@ -11,12 +11,39 @@ TravelMind Agent — 令牌桶请求限流中间件（Phase 12.28c）
 
 import time
 import logging
+import re
 from collections import defaultdict
 from typing import Dict, Optional, Tuple
 
 from starlette.types import ASGIApp, Receive, Scope, Send, Message
 
 logger = logging.getLogger(__name__)
+
+# Phase 18 M5.3: 日志脱敏 — 截断用户输入避免日志爆炸 + 移除敏感字段
+_SENSITIVE_PATTERNS = [
+    (re.compile(r'(api[_-]?key|token|password|secret)["\']?\s*[:=]\s*["\']?[\w\-]+', re.I),
+     r'\1=<redacted>'),
+    (re.compile(r'sk-[a-zA-Z0-9]{8,}\b'), 'sk-<redacted>'),
+]
+
+
+def _sanitize_log_value(value: str, max_len: int = 200) -> str:
+    """Sanitize user-controlled text for safe logging.
+
+    - Truncate to max_len to prevent log spam
+    - Strip API keys, tokens, passwords
+    """
+    if not isinstance(value, str):
+        return str(value)[:max_len]
+    out = value
+    for pattern, replacement in _SENSITIVE_PATTERNS:
+        out = pattern.sub(replacement, out)
+    if len(out) > max_len:
+        out = out[:max_len] + f"...<truncated {len(value)-max_len} chars>"
+    return out
+
+
+__all__ = ["RateLimitMiddleware", "_sanitize_log_value"]
 
 
 class TokenBucket:
@@ -141,18 +168,25 @@ class RateLimitMiddleware:
             await self.app(scope, receive, send)
             return
 
-        # Rate limited
-        logger.warning(f"RateLimit: {ip} exceeded limit on {path}")
-        retry_after = int(60 / self.capacity) + 1  # seconds until next token
+        # Phase 18 M5.3: 限流响应也用统一错误结构(含 suggestion + retryable)
+        from app.api.errors import ErrorPresets
+        retry_after = int(60 / self.capacity) + 1
+        preset = ErrorPresets.get("rate_limited", retry_after=retry_after)
+        import json
+        body_dict = {
+            "error": {
+                "code": "RATE_LIMITED",
+                "message": preset["message"],
+                "suggestion": preset["suggestion"],
+                "retryable": preset["retryable"],
+                "details": {"retry_after_seconds": retry_after},
+            }
+        }
+        body = json.dumps(body_dict, ensure_ascii=False).encode("utf-8")
         headers = [
             (b"content-type", b"application/json"),
             (b"retry-after", str(retry_after).encode()),
         ]
-        body = (
-            b'{"error":{"code":"RATE_LIMITED","message":'
-            b'"Request rate exceeded. Try again later.",'
-            b'"details":{"retry_after_seconds":' + str(retry_after).encode() + b'}}}'
-        )
         await send({
             "type": "http.response.start",
             "status": 429,
