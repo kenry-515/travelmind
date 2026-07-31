@@ -63,14 +63,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
+          # Phase 18 CI fix: cache: npm 会复用旧 .tsbuildinfo 导致 tsc 报 "stale" 错误。
+          # 改 cache: false 强制每次新装 + 新建 incremental cache。
+          cache: false
 
       - name: Install dependencies
         run: npm ci
 
       - name: Typecheck
-        run: npx tsc -b
+        run: npx tsc -b --force --clean && npx tsc -b
 
       - name: Lint
         run: npm run lint
