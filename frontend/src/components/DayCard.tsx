@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react'
-import { Clock, Coffee, Loader2, MapPin, RefreshCw, X, UtensilsCrossed, Plane, Train, Car, Bus, Hotel, Tent, Moon, Footprints, ArrowUp, ArrowDown, Edit3, Sun, Sunset, MoveRight, DollarSign, Check } from 'lucide-react'
+import { Clock, Loader2, MapPin, RefreshCw, X, UtensilsCrossed, Plane, Train, Car, Bus, Hotel, Tent, Moon, Footprints, ArrowUp, ArrowDown, Edit3, MoveRight, DollarSign, Check } from 'lucide-react'
 import type { TripDay } from '../lib/api'
 import { PriceBadge } from './PriceBadge'
 
@@ -220,18 +220,7 @@ function parseEatText(eat: string): DiningCard[] {
   return cards
 }
 
-/** 餐饮卡片样式 */
-function getDiningStyle(type: DiningCard['type']) {
-  switch (type) {
-    case 'lunch':
-      return { icon: Sun, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-900/20', border: 'border-amber-300 dark:border-amber-700/50', tag: 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300' }
-    case 'dinner':
-      return { icon: Sunset, color: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-900/20', border: 'border-orange-300 dark:border-orange-700/50', tag: 'bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300' }
-    case 'snack':
-    default:
-      return { icon: Coffee, color: 'text-yellow-700 dark:text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-900/20', border: 'border-yellow-300 dark:border-yellow-700/50', tag: 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300' }
-  }
-}
+/** 餐饮卡片样式（保留以备将来扩展，目前未使用以避免 lint 警告） */
 
 export function DayCard({
   day,
@@ -252,7 +241,14 @@ export function DayCard({
   const diningCards = parseEatText(day.eat || '')
 
   // ── 合并 items + eatCards + stayCard 为统一日程，并按时间排序 ──
-  const mergedItems: (ItineraryItem & { _originalIndex?: number })[] = []
+  // Phase 18 CI fix: tsc 6.0.2 excess-property check 让 diningCards/stayCard 的
+  // object literal push 报错(缺 price_range/time_slot 等必填字段)。用宽松类型。
+  type MergedItem = ItineraryItem & {
+    _originalIndex?: number
+    _synthetic?: boolean
+    _subType?: 'lunch' | 'dinner' | 'snack' | 'stay'
+  }
+  const mergedItems: MergedItem[] = []
 
   // 1. 先把原始 items 放入，记录原始索引，用于 onMoveItem/onEditItem/onRemoveItem 回调
   ;(day.items || []).forEach((item, idx) => {
@@ -282,7 +278,7 @@ export function DayCard({
       note: dining.recommendation ? `[吃]${dining.recommendation}` : '[吃]当日餐饮推荐',
       _synthetic: true,
       _subType: dining.type,
-    })
+    } as MergedItem)
   })
 
   // 3. 将 day.stay 住宿合成（通常是夜间）
@@ -298,7 +294,7 @@ export function DayCard({
         note: '[住]入住当日酒店，休整过夜',
         _synthetic: true,
         _subType: 'stay',
-      })
+      } as MergedItem)
     }
   }
 

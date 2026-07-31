@@ -185,8 +185,8 @@ export type RouteValidation = ValidationReport['routes'][number]
 
 // Phase 7: Price layer types (backward-compatible optional fields)
 export interface PriceRange {
-  min: number
-  max: number
+  min?: number
+  max?: number
 }
 
 export interface PriceInfo {
