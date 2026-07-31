@@ -1,92 +1,113 @@
-# TravelMind Agent（智游伴）— AI 多 Agent 旅行规划系统
+# 羊城智游 · 广州 AI 旅游智能体
 
-> AI-powered multi-agent travel planning system.
-> React 19 + FastAPI + DeepSeek v4-flash + Chroma RAG + PostgreSQL
+> AI+旅游休闲大赛 · 广州专属 AI 旅行规划助手
+> React 19 + FastAPI + DeepSeek + RAG
 
 ## 快速开始
 
 ```bash
-# 1. 环境准备
+# 1. 配置环境变量
 cp backend/.env.example backend/.env
-# 编辑 backend/.env 填入 API Key（DeepSeek / Kimi 必填）
+# 编辑 backend/.env 填入 DEEPSEEK_API_KEY
 
-# 2. 启动全部服务（Docker）
-docker compose up -d
+# 2. 启动后端
+cd backend
+pip install -r requirements.txt
+python -m app.main
+# → http://localhost:8000
 
-# 3. 或本地开发
-cd backend && python -m app.main          # API → :8000
-cd frontend && npm run dev                 # Vite → :5173
+# 3. 启动前端（新终端）
+cd frontend
+npm install
+npm run dev
+# → http://localhost:5173
 ```
 
-## 架构
+## 项目特色
 
+### 🏙️ 广州专属
+- 174 个广州景区 POI 数据
+- 7 个行政区覆盖（越秀/海珠/荔湾/天河/白云/番禺/花都）
+- 西关文化、珠江夜游、粤式美食等特色路线
+
+### 🤖 核心功能
+| 功能 | 页面 | 说明 |
+|------|------|------|
+| AI 行程规划 | `/chat` | 多轮对话式定制广州行程 |
+| AI 虚拟导游 | `/guide` | 广州景点智能讲解伴游 |
+| 景区资源调度 | `/resources` | 168+ 景区热度可视化与错峰建议 |
+| 拍照识景 | `/image` | 上传照片智能识别广州景点 |
+
+### 🎯 技术架构
 ```
-┌─ React 19 + Vite + Tailwind ──────────────────────┐
-│  6 页面 / 13 组件 / SSE 流式 / PDF 导出            │
-│  路由: /home /chat /recommend /itinerary /image    │
-└──────────────────────┬──────────────────────────────┘
-                       │ HTTP / SSE
-┌─ FastAPI + uvicorn ──┴──────────────────────────────┐
-│  23 条路由 / 对话状态机 / 令牌桶限流 60rpm          │
-│  9 路由组: health/chat/agent/recommend/weather/     │
-│           image/dialog/itineraries/favorites         │
-└──────────────────────┬──────────────────────────────┘
-                       │
-┌─ 7 步 Agent 管线 ───┴──────────────────────────────┐
-│  Profile → Trend → Weather → RAG → Recommend →      │
-│  Plan → Aggregator                                   │
-│  契约校验 + 路线优化 + POI 存续 + 价格注入          │
-└──────────────────────┬──────────────────────────────┘
-                       │
-┌─ 外部服务 ──────────┴──────────────────────────────┐
-│  DeepSeek v4-flash（推理） Kimi k2.6（视觉）        │
-│  Chroma + TF-IDF 1075维 RAG / Open-Meteo 天气       │
-│  PostgreSQL / Redis / Amap（可选）                   │
-└─────────────────────────────────────────────────────┘
+React 19 + TypeScript + Tailwind
+    ↓ HTTP / SSE
+FastAPI + uvicorn
+    ↓
+7步 Agent 管线: Profile → Trend → Weather → RAG → Recommend → Plan → Aggregator
+    ↓
+DeepSeek v4-flash (LLM) + Chroma RAG + Open-Meteo 天气
 ```
 
-## API 文档
+## API 端点
 
-启动后端后访问：
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
-- OpenAPI JSON: http://localhost:8000/openapi.json
+启动后端后访问:
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
 
-## 质量指标
-
-| 项目 | 数值 |
-|------|------|
-| 单元测试 | 483+ |
-| E2E 测试 | 27 tests |
-| 评测 queries | 80 × 28 约束 |
-| 知识库 POI | 2,410 / 30 城市 |
-| 评测 Micro | 85.0% |
-| 评测 Macro | 76.2% (61/80) |
+### 核心 API
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/api/v1/dialog/message` | POST | 对话消息 |
+| `/api/v1/dialog/generate/stream` | POST | SSE 流式生成行程 |
+| `/api/v1/guide/featured` | GET | 精选 POI |
+| `/api/v1/guide/search` | GET | 景点搜索 |
+| `/api/v1/guide/narration/{name}` | GET | AI 讲解词 |
+| `/api/v1/resources/overview` | GET | 资源仪表盘 |
+| `/api/v1/resources/list` | GET | 资源列表 |
+| `/api/v1/weather` | GET | 天气查询 |
 
 ## 开发命令
 
 ```bash
-# 全量开发循环
-cd backend && bash scripts/fixcycle.sh
+# 后端测试
+cd backend
+python -m pytest -q
 
-# 环境预检
-cd backend && python scripts/preflight_check.py
+# 前端检查
+cd frontend
+npx tsc -b          # 类型检查
+npm run lint        # 代码检查
+```
 
-# E2E 测试
-cd frontend && npm run test:e2e
+## 项目结构
 
-# 全量评测
-cd backend && python -X utf8 -m evals.run_evals
-
-# pytest 单元测试
-cd backend && python -m pytest -q
-
-# 类型检查
-cd frontend && npx tsc -b
+```
+TravelMindAgent/
+├── backend/              # 后端服务
+│   ├── app/
+│   │   ├── agents/       # 7 个 Agent 模块
+│   │   ├── api/          # API 路由
+│   │   ├── services/     # 业务服务
+│   │   └── rag/          # RAG 检索
+│   ├── data/             # 广州 POI 数据
+│   └── tests/            # 单元测试
+├── frontend/             # 前端应用
+│   ├── src/
+│   │   ├── pages/        # 6 个页面
+│   │   ├── components/  # 共享组件
+│   │   └── lib/          # API 封装
+│   └── e2e/              # E2E 测试
+└── docs/                 # 文档
+    └── itinerary.schema.json
 ```
 
 ## 文档
 
-- [SOP 矩阵](docs/SOP_MATRIX.md) — 功能正逆向路径文档
-- [评测基线](docs/BASELINE.md) — 约束通过率看板
-- [部署指南](docs/DEPLOY.md) — Docker 部署说明
+- [接手文档 HANDOFF](HANDOFF.md) — 详细的项目交接文档
+- [行程契约](docs/itinerary.schema.json) — 行程数据 Schema
+
+---
+
+**羊城智游** · 广州专属 AI 旅行规划智能体  
+Powered by AI+旅游休闲大赛
