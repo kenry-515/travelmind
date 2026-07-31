@@ -90,8 +90,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: ''
-          # cache-dependency-path: frontend/package-lock.json
 
       - name: Install frontend deps
         working-directory: frontend
