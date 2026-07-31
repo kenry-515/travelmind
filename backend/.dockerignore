@@ -1,7 +1,91 @@
-.env
-__pycache__/
-*.py[cod]
-chroma_data/
-.pid
-tests/
+# TravelMind Agent — Docker build ignore patterns
+
+# Git
 .git/
+.gitignore
+.gitattributes
+
+# CI / tests
+.github/
+.gitlab-ci.yml
+.circleci/
+
+# Python bytecode & caches
+**/__pycache__/
+**/*.py[cod]
+**/*.pyo
+**/*.egg-info/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/test-results/
+frontend/playwright-report/
+
+# Test artifacts & logs
+**/test-results/
+**/playwright-report/
+**/*.log
+**/*.pid
+**/*.bak
+**/*.bak-*
+**/results/
+**/reports/
+
+# Dev artifacts
+**/.coverage
+**/.sessions/
+**/sessions.db
+**/shares/
+
+# Environment files (don't bake secrets into image)
+.env
+.env.local
+backend/.env
+frontend/.env
+frontend/.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Docs that don't affect runtime
+*.docx
+docs/
+README.md
+HANDOFF.md
+.claude/
+skills/
+
+# Local data overrides (compose mounts data dir anyway)
+backend/chroma_data/
+backend/data/user_itineraries/
+
+# Eval / debug
+backend/evals/
+backend/scripts/
+backend/_acceptance_*.py
+backend/_debug_*.py
+backend/_final_*.py
+backend/_quick_*.py
+backend/_real_*.py
+backend/_test_*.py
+backend/check_*.py
+backend/add_*.py
