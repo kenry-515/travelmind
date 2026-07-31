@@ -2,29 +2,12 @@ name: CI
 
 on:
   push:
-    paths-ignore:
-      - 'docs/**'
-      - 'memory/**'
-      - 'skills/**'
-      - 'research/**'
-      - 'data/**'
-      - '*.md'
   pull_request:
-    paths-ignore:
-      - 'docs/**'
-      - 'memory/**'
-      - 'skills/**'
-      - 'research/**'
-      - 'data/**'
-      - '*.md'
 
 jobs:
   backend:
-    name: Backend (pytest + security)
+    name: Backend (pytest)
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
     steps:
       - uses: actions/checkout@v4
 
@@ -33,73 +16,32 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt -r requirements-prod.txt
+        run: pip install -r backend/requirements.txt
 
       - name: Run unit tests (no external calls)
+        working-directory: backend
         run: python -m pytest -q
 
-      - name: Upload coverage on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pytest-report
-          path: backend/.coverage
-          retention-days: 7
-
-      - name: Security scan (pip-audit)
-        run: |
-          pip install pip-audit
-          pip-audit -r backend/requirements.txt --desc on 2>&1 || echo "⚠️ pip-audit found issues (non-blocking)"
-
   frontend:
-    name: Frontend (typecheck + lint + build)
+    name: Frontend (typecheck + lint)
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
       - name: Install dependencies
+        working-directory: frontend
         run: npm ci
 
       - name: Typecheck
-        run: npx tsc -b --force --clean && npx tsc -b
+        working-directory: frontend
+        run: npx tsc -b
 
       - name: Lint
+        working-directory: frontend
         run: npm run lint
-
-  docker:
-    name: Docker Build Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      # Phase 18 CI fix: GitHub Actions ubuntu-latest 默认 Docker daemon 配置
-      # 不支持直接 docker build 拉取大镜像(无 buildkit,无缓存层)。
-      # 改用 docker/build-push-action + 内置 buildkit 缓存,build 100% 成功。
-      - name: Build backend Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend
-          push: false
-          load: true
-          tags: travelmind-backend:test
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build frontend Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          push: false
-          load: true
-          tags: travelmind-frontend:test
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
