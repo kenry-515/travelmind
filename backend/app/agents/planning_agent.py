@@ -128,7 +128,8 @@ async def _call_llm(
     user_prompt: str,
     tool_schema: Dict[str, Any],
     tool_description: str,
-    temperature: float = 0.5,
+    temperature: float = 0.3,
+    max_tokens: int = 3000,
 ) -> Optional[Dict[str, Any]]:
     """Single structured LLM call → tolerant-parsed JSON dict or None.
     
@@ -147,6 +148,7 @@ async def _call_llm(
             messages=messages,
             output_schema=tool_schema,
             temperature=temperature,
+            max_tokens=max_tokens,
         )
         if result and isinstance(result, dict):
             return result

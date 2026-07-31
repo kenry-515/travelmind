@@ -517,28 +517,35 @@ async def run_travel_workflow_stream(
         "message": f"已识别目的地：{(state.get('user_profile') or {}).get('destination', '未知')}",
     }
 
-    # ── Step 2: Trend Analysis ──
+    # ── Step 2+3 并行: Trend Analysis + Weather Fetch ──
+    # Phase 18 D.4: 两步都依赖 profile.destination,互不依赖,并发跑省端到端时间。
+    # progress event 顺序保持稳定(先 trend 再 weather),内容异步收集。
     yield {
         "event": "progress",
         "step": "trend_analysis",
         "status": "running",
         "message": "正在分析热门趋势...",
     }
-    state = await _trend_analysis(state)
-    yield {
-        "event": "progress",
-        "step": "trend_analysis",
-        "status": "done",
-    }
-
-    # ── Step 3: Weather Fetch ──
     yield {
         "event": "progress",
         "step": "weather_fetch",
         "status": "running",
         "message": "正在获取天气数据...",
     }
-    state = await _weather_fetch(state)
+
+    import asyncio
+    trend_task = asyncio.create_task(_trend_analysis(state))
+    weather_task = asyncio.create_task(_weather_fetch(state))
+    trend_state, weather_state = await asyncio.gather(trend_task, weather_task)
+    # 合并两个 state(都写了同一 state 的不同字段,合并后谁都不丢)
+    state.update({k: v for k, v in weather_state.items() if k not in state or state.get(k) is None})
+    state.update(trend_state)
+
+    yield {
+        "event": "progress",
+        "step": "trend_analysis",
+        "status": "done",
+    }
     yield {
         "event": "progress",
         "step": "weather_fetch",

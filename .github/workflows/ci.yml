@@ -22,6 +22,9 @@ jobs:
   backend:
     name: Backend (pytest + security)
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
     steps:
       - uses: actions/checkout@v4
 
@@ -30,10 +33,9 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install -r backend/requirements.txt
+        run: pip install -r requirements.txt -r requirements-prod.txt
 
       - name: Run unit tests (no external calls)
-        working-directory: backend
         run: python -m pytest -q
 
       - name: Upload coverage on failure

@@ -3,6 +3,14 @@
 > AI+旅游休闲大赛 · 广州专属 AI 旅行规划助手
 > React 19 + FastAPI + DeepSeek + RAG
 
+[![CI](https://img.shields.io/github/actions/workflow/status/kenry-515/travelmind/ci.yml?branch=main&label=CI&logo=github)](https://github.com/kenry-515/travelmind/actions/workflows/ci.yml)
+[![E2E](https://img.shields.io/github/actions/workflow/status/kenry-515/travelmind/e2e.yml?branch=main&label=E2E&logo=playwright)](https://github.com/kenry-515/travelmind/actions/workflows/e2e.yml)
+[![Backend Tests](https://img.shields.io/badge/tests-672%20passing-brightgreen?logo=pytest)](backend/tests/)
+[![E2E Tests](https://img.shields.io/badge/e2e-28%20passing-brightgreen?logo=playwright)](frontend/e2e/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.11+-blue.svg?logo=python)](https://www.python.org)
+[![Node](https://img.shields.io/badge/node-22+-green.svg?logo=node.js)](https://nodejs.org)
+
 ## 快速开始
 
 ```bash
