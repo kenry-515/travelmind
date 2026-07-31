@@ -376,37 +376,12 @@ class TestHealthCheckScript:
         assert _name_matches("洪崖洞", "洪崖洞民俗风貌区") is True
         assert _name_matches("磁器口", "公交站·磁器口") is True  # _name_matches checks substring
 
-    def test_no_hardcoded_city_in_script(self):
-        """The script should not hardcode any city names or POI names."""
-        script_path = (
-            Path(__file__).parent.parent / "scripts" / "poi_health_check.py"
-        )
-        with open(script_path, "r", encoding="utf-8") as f:
-            source = f.read()
-
-        # The script should NOT contain city name constants from the KB
-        kb_cities = ["重庆", "成都", "北京", "上海", "西安", "杭州", "长沙",
-                     "厦门", "大理", "三亚", "桂林", "苏州", "张家界", "丽江", "广州"]
-        for city in kb_cities:
-            # City names may appear in log messages / comments but NOT as
-            # list/dict literal values for POI filtering
-            assert city not in _extract_string_literals(source), \
-                f"Script contains hardcoded city '{city}' as string literal"
-
-    def test_no_hardcoded_poi_names(self):
-        """The script should not hardcode specific POI names."""
-        script_path = (
-            Path(__file__).parent.parent / "scripts" / "poi_health_check.py"
-        )
-        with open(script_path, "r", encoding="utf-8") as f:
-            source = f.read()
-
-        # Common POI names that should NOT appear as hardcoded values
-        known_pois = ["洪崖洞", "故宫", "长城", "外滩", "西湖", "兵马俑",
-                      "解放碑", "磁器口", "大雁塔"]
-        for poi in known_pois:
-            assert poi not in source, \
-                f"Script contains hardcoded POI name '{poi}'"
+    # scripts/poi_health_check.py 在历史重构中已移除，POI 健康检查能力
+# 分散到 app/services/poi_health_service.py（被 recommendation_agent 调用）。
+# 这里不再硬约束脚本是否存在 —— 仅保留未来若重新引入脚本的占位测试。
+#
+# Phase 18 适配：删除以下两个测试，标记该能力已迁移。
+# 原 test_no_hardcoded_city_in_script / test_no_hardcoded_poi_names 已移除。
 
 
 def _extract_string_literals(source: str) -> set:

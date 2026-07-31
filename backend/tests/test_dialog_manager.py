@@ -18,9 +18,13 @@ from app.agents.dialog_manager import (
 
 
 def _state(**over):
+    # Phase 18 适配：测试从 city=None 起手，覆盖"槽位为空"分支。
+    # DEFAULT_SLOTS["city"]="广州" 是产品默认值（用户进首页已锁定广州），
+    # 但单元测试需要从「未填写」状态起步，才能验证追问/确认/拒答逻辑。
+    slots = dict(DEFAULT_SLOTS, tags=[], city=None)
     return {
         "stage": "collecting",
-        "slots": dict(DEFAULT_SLOTS, tags=[]),
+        "slots": slots,
         "followups_used": 0,
         "itinerary": None,
         "queued": [],
@@ -71,7 +75,7 @@ class TestNextAction:
 
     def test_missing_days_asks(self):
         st = _state()
-        st["slots"]["city"] = "重庆"
+        st["slots"]["city"] = "广州"  # Phase 18: 广州大赛专属
         action = next_action(st)
         assert action["type"] == "ask"
         assert "几天" in action["reply"]
@@ -79,7 +83,8 @@ class TestNextAction:
     def test_city_days_asks_preferences(self):
         """Phase 12.25 核心：只有城市+天数时不得推卡片，先问偏好。"""
         st = _state()
-        st["slots"].update({"city": "南宁", "days": 3})
+        # Phase 18: 用广州而非南宁——广州专属下状态机走「问偏好」分支
+        st["slots"].update({"city": "广州", "days": 3})
         action = next_action(st)
         assert action["type"] == "ask"
         assert "怎么玩" in action["reply"] or "偏好" in action["reply"]
@@ -87,15 +92,17 @@ class TestNextAction:
 
     def test_full_slots_confirm(self):
         st = _state()
-        st["slots"].update({"city": "重庆", "days": 3, "tags": ["美食"]})
+        # Phase 18: 广州专属下 city+days+tags 填齐 → 确认生成
+        st["slots"].update({"city": "广州", "days": 3, "tags": ["美食"]})
         action = next_action(st)
         assert action["type"] == "confirm"
         assert st["stage"] == "confirming"
 
     def test_defer_phrase_confirms_with_defaults(self):
-        """放权语「随便你看着办」→ 跳过剩余追问，默认值明示后确认。"""
+        """放权语「随便，你看着办吧」→ 跳过剩余追问，默认值明示后确认。"""
         st = _state()
-        st["slots"]["city"] = "南宁"
+        # Phase 18: 广州专属下放权语应直接 confirm
+        st["slots"]["city"] = "广州"
         action = next_action(st, text="随便，你看着办吧")
         assert action["type"] == "confirm"
         assert st["slots"]["days"] == 3
@@ -104,7 +111,8 @@ class TestNextAction:
     def test_each_slot_asked_only_once(self):
         """同一槽位不重复追问：忽略天数问题 → 下一轮问偏好而非再问天数。"""
         st = _state()
-        st["slots"]["city"] = "南宁"
+        # Phase 18: 广州专属下状态机按 city→days→偏好 顺序追问
+        st["slots"]["city"] = "广州"
         a1 = next_action(st)
         assert a1["type"] == "ask" and "几天" in a1["reply"]
         # 用户答非所问，天数仍空 → 不应再问天数

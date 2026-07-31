@@ -17,26 +17,53 @@ from app.agents.dialog_manager import (
 from app.agents.planning_agent import _check_feasibility
 
 
-# ── KB City Coverage ─────────────────────────────────────
+# ── KB City Coverage (广州 AI+旅游休闲大赛专属) ────
+# 大赛只服务广州；非广州城市统一拒答/降级，全国 KB 已不再维护。
+# Phase 18 适配：原 test_kb_cities_loaded 等全国假设测试改写为广州专属。
+
+
+_GUANGZHOU_ALIASES = ("广州", "广州市", "穗", "羊城")
+
+
+def _is_guangzhou(city: str) -> bool:
+    if not city:
+        return False
+    c = city.strip()
+    if c in _GUANGZHOU_ALIASES:
+        return True
+    # 行政区名前缀（如 "广州增城"、"广州越秀"）→ 视为广州
+    return any(c.startswith(prefix) for prefix in _GUANGZHOU_ALIASES)
 
 
 class TestCityCoverage:
-    def test_kb_city_is_covered(self):
-        """A known KB city should be covered."""
-        covered, reason = check_city_coverage("重庆")
+    def test_guangzhou_is_covered(self):
+        """广州应是 KB 覆盖城市。"""
+        covered, reason = check_city_coverage("广州")
         assert covered is True
         assert reason == ""
 
-    def test_kb_city_chengdu_is_covered(self):
-        covered, reason = check_city_coverage("成都")
-        assert covered is True
+    def test_guangzhou_aliases_covered(self):
+        """广州常见别名（「广州市」「广州+行政区」拼接）应识别为广州。"""
+        for alias in ("广州市", "广州天河", "广州越秀", "广州番禺"):
+            covered, _ = check_city_coverage(alias)
+            assert covered is True, f"{alias!r} 应识别为广州"
+
+    def test_guangzhou_districts_covered(self):
+        """广州下辖区县（越秀/海珠/荔湾/天河/白云/番禺/花都/黄埔/南沙/增城/从化）
+        应通过模糊匹配识别为广州。"""
+        for district in (
+            "越秀", "海珠", "荔湾", "天河", "白云", "番禺",
+            "花都", "黄埔", "南沙", "增城", "从化",
+        ):
+            covered, reason = check_city_coverage(district)
+            assert covered is True, f"{district!r} 应识别为广州（{reason}）"
 
     def test_unknown_city_not_covered(self):
-        """A city outside the KB should NOT be covered."""
-        covered, reason = check_city_coverage("纽约")
-        assert covered is False
-        assert "纽约" in reason
-        assert "暂不在" in reason or "覆盖" in reason
+        """广州以外的城市不应被覆盖（大赛专属广州）。"""
+        for foreign in ("纽约", "东京", "巴黎", "伦敦"):
+            covered, reason = check_city_coverage(foreign)
+            assert covered is False, f"{foreign!r} 不应被覆盖"
+            assert foreign in reason
 
     def test_empty_city_not_covered(self):
         covered, reason = check_city_coverage("")
@@ -47,18 +74,16 @@ class TestCityCoverage:
         assert covered is False
 
     def test_city_substring_matches(self):
-        """Partial city name should match (e.g. '北京' should be covered)."""
-        covered, reason = check_city_coverage("北京")
-        # 北京 is in the KB
+        """部分名应通过子串匹配（如「广州市」中的「广州」）。"""
+        covered, reason = check_city_coverage("广州市天河区")
         assert covered is True
 
     def test_kb_cities_loaded(self):
-        """_get_kb_cities should return a non-empty set."""
+        """_get_kb_cities 应至少返回广州；其他城市可有可无（大赛允许 runtime 扩展）。"""
         _reset_kb_cities()
         cities = _get_kb_cities()
-        assert len(cities) >= 10
-        assert "重庆" in cities
-        assert "成都" in cities
+        assert "广州" in cities
+        assert len(cities) >= 1
 
 
 # ── Refuse Action ─────────────────────────────────────────
@@ -66,7 +91,7 @@ class TestCityCoverage:
 
 class TestRefuseAction:
     def test_next_action_refuses_unknown_city(self):
-        """When city is set to an unknown city, next_action should refuse."""
+        """非广州城市被拒答（followups 用完后）。"""
         state = {
             "stage": "collecting",
             "slots": dict(DEFAULT_SLOTS, city="纽约"),
@@ -81,10 +106,10 @@ class TestRefuseAction:
         assert "纽约" in action["reason"]
 
     def test_next_action_accepts_known_city(self):
-        """When city is a KB city, next_action should proceed to confirming."""
+        """广州（KB 覆盖）应推进到 confirming。"""
         state = {
             "stage": "collecting",
-            "slots": dict(DEFAULT_SLOTS, city="重庆"),
+            "slots": dict(DEFAULT_SLOTS, city="广州", days=3, tags=["美食"]),
             "followups_used": 3,
             "itinerary": None,
             "queued": [],
@@ -95,8 +120,7 @@ class TestRefuseAction:
         assert action["confirm"] is True
 
     def test_next_action_suggests_on_first_unknown(self):
-        """With followup budget remaining and BOTH required slots filled,
-        unknown city triggers suggestions."""
+        """首次出现非广州城市 → 给出广州建议（followups 剩余时）。"""
         state = {
             "stage": "collecting",
             "slots": dict(DEFAULT_SLOTS, city="纽约", days=3),
@@ -106,10 +130,12 @@ class TestRefuseAction:
             "touched": 0,
         }
         action = next_action(state)
-        # Both required slots filled → falls through to city coverage check
         assert action["type"] in ("suggest", "refuse")
         if action["type"] == "suggest":
             assert action.get("suggestions")
+            # 广州应在建议列表里（兜底/推荐）
+            labels = [s.get("city", "") for s in action["suggestions"]]
+            assert any("广州" in label for label in labels)
 
 
 # ── Feasibility Detection ───────────────────────────────

@@ -17,7 +17,7 @@ async def test_recommend_quick_returns_places():
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         resp = await client.post(
             "/api/v1/recommend/quick",
-            json={"city": "重庆", "tags": ["美食"], "budget": "舒适", "travel_month": 8, "top_k": 5},
+            json={"city": "广州", "tags": ["美食"], "budget": "舒适", "travel_month": 8, "top_k": 5},
         )
         assert resp.status_code == 200
         data = resp.json()
