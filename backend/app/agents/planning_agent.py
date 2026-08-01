@@ -129,7 +129,7 @@ async def _call_llm(
     tool_schema: Dict[str, Any],
     tool_description: str,
     temperature: float = 0.3,
-    max_tokens: int = 3000,
+    max_tokens: int = 4096,
 ) -> Optional[Dict[str, Any]]:
     """Single structured LLM call → tolerant-parsed JSON dict or None.
     
