@@ -920,13 +920,15 @@ def _validate_time_content_consistency(data: Dict[str, Any]) -> List[str]:
                 continue
 
             slot = _infer_time_slot(time_str)
-            poi = (item.get("poi", "") or "").lower()
+            # Phase 18 CI fix: only check note (text content),
+            # NOT poi name. POI names like "小龙坎火锅" are valid
+            # at any time slot (restaurants have all-day hours).
+            # Forbidden words mean "晚餐推荐" in the note, not POI name.
             note = (item.get("note", "") or "").lower()
-            combined = f"{poi} {note}"
 
             rules = _TIME_CONTENT_RULES.get(slot, {})
             for kw in rules.get("forbidden", []):
-                if kw in combined:
+                if kw in note:
                     errors.append(
                         f"第{day_idx}天第{item_idx + 1}项({time_str}): "
                         f"时间-内容不一致 — {slot}时段出现禁止关键词'{kw}'"
