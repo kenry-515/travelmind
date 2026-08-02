@@ -66,3 +66,11 @@ frontend/.env.local
 frontend/test-results/
 frontend/playwright-report/
 frontend/playwright/.cache/
+
+# Phase 5: 开发 artifacts (不应入仓)
+backend/.coverage
+backend/data/poi_cache/
+.claude/
+picture
+picture/*  # 用户测试图片,不入仓
+.pytest_cache/
