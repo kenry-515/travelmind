@@ -58,7 +58,8 @@
       "category": "attractions",
       "description_quality": "wikipedia",
       "district": "番禺区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "亲子"
     },
     {
       "name": "南越国木构水闸遗址",
@@ -111,7 +112,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/52/Guangzhou_Yuexiu_Nanyue_Guo_Mugou_Shuizha_Yizhi_20230707.162503.jpg"
     },
     {
       "name": "六榕寺",
@@ -148,7 +151,10 @@
       "price_level": "付费",
       "popularity_score": 7,
       "ai_enriched": true,
-      "price_range": null,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
       "price_source": "高德分类(风景名胜区需购票入园)，建议查询携程/飞猪获取实时票价",
       "price_updated_at": "2026-07-29",
       "name_normalized": "六榕寺",
@@ -165,7 +171,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/59/Temple_of_the_Six_Banyan_Trees_pagoda.jpg"
     },
     {
       "name": "广州起义纪念馆",
@@ -182,7 +190,7 @@
       "full_url": "https://zh.wikipedia.org/wiki/%E5%B9%BF%E5%B7%9E%E8%B5%B7%E4%B9%89%E7%BA%AA%E5%BF%B5%E9%A6%86",
       "description_source": "wikipedia_zh",
       "wiki_pageid": "913347",
-      "address": null,
+      "address": "起义路200-1(公园前地铁站J口步行60米)",
       "amap_id": null,
       "amap_type": null,
       "amap_typecode": null,
@@ -200,7 +208,10 @@
       "price_level": "付费",
       "popularity_score": 6,
       "ai_enriched": true,
-      "price_range": null,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
       "price_source": "价格未核实，建议自行查询",
       "price_updated_at": "2026-07-29",
       "name_normalized": "起义",
@@ -217,7 +228,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Gzqiyi.jpg"
     },
     {
       "name": "长隆野生动物世界",
@@ -276,7 +289,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "番禺区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "自然",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/00/Chimelong_Safari_Park.JPG"
     },
     {
       "name": "洪秀全故居",
@@ -343,7 +358,9 @@
       "description_quality": "enriched",
       "category": "attractions",
       "district": "花都区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/91/Guangzhou_Huadu_Hongxiuquan_Guju_20131123.162113.jpg"
     },
     {
       "name": "南湖游乐园",
@@ -409,7 +426,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "白云区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "亲子",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/38/NaamWuJauLokJyun.jpg"
     },
     {
       "name": "怀圣寺光塔",
@@ -426,7 +445,7 @@
       "full_url": "https://zh.wikipedia.org/wiki/%E6%80%80%E5%9C%A3%E5%AF%BA",
       "description_source": "wikipedia_zh",
       "wiki_pageid": "3569",
-      "address": null,
+      "address": "越秀区",
       "amap_id": null,
       "amap_type": null,
       "amap_typecode": null,
@@ -464,7 +483,8 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史"
     },
     {
       "name": "东方乐园",
@@ -531,7 +551,8 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "白云区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史"
     },
     {
       "name": "农民运动讲习所",
@@ -569,7 +590,10 @@
       "price_level": "付费",
       "popularity_score": 5,
       "ai_enriched": true,
-      "price_range": null,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
       "price_source": "高德分类(风景名胜区需购票入园)，建议查询携程/飞猪获取实时票价",
       "price_updated_at": "2026-07-29",
       "name_normalized": "农民运动讲习所",
@@ -585,7 +609,8 @@
       },
       "category": "attractions",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆"
     },
     {
       "name": "广州沙面建筑群",
@@ -643,7 +668,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/43/ShaMianBuildings.JPG"
     },
     {
       "name": "白云山",
@@ -701,7 +728,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "白云区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "自然",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/63/Guangzhou_Baiyun_Mountain_20230515.150422.jpg"
     },
     {
       "name": "广州塔",
@@ -758,7 +787,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "海珠区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Canton_Tower_2013.11.15_18-12-45.jpg"
     },
     {
       "name": "秦汉造船工场遗址",
@@ -813,7 +844,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5f/%E5%9B%9E%E5%A1%AB%E4%BF%9D%E8%AD%B7%E5%90%8E%E7%9A%84%E7%A7%A6%E4%BB%A3%E9%80%A0%E8%88%B9%E9%81%BA%E5%9D%80.JPG"
     },
     {
       "name": "黄埔军校燕塘分校旧址",
@@ -829,7 +862,7 @@
       "thumbnail_url": null,
       "full_url": null,
       "description_source": null,
-      "address": null,
+      "address": "长洲街",
       "amap_id": null,
       "amap_type": null,
       "amap_typecode": null,
@@ -867,7 +900,9 @@
       "description_quality": "structured",
       "category": "attractions",
       "district": "白云区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Site_of_Whampoa_Military_Academy.jpg"
     },
     {
       "name": "秦代造船遗址、南越国宫署遗址及南越文王墓",
@@ -883,7 +918,7 @@
       "thumbnail_url": null,
       "full_url": null,
       "description_source": "llm-generated",
-      "address": null,
+      "address": "中山四路316号南越王博物院(王宫展区)",
       "amap_id": null,
       "amap_type": null,
       "amap_typecode": null,
@@ -924,7 +959,9 @@
       },
       "category": "attractions",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Nanyue.svg"
     },
     {
       "name": "越秀山水塔",
@@ -979,7 +1016,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/13/%E8%B6%8A%E7%A7%80%E5%B1%B1%E6%B0%B4%E5%A1%9420230609.jpg"
     },
     {
       "name": "镇海楼与广州明城墙",
@@ -1034,7 +1073,9 @@
       "description_quality": "structured",
       "category": "attractions",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/10/%E5%B9%BF%E5%B7%9E%E9%95%87%E6%B5%B7%E6%A5%BC2019.jpg"
     },
     {
       "name": "广州航天奇观",
@@ -1089,7 +1130,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "天河区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "亲子",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Aerial_View%2C_Guangzhou_Space_Wonders_20230604-E.jpg"
     },
     {
       "name": "广东咨议局旧址",
@@ -1106,7 +1149,7 @@
       "full_url": "https://zh.wikipedia.org/wiki/%E5%B9%BF%E4%B8%9C%E9%9D%A9%E5%91%BD%E5%8E%86%E5%8F%B2%E5%8D%9A%E7%89%A9%E9%A6%86",
       "description_source": "wikipedia_zh",
       "wiki_pageid": "881173",
-      "address": null,
+      "address": "陵园西路2号大院2(烈士陵园地铁站D口步行240米)",
       "amap_id": null,
       "amap_type": null,
       "amap_typecode": null,
@@ -1143,7 +1186,9 @@
       },
       "category": "attractions",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Guangzhou_Guangdong_Ziyi_Ju_Jiuzhi_2014.01.24_15-07-14.jpg"
     },
     {
       "name": "黄埔军校旧址",
@@ -1202,7 +1247,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "天河区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Site_of_Whampoa_Military_Academy.jpg"
     },
     {
       "name": "余荫山房",
@@ -1261,7 +1308,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "番禺区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Guangzhou_Panyu_Yuyin_Shanfang_2012.11.19_16-11-37.jpg"
     },
     {
       "name": "南越国宫署遗址",
@@ -1327,7 +1376,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/21/Guangzhou_Yuexiu_Nanyue_Guo_Gongshu_Yizhi_20230823.172906.jpg"
     },
     {
       "name": "长隆欢乐世界",
@@ -1344,7 +1395,7 @@
       "full_url": "https://zh.wikipedia.org/wiki/%E9%95%BF%E9%9A%86%E6%AC%A2%E4%B9%90%E4%B8%96%E7%95%8C",
       "description_source": "wikipedia_zh",
       "wiki_pageid": "263677",
-      "address": null,
+      "address": "汉溪大道299号",
       "amap_id": null,
       "amap_type": null,
       "amap_typecode": null,
@@ -1385,7 +1436,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "番禺区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "亲子",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Guangzhou_Panyu_Changlong_Huanle_Shijie_2023-03-10_17.40.11.jpg"
     },
     {
       "name": "三元里平英团遗址",
@@ -1402,7 +1455,7 @@
       "full_url": "https://zh.wikipedia.org/wiki/%E4%B8%89%E5%85%83%E9%87%8C%E5%B9%B3%E8%8B%B1%E5%9B%A2%E9%81%97%E5%9D%80",
       "description_source": "wikipedia_zh",
       "wiki_pageid": "142731",
-      "address": null,
+      "address": "广园中路34号三元里人民抗英斗争纪念馆(西北角)",
       "amap_id": null,
       "amap_type": null,
       "amap_typecode": null,
@@ -1423,7 +1476,10 @@
       "price_level": "付费",
       "popularity_score": 6,
       "ai_enriched": true,
-      "price_range": null,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
       "price_source": "价格未核实，建议自行查询",
       "price_updated_at": "2026-07-29",
       "name_normalized": "三元里平英团",
@@ -1446,7 +1502,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "白云区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Guangzhou_Sanyuanli_Pingyingtuan_Yizhi_2014.01.30_13-38-58.jpg"
     },
     {
       "name": "广州长隆旅游度假区",
@@ -1504,7 +1562,8 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "番禺区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "自然"
     },
     {
       "name": "五仙门发电厂旧址",
@@ -1541,7 +1600,10 @@
       "price_level": "付费",
       "popularity_score": 2,
       "ai_enriched": true,
-      "price_range": null,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
       "price_source": "高德分类(风景名胜区需购票入园)，建议查询携程/飞猪获取实时票价",
       "price_updated_at": "2026-07-29",
       "name_normalized": "五仙门发电厂旧址",
@@ -1564,7 +1626,9 @@
       },
       "category": "attractions",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/4a/%E5%B9%BF%E5%B7%9E%E5%8D%8E%E4%BE%A8%E5%8D%9A%E7%89%A9%E9%A6%86%E4%B8%9C%E9%9D%A2.jpg"
     },
     {
       "name": "中山纪念堂",
@@ -1622,7 +1686,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Guangzhou_Yuexiu_Zhongshan_Jinian_Tang_2024-09-19_14.55.41.jpg"
     },
     {
       "name": "中国共产党广东区执行委员会旧址",
@@ -1638,7 +1704,7 @@
       "thumbnail_url": null,
       "full_url": null,
       "description_source": "wikipedia_zh",
-      "address": null,
+      "address": "文明路194-200号(农讲所地铁站A口步行430米)",
       "amap_id": null,
       "amap_type": null,
       "amap_typecode": null,
@@ -1677,7 +1743,8 @@
       "description_quality": "wikipedia",
       "category": "attractions",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史"
     },
     {
       "name": "广州动物园",
@@ -1734,7 +1801,9 @@
       },
       "category": "attractions",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "自然",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/35/Gzzoo.jpg"
     },
     {
       "name": "中华全国总工会旧址",
@@ -1800,7 +1869,8 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史"
     },
     {
       "name": "五仙观",
@@ -1837,7 +1907,10 @@
       "price_level": "付费",
       "popularity_score": 6,
       "ai_enriched": true,
-      "price_range": null,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
       "price_source": "高德分类(风景名胜区需购票入园)，建议查询携程/飞猪获取实时票价",
       "price_updated_at": "2026-07-29",
       "name_normalized": "五仙观",
@@ -1854,7 +1927,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2e/WuXianGuan-front-gate-0482.jpg"
     },
     {
       "name": "飞龙世界游乐城",
@@ -1978,7 +2053,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "南沙区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "自然",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/88/Sunflower_Garden.jpg"
     },
     {
       "name": "中國國民黨第一次全國代表大會舊址",
@@ -2044,7 +2121,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/14/Site_of_the_First_National_Congress_of_Kuomintang_20260609.jpg"
     },
     {
       "name": "广裕祠",
@@ -2061,7 +2140,7 @@
       "full_url": "https://zh.wikipedia.org/wiki/%E5%B9%BF%E8%A3%95%E7%A5%A0",
       "description_source": "wikipedia_zh",
       "wiki_pageid": "1355727",
-      "address": null,
+      "address": "太平镇钱岗古村",
       "amap_id": null,
       "amap_type": null,
       "amap_typecode": null,
@@ -2110,7 +2189,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "从化区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/dd/%E4%BB%8E%E5%8C%96%E5%B9%BF%E8%A3%95%E7%A5%A0.JPG"
     },
     {
       "name": "正佳极地海洋世界",
@@ -2127,7 +2208,7 @@
       "full_url": "https://zh.wikipedia.org/wiki/%E6%AD%A3%E4%BD%B3%E6%9E%81%E5%9C%B0%E6%B5%B7%E6%B4%8B%E4%B8%96%E7%95%8C",
       "description_source": "wikipedia_zh",
       "wiki_pageid": "5462889",
-      "address": null,
+      "address": "天河路228号正佳广场2层2D126",
       "amap_id": null,
       "amap_type": null,
       "amap_typecode": null,
@@ -2174,7 +2255,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "天河区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "亲子",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d8/%E6%AD%A3%E4%BD%B3%E6%A5%B5%E5%9C%B0%E6%B5%B7%E6%B4%8B%E4%B8%96%E7%95%8C_entrance_view_2019.jpg"
     },
     {
       "name": "粤海关",
@@ -2236,7 +2319,8 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史"
     },
     {
       "name": "广东省农民协会旧址",
@@ -2289,7 +2373,9 @@
       "category": "attractions",
       "description_quality": "enriched",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/7a/%E5%B9%BF%E4%B8%9C%E7%9C%81%E5%86%9C%E6%B0%91%E5%8D%8F%E4%BC%9A%E6%97%A7%E5%9D%801.jpg"
     },
     {
       "name": "莲花山古采石场",
@@ -2347,7 +2433,9 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "番禺区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Guangzhou_Panyu_Lianhuashan_Gucaishichang_2013.11.30_12-52-27.jpg"
     },
     {
       "name": "滋粥楼·顺德菜(南村万博长隆商圈店)",
@@ -3718,7 +3806,10 @@
       ],
       "price_level": "付费",
       "name_normalized": "陈家祠",
-      "price_range": null,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
       "price_source": "价格未核实，建议自行查询",
       "price_updated_at": "2026-07-29",
       "source": "kb-curated",
@@ -3744,7 +3835,10 @@
       "best_time": "全年",
       "suitable_for": "文化爱好者",
       "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "address": "1号线;8号线",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Chen_Clan_Ancestral_Hall_2025.06_02.jpg"
     },
     {
       "name": "石室圣心大教堂",
@@ -3787,7 +3881,10 @@
       "best_time": "全年",
       "suitable_for": "文化爱好者",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "address": "一德路旧部前56号",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/18/Sacred_Heart_Cathedral_of_Guangzhou_2025.06_02.jpg"
     },
     {
       "name": "上下九步行街",
@@ -3919,7 +4016,10 @@
       "best_time": "全年",
       "suitable_for": "文化爱好者",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "历史",
+      "address": "解放北路988号",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/54/Yuexiu_Park_Main_Gate_20260518.jpg"
     },
     {
       "name": "广东省博物馆",
@@ -3962,7 +4062,10 @@
       "best_time": "全年",
       "suitable_for": "文化爱好者",
       "district": "海珠区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "address": "珠江东路2号(大剧院地铁站B口步行180米)",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/53334088348_Guangdong_Museum_%28cropped%29.jpg"
     },
     {
       "name": "花城广场",
@@ -4010,7 +4113,10 @@
       "best_time": "全年",
       "suitable_for": "一般游客",
       "district": "海珠区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "城市",
+      "address": "珠江新城CBD中心区",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Huacheng_Square_Guangzhou.jpg"
     },
     {
       "name": "荔枝湾",
@@ -4136,7 +4242,10 @@
       "best_time": "全年",
       "suitable_for": "文化爱好者",
       "district": "海珠区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "城市",
+      "address": "珠江西路1号(珠江新城地铁站B1口步行350米)",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Guangzhou_Opera_House%28Near%29.JPG"
     },
     {
       "name": "中国大酒店",
@@ -4383,7 +4492,7 @@
       "city": "广州",
       "lat": 23.1224018,
       "lon": 113.2305374,
-      "address": "",
+      "address": "逢源北街84号",
       "osm_id": "node/335938598",
       "osm_verified": true,
       "source": "osm-overpass",
@@ -4419,7 +4528,8 @@
       "name_normalized": "荔湾博物馆",
       "category": "attractions",
       "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆"
     },
     {
       "name": "曜一城",
@@ -4468,7 +4578,7 @@
       "city": "广州",
       "lat": 23.1036095,
       "lon": 113.2566026,
-      "address": "",
+      "address": "宝岗路39号",
       "osm_id": "node/2468524829",
       "osm_verified": true,
       "source": "osm-overpass",
@@ -4511,7 +4621,7 @@
       "city": "广州",
       "lat": 22.7759334,
       "lon": 112.9611565,
-      "address": "",
+      "address": "较场西路17号(烈士陵园地铁站A口步行380米)",
       "osm_id": "node/2620781522",
       "osm_verified": true,
       "source": "osm-overpass",
@@ -4546,14 +4656,15 @@
       "name_normalized": "电信大厦",
       "category": "attractions",
       "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a9/%C2%B7%CB%99%C2%B7ChinaUli2010%C2%B7.%C2%B7_Hangzhou_-_Jinjiang_-_panoramio_%2838%29.jpg"
     },
     {
       "name": "太阳城广场",
       "city": "广州",
       "lat": 23.1903969,
       "lon": 113.3213133,
-      "address": "",
+      "address": "白灰场北路与广州大道北交叉口西160米",
       "osm_id": "node/3002368934",
       "osm_verified": true,
       "source": "osm-overpass",
@@ -4595,7 +4706,7 @@
       "city": "广州",
       "lat": 23.1284298,
       "lon": 113.279233,
-      "address": "",
+      "address": "大东街道较场西路26号地王广场负二楼2085铺",
       "osm_id": "node/3027804016",
       "osm_verified": true,
       "source": "osm-overpass",
@@ -4630,7 +4741,8 @@
       "name_normalized": "地王广场",
       "category": "attractions",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/fd/%E4%BB%8E%E5%9C%B0%E7%8E%8B%E5%A4%A7%E5%8E%A6%E4%B8%8A%E4%BF%AF%E7%9E%B0%E9%B9%8F%E5%9F%8E.jpg"
     },
     {
       "name": "万木草堂",
@@ -4673,7 +4785,8 @@
       "name_normalized": "万木草堂",
       "category": "attractions",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆"
     },
     {
       "name": "广州未来城",
@@ -4741,7 +4854,10 @@
       "ai_enriched": false,
       "indoor_type": "博物馆",
       "description": "这座纪念馆藏身于越华路一座不起眼的小楼，1911年黄兴就是在这里策划了震惊中外的广州起义。狭小的阁楼里复原了当年秘密会议的场景，墙上弹痕照片与烈士遗书让人瞬间回到那个热血沸腾的黎明前夜。",
-      "price_range": null,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
       "price_source": "价格未核实，建议自行查询",
       "price_updated_at": "2026-07-29",
       "description_source": "llm-generated",
@@ -4758,7 +4874,9 @@
       "name_normalized": "黄花岗起义指挥部旧址纪念馆",
       "category": "attractions",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/%E9%BB%84%E8%8A%B1%E5%B2%97b%EF%BC%8C%E4%B8%83%E5%8D%81%E4%BA%8C%E7%83%88%E5%A3%AB%E4%B9%8B%E5%A2%93_-_panoramio.jpg"
     },
     {
       "name": "顺德展览馆",
@@ -4801,14 +4919,16 @@
       "name_normalized": "顺德展览馆",
       "category": "attractions",
       "district": "南沙区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Beijing_Exhibition_Center_%2820180130133602%29.jpg"
     },
     {
       "name": "嘉州广场",
       "city": "广州",
       "lat": 23.1114144,
       "lon": 113.1833887,
-      "address": "",
+      "address": "中大新长江南区五街318-319档",
       "osm_id": "node/3721564530",
       "osm_verified": true,
       "source": "osm-overpass",
@@ -4843,14 +4963,15 @@
       "name_normalized": "嘉州广场",
       "category": "attractions",
       "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/25/Megamal_Pinang_outview_%28230929%29_01.jpg"
     },
     {
       "name": "广州市革命历史博物馆",
       "city": "广州",
       "lat": 23.1271846,
       "lon": 113.2593339,
-      "address": "",
+      "address": "陵园西路2号大院2号(烈士陵园地铁站D口步行210米)",
       "osm_id": "node/3934055533",
       "osm_verified": true,
       "source": "osm-overpass",
@@ -4887,14 +5008,16 @@
       "category": "attractions",
       "description_quality": "good",
       "district": "越秀区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Guangzhou_Guangdong_Ziyi_Ju_Jiuzhi_2014.01.24_15-07-14.jpg"
     },
     {
       "name": "乐从供销社大厦",
       "city": "广州",
       "lat": 22.9622372,
       "lon": 113.0798841,
-      "address": "",
+      "address": "东华东路643号",
       "osm_id": "node/4006906158",
       "osm_verified": true,
       "source": "osm-overpass",
@@ -4929,14 +5052,15 @@
       "name_normalized": "乐从供销社大厦",
       "category": "attractions",
       "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/04/Beijing_Daily_headquarters_%2820231007135602%29.jpg"
     },
     {
       "name": "燎原商业中心",
       "city": "广州",
       "lat": 23.0349618,
       "lon": 113.1170292,
-      "address": "",
+      "address": "麓景路黄田直街1-2号(小北地铁站C口步行390米)",
       "osm_id": "node/4013730502",
       "osm_verified": true,
       "source": "osm-overpass",
@@ -4971,7 +5095,8 @@
       "name_normalized": "燎原商业中心",
       "category": "attractions",
       "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/London_IMAX_cinema_2.jpg"
     },
     {
       "name": "普君新城步行街",
@@ -5013,14 +5138,15 @@
       "name_normalized": "普君新城步行街",
       "category": "attractions",
       "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/81/20181101%E9%92%B1%E6%B1%9F%E6%96%B0%E5%9F%8Elogo.jpg"
     },
     {
       "name": "音乐厅",
       "city": "广州",
       "lat": 23.0487072,
       "lon": 113.3995187,
-      "address": "",
+      "address": "白云街道白云街道二沙岛晴波路33号",
       "osm_id": "node/4015482164",
       "osm_verified": true,
       "source": "osm-overpass",
@@ -5055,14 +5181,15 @@
       "name_normalized": "音乐厅",
       "category": "attractions",
       "district": "番禺区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/34/150524_Konzerthaus_Berlin_%28Nacht%29_-_clone.jpg"
     },
     {
       "name": "李众胜堂祖铺 李众胜堂祖铺",
       "city": "广州",
       "lat": 23.0318686,
       "lon": 113.1099803,
-      "address": "",
+      "address": "荔湾体育馆西北门旁(陈家祠地铁站D口步行460米)",
       "osm_id": "node/4223070411",
       "osm_verified": true,
       "source": "osm-overpass",
@@ -5098,7 +5225,9 @@
       "name_normalized": "李众胜堂祖铺 李众胜堂祖铺",
       "category": "attractions",
       "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/79/Po_chai_pills.jpg"
     },
     {
       "name": "广州大学校史展览厅",
@@ -5141,14 +5270,15 @@
       "name_normalized": "广州大学校史展览厅",
       "category": "attractions",
       "district": "番禺区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "subcategory": "博物馆"
     },
     {
       "name": "学习共享空间",
       "city": "广州",
       "lat": 23.0430557,
       "lon": 113.3642726,
-      "address": "",
+      "address": "环市东路416号颐和商务酒店大堂进1501",
       "osm_id": "node/4445332618",
       "osm_verified": true,
       "source": "osm-overpass",
@@ -5184,7 +5314,8 @@
       "description_quality": "structured",
       "category": "attractions",
       "district": "番禺区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Information_commons.jpg"
     },
     {
       "name": "中盛国际",
@@ -5226,7 +5357,8 @@
       "name_normalized": "中盛国际",
       "category": "attractions",
       "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
+      "opening_hours": "09:00-17:00",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b0/SMIC_logo.svg"
     },
     {
       "name": "名典咖啡语茶",
@@ -7166,7 +7298,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/97/Administrative_Division_Guangzhou.png"
     },
     {
       "name": "增城白水寨",
@@ -7207,7 +7340,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/fe/BaakSeoiZaai.jpg"
     },
     {
       "name": "增城小楼人家",
@@ -7248,7 +7382,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Shanhaiguan.jpg"
     },
     {
       "name": "增城何仙姑景区",
@@ -7290,7 +7425,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/97/Administrative_Division_Guangzhou.png"
     },
     {
       "name": "增城湖心岛",
@@ -7331,7 +7467,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pavilion_of_Mist_and_Rain_02_2018-10.jpg"
     },
     {
       "name": "增城大丰门景区",
@@ -7372,7 +7509,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/fe/BaakSeoiZaai.jpg"
     },
     {
       "name": "增城万寿寺",
@@ -7414,7 +7552,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Guangzhou_Wanshousi_20190117.164454.jpg"
     },
     {
       "name": "增城挂绿广场",
@@ -7536,7 +7675,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/97/Administrative_Division_Guangzhou.png"
     },
     {
       "name": "黄埔军校旧址纪念馆",
@@ -7578,7 +7718,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Site_of_Whampoa_Military_Academy.jpg"
     },
     {
       "name": "南海神庙",
@@ -7620,7 +7761,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Guangzhou_Nanhaishen_Miao_2013.10.01_10-23-54.jpg"
     },
     {
       "name": "黄埔古港遗址",
@@ -7662,7 +7804,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/%E9%BB%84%E5%9F%94%E5%8F%A4%E6%B8%AF%E9%81%97%E5%9D%80.jpg"
     },
     {
       "name": "长洲岛",
@@ -7744,7 +7887,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Gzpeoplepark.jpg"
     },
     {
       "name": "南沙天后宫",
@@ -7786,7 +7930,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Tin_Hau_Temple_67.JPG"
     },
     {
       "name": "百万葵园",
@@ -7828,7 +7973,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/88/Sunflower_Garden.jpg"
     },
     {
       "name": "南沙滨海公园",
@@ -7869,7 +8015,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Nansha_Wetland_Park_Lotus_2.jpg"
     },
     {
       "name": "黄山鲁森林公园",
@@ -7910,7 +8057,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Huangshan_pic_4.jpg"
     },
     {
       "name": "十九涌渔人码头",
@@ -7951,7 +8099,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Kwai_Chung_Skyline_201004.jpg"
     },
     {
       "name": "花都香草世界",
@@ -7993,7 +8142,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/87/%E5%B9%BF%E5%B7%9E%E6%9C%80%E7%BE%8E%E4%B9%A1%E6%9D%91%E2%80%94%E7%BA%A2%E5%B1%B1%E6%9D%91_-_panoramio_%2848%29.jpg"
     },
     {
       "name": "石头记矿物园",
@@ -8078,7 +8228,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/91/Guangzhou_Huadu_Hongxiuquan_Guju_20131123.162113.jpg"
     },
     {
       "name": "花都盘古王庙",
@@ -8120,7 +8271,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/82/Pangu.jpg"
     },
     {
       "name": "王子山森林公园",
@@ -8161,7 +8313,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/34/%E7%8E%8B%E5%AD%90%E5%B1%B1%E6%A3%AE%E6%9E%97%E5%85%AC%E5%9B%AD_-_panoramio_%283%29.jpg"
     },
     {
       "name": "从化温泉",
@@ -8202,7 +8355,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/6a/1964-08_1964%E5%B9%B4_%E5%B9%BF%E4%B8%9C%E4%BB%8E%E5%8C%96%E6%B8%A9%E6%B3%89.jpg"
     },
     {
       "name": "石门国家森林公园",
@@ -8243,7 +8397,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/ea/%E7%9F%B3%E9%97%A8%E5%9B%BD%E5%AE%B6%E6%A3%AE%E6%9E%97%E5%85%AC%E5%9B%ADScenery_in_GhuangZhou%2C_China_-_panoramio_%283%29.jpg"
     },
     {
       "name": "流溪河国家森林公园",
@@ -8284,7 +8439,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/46/%E6%B5%81%E6%BA%AA%E9%A6%99%E9%9B%AAScenery_in_GhuangZhou%2C_China_-_panoramio_%284%29.jpg"
     },
     {
       "name": "从化钱岗古村",
@@ -8326,7 +8482,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/LingSauFong.jpg"
     },
     {
       "name": "从化北回归线标志塔",
@@ -8369,7 +8526,8 @@
         "description_quality_signal": 0.6,
         "reliability": "medium",
         "wikipedia_verified": false
-      }
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Conghua_toweroftropicofcancer.JPG"
     }
   ],
   "description_enriched": true,
