@@ -487,6 +487,29 @@ async def dialog_generate(
     state["stage"] = "generating"
     await save_session(sid, state)
     user_input = synthesize_input(state["slots"])
+
+    # Phase 5 P0.2: 注入用户收藏的 POI 到 user_input (LLM 优先安排)
+    if device_id:
+        try:
+            from app.services.favorite_service import list_favorites
+            from app.services.user_service import get_or_create_user
+            from app.database.connection import async_session
+
+            db = async_session()
+            try:
+                user = await get_or_create_user(db, device_id)
+                if user is not None:
+                    favs = await list_favorites(db, user.id, target_type="attraction")
+                    fav_pois = [f for f in favs if f.get("target_id")]
+                    if fav_pois:
+                        fav_names = [f["target_id"] for f in fav_pois[:8]]
+                        user_input += f"；我收藏了：{'、'.join(fav_names)}，请优先安排这些景点"
+                        logger.info(f"Injected {len(fav_names)} favorites into user_input")
+            finally:
+                await db.close()
+        except Exception as e:
+            logger.warning(f"favorites integration skipped: {e}")
+
     logger.info(f"Dialog generate: {_sanitize_log_value(user_input)}")
 
     try:

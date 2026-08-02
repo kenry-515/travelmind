@@ -902,6 +902,17 @@ def _infer_time_slot(time_str: str) -> str:
         return "night"
 
 
+
+
+def time_content_warnings(data: Dict[str, Any]) -> List[str]:
+    """Phase 5 P0.3: 返回 time-content 一致性 warnings (不 fail, 只 warn).
+
+    LLM 偶尔在 note 提 "晚餐" 之类对比词, 但实际安排合理 (e.g., "上午逛完后再去吃晚餐").
+    变 disrupt full validation 失败, 改为 warning.
+    """
+    return _validate_time_content_consistency(data)
+
+
 def _validate_time_content_consistency(data: Dict[str, Any]) -> List[str]:
     """Validate that each item's time matches its content (poi/note).
 
@@ -949,7 +960,11 @@ def _full_validate(
     + time-content consistency."""
     errors = validate_pre_injection(data)
     errors += validate_day_continuity(data)
-    errors += _validate_time_content_consistency(data)
+    # Phase 5 P0.3: time-content consistency 改为 warning, 不 fail
+    # (LLM 偶尔在 note 提 "晚餐" 之类对比词, 但实际安排合理)
+    if time_content_warnings(data):
+        for w in time_content_warnings(data):
+            logger.warning(f"Time-content warning: {w}")
     if budget_sum_mismatch(data):
         total = sum(b.get("amount", 0) for b in data.get("budget", []))
         errors.append(

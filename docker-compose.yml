@@ -73,6 +73,9 @@ services:
     image: redis:7-alpine
     volumes:
       - redis-data:/data
+    # Phase 18 P4: expose 6379 for WSL host (Mirrored mode needs port mapping)
+    ports:
+      - "6379:6379"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]

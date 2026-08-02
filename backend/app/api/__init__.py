@@ -14,6 +14,8 @@ from app.api.image import router as image_router
 from app.api.dialog import router as dialog_router
 from app.api.itineraries import router as itineraries_router
 from app.api.favorites import router as favorites_router
+from app.api.guide import router as guide_router
+from app.api.resources import router as resources_router
 
 api_router = APIRouter(prefix="/api/v1")
 api_router.include_router(health_router, tags=["health"])
@@ -25,3 +27,5 @@ api_router.include_router(image_router, tags=["image"])
 api_router.include_router(dialog_router, tags=["dialog"])
 api_router.include_router(itineraries_router, tags=["itineraries"])
 api_router.include_router(favorites_router, tags=["favorites"])
+api_router.include_router(guide_router, prefix="/guide", tags=["guide"])
+api_router.include_router(resources_router, prefix="/resources", tags=["resources"])

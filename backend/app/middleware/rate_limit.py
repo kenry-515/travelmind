@@ -218,7 +218,10 @@ class RateLimitMiddleware:
 
         ip = self._get_client_ip(scope)
         rate_per_sec, capacity = self._get_endpoint_key(path)
-        bucket_key = (ip, path.split("/")[3] if "/" in path else path)  # by IP+endpoint
+        # Phase 5 P0.4: Use safe endpoint key (avoid IndexError on short paths like /favicon.ico)
+        parts = [p for p in path.split("/") if p]
+        endpoint_id = parts[2] if len(parts) >= 3 else (parts[0] if parts else "root")
+        bucket_key = (ip, endpoint_id)  # by IP+endpoint
 
         # Phase 18 P4: Redis 限流 (跨 worker 一致), 失败降级到内存
         allowed, retry_after = await self._check_rate_async(bucket_key, rate_per_sec, capacity)
