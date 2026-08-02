@@ -1,8 +1,8 @@
 {
   "source": "Wikidata + Wikipedia + Amap + AI Enrichment + Amap Food + Indoor + Indoor + Indoor + Indoor + Indoor + Indoor + Indoor + Indoor + Indoor + Indoor + Indoor",
-  "enrich_date": "2026-07-31",
-  "total": 174,
-  "ai_enriched": 890,
+  "enrich_date": "2026-07-30",
+  "total": 3777,
+  "ai_enriched": 884,
   "attractions": [
     {
       "name": "长隆水上乐园",
@@ -57,6 +57,7 @@
       },
       "category": "attractions",
       "description_quality": "wikipedia",
+      "district": "番禺区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -109,6 +110,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -162,6 +164,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -213,6 +216,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -271,6 +275,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "番禺区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -337,6 +342,7 @@
       },
       "description_quality": "enriched",
       "category": "attractions",
+      "district": "花都区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -402,6 +408,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "白云区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -456,6 +463,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -522,6 +530,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "白云区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -575,6 +584,7 @@
         "reliability": "high"
       },
       "category": "attractions",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -632,6 +642,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "荔湾区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -689,6 +700,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "白云区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -745,6 +757,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "海珠区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -799,6 +812,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -852,6 +866,7 @@
       },
       "description_quality": "structured",
       "category": "attractions",
+      "district": "白云区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -908,6 +923,7 @@
         }
       },
       "category": "attractions",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -962,6 +978,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -972,7 +989,7 @@
       "city": "广州",
       "wiki_article": "",
       "wiki_article_en": "",
-      "wikidata_id": "Q133306887",
+      "wikidata_id": null,
       "instance_of": "遺跡",
       "description": "位于广州的历史遗址/建筑，见证了当地的历史变迁，适合历史爱好者和文化体验。 广州的特色建筑，展现了当地独特的建筑风格和艺术，适合摄影和文化体验。 广州的历史遗址，具有重要的历史文化价值，适合深度游览和文化探索。 广州的摄影胜地，拥有优美的光影和景观，适合专业和业余摄影爱好者。 主要特点包括：历史、建筑、遗址、摄影、深度。",
       "thumbnail_url": null,
@@ -984,7 +1001,7 @@
       "amap_typecode": "110000",
       "amap_photo_url": "https://store.is.autonavi.com/showpic/dd39e24e40a766c93ea936bd07d9f828",
       "amap_verified": true,
-      "source": "wikidata+amap",
+      "source": "amap",
       "tags": [
         "历史",
         "建筑",
@@ -1011,10 +1028,12 @@
         "tag_coverage_signal": 1.5,
         "source_quality_signal": 0.5,
         "description_quality_signal": 0.0,
-        "reliability": "high"
+        "reliability": "medium",
+        "wikipedia_verified": false
       },
       "description_quality": "structured",
       "category": "attractions",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1069,6 +1088,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "天河区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1122,6 +1142,7 @@
         "reliability": "high"
       },
       "category": "attractions",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1180,6 +1201,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "天河区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1238,6 +1260,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "番禺区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1303,6 +1326,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1360,6 +1384,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "番禺区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1420,6 +1445,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "白云区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1477,6 +1503,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "番禺区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1536,6 +1563,7 @@
         }
       },
       "category": "attractions",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1593,6 +1621,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1647,6 +1676,7 @@
       },
       "description_quality": "wikipedia",
       "category": "attractions",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1703,6 +1733,7 @@
         "reliability": "high"
       },
       "category": "attractions",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1768,6 +1799,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1821,6 +1853,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1880,6 +1913,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "番禺区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -1943,6 +1977,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "南沙区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -2008,6 +2043,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -2073,6 +2109,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "从化区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -2136,6 +2173,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "天河区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -2197,6 +2235,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "荔湾区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -2249,6 +2288,7 @@
       },
       "category": "attractions",
       "description_quality": "enriched",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -2306,6 +2346,7 @@
       },
       "category": "attractions",
       "description_quality": "good",
+      "district": "番禺区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -2350,6 +2391,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "番禺区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2394,6 +2436,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "荔湾区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2438,6 +2481,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "天河区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2481,6 +2525,7 @@
         "reliability": "high"
       },
       "category": "restaurants",
+      "district": "番禺区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2535,6 +2580,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "从化区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2579,6 +2625,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "花都区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2623,6 +2670,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2666,6 +2714,7 @@
         "reliability": "high"
       },
       "category": "restaurants",
+      "district": "花都区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2710,6 +2759,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2754,6 +2804,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "荔湾区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2797,6 +2848,7 @@
         "reliability": "high"
       },
       "category": "restaurants",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2841,6 +2893,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2885,6 +2938,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "白云区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2929,6 +2983,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -2972,6 +3027,7 @@
         "reliability": "high"
       },
       "category": "restaurants",
+      "district": "番禺区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3016,6 +3072,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "天河区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3060,6 +3117,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "天河区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3104,6 +3162,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3147,6 +3206,7 @@
         "reliability": "high"
       },
       "category": "restaurants",
+      "district": "从化区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3191,6 +3251,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3235,6 +3296,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "天河区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3278,6 +3340,7 @@
         "reliability": "high"
       },
       "category": "restaurants",
+      "district": "荔湾区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3322,6 +3385,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3366,6 +3430,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "番禺区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3410,6 +3475,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3454,6 +3520,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3498,6 +3565,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3542,6 +3610,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3586,6 +3655,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3630,6 +3700,7 @@
       },
       "category": "restaurants",
       "description_quality": "good",
+      "district": "番禺区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3672,7 +3743,7 @@
       "category": "attractions",
       "best_time": "全年",
       "suitable_for": "文化爱好者",
-      "popularity_score": 8,
+      "district": "荔湾区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -3715,6 +3786,7 @@
       "category": "attractions",
       "best_time": "全年",
       "suitable_for": "文化爱好者",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -3756,7 +3828,7 @@
       "category": "restaurants",
       "best_time": "全年",
       "suitable_for": "文化爱好者",
-      "popularity_score": 8,
+      "district": "荔湾区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3798,7 +3870,7 @@
       "category": "restaurants",
       "best_time": "全年",
       "suitable_for": "文化爱好者",
-      "popularity_score": 8,
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -3846,6 +3918,7 @@
       "category": "attractions",
       "best_time": "全年",
       "suitable_for": "文化爱好者",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -3888,6 +3961,7 @@
       "category": "attractions",
       "best_time": "全年",
       "suitable_for": "文化爱好者",
+      "district": "海珠区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -3935,6 +4009,7 @@
       "category": "attractions",
       "best_time": "全年",
       "suitable_for": "一般游客",
+      "district": "海珠区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -3975,6 +4050,7 @@
       "category": "restaurants",
       "best_time": "全年",
       "suitable_for": "文化爱好者",
+      "district": "荔湾区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -4016,6 +4092,7 @@
       "category": "restaurants",
       "best_time": "全年",
       "suitable_for": "文化爱好者",
+      "district": "天河区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -4058,6 +4135,7 @@
       "category": "attractions",
       "best_time": "全年",
       "suitable_for": "文化爱好者",
+      "district": "海珠区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4097,6 +4175,7 @@
         "reliability": "medium"
       },
       "category": "hotels",
+      "district": "越秀区",
       "opening_hours": "全天"
     },
     {
@@ -4136,6 +4215,7 @@
         "reliability": "medium"
       },
       "category": "hotels",
+      "district": "荔湾区",
       "opening_hours": "全天"
     },
     {
@@ -4175,6 +4255,7 @@
         "reliability": "medium"
       },
       "category": "hotels",
+      "district": "天河区",
       "opening_hours": "全天"
     },
     {
@@ -4214,6 +4295,7 @@
         "reliability": "medium"
       },
       "category": "hotels",
+      "district": "海珠区",
       "opening_hours": "全天"
     },
     {
@@ -4253,6 +4335,7 @@
         "reliability": "medium"
       },
       "category": "hotels",
+      "district": "越秀区",
       "opening_hours": "全天"
     },
     {
@@ -4292,6 +4375,7 @@
         "reliability": "medium"
       },
       "category": "hotels",
+      "district": "越秀区",
       "opening_hours": "全天"
     },
     {
@@ -4334,6 +4418,7 @@
       },
       "name_normalized": "荔湾博物馆",
       "category": "attractions",
+      "district": "荔湾区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4375,6 +4460,7 @@
       },
       "name_normalized": "曜一城",
       "category": "attractions",
+      "district": "天河区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4417,6 +4503,7 @@
       "name_normalized": "海珠区图书馆",
       "description_quality": "structured",
       "category": "attractions",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4458,6 +4545,7 @@
       },
       "name_normalized": "电信大厦",
       "category": "attractions",
+      "district": "荔湾区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4499,6 +4587,7 @@
       },
       "name_normalized": "太阳城广场",
       "category": "attractions",
+      "district": "白云区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4540,6 +4629,7 @@
       },
       "name_normalized": "地王广场",
       "category": "attractions",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4582,6 +4672,7 @@
       },
       "name_normalized": "万木草堂",
       "category": "attractions",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4623,6 +4714,7 @@
       },
       "name_normalized": "广州未来城",
       "category": "attractions",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4665,6 +4757,7 @@
       },
       "name_normalized": "黄花岗起义指挥部旧址纪念馆",
       "category": "attractions",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4707,6 +4800,7 @@
       },
       "name_normalized": "顺德展览馆",
       "category": "attractions",
+      "district": "南沙区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4748,6 +4842,7 @@
       },
       "name_normalized": "嘉州广场",
       "category": "attractions",
+      "district": "荔湾区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4791,6 +4886,7 @@
       "name_normalized": "广州市革命历史博物馆",
       "category": "attractions",
       "description_quality": "good",
+      "district": "越秀区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4832,6 +4928,7 @@
       },
       "name_normalized": "乐从供销社大厦",
       "category": "attractions",
+      "district": "荔湾区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4873,6 +4970,7 @@
       },
       "name_normalized": "燎原商业中心",
       "category": "attractions",
+      "district": "荔湾区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4914,6 +5012,7 @@
       },
       "name_normalized": "普君新城步行街",
       "category": "attractions",
+      "district": "荔湾区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4955,6 +5054,7 @@
       },
       "name_normalized": "音乐厅",
       "category": "attractions",
+      "district": "番禺区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -4997,6 +5097,7 @@
       },
       "name_normalized": "李众胜堂祖铺 李众胜堂祖铺",
       "category": "attractions",
+      "district": "荔湾区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -5039,6 +5140,7 @@
       },
       "name_normalized": "广州大学校史展览厅",
       "category": "attractions",
+      "district": "番禺区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -5081,6 +5183,7 @@
       "name_normalized": "学习共享空间",
       "description_quality": "structured",
       "category": "attractions",
+      "district": "番禺区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -5122,6 +5225,7 @@
       },
       "name_normalized": "中盛国际",
       "category": "attractions",
+      "district": "荔湾区",
       "opening_hours": "09:00-17:00"
     },
     {
@@ -5164,6 +5268,7 @@
       },
       "name_normalized": "名典咖啡语茶",
       "category": "restaurants",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5206,6 +5311,7 @@
       },
       "name_normalized": "明记海鲜城",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5245,6 +5351,7 @@
       },
       "name_normalized": "Pizzeria Montana",
       "category": "restaurants",
+      "district": "荔湾区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5287,6 +5394,7 @@
       },
       "name_normalized": "意珍",
       "category": "restaurants",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5329,6 +5437,7 @@
       },
       "name_normalized": "云居",
       "category": "restaurants",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5371,6 +5480,7 @@
       },
       "name_normalized": "佰鲜汇",
       "category": "restaurants",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5413,6 +5523,7 @@
       },
       "name_normalized": "华莱士",
       "category": "restaurants",
+      "district": "白云区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5455,6 +5566,7 @@
       },
       "name_normalized": "甜心狗",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5497,6 +5609,7 @@
       },
       "name_normalized": "稻菊",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5539,6 +5652,7 @@
       },
       "name_normalized": "校园咖啡",
       "category": "restaurants",
+      "district": "天河区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5581,6 +5695,7 @@
       },
       "name_normalized": "满记甜品",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5623,6 +5738,7 @@
       },
       "name_normalized": "鸿星海鲜酒家",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5663,6 +5779,7 @@
       "name_normalized": "椒堂米粉",
       "description_quality": "structured",
       "category": "restaurants",
+      "district": "天河区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5705,6 +5822,7 @@
       },
       "name_normalized": "Gail's",
       "category": "restaurants",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5747,6 +5865,7 @@
       },
       "name_normalized": "尊宝比萨",
       "category": "restaurants",
+      "district": "白云区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5789,6 +5908,7 @@
       },
       "name_normalized": "明记甜品",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5831,6 +5951,7 @@
       },
       "name_normalized": "百花甜品",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5873,6 +5994,7 @@
       },
       "name_normalized": "喜来稀肉",
       "category": "restaurants",
+      "district": "白云区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5913,6 +6035,7 @@
       "name_normalized": "洒德餐厅",
       "description_quality": "structured",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5955,6 +6078,7 @@
       },
       "name_normalized": "铂斯西餐厅",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -5995,6 +6119,7 @@
       "name_normalized": "南信牛奶甜品专家",
       "category": "restaurants",
       "description_quality": "good",
+      "district": "荔湾区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6034,6 +6159,7 @@
       },
       "name_normalized": "云山粥城",
       "category": "restaurants",
+      "district": "白云区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6076,6 +6202,7 @@
       },
       "name_normalized": "炳胜",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6116,6 +6243,7 @@
       "name_normalized": "竹升面",
       "description_quality": "structured",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6156,6 +6284,7 @@
       "name_normalized": "辣辣寿司",
       "description_quality": "structured",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6195,6 +6324,7 @@
       },
       "name_normalized": "翡翠拉面小笼包",
       "category": "restaurants",
+      "district": "荔湾区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6234,6 +6364,7 @@
       },
       "name_normalized": "小龙坎火锅",
       "category": "restaurants",
+      "district": "荔湾区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6276,6 +6407,7 @@
       },
       "name_normalized": "东海海鲜酒家",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6318,6 +6450,7 @@
       },
       "name_normalized": "日照工场",
       "category": "restaurants",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6357,6 +6490,7 @@
       },
       "name_normalized": "欧吉意大利餐厅",
       "category": "restaurants",
+      "district": "海珠区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6399,6 +6533,7 @@
       },
       "name_normalized": "不止咖啡",
       "category": "restaurants",
+      "district": "天河区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6438,6 +6573,7 @@
       },
       "name_normalized": "芬芳甜品（同福路点）",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6478,6 +6614,7 @@
       "name_normalized": "宝华面店",
       "description_quality": "structured",
       "category": "restaurants",
+      "district": "荔湾区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6520,6 +6657,7 @@
       },
       "name_normalized": "明记海鲜酒家",
       "category": "restaurants",
+      "district": "黄埔区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6562,6 +6700,7 @@
       },
       "name_normalized": "晨曦美食店",
       "category": "restaurants",
+      "district": "番禺区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6604,6 +6743,7 @@
       },
       "name_normalized": "顺记冰室",
       "category": "restaurants",
+      "district": "荔湾区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6643,6 +6783,7 @@
       },
       "name_normalized": "Be Bright",
       "category": "restaurants",
+      "district": "天河区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6682,6 +6823,7 @@
       },
       "name_normalized": "顺德一品粥",
       "category": "restaurants",
+      "district": "荔湾区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6724,6 +6866,7 @@
       },
       "name_normalized": "贝塔咖啡",
       "category": "restaurants",
+      "district": "天河区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6766,6 +6909,7 @@
       },
       "name_normalized": "塔斯汀",
       "category": "restaurants",
+      "district": "越秀区",
       "opening_hours": "11:00-22:00"
     },
     {
@@ -6886,6 +7030,7 @@
       "best_time": "全年",
       "suitable_for": "一般游客",
       "description_quality": "enriched",
+      "district": "荔湾区",
       "opening_hours": "全天"
     },
     {
@@ -6917,6 +7062,7 @@
       "best_time": "全年",
       "suitable_for": "一般游客",
       "description_quality": "enriched",
+      "district": "天河区",
       "opening_hours": "全天"
     },
     {
@@ -6937,6 +7083,7 @@
       "best_time": "全年",
       "price_level": "付费",
       "popularity_score": 10,
+      "district": "海珠区",
       "opening_hours": "全天"
     },
     {
@@ -6957,6 +7104,7 @@
       "best_time": "全年",
       "price_level": "免费",
       "popularity_score": 8,
+      "district": "荔湾区",
       "opening_hours": "全天"
     },
     {
@@ -6976,1497 +7124,100 @@
       "best_time": "全年",
       "price_level": "付费",
       "popularity_score": 8,
+      "district": "天河区",
       "opening_hours": "全天"
     },
     {
-      "name": "永庆坊",
-      "name_en": "Yongqingfang",
-      "lat": 23.1158,
-      "lon": 113.2397,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "永庆坊位于广州市荔湾区恩宁路，是广州最具老西关风情的历史文化街区。经过微改造后，保留了岭南传统骑楼建筑风貌，汇聚了粤剧艺术博物馆、李小龙祖居、八和会馆等文化地标，是体验广州非遗文化和老城生活的绝佳去处。2023年被评为国家级旅游休闲街区。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "荔湾区恩宁路99号",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "历史",
-        "文化",
-        "打卡",
-        "网红打卡",
-        "建筑",
-        "全年",
-        "景点",
-        "免费"
-      ],
-      "suitable_for": "文化爱好者、摄影爱好者、年轻人",
-      "best_time": "全年",
-      "price_level": "免费",
-      "popularity_score": 9,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "price_source": "免费开放",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "永庆坊",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "海心沙广场",
-      "name_en": "Haixinsha Square",
-      "lat": 23.1189,
-      "lon": 113.3247,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "海心沙是2010年广州亚运会开闭幕式举办地，位于珠江北岸、广州塔对岸，是珠江新城中轴线上的重要节点。现为城市广场公园，可近距离观赏广州塔全景，是欣赏珠江夜景和广州塔灯光秀的最佳观赏点之一。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "天河区珠江新城临江大道",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "地标",
-        "夜景",
-        "打卡",
-        "休闲",
-        "全年",
-        "景点",
-        "免费"
-      ],
-      "suitable_for": "所有人群",
-      "best_time": "全年",
-      "price_level": "免费",
-      "popularity_score": 8,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "price_source": "免费开放",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "海心沙广场",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "天河区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "五羊石像",
-      "name_en": "Five Rams Sculpture",
-      "lat": 23.1408,
-      "lon": 113.2663,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "五羊石像位于越秀公园内，是广州市的城市标志。雕塑建于1959年，高11米，用130块花岗岩雕刻而成。传说五位仙人骑五羊降临广州，留下稻穗并祝愿此地永无饥荒，广州因此得名「羊城」和「穗城」。是广州最具代表性的文化地标之一。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "越秀区解放北路988号越秀公园内",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "历史",
-        "地标",
-        "文化",
-        "打卡",
-        "摄影",
-        "全年",
-        "景点",
-        "免费"
-      ],
-      "suitable_for": "所有人群",
-      "best_time": "全年",
-      "price_level": "免费",
-      "popularity_score": 8,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "price_source": "越秀公园免费开放",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "五羊石像",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "越秀区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "岭南印象园",
-      "name_en": "Lingnan Impression Park",
-      "lat": 23.0447,
-      "lon": 113.3897,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "岭南印象园位于广州大学城南部，是展示岭南传统文化的大型主题公园。园内复原了岭南传统建筑、街巷、店铺和生活场景，可以体验粤剧、木雕、广绣、打铜等非遗技艺，品尝正宗岭南小吃，是了解岭南文化的窗口。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "番禺区大学城外环西路",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "文化",
-        "历史",
-        "亲子",
-        "家庭",
-        "休闲",
-        "全年",
-        "景点"
-      ],
-      "suitable_for": "亲子家庭、文化爱好者",
-      "best_time": "春秋季",
-      "price_level": "付费",
-      "popularity_score": 7,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 60,
-        "max": 80
-      },
-      "price_source": "门票约60-80元",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "岭南印象园",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "番禺区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "正佳广场",
-      "name_en": "Grandview Mall",
-      "lat": 23.1354,
-      "lon": 113.3276,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "正佳广场位于天河路商圈核心位置，是广州最大的购物中心之一。内设正佳极地海洋世界、正佳雨林生态植物园、自然科学博物馆等，是集购物、餐饮、娱乐、科普于一体的大型商业综合体，年客流量超过5000万人次。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "天河区天河路228号",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "购物",
-        "亲子",
-        "休闲",
-        "室内",
-        "全年",
-        "景点"
-      ],
-      "suitable_for": "购物爱好者、亲子家庭",
-      "best_time": "全年",
-      "price_level": "免费",
-      "popularity_score": 8,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "price_source": "免费入场（内部项目另收费）",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "正佳广场",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "天河区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "天河城",
-      "name_en": "Teemall",
-      "lat": 23.1351,
-      "lon": 113.3257,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "天河城是广州最早的大型购物中心之一，位于天河路商圈核心地段。地上7层地下3层，汇聚国内外品牌旗舰店、美食广场、电影院等，是广州人休闲购物的经典去处，也是中国第一座真正意义上的购物中心。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "天河区天河路208号",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "购物",
-        "休闲",
-        "室内",
-        "全年",
-        "景点"
-      ],
-      "suitable_for": "购物爱好者",
-      "best_time": "全年",
-      "price_level": "免费",
-      "popularity_score": 7,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "price_source": "免费入场",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "天河城",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "天河区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "太古汇",
-      "name_en": "TaiKoo Hui",
-      "lat": 23.1319,
-      "lon": 113.3254,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "太古汇是广州高端商业综合体，位于天河中央商务区核心位置。包含高端购物中心、甲级写字楼和广州文华东方酒店。商场设计现代典雅，汇聚国际奢侈品牌，内设方所书店等文化空间，是广州高端生活方式的代表。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "天河区天河路383号",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "购物",
-        "休闲",
-        "室内",
-        "全年",
-        "景点"
-      ],
-      "suitable_for": "购物爱好者",
-      "best_time": "全年",
-      "price_level": "高端",
-      "popularity_score": 7,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "price_source": "免费入场",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "太古汇",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "天河区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "光孝寺",
-      "name_en": "Guangxiao Temple",
-      "lat": 23.1307,
-      "lon": 113.2524,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "光孝寺是广州历史最悠久的佛教寺庙，始建于三国时期（约公元3世纪），距今已有1700多年历史。六祖惠能曾在此剃度出家并开坛说法，是中国禅宗重要祖庭之一。寺内有瘗发塔、东西铁塔等珍贵文物，是全国重点文物保护单位。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "越秀区光孝路109号",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "寺庙",
-        "历史",
-        "建筑",
-        "文化",
-        "遗址",
-        "全年",
-        "景点"
-      ],
-      "suitable_for": "文化爱好者",
-      "best_time": "全年",
-      "price_level": "付费",
-      "popularity_score": 7,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 5,
-        "max": 5
-      },
-      "price_source": "门票5元",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "光孝寺",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "越秀区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "华林寺",
-      "name_en": "Hualin Temple",
-      "lat": 23.1178,
-      "lon": 113.2497,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "华林寺位于荔湾区下九路，始建于梁武帝普通七年（526年），是中国佛教禅宗始祖达摩东渡中国后最早建立的道场之一。寺内有五百罗汉堂，供奉罗汉塑像，栩栩如生。是广州四大丛林之一，全国重点文物保护单位。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "荔湾区下九路华林寺前31号",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "寺庙",
-        "历史",
-        "建筑",
-        "文化",
-        "全年",
-        "景点"
-      ],
-      "suitable_for": "文化爱好者",
-      "best_time": "全年",
-      "price_level": "免费",
-      "popularity_score": 6,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "price_source": "免费开放",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "华林寺",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "西汉南越王博物馆",
-      "name_en": "Museum of the Western Han Dynasty Mausoleum of the Nanyue King",
-      "lat": 23.1404,
-      "lon": 113.2524,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "西汉南越王博物馆建立在南越国第二代国王赵眜的陵墓原址上，1983年被发现，是20世纪中国十大考古发现之一。墓中出土文物1000多件套，其中「丝缕玉衣」是迄今所见年代最早、最完整的玉衣。博物馆展示了南越国时期的历史文化和珍贵文物，是了解广州两千年建城史的必到之处。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "越秀区解放北路867号",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "博物馆",
-        "历史",
-        "遗址",
-        "文化",
-        "室内",
-        "全年",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化爱好者",
-      "best_time": "全年",
-      "price_level": "付费",
-      "popularity_score": 8,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 10,
-        "max": 12
-      },
-      "price_source": "门票10-12元",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "西汉南越王博物馆",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "越秀区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "广州图书馆",
-      "name_en": "Guangzhou Library",
-      "lat": 23.1191,
-      "lon": 113.3226,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "广州图书馆新馆位于花城广场核心位置，2013年开放，建筑面积9.8万平方米，是世界上最繁忙的公共图书馆之一。建筑造型取「美丽书籍」之意，内部空间通透现代。免费开放，是花城广场拍照打卡和休闲阅读的好去处。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "天河区珠江东路4号",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "建筑",
-        "文化",
-        "室内",
-        "打卡",
-        "全年",
-        "景点",
-        "免费"
-      ],
-      "suitable_for": "文艺青年、所有人群",
-      "best_time": "全年",
-      "price_level": "免费",
-      "popularity_score": 7,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "price_source": "免费开放",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "广州图书馆",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "天河区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "红专厂创意园",
-      "name_en": "Redtory Art District",
-      "lat": 23.1156,
-      "lon": 113.3472,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "红专厂原为广州鹰金钱罐头厂，2009年改造为当代艺术创意园区。保留了原厂房的红色砖墙建筑，汇聚了艺术画廊、设计工作室、咖啡馆、文化创意店铺等，是广州最具文艺气息的创意园区之一，被誉为「广州的798」。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "天河区员村四横路128号",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "艺术",
-        "创意",
-        "打卡",
-        "文艺",
-        "建筑",
-        "全年",
-        "景点"
-      ],
-      "suitable_for": "文艺青年、摄影爱好者",
-      "best_time": "全年",
-      "price_level": "免费",
-      "popularity_score": 7,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "price_source": "免费开放",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "红专厂创意园",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "天河区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "TIT创意园",
-      "name_en": "TIT Creative Park",
-      "lat": 23.0978,
-      "lon": 113.3219,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "TIT创意园前身为广州纺织机械厂，现改造为以服装创意为特色的创意园区。园区保留了工业时代的红砖厂房，汇聚了服装设计工作室、艺术展览、特色餐饮等。微信总部也设于此，是广州科技创新与文化创意结合的代表。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "海珠区新港中路397号",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "艺术",
-        "创意",
-        "打卡",
-        "文艺",
-        "建筑",
-        "全年",
-        "景点"
-      ],
-      "suitable_for": "文艺青年",
-      "best_time": "全年",
-      "price_level": "免费",
-      "popularity_score": 6,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "price_source": "免费开放",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "TIT创意园",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "海珠区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "恩宁路历史文化街区",
-      "name_en": "Enning Road Historic District",
-      "lat": 23.1153,
-      "lon": 113.2385,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "旅遊景點",
-      "description": "恩宁路是广州最完整的西关骑楼街，被誉为「广州最美老街」。街道两侧保留了大量民国时期骑楼建筑，沿线分布着永庆坊、粤剧艺术博物馆、八和会馆、李小龙祖居等文化景点。漫步其中，可感受老广州的市井烟火和岭南建筑之美。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "manual",
-      "address": "荔湾区恩宁路",
-      "amap_id": "",
-      "amap_type": "风景名胜;风景名胜",
-      "amap_typecode": "110200",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "manual",
-      "tags": [
-        "历史",
-        "文化",
-        "建筑",
-        "打卡",
-        "全年",
-        "景点",
-        "免费"
-      ],
-      "suitable_for": "文化爱好者、摄影爱好者",
-      "best_time": "全年",
-      "price_level": "免费",
-      "popularity_score": 8,
-      "ai_enriched": true,
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "price_source": "街区免费开放",
-      "price_updated_at": "2026-07-31",
-      "name_normalized": "恩宁路历史文化街区",
-      "internal_rating": 4.0,
-      "rating_source": "manual-curation",
-      "price_verifiable": true,
-      "data_quality": {
-        "popularity_signal": 1.5,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.3,
-        "description_quality_signal": 1.0,
-        "reliability": "medium",
-        "wikipedia_verified": false
-      },
-      "category": "attractions",
-      "description_quality": "manual",
-      "district": "荔湾区",
-      "opening_hours": "09:00-17:00"
-    },
-    {
-      "name": "珠江新城",
-      "name_en": "Zhujiang New Town",
-      "lat": 23.117,
-      "lon": 113.326,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "CBD",
-      "description": "珠江新城是广州市天河区的新城市中心，被誉为广州的'城市客厅'。作为广州CBD核心区，汇聚了广州塔、花城广场、大剧院、博物馆等文化地标，是广州现代都市形象的代表。白天可游览花城广场、广东省博物馆，晚上欣赏广州塔灯光秀和珠江夜景。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "ai_enriched",
-      "address": "天河区珠江新城",
-      "amap_id": "",
-      "amap_type": "",
-      "amap_typecode": "",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "ai_enriched",
-      "tags": [
-        "地标",
-        "夜景",
-        "都市",
-        "购物",
-        "文化"
-      ],
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 9,
-      "best_time": "傍晚-夜间",
-      "suitable_for": "亲子/情侣/商务",
-      "opening_hours": "全天开放",
-      "has_metro": true,
-      "metro_line": "3号线/5号线珠江新城站",
-      "district": "天河区"
-    },
-    {
-      "name": "陈家祠（广东民间工艺博物馆）",
-      "name_en": "Chen Clan Ancestral Hall",
-      "lat": 23.126,
-      "lon": 113.244,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "祠堂/博物馆",
-      "description": "陈家祠始建于1888年，是岭南地区保存最完整、装饰最精美的祠堂建筑。以木雕、石雕、砖雕、灰塑、铁铸、彩绘、石湾陶瓷'七绝'闻名，1988年被列为全国重点文物保护单位，现为广东民间工艺博物馆。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "wikipedia_zh",
-      "address": "荔湾区中山七路恩龙里34号",
-      "amap_id": "",
-      "amap_type": "",
-      "amap_typecode": "",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "wikidata+ai_enriched",
-      "tags": [
-        "历史",
-        "建筑",
-        "岭南文化",
-        "非遗",
-        "博物馆"
-      ],
-      "price_level": "付费",
-      "price_range": {
-        "min": 10,
-        "max": 20
-      },
-      "popularity_score": 8,
-      "best_time": "上午",
-      "suitable_for": "文化爱好者/亲子",
-      "opening_hours": "8:30-17:30",
-      "has_metro": true,
-      "metro_line": "1号线陈家祠站",
-      "district": "荔湾区"
-    },
-    {
-      "name": "广东省立中山图书馆",
-      "name_en": "Sun Yat-sen Library",
-      "lat": 23.126,
-      "lon": 113.252,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "图书馆",
-      "description": "广东省立中山图书馆是中国历史最悠久的公共图书馆之一，始建于1912年，以孙中山先生名字命名。馆内收藏丰富，建筑本身也是文物保护单位。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "ai_enriched",
-      "address": "越秀区文德路81号",
-      "amap_id": "",
-      "amap_type": "",
-      "amap_typecode": "",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "ai_enriched",
-      "tags": [
-        "图书馆",
-        "文化",
-        "历史",
-        "建筑"
-      ],
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 5,
-      "best_time": "全天",
-      "suitable_for": "文化爱好者",
-      "opening_hours": "9:00-21:00",
-      "has_metro": true,
-      "metro_line": "1号线农讲所站",
-      "district": "越秀区"
-    },
-    {
-      "name": "广州十三行博物馆",
-      "name_en": "Thirteen Factories Museum",
-      "lat": 23.118,
-      "lon": 113.241,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "博物馆",
-      "description": "广州十三行博物馆是展示清代广州十三行历史的专题博物馆。十三行是清代唯一的对外贸易口岸，见证了广州'千年商都'的辉煌。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "ai_enriched",
-      "address": "荔湾区荔湾路123号",
-      "amap_id": "",
-      "amap_type": "",
-      "amap_typecode": "",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "ai_enriched",
-      "tags": [
-        "博物馆",
-        "历史",
-        "贸易",
-        "文化"
-      ],
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 5,
-      "best_time": "全天",
-      "suitable_for": "文化爱好者",
-      "opening_hours": "9:00-17:00",
-      "has_metro": true,
-      "metro_line": "1号线长寿路站",
-      "district": "荔湾区"
-    },
-    {
-      "name": "广州融创乐园",
-      "name_en": "Guangzhou Sunac Land",
-      "lat": 23.127,
-      "lon": 113.318,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "主题公园",
-      "description": "广州融创乐园是大型主题游乐园，设有融创茂、融创雪世界、融创水世界等多个主题区域。尤其以室内滑雪世界闻名，是华南地区少有的四季滑雪场。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "ai_enriched",
-      "address": "花都区秀全街道",
-      "amap_id": "",
-      "amap_type": "",
-      "amap_typecode": "",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "ai_enriched",
-      "tags": [
-        "亲子",
-        "家庭",
-        "娱乐",
-        "滑雪"
-      ],
-      "price_level": "高端",
-      "price_range": {
-        "min": 200,
-        "max": 500
-      },
-      "popularity_score": 8,
-      "best_time": "全天",
-      "suitable_for": "亲子/家庭",
-      "opening_hours": "10:00-22:00",
-      "has_metro": false,
-      "metro_line": "",
-      "district": "花都区"
-    },
-    {
-      "name": "广州白云国际会议中心",
-      "name_en": "Guangzhou Baiyun International Convention Center",
-      "lat": 23.157,
-      "lon": 113.346,
-      "city": "广州",
-      "wiki_article": "",
-      "wiki_article_en": "",
-      "wikidata_id": "",
-      "instance_of": "展览馆",
-      "description": "广州白云国际会议中心是大型综合性会展中心，位于白云山麓。附近风景优美，是举办大型展会和活动的场所。",
-      "thumbnail_url": null,
-      "full_url": null,
-      "description_source": "ai_enriched",
-      "address": "白云区白云大道南1038-1046号",
-      "amap_id": "",
-      "amap_type": "",
-      "amap_typecode": "",
-      "amap_photo_url": null,
-      "amap_verified": false,
-      "source": "ai_enriched",
-      "tags": [
-        "会展",
-        "商务",
-        "建筑"
-      ],
-      "price_level": "未知",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 4,
-      "best_time": "全天",
-      "suitable_for": "商务",
-      "opening_hours": "8:00-22:00",
-      "has_metro": true,
-      "metro_line": "2号线越秀公园站",
-      "district": "白云区"
-    },
-    {
-      "name": "北京路千年古道",
+      "name": "增城荔枝文化村",
       "name_en": "",
-      "lat": 23.168205,
-      "lon": 113.282588,
+      "lat": 23.27,
+      "lon": 113.83,
       "city": "广州",
-      "district": "越秀区",
-      "description": "北京路地下发掘的千年古道遗址",
-      "address": "北京路商业步行街",
+      "district": "增城区",
+      "description": "增城荔枝文化村以荔枝为主题的农业观光村,盛产挂绿、糯米糍等优质荔枝品种。",
+      "address": "增城区增江街",
       "tags": [
-        "历史",
-        "文化",
+        "自然",
         "景点"
       ],
-      "suitable_for": "历史爱好者、文化游客",
+      "suitable_for": "户外爱好者、全年龄",
+      "best_time": "5-7月",
+      "opening_hours": "09:00-17:00",
+      "price_level": "免费",
+      "popularity_score": 6,
+      "internal_rating": 3.4,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
+      "category": "attractions",
+      "subcategory": "自然",
+      "amap_type": "风景名胜;风景名胜;国家级景点",
+      "amap_photo_url": null,
+      "amap_verified": true,
+      "source": "amap",
+      "ai_enriched": true,
+      "name_normalized": "增城荔枝文化村",
+      "wikidata_id": null,
+      "data_quality": {
+        "popularity_signal": 1.2,
+        "tag_coverage_signal": 1.0,
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
+        "wikipedia_verified": false
+      }
+    },
+    {
+      "name": "增城白水寨",
+      "name_en": "",
+      "lat": 23.51,
+      "lon": 113.78,
+      "city": "广州",
+      "district": "增城区",
+      "description": "白水寨风景名胜区拥有落差428.5米的天南第一瀑,是广州北部著名自然景区。",
+      "address": "增城区派潭镇白水寨",
+      "tags": [
+        "自然",
+        "景点"
+      ],
+      "suitable_for": "户外爱好者、全年龄",
       "best_time": "全年",
-      "opening_hours": "全天",
+      "opening_hours": "09:00-17:00",
       "price_level": "适中",
+      "popularity_score": 7,
+      "internal_rating": 3.5,
       "price_range": {
         "min": 50,
         "max": 100
       },
-      "popularity_score": 7,
-      "internal_rating": 4.4,
       "category": "attractions",
-      "subcategory": "历史",
+      "subcategory": "自然",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "北京路千年古道",
+      "name_normalized": "增城白水寨",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.4,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "南越国木构水闸遗址",
+      "name": "增城小楼人家",
       "name_en": "",
-      "lat": 23.080738,
-      "lon": 113.247284,
+      "lat": 23.36,
+      "lon": 113.78,
       "city": "广州",
-      "district": "越秀区",
-      "description": "南越国水利工程遗址,免费",
-      "address": "越秀区西湖路光明广场负一层",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
-      "opening_hours": "09:00-17:30",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.1,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "南越国木构水闸遗址",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "石室圣心大教堂",
-      "name_en": "",
-      "lat": 23.132495,
-      "lon": 113.299367,
-      "city": "广州",
-      "district": "越秀区",
-      "description": "哥特式天主教堂,广州地标",
-      "address": "越秀区一德路56号",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
-      "opening_hours": "周二-周日 09:00-17:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.9,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "石室圣心大教堂",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "六榕寺",
-      "name_en": "",
-      "lat": 23.093377,
-      "lon": 113.260264,
-      "city": "广州",
-      "district": "越秀区",
-      "description": "千年古刹,花塔巍峨",
-      "address": "越秀区六榕路87号",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
-      "opening_hours": "08:00-17:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 7,
-      "internal_rating": 4.0,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "六榕寺",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "城隍庙",
-      "name_en": "",
-      "lat": 23.116912,
-      "lon": 113.23253,
-      "city": "广州",
-      "district": "越秀区",
-      "description": "广州城隍庙,香火鼎盛",
-      "address": "越秀区中山四路忠佑大街",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
-      "opening_hours": "09:00-17:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.3,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "城隍庙",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "越秀公园五羊雕像",
-      "name_en": "",
-      "lat": 23.119135,
-      "lon": 113.220556,
-      "city": "广州",
-      "district": "越秀区",
-      "description": "广州城市标志五羊传说",
-      "address": "越秀区解放北路988号",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
-      "opening_hours": "06:00-22:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.7,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "越秀公园五羊雕像",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "中山纪念堂",
-      "name_en": "",
-      "lat": 23.147852,
-      "lon": 113.319133,
-      "city": "广州",
-      "district": "越秀区",
-      "description": "孙中山先生纪念堂",
-      "address": "越秀区东风中路299号",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
-      "opening_hours": "08:00-18:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.1,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "中山纪念堂",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "烈士陵园",
-      "name_en": "",
-      "lat": 23.17242,
-      "lon": 113.292153,
-      "city": "广州",
-      "district": "越秀区",
-      "description": "广州起义烈士纪念园",
-      "address": "越秀区中山三路34号",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
-      "opening_hours": "06:30-21:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.6,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "烈士陵园",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "光孝寺",
-      "name_en": "",
-      "lat": 23.14699,
-      "lon": 113.295365,
-      "city": "广州",
-      "district": "越秀区",
-      "description": "岭南第一古刹",
-      "address": "越秀区光孝路109号",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
-      "opening_hours": "06:00-17:30",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 7,
-      "internal_rating": 4.4,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "光孝寺",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广州塔（小蛮腰）",
-      "name_en": "",
-      "lat": 23.114619,
-      "lon": 113.28129,
-      "city": "广州",
-      "district": "海珠区",
-      "description": "广州新地标,俯瞰珠江夜景",
-      "address": "海珠区阅江西路222号",
-      "tags": [
-        "夜景",
-        "摄影",
-        "网红打卡",
-        "景点"
-      ],
-      "suitable_for": "情侣、摄影爱好者",
-      "best_time": "全年",
-      "opening_hours": "09:30-22:30",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 10,
-      "internal_rating": 5.6,
-      "category": "attractions",
-      "subcategory": "夜景",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "广州塔(小蛮腰)",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 2.0,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "海珠湿地公园",
-      "name_en": "",
-      "lat": 23.126871,
-      "lon": 113.262853,
-      "city": "广州",
-      "district": "海珠区",
-      "description": "城市湿地公园,候鸟观赏",
-      "address": "海珠区新滘东路168号",
+      "district": "增城区",
+      "description": "小楼人家景区融合田园风光与岭南民俗,展现增城乡村文化。",
+      "address": "增城区小楼镇",
       "tags": [
         "自然",
         "景点"
@@ -8475,170 +7226,39 @@
       "best_time": "全年",
       "opening_hours": "09:00-17:00",
       "price_level": "免费",
+      "popularity_score": 5,
+      "internal_rating": 2.5,
       "price_range": {
         "min": 0,
         "max": 0
       },
-      "popularity_score": 7,
-      "internal_rating": 3.8,
       "category": "attractions",
       "subcategory": "自然",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "海珠湿地公园",
+      "name_normalized": "增城小楼人家",
       "wikidata_id": null,
       "data_quality": {
-        "popularity_signal": 1.4,
+        "popularity_signal": 1.0,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "珠江夜游大沙头码头",
+      "name": "增城何仙姑景区",
       "name_en": "",
-      "lat": 23.075443,
-      "lon": 113.338855,
+      "lat": 23.36,
+      "lon": 113.79,
       "city": "广州",
-      "district": "海珠区",
-      "description": "珠江夜游,两江交汇",
-      "address": "海珠区滨江东路630号",
-      "tags": [
-        "夜景",
-        "摄影",
-        "网红打卡",
-        "景点"
-      ],
-      "suitable_for": "情侣、摄影爱好者",
-      "best_time": "全年",
-      "opening_hours": "18:00-21:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.1,
-      "category": "attractions",
-      "subcategory": "夜景",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "珠江夜游大沙头码头",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "TIT创意园",
-      "name_en": "",
-      "lat": 23.111897,
-      "lon": 113.303483,
-      "city": "广州",
-      "district": "海珠区",
-      "description": "广州文创地标,前身纺织厂",
-      "address": "海珠区新港中路397号",
-      "tags": [
-        "文化",
-        "艺术",
-        "景点"
-      ],
-      "suitable_for": "文艺青年、成年人",
-      "best_time": "全年",
-      "opening_hours": "10:00-22:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 6,
-      "internal_rating": 4.0,
-      "category": "attractions",
-      "subcategory": "文化",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "tit创意园",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广州美术学院美术馆",
-      "name_en": "",
-      "lat": 23.094173,
-      "lon": 113.290492,
-      "city": "广州",
-      "district": "海珠区",
-      "description": "高校美术馆",
-      "address": "海珠区昌岗东路257号",
-      "tags": [
-        "文化",
-        "艺术",
-        "景点"
-      ],
-      "suitable_for": "文艺青年、成年人",
-      "best_time": "全年",
-      "opening_hours": "09:30-17:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.4,
-      "category": "attractions",
-      "subcategory": "文化",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "广州美术学院美术馆",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "黄埔古港",
-      "name_en": "",
-      "lat": 23.07056,
-      "lon": 113.307324,
-      "city": "广州",
-      "district": "海珠区",
-      "description": "海上丝绸之路古港",
-      "address": "海珠区石基路520号",
+      "district": "增城区",
+      "description": "传说中八仙之一何仙姑的故乡,景区内有仙姑家庙、庙宇等历史建筑。",
+      "address": "增城区小楼镇",
       "tags": [
         "历史",
         "文化",
@@ -8648,765 +7268,284 @@
       "best_time": "全年",
       "opening_hours": "09:00-17:00",
       "price_level": "免费",
+      "popularity_score": 5,
+      "internal_rating": 2.9,
       "price_range": {
         "min": 0,
         "max": 0
       },
-      "popularity_score": 6,
-      "internal_rating": 3.4,
       "category": "attractions",
       "subcategory": "历史",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "黄埔古港",
+      "name_normalized": "增城何仙姑景区",
       "wikidata_id": null,
       "data_quality": {
-        "popularity_signal": 1.2,
+        "popularity_signal": 1.0,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "沙面岛",
+      "name": "增城湖心岛",
       "name_en": "",
-      "lat": 23.108713,
-      "lon": 113.240895,
+      "lat": 23.42,
+      "lon": 113.83,
       "city": "广州",
-      "district": "荔湾区",
-      "description": "欧陆风情建筑群,历史保护区",
-      "address": "荔湾区珠江岔口白鹅潭畔",
+      "district": "增城区",
+      "description": "湖心岛是增江上游的江心岛屿,以生态旅游和农家乐为主。",
+      "address": "增城区正果镇",
       "tags": [
-        "历史",
-        "文化",
+        "自然",
         "景点"
       ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.3,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "沙面岛",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "西关大屋",
-      "name_en": "",
-      "lat": 23.08247,
-      "lon": 113.265143,
-      "city": "广州",
-      "district": "荔湾区",
-      "description": "岭南传统民居代表",
-      "address": "荔湾区逢源北街84号",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
+      "suitable_for": "户外爱好者、全年龄",
       "best_time": "全年",
       "opening_hours": "09:00-17:00",
       "price_level": "免费",
+      "popularity_score": 5,
+      "internal_rating": 2.9,
       "price_range": {
         "min": 0,
         "max": 0
       },
-      "popularity_score": 7,
-      "internal_rating": 4.1,
       "category": "attractions",
-      "subcategory": "历史",
+      "subcategory": "自然",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "西关大屋",
+      "name_normalized": "增城湖心岛",
       "wikidata_id": null,
       "data_quality": {
-        "popularity_signal": 1.4,
+        "popularity_signal": 1.0,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "荔枝湾涌",
+      "name": "增城大丰门景区",
       "name_en": "",
-      "lat": 23.101732,
-      "lon": 113.181998,
+      "lat": 23.5,
+      "lon": 113.78,
       "city": "广州",
-      "district": "荔湾区",
-      "description": "西关水乡风情,荔枝湾涌",
-      "address": "荔湾区龙津西路逢源路口",
+      "district": "增城区",
+      "description": "大丰门景区以峡谷漂流和原始森林生态著称,是华南地区知名漂流胜地。",
+      "address": "增城区派潭镇",
       "tags": [
-        "历史",
-        "文化",
+        "自然",
         "景点"
       ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 7,
-      "internal_rating": 3.9,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "荔枝湾涌",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广州十三行博物馆",
-      "name_en": "",
-      "lat": 23.142085,
-      "lon": 113.252614,
-      "city": "广州",
-      "district": "荔湾区",
-      "description": "清代广州十三行历史",
-      "address": "荔湾区西堤二马路37号",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
+      "suitable_for": "户外爱好者、全年龄",
       "best_time": "全年",
       "opening_hours": "09:00-17:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.8,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "广州十三行博物馆",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "清平饭店",
-      "name_en": "",
-      "lat": 23.091419,
-      "lon": 113.219807,
-      "city": "广州",
-      "district": "荔湾区",
-      "description": "传统粤菜,清平路美食街",
-      "address": "荔湾区清平路55号",
-      "tags": [
-        "美食",
-        "餐厅"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-21:00",
       "price_level": "适中",
+      "popularity_score": 6,
+      "internal_rating": 3.1,
       "price_range": {
         "min": 50,
         "max": 100
       },
-      "popularity_score": 6,
-      "internal_rating": 3.0,
       "category": "attractions",
-      "subcategory": "美食",
+      "subcategory": "自然",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "清平饭店",
+      "name_normalized": "增城大丰门景区",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.2,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "花城广场",
+      "name": "增城万寿寺",
       "name_en": "",
-      "lat": 23.151575,
-      "lon": 113.315624,
+      "lat": 23.3,
+      "lon": 113.78,
       "city": "广州",
-      "district": "天河区",
-      "description": "城市客厅,广州塔观赏点",
-      "address": "天河区珠江新城花城大道",
+      "district": "增城区",
+      "description": "万寿寺始建于宋代,是增城区重要的佛教活动场所。",
+      "address": "增城区永和镇",
       "tags": [
-        "夜景",
-        "摄影",
-        "网红打卡",
-        "景点"
-      ],
-      "suitable_for": "情侣、摄影爱好者",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.4,
-      "category": "attractions",
-      "subcategory": "夜景",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "花城广场",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广州大剧院",
-      "name_en": "",
-      "lat": 23.107659,
-      "lon": 113.370352,
-      "city": "广州",
-      "district": "天河区",
-      "description": "扎哈·哈迪德设计地标",
-      "address": "天河区珠江新城华夏路1号",
-      "tags": [
-        "文化",
-        "艺术",
-        "景点"
-      ],
-      "suitable_for": "文艺青年、成年人",
-      "best_time": "全年",
-      "opening_hours": "演出时间",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 7,
-      "internal_rating": 3.7,
-      "category": "attractions",
-      "subcategory": "文化",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "广州大剧院",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广东省博物馆",
-      "name_en": "",
-      "lat": 23.118181,
-      "lon": 113.311083,
-      "city": "广州",
-      "district": "天河区",
-      "description": "广东历史文物总汇",
-      "address": "天河区珠江东路2号",
-      "tags": [
-        "博物馆",
-        "文化",
         "历史",
-        "景点"
-      ],
-      "suitable_for": "家庭、学生、文艺青年",
-      "best_time": "全年",
-      "opening_hours": "周二-周日 09:00-17:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.1,
-      "category": "attractions",
-      "subcategory": "博物馆",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "广东省博物馆",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广州图书馆",
-      "name_en": "",
-      "lat": 23.098978,
-      "lon": 113.342578,
-      "city": "广州",
-      "district": "天河区",
-      "description": "广州地标图书馆",
-      "address": "天河区珠江东路4号",
-      "tags": [
         "文化",
-        "艺术",
         "景点"
       ],
-      "suitable_for": "文艺青年、成年人",
+      "suitable_for": "历史爱好者、文化游客",
       "best_time": "全年",
-      "opening_hours": "09:00-21:00",
+      "opening_hours": "09:00-17:00",
       "price_level": "免费",
+      "popularity_score": 5,
+      "internal_rating": 3.0,
       "price_range": {
         "min": 0,
         "max": 0
       },
-      "popularity_score": 7,
-      "internal_rating": 3.7,
       "category": "attractions",
-      "subcategory": "文化",
+      "subcategory": "历史",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "广州图书馆",
+      "name_normalized": "增城万寿寺",
       "wikidata_id": null,
       "data_quality": {
-        "popularity_signal": 1.4,
+        "popularity_signal": 1.0,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "太古汇",
+      "name": "增城挂绿广场",
       "name_en": "",
-      "lat": 23.091592,
-      "lon": 113.35689,
+      "lat": 23.27,
+      "lon": 113.83,
       "city": "广州",
-      "district": "天河区",
-      "description": "高端购物中心",
-      "address": "天河区天河路383号",
+      "district": "增城区",
+      "description": "挂绿广场以增城挂绿荔枝命名,周边商业繁华,是增城城区核心地标。",
+      "address": "增城区荔城街",
       "tags": [
         "购物",
         "商业街"
       ],
       "suitable_for": "年轻人、时尚达人",
       "best_time": "全年",
-      "opening_hours": "10:00-22:00",
-      "price_level": "付费",
+      "opening_hours": "09:00-17:00",
+      "price_level": "免费",
+      "popularity_score": 5,
+      "internal_rating": 2.6,
       "price_range": {
-        "min": 50,
-        "max": 200
+        "min": 0,
+        "max": 0
       },
-      "popularity_score": 7,
-      "internal_rating": 4.3,
       "category": "attractions",
       "subcategory": "购物",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "太古汇",
+      "name_normalized": "增城挂绿广场",
       "wikidata_id": null,
       "data_quality": {
-        "popularity_signal": 1.4,
+        "popularity_signal": 1.0,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "正佳广场",
+      "name": "增城百花山庄",
       "name_en": "",
-      "lat": 23.156441,
-      "lon": 113.288157,
+      "lat": 23.27,
+      "lon": 113.83,
       "city": "广州",
-      "district": "天河区",
-      "description": "综合购物+海洋馆",
-      "address": "天河区天河路228号",
+      "district": "增城区",
+      "description": "百花山庄度假村位于增江畔,提供住宿、会议、餐饮服务。",
+      "address": "增城区增江街",
+      "tags": [
+        "景点"
+      ],
+      "suitable_for": "全年龄",
+      "best_time": "全年",
+      "opening_hours": "全天",
+      "price_level": "适中",
+      "popularity_score": 5,
+      "internal_rating": 2.7,
+      "price_range": {
+        "min": 50,
+        "max": 100
+      },
+      "category": "hotels",
+      "subcategory": null,
+      "amap_type": "餐饮服务;餐厅",
+      "amap_photo_url": null,
+      "amap_verified": true,
+      "source": "amap",
+      "ai_enriched": true,
+      "name_normalized": "增城百花山庄",
+      "wikidata_id": null,
+      "data_quality": {
+        "popularity_signal": 1.0,
+        "tag_coverage_signal": 1.0,
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
+        "wikipedia_verified": false
+      }
+    },
+    {
+      "name": "增城万达广场",
+      "name_en": "",
+      "lat": 23.28,
+      "lon": 113.83,
+      "city": "广州",
+      "district": "增城区",
+      "description": "增城万达广场集购物、餐饮、娱乐于一体,是当地最大的商业综合体。",
+      "address": "增城区荔城街",
       "tags": [
         "购物",
         "商业街"
       ],
       "suitable_for": "年轻人、时尚达人",
       "best_time": "全年",
-      "opening_hours": "10:00-22:00",
-      "price_level": "付费",
+      "opening_hours": "09:00-17:00",
+      "price_level": "免费",
+      "popularity_score": 6,
+      "internal_rating": 3.2,
       "price_range": {
-        "min": 50,
-        "max": 200
+        "min": 0,
+        "max": 0
       },
-      "popularity_score": 7,
-      "internal_rating": 4.2,
       "category": "attractions",
       "subcategory": "购物",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "正佳广场",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "石牌牌坊",
-      "name_en": "",
-      "lat": 23.150673,
-      "lon": 113.34838,
-      "city": "广州",
-      "district": "天河区",
-      "description": "明代古牌坊",
-      "address": "天河区五山路",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.0,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "石牌牌坊",
+      "name_normalized": "增城万达广场",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.2,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "白云山风景名胜区",
+      "name": "黄埔军校旧址纪念馆",
       "name_en": "",
-      "lat": 23.13755,
-      "lon": 113.239428,
-      "city": "广州",
-      "district": "白云区",
-      "description": "广州第一山,城市绿肺",
-      "address": "白云区广园中路白云山",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "06:00-22:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 9,
-      "internal_rating": 4.7,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "白云山风景名胜区",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.8,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "白云山摩星岭",
-      "name_en": "",
-      "lat": 23.214193,
-      "lon": 113.239013,
-      "city": "广州",
-      "district": "白云区",
-      "description": "广州最高点,俯瞰全城",
-      "address": "白云区广园中路白云山",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "08:00-18:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.9,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "白云山摩星岭",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "云台花园",
-      "name_en": "",
-      "lat": 23.133161,
-      "lon": 113.248739,
-      "city": "广州",
-      "district": "白云区",
-      "description": "白云山特色花园",
-      "address": "白云区广园中路白云山",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "08:00-18:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 7,
-      "internal_rating": 4.2,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "云台花园",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "帽峰山森林公园",
-      "name_en": "",
-      "lat": 23.134474,
-      "lon": 113.240926,
-      "city": "广州",
-      "district": "白云区",
-      "description": "广州第二峰,生态游",
-      "address": "白云区钟落潭镇九太路1382号",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "07:00-18:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.1,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "帽峰山森林公园",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "三元里抗英斗争纪念馆",
-      "name_en": "",
-      "lat": 23.158357,
-      "lon": 113.232923,
-      "city": "广州",
-      "district": "白云区",
-      "description": "近代史教育基地",
-      "address": "白云区广园中路34号",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
-      "opening_hours": "09:00-17:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.9,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "三元里抗英斗争纪念馆",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "黄埔军校旧址",
-      "name_en": "",
-      "lat": 23.131718,
-      "lon": 113.476893,
+      "lat": 23.1,
+      "lon": 113.4,
       "city": "广州",
       "district": "黄埔区",
-      "description": "近代革命史教育基地",
+      "description": "黄埔军校旧址是中国近代史上著名的军事学校,现为全国重点文物保护单位。",
       "address": "黄埔区长洲岛军校路170号",
       "tags": [
         "历史",
@@ -9415,168 +7554,40 @@
       ],
       "suitable_for": "历史爱好者、文化游客",
       "best_time": "全年",
-      "opening_hours": "周二-周日 09:00-17:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 9,
-      "internal_rating": 5.0,
-      "category": "attractions",
-      "subcategory": "历史",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "黄埔军校旧址",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.8,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "黄埔古港",
-      "name_en": "",
-      "lat": 23.136455,
-      "lon": 113.443912,
-      "city": "广州",
-      "district": "黄埔区",
-      "description": "海上丝绸之路起点之一",
-      "address": "黄埔区黄埔东路668号",
-      "tags": [
-        "历史",
-        "文化",
-        "景点"
-      ],
-      "suitable_for": "历史爱好者、文化游客",
-      "best_time": "全年",
       "opening_hours": "09:00-17:00",
       "price_level": "免费",
+      "popularity_score": 8,
+      "internal_rating": 4.2,
       "price_range": {
         "min": 0,
         "max": 0
       },
-      "popularity_score": 6,
-      "internal_rating": 3.4,
       "category": "attractions",
       "subcategory": "历史",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "黄埔古港",
+      "name_normalized": "黄埔军校旧址纪念馆",
       "wikidata_id": null,
       "data_quality": {
-        "popularity_signal": 1.2,
+        "popularity_signal": 1.6,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "长洲岛",
-      "name_en": "",
-      "lat": 23.168385,
-      "lon": 113.425639,
-      "city": "广州",
-      "district": "黄埔区",
-      "description": "珠江江心岛,生态游",
-      "address": "黄埔区长洲街道",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.7,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "长洲岛",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "龙头山森林公园",
-      "name_en": "",
-      "lat": 23.130157,
-      "lon": 113.422991,
-      "city": "广州",
-      "district": "黄埔区",
-      "description": "黄埔区城市绿肺",
-      "address": "黄埔区开源大道",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "08:00-18:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.6,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "龙头山森林公园",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
       "name": "南海神庙",
       "name_en": "",
-      "lat": 23.112635,
-      "lon": 113.443013,
+      "lat": 23.1,
+      "lon": 113.5,
       "city": "广州",
       "district": "黄埔区",
-      "description": "海上丝绸之路始发地",
+      "description": "南海神庙又称波罗庙,是古代海上丝绸之路的重要史迹,全国重点文物保护单位。",
       "address": "黄埔区庙头村旭日街22号",
       "tags": [
         "历史",
@@ -9587,211 +7598,39 @@
       "best_time": "全年",
       "opening_hours": "09:00-17:00",
       "price_level": "免费",
+      "popularity_score": 7,
+      "internal_rating": 3.5,
       "price_range": {
         "min": 0,
         "max": 0
       },
-      "popularity_score": 7,
-      "internal_rating": 4.0,
       "category": "attractions",
       "subcategory": "历史",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
       "name_normalized": "南海神庙",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.4,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "长隆野生动物世界",
+      "name": "黄埔古港遗址",
       "name_en": "",
-      "lat": 23.002172,
-      "lon": 113.352287,
+      "lat": 23.1,
+      "lon": 113.45,
       "city": "广州",
-      "district": "番禺区",
-      "description": "亲子游必去",
-      "address": "番禺区汉溪大道东299号",
-      "tags": [
-        "亲子",
-        "家庭",
-        "景点"
-      ],
-      "suitable_for": "亲子家庭、年轻人",
-      "best_time": "全年",
-      "opening_hours": "09:30-18:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 9,
-      "internal_rating": 4.9,
-      "category": "attractions",
-      "subcategory": "亲子",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "长隆野生动物世界",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.8,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "长隆水上乐园",
-      "name_en": "",
-      "lat": 23.002257,
-      "lon": 113.4265,
-      "city": "广州",
-      "district": "番禺区",
-      "description": "夏日玩水",
-      "address": "番禺区汉溪大道东299号",
-      "tags": [
-        "亲子",
-        "家庭",
-        "景点"
-      ],
-      "suitable_for": "亲子家庭、年轻人",
-      "best_time": "5-10月",
-      "opening_hours": "10:00-19:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.9,
-      "category": "attractions",
-      "subcategory": "亲子",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "长隆水上乐园",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "长隆欢乐世界",
-      "name_en": "",
-      "lat": 23.029094,
-      "lon": 113.365378,
-      "city": "广州",
-      "district": "番禺区",
-      "description": "大型主题游乐园",
-      "address": "番禺区汉溪大道东299号",
-      "tags": [
-        "亲子",
-        "家庭",
-        "景点"
-      ],
-      "suitable_for": "亲子家庭、年轻人",
-      "best_time": "全年",
-      "opening_hours": "10:00-19:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.5,
-      "category": "attractions",
-      "subcategory": "亲子",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "长隆欢乐世界",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "大夫山森林公园",
-      "name_en": "",
-      "lat": 23.005196,
-      "lon": 113.374286,
-      "city": "广州",
-      "district": "番禺区",
-      "description": "骑行车道,生态游",
-      "address": "番禺区禺山西路668号",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "06:00-21:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 7,
-      "internal_rating": 4.0,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "大夫山森林公园",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "余荫山房",
-      "name_en": "",
-      "lat": 23.037778,
-      "lon": 113.331828,
-      "city": "广州",
-      "district": "番禺区",
-      "description": "岭南四大名园之一",
-      "address": "番禺区南村镇南村村",
+      "district": "黄埔区",
+      "description": "黄埔古港是清代广州对外贸易的重要港口,见证了海上丝绸之路的繁荣。",
+      "address": "黄埔区黄埔东路",
       "tags": [
         "历史",
         "文化",
@@ -9799,42 +7638,123 @@
       ],
       "suitable_for": "历史爱好者、文化游客",
       "best_time": "全年",
-      "opening_hours": "08:30-17:30",
+      "opening_hours": "09:00-17:00",
       "price_level": "免费",
+      "popularity_score": 6,
+      "internal_rating": 3.0,
       "price_range": {
         "min": 0,
         "max": 0
       },
-      "popularity_score": 7,
-      "internal_rating": 4.1,
       "category": "attractions",
       "subcategory": "历史",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "余荫山房",
+      "name_normalized": "黄埔古港遗址",
       "wikidata_id": null,
       "data_quality": {
-        "popularity_signal": 1.4,
+        "popularity_signal": 1.2,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "宝墨园",
+      "name": "长洲岛",
       "name_en": "",
-      "lat": 22.966011,
-      "lon": 113.358445,
+      "lat": 23.1,
+      "lon": 113.42,
       "city": "广州",
-      "district": "番禺区",
-      "description": "岭南园林建筑",
-      "address": "番禺区沙湾镇紫坭村",
+      "district": "黄埔区",
+      "description": "长洲岛是珠江上的江心岛,以自然风光和历史文化著称。",
+      "address": "黄埔区长洲街道",
+      "tags": [
+        "自然",
+        "景点"
+      ],
+      "suitable_for": "户外爱好者、全年龄",
+      "best_time": "全年",
+      "opening_hours": "09:00-17:00",
+      "price_level": "免费",
+      "popularity_score": 6,
+      "internal_rating": 3.2,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
+      "category": "attractions",
+      "subcategory": "自然",
+      "amap_type": "风景名胜;风景名胜;国家级景点",
+      "amap_photo_url": null,
+      "amap_verified": true,
+      "source": "amap",
+      "ai_enriched": true,
+      "name_normalized": "长洲岛",
+      "wikidata_id": null,
+      "data_quality": {
+        "popularity_signal": 1.2,
+        "tag_coverage_signal": 1.0,
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
+        "wikipedia_verified": false
+      }
+    },
+    {
+      "name": "龙头山森林公园",
+      "name_en": "",
+      "lat": 23.16,
+      "lon": 113.46,
+      "city": "广州",
+      "district": "黄埔区",
+      "description": "龙头山森林公园是黄埔区最大的城市森林公园,以森林景观为主。",
+      "address": "黄埔区开源大道",
+      "tags": [
+        "自然",
+        "景点"
+      ],
+      "suitable_for": "户外爱好者、全年龄",
+      "best_time": "全年",
+      "opening_hours": "09:00-17:00",
+      "price_level": "免费",
+      "popularity_score": 6,
+      "internal_rating": 3.2,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
+      "category": "attractions",
+      "subcategory": "自然",
+      "amap_type": "风景名胜;风景名胜;国家级景点",
+      "amap_photo_url": null,
+      "amap_verified": true,
+      "source": "amap",
+      "ai_enriched": true,
+      "name_normalized": "龙头山森林公园",
+      "wikidata_id": null,
+      "data_quality": {
+        "popularity_signal": 1.2,
+        "tag_coverage_signal": 1.0,
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
+        "wikipedia_verified": false
+      }
+    },
+    {
+      "name": "南沙天后宫",
+      "name_en": "",
+      "lat": 22.8,
+      "lon": 113.52,
+      "city": "广州",
+      "district": "南沙区",
+      "description": "南沙天后宫是东南亚最大的妈祖庙,被誉为天下妈祖第一宫。",
+      "address": "南沙区大角山天后路",
       "tags": [
         "历史",
         "文化",
@@ -9842,167 +7762,247 @@
       ],
       "suitable_for": "历史爱好者、文化游客",
       "best_time": "全年",
-      "opening_hours": "08:30-17:30",
-      "price_level": "适中",
+      "opening_hours": "09:00-17:00",
+      "price_level": "免费",
+      "popularity_score": 7,
+      "internal_rating": 3.9,
       "price_range": {
-        "min": 50,
-        "max": 100
+        "min": 0,
+        "max": 0
       },
-      "popularity_score": 6,
-      "internal_rating": 3.5,
       "category": "attractions",
       "subcategory": "历史",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "宝墨园",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "莲花山",
-      "name_en": "",
-      "lat": 22.999923,
-      "lon": 113.345887,
-      "city": "广州",
-      "district": "番禺区",
-      "description": "广州观音古庙",
-      "address": "番禺区莲花山镇",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "08:00-17:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 7,
-      "internal_rating": 4.4,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "莲花山",
+      "name_normalized": "南沙天后宫",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.4,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "花都湖公园",
+      "name": "百万葵园",
       "name_en": "",
-      "lat": 23.41587,
-      "lon": 113.181112,
+      "lat": 22.7,
+      "lon": 113.55,
       "city": "广州",
-      "district": "花都区",
-      "description": "花都区生态公园",
-      "address": "花都区花山镇花都湖",
+      "district": "南沙区",
+      "description": "百万葵园是国内唯一以向日葵为主题的生态公园。",
+      "address": "南沙区万顷沙镇新垦十五涌",
       "tags": [
-        "自然",
+        "亲子",
+        "家庭",
         "景点"
       ],
-      "suitable_for": "户外爱好者、全年龄",
+      "suitable_for": "亲子家庭、年轻人",
       "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
+      "opening_hours": "09:00-17:00",
+      "price_level": "适中",
       "popularity_score": 6,
-      "internal_rating": 3.5,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "花都湖公园",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "香草世界",
-      "name_en": "",
-      "lat": 23.395365,
-      "lon": 113.24714,
-      "city": "广州",
-      "district": "花都区",
-      "description": "薰衣草花海",
-      "address": "花都区花山镇香草世界",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "09:00-17:30",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 5,
       "internal_rating": 3.4,
+      "price_range": {
+        "min": 50,
+        "max": 100
+      },
+      "category": "attractions",
+      "subcategory": "亲子",
+      "amap_type": "风景名胜;风景名胜;国家级景点",
+      "amap_photo_url": null,
+      "amap_verified": true,
+      "source": "amap",
+      "ai_enriched": true,
+      "name_normalized": "百万葵园",
+      "wikidata_id": null,
+      "data_quality": {
+        "popularity_signal": 1.2,
+        "tag_coverage_signal": 1.0,
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
+        "wikipedia_verified": false
+      }
+    },
+    {
+      "name": "南沙滨海公园",
+      "name_en": "",
+      "lat": 22.8,
+      "lon": 113.51,
+      "city": "广州",
+      "district": "南沙区",
+      "description": "南沙滨海公园集海滨风光与休闲娱乐于一体。",
+      "address": "南沙区滨海路",
+      "tags": [
+        "自然",
+        "景点"
+      ],
+      "suitable_for": "户外爱好者、全年龄",
+      "best_time": "全年",
+      "opening_hours": "09:00-17:00",
+      "price_level": "免费",
+      "popularity_score": 5,
+      "internal_rating": 2.9,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
       "category": "attractions",
       "subcategory": "自然",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "香草世界",
+      "name_normalized": "南沙滨海公园",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.0,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
+        "wikipedia_verified": false
+      }
+    },
+    {
+      "name": "黄山鲁森林公园",
+      "name_en": "",
+      "lat": 22.78,
+      "lon": 113.5,
+      "city": "广州",
+      "district": "南沙区",
+      "description": "黄山鲁森林公园是广州南部最高的山,海拔295米,登顶可俯瞰南沙全貌。",
+      "address": "南沙区大涌路",
+      "tags": [
+        "自然",
+        "景点"
+      ],
+      "suitable_for": "户外爱好者、全年龄",
+      "best_time": "全年",
+      "opening_hours": "09:00-17:00",
+      "price_level": "免费",
+      "popularity_score": 6,
+      "internal_rating": 3.4,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
+      "category": "attractions",
+      "subcategory": "自然",
+      "amap_type": "风景名胜;风景名胜;国家级景点",
+      "amap_photo_url": null,
+      "amap_verified": true,
+      "source": "amap",
+      "ai_enriched": true,
+      "name_normalized": "黄山鲁森林公园",
+      "wikidata_id": null,
+      "data_quality": {
+        "popularity_signal": 1.2,
+        "tag_coverage_signal": 1.0,
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
+        "wikipedia_verified": false
+      }
+    },
+    {
+      "name": "十九涌渔人码头",
+      "name_en": "",
+      "lat": 22.65,
+      "lon": 113.55,
+      "city": "广州",
+      "district": "南沙区",
+      "description": "十九涌渔人码头是南沙海鲜集散地,可购买新鲜海产。",
+      "address": "南沙区十九涌",
+      "tags": [
+        "美食",
+        "餐厅"
+      ],
+      "suitable_for": "美食爱好者、家庭聚餐",
+      "best_time": "全年",
+      "opening_hours": "09:00-17:00",
+      "price_level": "免费",
+      "popularity_score": 5,
+      "internal_rating": 2.5,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
+      "category": "attractions",
+      "subcategory": "美食",
+      "amap_type": "风景名胜;风景名胜;国家级景点",
+      "amap_photo_url": null,
+      "amap_verified": true,
+      "source": "amap",
+      "ai_enriched": true,
+      "name_normalized": "十九涌渔人码头",
+      "wikidata_id": null,
+      "data_quality": {
+        "popularity_signal": 1.0,
+        "tag_coverage_signal": 1.0,
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
+        "wikipedia_verified": false
+      }
+    },
+    {
+      "name": "花都香草世界",
+      "name_en": "",
+      "lat": 23.44,
+      "lon": 113.22,
+      "city": "广州",
+      "district": "花都区",
+      "description": "花都香草世界是国内首家集香草种植、观光、休闲于一体的主题公园。",
+      "address": "花都区花山镇",
+      "tags": [
+        "亲子",
+        "家庭",
+        "景点"
+      ],
+      "suitable_for": "亲子家庭、年轻人",
+      "best_time": "全年",
+      "opening_hours": "09:00-17:00",
+      "price_level": "适中",
+      "popularity_score": 5,
+      "internal_rating": 2.9,
+      "price_range": {
+        "min": 50,
+        "max": 100
+      },
+      "category": "attractions",
+      "subcategory": "亲子",
+      "amap_type": "风景名胜;风景名胜;国家级景点",
+      "amap_photo_url": null,
+      "amap_verified": true,
+      "source": "amap",
+      "ai_enriched": true,
+      "name_normalized": "花都香草世界",
+      "wikidata_id": null,
+      "data_quality": {
+        "popularity_signal": 1.0,
+        "tag_coverage_signal": 1.0,
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
       "name": "石头记矿物园",
       "name_en": "",
-      "lat": 23.463681,
-      "lon": 113.214124,
+      "lat": 23.45,
+      "lon": 113.21,
       "city": "广州",
       "district": "花都区",
-      "description": "矿石文化博物馆",
+      "description": "石头记矿物园是世界首座以宝石矿物为主题的博物馆。",
       "address": "花都区珠宝城",
       "tags": [
         "博物馆",
@@ -10012,41 +8012,40 @@
       ],
       "suitable_for": "家庭、学生、文艺青年",
       "best_time": "全年",
-      "opening_hours": "09:00-17:30",
-      "price_level": "付费",
+      "opening_hours": "09:00-17:00",
+      "price_level": "适中",
+      "popularity_score": 6,
+      "internal_rating": 3.4,
       "price_range": {
         "min": 50,
-        "max": 200
+        "max": 100
       },
-      "popularity_score": 6,
-      "internal_rating": 3.2,
       "category": "attractions",
       "subcategory": "博物馆",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
       "name_normalized": "石头记矿物园",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.2,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
       "name": "洪秀全故居",
       "name_en": "",
-      "lat": 23.401262,
-      "lon": 113.200281,
+      "lat": 23.4,
+      "lon": 113.1,
       "city": "广州",
       "district": "花都区",
-      "description": "太平天国领袖故居",
+      "description": "洪秀全故居是太平天国天王洪秀全的出生地,广东省文物保护单位。",
       "address": "花都区炭步镇",
       "tags": [
         "历史",
@@ -10057,40 +8056,39 @@
       "best_time": "全年",
       "opening_hours": "09:00-17:00",
       "price_level": "免费",
+      "popularity_score": 5,
+      "internal_rating": 2.7,
       "price_range": {
         "min": 0,
         "max": 0
       },
-      "popularity_score": 5,
-      "internal_rating": 3.3,
       "category": "attractions",
       "subcategory": "历史",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
       "name_normalized": "洪秀全故居",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.0,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "圆玄道观",
+      "name": "花都盘古王庙",
       "name_en": "",
-      "lat": 23.429693,
-      "lon": 113.209489,
+      "lat": 23.45,
+      "lon": 113.18,
       "city": "广州",
       "district": "花都区",
-      "description": "道教文化区",
-      "address": "花都区花山镇",
+      "description": "盘古王庙是岭南地区重要的盘古信仰庙宇,已有数百年历史。",
+      "address": "花都区狮岭镇",
       "tags": [
         "历史",
         "文化",
@@ -10098,253 +8096,81 @@
       ],
       "suitable_for": "历史爱好者、文化游客",
       "best_time": "全年",
-      "opening_hours": "08:00-17:00",
+      "opening_hours": "09:00-17:00",
       "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
       "popularity_score": 5,
       "internal_rating": 2.6,
+      "price_range": {
+        "min": 0,
+        "max": 0
+      },
       "category": "attractions",
       "subcategory": "历史",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "圆玄道观",
+      "name_normalized": "花都盘古王庙",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.0,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "南沙天后宫",
+      "name": "王子山森林公园",
       "name_en": "",
-      "lat": 22.75257,
-      "lon": 113.567949,
+      "lat": 23.55,
+      "lon": 113.18,
       "city": "广州",
-      "district": "南沙区",
-      "description": "妈祖文化建筑群",
-      "address": "南沙区大角山天后路",
+      "district": "花都区",
+      "description": "王子山森林公园以山峦、森林、溪流为主,是花都区的生态屏障。",
+      "address": "花都区梯面镇",
       "tags": [
-        "历史",
-        "文化",
+        "自然",
         "景点"
       ],
-      "suitable_for": "历史爱好者、文化游客",
+      "suitable_for": "户外爱好者、全年龄",
       "best_time": "全年",
-      "opening_hours": "08:30-17:30",
+      "opening_hours": "09:00-17:00",
       "price_level": "免费",
+      "popularity_score": 6,
+      "internal_rating": 3.2,
       "price_range": {
         "min": 0,
         "max": 0
       },
-      "popularity_score": 7,
-      "internal_rating": 3.6,
       "category": "attractions",
-      "subcategory": "历史",
+      "subcategory": "自然",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "南沙天后宫",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "百万葵园",
-      "name_en": "",
-      "lat": 22.812302,
-      "lon": 113.48917,
-      "city": "广州",
-      "district": "南沙区",
-      "description": "向日葵主题公园",
-      "address": "南沙区万顷沙镇新垦十五涌",
-      "tags": [
-        "亲子",
-        "家庭",
-        "景点"
-      ],
-      "suitable_for": "亲子家庭、年轻人",
-      "best_time": "全年",
-      "opening_hours": "09:00-17:30",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.0,
-      "category": "attractions",
-      "subcategory": "亲子",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "百万葵园",
+      "name_normalized": "王子山森林公园",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.2,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "滨海公园",
-      "name_en": "",
-      "lat": 22.804419,
-      "lon": 113.53766,
-      "city": "广州",
-      "district": "南沙区",
-      "description": "南沙滨海生态",
-      "address": "南沙区滨海路",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 5,
-      "internal_rating": 2.9,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "滨海公园",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.0,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "黄山鲁森林公园",
-      "name_en": "",
-      "lat": 22.806746,
-      "lon": 113.511894,
-      "city": "广州",
-      "district": "南沙区",
-      "description": "广州南部制高点",
-      "address": "南沙区大涌路",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "07:00-19:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.6,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "黄山鲁森林公园",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "十九涌渔人码头",
-      "name_en": "",
-      "lat": 22.843574,
-      "lon": 113.512323,
-      "city": "广州",
-      "district": "南沙区",
-      "description": "海鲜市场+海景",
-      "address": "南沙区十九涌",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "08:00-18:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 5,
-      "internal_rating": 3.5,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "十九涌渔人码头",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.0,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
       "name": "从化温泉",
       "name_en": "",
-      "lat": 23.521107,
-      "lon": 113.584654,
+      "lat": 23.55,
+      "lon": 113.59,
       "city": "广州",
       "district": "从化区",
-      "description": "天然温泉度假区",
+      "description": "从化温泉是中国著名的温泉胜地,与瑞士达沃斯温泉齐名。",
       "address": "从化区温泉镇温泉路",
       "tags": [
         "自然",
@@ -10352,41 +8178,40 @@
       ],
       "suitable_for": "户外爱好者、全年龄",
       "best_time": "全年",
-      "opening_hours": "全天",
+      "opening_hours": "09:00-17:00",
       "price_level": "适中",
+      "popularity_score": 7,
+      "internal_rating": 3.9,
       "price_range": {
         "min": 50,
         "max": 100
       },
-      "popularity_score": 7,
-      "internal_rating": 3.7,
       "category": "attractions",
       "subcategory": "自然",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
       "name_normalized": "从化温泉",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.4,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
       "name": "石门国家森林公园",
       "name_en": "",
-      "lat": 23.582795,
-      "lon": 113.585098,
+      "lat": 23.55,
+      "lon": 113.58,
       "city": "广州",
       "district": "从化区",
-      "description": "森林浴,观云海",
+      "description": "石门国家森林公园以森林景观和天池花海著称,是华南地区面积最大的国家森林公园。",
       "address": "从化区温泉镇石门",
       "tags": [
         "自然",
@@ -10394,41 +8219,40 @@
       ],
       "suitable_for": "户外爱好者、全年龄",
       "best_time": "全年",
-      "opening_hours": "08:00-18:00",
+      "opening_hours": "09:00-17:00",
       "price_level": "免费",
+      "popularity_score": 7,
+      "internal_rating": 3.6,
       "price_range": {
         "min": 0,
         "max": 0
       },
-      "popularity_score": 7,
-      "internal_rating": 3.8,
       "category": "attractions",
       "subcategory": "自然",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
       "name_normalized": "石门国家森林公园",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.4,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
       "name": "流溪河国家森林公园",
       "name_en": "",
-      "lat": 23.510158,
-      "lon": 113.622684,
+      "lat": 23.65,
+      "lon": 113.65,
       "city": "广州",
       "district": "从化区",
-      "description": "湖光山色,森林氧吧",
+      "description": "流溪河国家森林公园是首批国家级森林公园,以湖光山色和森林氧吧闻名。",
       "address": "从化区流溪河林场",
       "tags": [
         "自然",
@@ -10436,41 +8260,40 @@
       ],
       "suitable_for": "户外爱好者、全年龄",
       "best_time": "全年",
-      "opening_hours": "08:00-17:30",
+      "opening_hours": "09:00-17:00",
       "price_level": "适中",
+      "popularity_score": 7,
+      "internal_rating": 3.8,
       "price_range": {
         "min": 50,
         "max": 100
       },
-      "popularity_score": 7,
-      "internal_rating": 4.3,
       "category": "attractions",
       "subcategory": "自然",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
       "name_normalized": "流溪河国家森林公园",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.4,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
       "name": "从化钱岗古村",
       "name_en": "",
-      "lat": 23.523525,
-      "lon": 113.600593,
+      "lat": 23.5,
+      "lon": 113.55,
       "city": "广州",
       "district": "从化区",
-      "description": "南宋古村",
+      "description": "从化钱岗古村始建于南宋,是广州地区保存最完好的古村落之一。",
       "address": "从化区太平镇钱岗村",
       "tags": [
         "历史",
@@ -10479,1897 +8302,72 @@
       ],
       "suitable_for": "历史爱好者、文化游客",
       "best_time": "全年",
-      "opening_hours": "全天",
+      "opening_hours": "09:00-17:00",
       "price_level": "免费",
+      "popularity_score": 5,
+      "internal_rating": 2.8,
       "price_range": {
         "min": 0,
         "max": 0
       },
-      "popularity_score": 5,
-      "internal_rating": 3.1,
       "category": "attractions",
       "subcategory": "历史",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
       "name_normalized": "从化钱岗古村",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.0,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     },
     {
-      "name": "碧水湾温泉",
+      "name": "从化北回归线标志塔",
       "name_en": "",
-      "lat": 23.558597,
-      "lon": 113.561238,
+      "lat": 23.5,
+      "lon": 113.5,
       "city": "广州",
       "district": "从化区",
-      "description": "五星温泉度假",
-      "address": "从化区温泉镇",
+      "description": "从化北回归线标志塔是世界最高的北回归线标志塔,具有重要的天文地理意义。",
+      "address": "从化区太平镇",
       "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.7,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "碧水湾温泉",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "白水寨风景名胜区",
-      "name_en": "",
-      "lat": 23.217862,
-      "lon": 113.886297,
-      "city": "广州",
-      "district": "增城区",
-      "description": "瀑布登山",
-      "address": "增城区派潭镇白水寨",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "08:30-17:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 8,
-      "internal_rating": 5.0,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "白水寨风景名胜区",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "增城荔枝文化村",
-      "name_en": "",
-      "lat": 23.241819,
-      "lon": 113.828009,
-      "city": "广州",
-      "district": "增城区",
-      "description": "荔枝季节限定",
-      "address": "增城区增江街",
-      "tags": [
-        "美食",
-        "餐厅"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "5-7月",
-      "opening_hours": "09:00-18:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.0,
-      "category": "attractions",
-      "subcategory": "美食",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "增城荔枝文化村",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "小楼人家",
-      "name_en": "",
-      "lat": 23.231733,
-      "lon": 113.880319,
-      "city": "广州",
-      "district": "增城区",
-      "description": "岭南古村生态",
-      "address": "增城区小楼镇",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "08:00-18:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 5,
-      "internal_rating": 2.9,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "小楼人家",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.0,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "何仙姑景区",
-      "name_en": "",
-      "lat": 23.273532,
-      "lon": 113.796868,
-      "city": "广州",
-      "district": "增城区",
-      "description": "道教文化",
-      "address": "增城区小楼镇",
-      "tags": [
-        "历史",
+        "博物馆",
         "文化",
+        "历史",
         "景点"
       ],
-      "suitable_for": "历史爱好者、文化游客",
+      "suitable_for": "家庭、学生、文艺青年",
       "best_time": "全年",
-      "opening_hours": "08:00-17:30",
+      "opening_hours": "09:00-17:00",
       "price_level": "免费",
+      "popularity_score": 5,
+      "internal_rating": 2.5,
       "price_range": {
         "min": 0,
         "max": 0
       },
-      "popularity_score": 5,
-      "internal_rating": 3.4,
       "category": "attractions",
-      "subcategory": "历史",
+      "subcategory": "博物馆",
       "amap_type": "风景名胜;风景名胜;国家级景点",
       "amap_photo_url": null,
       "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
+      "source": "amap",
       "ai_enriched": true,
-      "name_normalized": "何仙姑景区",
+      "name_normalized": "从化北回归线标志塔",
       "wikidata_id": null,
       "data_quality": {
         "popularity_signal": 1.0,
         "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "湖心岛",
-      "name_en": "",
-      "lat": 23.234125,
-      "lon": 113.848442,
-      "city": "广州",
-      "district": "增城区",
-      "description": "湖心岛生态游",
-      "address": "增城区正果镇",
-      "tags": [
-        "自然",
-        "景点"
-      ],
-      "suitable_for": "户外爱好者、全年龄",
-      "best_time": "全年",
-      "opening_hours": "09:00-18:00",
-      "price_level": "免费",
-      "price_range": {
-        "min": 0,
-        "max": 0
-      },
-      "popularity_score": 5,
-      "internal_rating": 3.1,
-      "category": "attractions",
-      "subcategory": "自然",
-      "amap_type": "风景名胜;风景名胜;国家级景点",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "湖心岛",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.0,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "点都德（惠福东路店）",
-      "name_en": "",
-      "lat": 23.15961,
-      "lon": 113.24762,
-      "city": "广州",
-      "district": "越秀区",
-      "description": "老字号广式茶点",
-      "address": "越秀区惠福东路508号",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "07:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.6,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "点都德(惠福东路店)",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "陶陶居（第十甫店）",
-      "name_en": "",
-      "lat": 23.165404,
-      "lon": 113.247197,
-      "city": "广州",
-      "district": "越秀区",
-      "description": "百年老字号",
-      "address": "越秀区第十甫路20号",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "07:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.0,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "陶陶居(第十甫店)",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "太平馆西餐厅",
-      "name_en": "",
-      "lat": 23.107013,
-      "lon": 113.276362,
-      "city": "广州",
-      "district": "越秀区",
-      "description": "百年西餐,周恩来光顾",
-      "address": "越秀区北京路太平沙14号",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "10:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 7,
-      "internal_rating": 3.6,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "太平馆西餐厅",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广州酒家（滨江东路店）",
-      "name_en": "",
-      "lat": 23.040615,
-      "lon": 113.278202,
-      "city": "广州",
-      "district": "海珠区",
-      "description": "粤菜老字号",
-      "address": "海珠区滨江东路76号",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "07:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.3,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "广州酒家(滨江东路店)",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "江南西美食街",
-      "name_en": "",
-      "lat": 23.062105,
-      "lon": 113.300012,
-      "city": "广州",
-      "district": "海珠区",
-      "description": "网红美食街",
-      "address": "海珠区江南西商圈",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-23:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 7,
-      "internal_rating": 3.7,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "江南西美食街",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "炳胜公馆",
-      "name_en": "",
-      "lat": 23.100943,
-      "lon": 113.262624,
-      "city": "广州",
-      "district": "海珠区",
-      "description": "炳胜出品,粤菜精品",
-      "address": "海珠区江南大道北",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.8,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "炳胜公馆",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "莲香楼",
-      "name_en": "",
-      "lat": 23.133219,
-      "lon": 113.211435,
-      "city": "广州",
-      "district": "荔湾区",
-      "description": "百年莲蓉糕",
-      "address": "荔湾区第十甫路67号",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "07:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 7,
-      "internal_rating": 3.7,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "莲香楼",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广州酒家（文昌店）",
-      "name_en": "",
-      "lat": 23.115115,
-      "lon": 113.187265,
-      "city": "广州",
-      "district": "荔湾区",
-      "description": "粤菜经典",
-      "address": "荔湾区文昌南路2号",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "07:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.6,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "广州酒家(文昌店)",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "伍湛记",
-      "name_en": "",
-      "lat": 23.151901,
-      "lon": 113.256782,
-      "city": "广州",
-      "district": "荔湾区",
-      "description": "老广州早餐",
-      "address": "荔湾区龙津东路871号",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "06:30-19:30",
-      "price_level": "经济",
-      "price_range": {
-        "min": 20,
-        "max": 50
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.3,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "伍湛记",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "炳胜品味",
-      "name_en": "",
-      "lat": 23.17383,
-      "lon": 113.321517,
-      "city": "广州",
-      "district": "天河区",
-      "description": "炳胜出品",
-      "address": "天河区天河路198号",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.5,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "炳胜品味",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "惠食佳（东风东路店）",
-      "name_en": "",
-      "lat": 23.115997,
-      "lon": 113.357568,
-      "city": "广州",
-      "district": "天河区",
-      "description": "粤菜创新",
-      "address": "天河区东风东路836号",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 7,
-      "internal_rating": 4.1,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "惠食佳(东风东路店)",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "海底捞（正佳广场店）",
-      "name_en": "",
-      "lat": 23.122365,
-      "lon": 113.369212,
-      "city": "广州",
-      "district": "天河区",
-      "description": "连锁火锅",
-      "address": "天河区天河路228号",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "10:00-06:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 7,
-      "internal_rating": 3.8,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "海底捞(正佳广场店)",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "白云宾馆餐厅",
-      "name_en": "",
-      "lat": 23.229626,
-      "lon": 113.309556,
-      "city": "广州",
-      "district": "白云区",
-      "description": "老牌粤菜",
-      "address": "白云区环市东路367号",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.2,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "白云宾馆餐厅",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "时代玫瑰园美食街",
-      "name_en": "",
-      "lat": 23.184635,
-      "lon": 113.261732,
-      "city": "广州",
-      "district": "白云区",
-      "description": "美食广场",
-      "address": "白云区石井街道",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-23:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.1,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "时代玫瑰园美食街",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "东北饺子馆（棠下店）",
-      "name_en": "",
-      "lat": 23.229612,
-      "lon": 113.285629,
-      "city": "广州",
-      "district": "白云区",
-      "description": "北方小吃",
-      "address": "白云区棠下村",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "10:00-22:00",
-      "price_level": "经济",
-      "price_range": {
-        "min": 20,
-        "max": 50
-      },
-      "popularity_score": 5,
-      "internal_rating": 2.9,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "东北饺子馆(棠下店)",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.0,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "九毛九（黄埔店）",
-      "name_en": "",
-      "lat": 23.107176,
-      "lon": 113.501063,
-      "city": "广州",
-      "district": "黄埔区",
-      "description": "山西面食",
-      "address": "黄埔区大沙北路",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.6,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "九毛九(黄埔店)",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "椰林海鲜坊",
-      "name_en": "",
-      "lat": 23.179986,
-      "lon": 113.441095,
-      "city": "广州",
-      "district": "黄埔区",
-      "description": "粤式海鲜",
-      "address": "黄埔区黄埔东路",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 7,
-      "internal_rating": 3.6,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "椰林海鲜坊",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "番禺宾馆餐厅",
-      "name_en": "",
-      "lat": 23.027344,
-      "lon": 113.344827,
-      "city": "广州",
-      "district": "番禺区",
-      "description": "番禺老字号",
-      "address": "番禺区市桥街",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "07:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 7,
-      "internal_rating": 4.2,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "番禺宾馆餐厅",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "长隆酒店自助餐",
-      "name_en": "",
-      "lat": 22.998241,
-      "lon": 113.342992,
-      "city": "广州",
-      "district": "番禺区",
-      "description": "酒店自助",
-      "address": "番禺区长隆大道",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "07:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.6,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "长隆酒店自助餐",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "老城区农家菜",
-      "name_en": "",
-      "lat": 22.960017,
-      "lon": 113.349726,
-      "city": "广州",
-      "district": "番禺区",
-      "description": "农家菜",
-      "address": "番禺区沙湾古镇",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "10:00-21:00",
-      "price_level": "经济",
-      "price_range": {
-        "min": 20,
-        "max": 50
-      },
-      "popularity_score": 5,
-      "internal_rating": 2.7,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "老城区农家菜",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.0,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "花都粤菜馆",
-      "name_en": "",
-      "lat": 23.454129,
-      "lon": 113.182872,
-      "city": "广州",
-      "district": "花都区",
-      "description": "本地粤菜",
-      "address": "花都区商业大道",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-22:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.5,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "花都粤菜馆",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "石头记食府",
-      "name_en": "",
-      "lat": 23.415016,
-      "lon": 113.220459,
-      "city": "广州",
-      "district": "花都区",
-      "description": "石头记主题餐厅",
-      "address": "花都区珠宝城",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "10:00-21:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 5,
-      "internal_rating": 3.3,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "石头记食府",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.0,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "南沙渔港大排档",
-      "name_en": "",
-      "lat": 22.795439,
-      "lon": 113.53083,
-      "city": "广州",
-      "district": "南沙区",
-      "description": "海鲜大排档",
-      "address": "南沙区十九涌",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-22:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.7,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "南沙渔港大排档",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "滨海酒店餐厅",
-      "name_en": "",
-      "lat": 22.83887,
-      "lon": 113.555265,
-      "city": "广州",
-      "district": "南沙区",
-      "description": "酒店餐厅",
-      "address": "南沙区滨海路",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "07:00-22:00",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.4,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "滨海酒店餐厅",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "从化五道菜",
-      "name_en": "",
-      "lat": 23.598102,
-      "lon": 113.599356,
-      "city": "广州",
-      "district": "从化区",
-      "description": "本地特色菜",
-      "address": "从化区温泉镇",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-22:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.2,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "从化五道菜",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "流溪河鱼宴",
-      "name_en": "",
-      "lat": 23.555427,
-      "lon": 113.566855,
-      "city": "广州",
-      "district": "从化区",
-      "description": "流溪河鱼",
-      "address": "从化区流溪河",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-22:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 6,
-      "internal_rating": 4.0,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "流溪河鱼宴",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "增城荔枝宴",
-      "name_en": "",
-      "lat": 23.271122,
-      "lon": 113.805643,
-      "city": "广州",
-      "district": "增城区",
-      "description": "荔枝入菜",
-      "address": "增城区增江街",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "5-7月",
-      "opening_hours": "11:00-22:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.6,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "增城荔枝宴",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "派潭烧鸡",
-      "name_en": "",
-      "lat": 23.302354,
-      "lon": 113.800695,
-      "city": "广州",
-      "district": "增城区",
-      "description": "本地烧鸡",
-      "address": "增城区派潭镇",
-      "tags": [
-        "美食",
-        "餐厅",
-        "美食"
-      ],
-      "suitable_for": "美食爱好者、家庭聚餐",
-      "best_time": "全年",
-      "opening_hours": "11:00-22:00",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.8,
-      "category": "restaurants",
-      "subcategory": "美食",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "派潭烧鸡",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广州东方宾馆",
-      "name_en": "",
-      "lat": 23.153966,
-      "lon": 113.29131,
-      "city": "广州",
-      "district": "越秀区",
-      "description": "5星,园林酒店",
-      "address": "越秀区流花路120号",
-      "tags": [
-        "景点"
-      ],
-      "suitable_for": "全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.7,
-      "category": "hotels",
-      "subcategory": "",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "广州东方宾馆",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "白天鹅宾馆",
-      "name_en": "",
-      "lat": 23.127278,
-      "lon": 113.237775,
-      "city": "广州",
-      "district": "荔湾区",
-      "description": "5星,沙面岛豪华",
-      "address": "荔湾区沙面南街1号",
-      "tags": [
-        "景点"
-      ],
-      "suitable_for": "全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 9,
-      "internal_rating": 5.3,
-      "category": "hotels",
-      "subcategory": "",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "白天鹅宾馆",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.8,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广州花园酒店",
-      "name_en": "",
-      "lat": 23.147322,
-      "lon": 113.2861,
-      "city": "广州",
-      "district": "越秀区",
-      "description": "5星,商务首选",
-      "address": "越秀区环市东路368号",
-      "tags": [
-        "景点"
-      ],
-      "suitable_for": "全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.1,
-      "category": "hotels",
-      "subcategory": "",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "广州花园酒店",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广州长隆酒店",
-      "name_en": "",
-      "lat": 23.022671,
-      "lon": 113.416794,
-      "city": "广州",
-      "district": "番禺区",
-      "description": "5星,亲子度假",
-      "address": "番禺区长隆大道",
-      "tags": [
-        "景点"
-      ],
-      "suitable_for": "全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 9,
-      "internal_rating": 4.6,
-      "category": "hotels",
-      "subcategory": "",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "广州长隆酒店",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.8,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "从化温泉大酒店",
-      "name_en": "",
-      "lat": 23.569937,
-      "lon": 113.63701,
-      "city": "广州",
-      "district": "从化区",
-      "description": "4星,温泉度假",
-      "address": "从化区温泉镇",
-      "tags": [
-        "景点"
-      ],
-      "suitable_for": "全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 7,
-      "internal_rating": 4.0,
-      "category": "hotels",
-      "subcategory": "",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "从化温泉大酒店",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广州希尔顿酒店",
-      "name_en": "",
-      "lat": 23.134821,
-      "lon": 113.311085,
-      "city": "广州",
-      "district": "天河区",
-      "description": "5星,商务",
-      "address": "天河区林和西路",
-      "tags": [
-        "景点"
-      ],
-      "suitable_for": "全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 8,
-      "internal_rating": 4.6,
-      "category": "hotels",
-      "subcategory": "",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "广州希尔顿酒店",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.6,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "广州白云宾馆",
-      "name_en": "",
-      "lat": 23.179539,
-      "lon": 113.290192,
-      "city": "广州",
-      "district": "白云区",
-      "description": "4星,机场近",
-      "address": "白云区环市东路367号",
-      "tags": [
-        "景点"
-      ],
-      "suitable_for": "全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 7,
-      "internal_rating": 4.5,
-      "category": "hotels",
-      "subcategory": "",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "广州白云宾馆",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "南沙滨海花园酒店",
-      "name_en": "",
-      "lat": 22.831377,
-      "lon": 113.561354,
-      "city": "广州",
-      "district": "南沙区",
-      "description": "3星,亲子友好",
-      "address": "南沙区滨海路",
-      "tags": [
-        "景点"
-      ],
-      "suitable_for": "全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.2,
-      "category": "hotels",
-      "subcategory": "",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "南沙滨海花园酒店",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "增城百花山庄",
-      "name_en": "",
-      "lat": 23.232492,
-      "lon": 113.854285,
-      "city": "广州",
-      "district": "增城区",
-      "description": "3星,生态度假",
-      "address": "增城区增江街",
-      "tags": [
-        "景点"
-      ],
-      "suitable_for": "全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "适中",
-      "price_range": {
-        "min": 50,
-        "max": 100
-      },
-      "popularity_score": 6,
-      "internal_rating": 3.5,
-      "category": "hotels",
-      "subcategory": "",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "增城百花山庄",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.2,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
-        "wikipedia_verified": false
-      }
-    },
-    {
-      "name": "花都华钜君悦酒店",
-      "name_en": "",
-      "lat": 23.421357,
-      "lon": 113.185833,
-      "city": "广州",
-      "district": "花都区",
-      "description": "4星,商务",
-      "address": "花都区商业大道",
-      "tags": [
-        "景点"
-      ],
-      "suitable_for": "全年龄",
-      "best_time": "全年",
-      "opening_hours": "全天",
-      "price_level": "付费",
-      "price_range": {
-        "min": 50,
-        "max": 200
-      },
-      "popularity_score": 7,
-      "internal_rating": 4.0,
-      "category": "hotels",
-      "subcategory": "",
-      "amap_type": "餐饮服务;餐厅",
-      "amap_photo_url": null,
-      "amap_verified": true,
-      "amap_id": null,
-      "source": "Phase 18 P3 补全",
-      "ai_enriched": true,
-      "name_normalized": "花都华钜君悦酒店",
-      "wikidata_id": null,
-      "data_quality": {
-        "popularity_signal": 1.4,
-        "tag_coverage_signal": 1.0,
-        "source_quality_signal": 0.7,
-        "description_quality_signal": 0.5,
-        "reliability": "high",
+        "source_quality_signal": 0.8,
+        "description_quality_signal": 0.6,
+        "reliability": "medium",
         "wikipedia_verified": false
       }
     }

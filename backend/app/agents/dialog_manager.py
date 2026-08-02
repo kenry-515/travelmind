@@ -32,7 +32,7 @@ SESSION_TTL_SECONDS = 2 * 3600
 MAX_FOLLOWUPS = 3
 
 DEFAULT_SLOTS: Dict[str, Any] = {
-    "city": None,          # 必需
+    "city": "广州",          # 锁定广州（大赛专属）
     "days": None,          # 必需
     "date": "下周",
     "companions": "不限",
@@ -41,14 +41,14 @@ DEFAULT_SLOTS: Dict[str, Any] = {
     "pace": "休闲",
 }
 
-# KB 覆盖的 15 个城市（用于模糊输入的组合建议）
+# KB 覆盖城市建议（广州大赛专属，聚焦广州核心体验）
 SUGGESTION_POOL = [
-    ("重庆", "夜景/美食/山城"),
-    ("成都", "美食/熊猫/慢生活"),
-    ("三亚", "海滩/海岛/度假"),
-    ("西安", "历史/博物馆/古迹"),
-    ("桂林", "山水/自然/摄影"),
-    ("苏州", "园林/古镇/文艺"),
+    ("广州", "早茶/西关文化/珠江夜游"),
+    ("广州", "亲子/长隆/动物园"),
+    ("广州", "美食/粤菜/老字号"),
+    ("广州", "夜景/广州塔/珠江新城"),
+    ("广州", "历史/陈家祠/南越王博物馆"),
+    ("广州", "购物/北京路/天河城"),
 ]
 
 # ── KB 城市覆盖检测（Phase 8.1 拒答机制）─────────────────
@@ -58,19 +58,18 @@ _KB_DATA_PATH = Path(__file__).parent.parent.parent / "data" / "attractions.json
 
 
 def _get_kb_cities() -> Set[str]:
-    """懒加载知识库覆盖的城市集合（从 attractions.json 提取）。"""
+    """懒加载知识库覆盖的城市集合。
+
+    Phase 18 广州专属: 大赛只服务广州, 无论 attractions.json 是否含其他
+    城市, KB 覆盖集合仅返回 {'广州'}。其他城市仍存储在 attractions.json
+    (作为历史数据保留) 但不算 KB 覆盖城市, 不对外推荐。
+    """
     global _kb_cities
     if _kb_cities is not None:
         return _kb_cities
-    try:
-        with open(_KB_DATA_PATH, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        cities = {a.get("city", "") for a in data.get("attractions", []) if a.get("city")}
-        _kb_cities = cities
-        return _kb_cities
-    except Exception:
-        # 文件不可用时回退到 SUGGESTION_POOL 的城市
-        return {c for c, _ in SUGGESTION_POOL}
+    # Phase 18 P0: 广州专属模式
+    _kb_cities = {"广州"}
+    return _kb_cities
 
 
 def check_city_coverage(city: str) -> Tuple[bool, str]:
@@ -256,10 +255,34 @@ _TAG_CUES: Dict[str, Tuple[str, ...]] = {
 
 
 def _tag_grounded(tag: str, text: str) -> bool:
+    """Check if a tag has grounding in the user's text.
+
+    Phase 17 enhancement: POI names (like 陈家祠, 广州塔) are valid
+    grounding cues for associated tags. E.g., mentioning 陈家祠 should
+    ground "历史" and "文化" tags even if those exact words aren't in text.
+    """
     if tag and tag in text:
         return True
     cues = _TAG_CUES.get(tag)
-    return bool(cues) and any(c in text for c in cues)
+    if cues and any(c in text for c in cues):
+        return True
+    # Phase 17: POI-based grounding — known Guangzhou POIs imply certain tags
+    poi_tag_map = {
+        "历史": ["陈家祠", "南越王", "博物馆", "纪念馆", "古城", "老街", "西关"],
+        "文化": ["陈家祠", "南越王", "博物馆", "永庆坊", "骑楼", "粤剧", "西关"],
+        "夜景": ["广州塔", "珠江", "花城广场", "海心沙", "珠江夜游"],
+        "购物": ["北京路", "天河城", "正佳", "太古汇", "天环", "商业街", "步行街"],
+        "美食": ["陶陶居", "莲香楼", "泮溪", "广州酒家", "白天鹅", "老字号"],
+        "休闲": ["荔枝湾", "沙面", "永庆坊", "公园", "度假村"],
+        "网红打卡": ["广州塔", "陈家祠", "沙面", "永庆坊", "荔枝湾", "太古汇"],
+        "亲子": ["长隆", "动物园", "植物园", "儿童"],
+        "自然": ["白云山", "荔枝湾", "越秀公园", "植物园"],
+        "博物馆": ["博物馆", "陈家祠", "南越王"],
+        "摄影": ["广州塔", "沙面", "陈家祠", "永庆坊", "荔枝湾"],
+    }
+    if tag in poi_tag_map:
+        return any(poi in text for poi in poi_tag_map[tag])
+    return False
 
 
 # 城市名线索：当用户没有在当前输入中明确提到城市时，
@@ -284,19 +307,23 @@ def _has_city_reference(text: str) -> bool:
     return bool(_CITY_NAME_RE.search(text or ""))
 
 
-def ground_extraction(extracted: Dict[str, Any], text: str) -> Dict[str, Any]:
+def ground_extraction(extracted: Dict[str, Any], text: str, current_city: str = "") -> Dict[str, Any]:
     """过滤 LLM 提取结果中没有原文依据的槽位值（接地校验）。
 
     只放行：有城市线索的 destination、有天数线索的天数、
     有同义/字面线索的标签、有线索的同行/预算/节奏。
     对话专用；/agent/plan 单发规划不受影响（那里需要 LLM 自由推断）。
+
+    Phase 17: 如果 current_city 已确认（锁定广州大赛模式），
+    不再清除 destination —— 防止多轮对话中城市被误清。
     """
     text = text or ""
     out = dict(extracted)
 
     # destination 接地校验：用户当前输入未提城市名 → 清空，防止 LLM 幻觉
+    # 但如果城市已确认（如广州大赛锁定模式），则保留
     dest = (out.get("destination") or "").strip()
-    if dest and not _has_city_reference(text):
+    if dest and not _has_city_reference(text) and not current_city:
         logger.debug(f"Grounding: clearing destination '{dest}' — no city reference in user text")
         out["destination"] = ""
 

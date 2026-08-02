@@ -120,7 +120,11 @@ class TestRefuseAction:
         assert action["confirm"] is True
 
     def test_next_action_suggests_on_first_unknown(self):
-        """首次出现非广州城市 → 给出广州建议（followups 剩余时）。"""
+        """首次出现非广州城市 → suggest (有追问配额时) 含广州兜底建议。
+
+        Phase 18 P0: 广州智能体大赛专属。用户输入纽约时,
+        followups_used=0 < MAX_FOLLOWUPS → 给出广州兜底建议 + 让用户改回。
+        """
         state = {
             "stage": "collecting",
             "slots": dict(DEFAULT_SLOTS, city="纽约", days=3),
@@ -130,12 +134,11 @@ class TestRefuseAction:
             "touched": 0,
         }
         action = next_action(state)
-        assert action["type"] in ("suggest", "refuse")
-        if action["type"] == "suggest":
-            assert action.get("suggestions")
-            # 广州应在建议列表里（兜底/推荐）
-            labels = [s.get("city", "") for s in action["suggestions"]]
-            assert any("广州" in label for label in labels)
+        # 第一次出现: suggest 含广州建议
+        assert action["type"] == "suggest"
+        assert action.get("suggestions")
+        labels = [s.get("city", "") for s in action["suggestions"]]
+        assert any("广州" in label for label in labels)
 
 
 # ── Feasibility Detection ───────────────────────────────
