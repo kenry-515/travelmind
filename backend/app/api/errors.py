@@ -118,7 +118,7 @@ async def api_error_handler(request: Any, exc: APIError) -> JSONResponse:
 
 
 class ErrorCode:
-    """Standardized error codes for the application."""
+    """Standardized error codes for the application (Phase 18 P3 enum)."""
     INVALID_INPUT = "INVALID_INPUT"
     NOT_FOUND = "NOT_FOUND"
     RATE_LIMITED = "RATE_LIMITED"
@@ -131,6 +131,72 @@ class ErrorCode:
     VALIDATION_FAILED = "VALIDATION_FAILED"
     LLM_TIMEOUT = "LLM_TIMEOUT"
     CITY_NOT_SUPPORTED = "CITY_NOT_SUPPORTED"
+    PAYLOAD_TOO_LARGE = "PAYLOAD_TOO_LARGE"
+
+
+# Phase 18 P3: HTTPException 通用 handler - 让所有非 APIError 也走统一格式
+from fastapi import HTTPException as _HTTPException
+from fastapi.exceptions import RequestValidationError as _RequestValidationError
+
+
+async def http_exception_handler(request: Any, exc) -> JSONResponse:
+    """统一处理 FastAPI HTTPException + RequestValidationError。
+
+    让所有 error 响应都走 {"error": {code, message, ...}} 结构。
+    """
+    # RequestValidationError 用 .errors() 而非 .detail
+    if hasattr(exc, "errors"):
+        # Pydantic ValidationError / FastAPI RequestValidationError
+        errors_list = exc.errors()
+        body: Dict[str, Any] = {
+            "error": {
+                "code": ErrorCode.VALIDATION_FAILED,
+                "message": "请求参数验证失败",
+                "suggestion": "请检查请求参数是否符合接口要求",
+                "retryable": False,
+                "details": [
+                    {"loc": e.get("loc"), "msg": e.get("msg"), "type": e.get("type")}
+                    for e in errors_list if isinstance(e, dict)
+                ],
+            }
+        }
+        return JSONResponse(status_code=422, content=body)
+
+    # 标准 HTTPException
+    detail = exc.detail if hasattr(exc, "detail") else str(exc)
+    if isinstance(detail, str):
+        message = detail
+    elif isinstance(detail, dict):
+        message = detail.get("message") or "请求错误"
+    else:
+        message = str(detail)
+
+    # 映射 status_code → ErrorCode
+    code_map = {
+        400: ErrorCode.INVALID_INPUT,
+        401: ErrorCode.AUTH_REQUIRED,
+        403: ErrorCode.FORBIDDEN,
+        404: ErrorCode.NOT_FOUND,
+        409: ErrorCode.CONFLICT,
+        413: ErrorCode.PAYLOAD_TOO_LARGE,
+        422: ErrorCode.VALIDATION_FAILED,
+        429: ErrorCode.RATE_LIMITED,
+        503: ErrorCode.SERVICE_UNAVAILABLE,
+    }
+    code = code_map.get(exc.status_code, ErrorCode.INTERNAL_ERROR)
+
+    body = {
+        "error": {
+            "code": code,
+            "message": message,
+            "suggestion": None,
+            "retryable": exc.status_code >= 500,
+        }
+    }
+    if isinstance(detail, dict):
+        body["error"].update({k: v for k, v in detail.items() if k != "message"})
+
+    return JSONResponse(status_code=exc.status_code, content=body)
 
 
 # ── 常用错误预设（前端可直接根据 code 复用建议文本） ────

@@ -78,20 +78,39 @@ class RateLimitMiddleware:
         rate: int = 60,
         per_seconds: int = 60,
         exempt_paths: Tuple[str, ...] = ("/api/v1/health", "/health"),
+        per_endpoint: Optional[Dict[str, Tuple[int, int]]] = None,
     ):
         """
         Args:
             app: The ASGI application.
-            rate: Max requests per `per_seconds` window.
+            rate: Max requests per `per_seconds` window (default).
             per_seconds: Time window in seconds.
             exempt_paths: Paths not subject to rate limiting.
+            per_endpoint: {path_prefix: (rate, per_seconds)} for special endpoints.
+                          Example: {"/api/v1/resources/calendar": (10, 60)} for stricter limit.
         """
         self.app = app
-        self.rate = rate / per_seconds  # tokens per second
-        self.capacity = rate            # burst = full window
+        self.default_rate = rate / per_seconds
+        self.default_capacity = rate
         self.exempt_paths = set(exempt_paths)
-        self._buckets: Dict[str, TokenBucket] = {}
+        # Per-endpoint limits (path_prefix -> (tokens_per_sec, capacity))
+        self.per_endpoint: Dict[str, Tuple[float, float]] = {}
+        if per_endpoint:
+            for prefix, (r, ps) in per_endpoint.items():
+                self.per_endpoint[prefix] = (r / ps, r)
+        # Use (ip, endpoint_key) tuple as bucket key
+        self._buckets: Dict[Tuple[str, str], TokenBucket] = {}
         self._last_cleanup = time.monotonic()
+
+    def _make_bucket(self, rate_per_sec: float, capacity: float) -> TokenBucket:
+        return TokenBucket(rate_per_sec, capacity)
+
+    def _get_endpoint_key(self, path: str) -> Tuple[float, float]:
+        """Match path prefix to per-endpoint limit. Returns (rate, capacity)."""
+        for prefix, (rate, cap) in self.per_endpoint.items():
+            if path.startswith(prefix):
+                return rate, cap
+        return self.default_rate, self.default_capacity
 
     # Phase 12.29: 可信代理列表（生产环境配置，为空时不信任 X-Forwarded-For）
     TRUSTED_PROXIES: Tuple[str, ...] = tuple()
@@ -140,12 +159,13 @@ class RateLimitMiddleware:
         if now - self._last_cleanup < 300:  # Every 5 min
             return
         self._last_cleanup = now
+        default_cap = self.default_capacity
         stale = [
-            ip for ip, bucket in self._buckets.items()
-            if bucket.tokens >= self.capacity * 0.99  # Full bucket = idle
+            k for k, bucket in self._buckets.items()
+            if bucket.tokens >= bucket.capacity * 0.99  # Full bucket = idle
         ]
-        for ip in stale:
-            del self._buckets[ip]
+        for k in stale:
+            del self._buckets[k]
         if stale:
             logger.debug(f"RateLimit: cleaned {len(stale)} idle buckets")
 
@@ -160,17 +180,20 @@ class RateLimitMiddleware:
             return
 
         ip = self._get_client_ip(scope)
-        if ip not in self._buckets:
-            self._buckets[ip] = TokenBucket(self.rate, self.capacity)
+        rate_per_sec, capacity = self._get_endpoint_key(path)
+        bucket_key = (ip, path.split("/")[3] if "/" in path else path)  # by IP+endpoint
 
-        if self._buckets[ip].consume():
+        if bucket_key not in self._buckets:
+            self._buckets[bucket_key] = TokenBucket(rate_per_sec, capacity)
+
+        if self._buckets[bucket_key].consume():
             self._cleanup_expired()
             await self.app(scope, receive, send)
             return
 
         # Phase 18 M5.3: 限流响应也用统一错误结构(含 suggestion + retryable)
         from app.api.errors import ErrorPresets
-        retry_after = int(60 / self.capacity) + 1
+        retry_after = int(60 / capacity) + 1
         preset = ErrorPresets.get("rate_limited", retry_after=retry_after)
         import json
         body_dict = {
