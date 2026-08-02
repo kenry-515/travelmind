@@ -25,8 +25,26 @@ from jsonschema import Draft7Validator
 
 logger = logging.getLogger(__name__)
 
-_ROOT = Path(__file__).resolve().parents[3]
-SCHEMA_PATH = _ROOT / "docs" / "itinerary.schema.json"
+# Phase 5 P3.1: 兼容 Docker mount, 不依赖 parents depth
+# 优先查 env ITINERARY_SCHEMA_PATH, 否则用相对 module 位置
+import os as _os
+_SCHEMA_ENV = _os.environ.get("ITINERARY_SCHEMA_PATH")
+if _SCHEMA_ENV:
+    SCHEMA_PATH = Path(_SCHEMA_ENV)
+else:
+    _ROOT = Path(__file__).resolve().parents[3]
+    _candidate = _ROOT / "docs" / "itinerary.schema.json"
+    # If parents[3] doesn't have docs/, try parents[2] (Docker mount layout)
+    if not _candidate.exists():
+        _candidate = _ROOT / "itinerary.schema.json"
+    if not _candidate.exists():
+        # Last resort: search up to 4 levels (avoid IndexError)
+        for _p in Path(__file__).resolve().parents[:4]:
+            _test = _p / "docs" / "itinerary.schema.json"
+            if _test.exists():
+                _candidate = _test
+                break
+    SCHEMA_PATH = _candidate
 SCHEMA_VERSION = "1.0"
 
 # Sum(budget.amount) must be within this ratio of the stated 人均预算 stat
