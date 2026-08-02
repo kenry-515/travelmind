@@ -137,12 +137,12 @@ class TestCacheFactory:
         assert c1 is c2
         reset_cache()
 
-    def test_reset_cache(self):
+    def test_reset_cache(self, monkeypatch):
         """reset_cache() should clear the singleton."""
         from app.services.cache_service import reset_cache, get_cache, NoOpCache
+        # Phase 5 P0.7: Force memory mode for this test
+        monkeypatch.setattr("app.services.cache_service.settings.SESSION_STORE", "memory")
         reset_cache()
-        monkeypatch_import = __import__("app.services.cache_service", fromlist=["settings"])
-        # After reset, a new instance should be created
         c1 = get_cache()
         reset_cache()
         c2 = get_cache()

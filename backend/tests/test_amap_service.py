@@ -132,6 +132,20 @@ class TestSignParams:
 # search_poi()
 # =============================================================================
 
+
+
+@pytest.fixture(autouse=True)
+def _clear_amap_cache():
+    """Phase 5 P0.7: Test isolation - clear in-memory cache before each test."""
+    from app.services.amap_service import _local_search_cache, _quota_exceeded
+    _local_search_cache.clear()
+    import app.services.amap_service as _amap
+    _amap._quota_exceeded = False
+    yield
+    _local_search_cache.clear()
+    _amap._quota_exceeded = False
+
+
 class TestSearchPoi:
     """POI 搜索。"""
 

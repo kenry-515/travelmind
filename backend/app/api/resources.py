@@ -28,6 +28,8 @@ from app.agents.resources_agent import (
     full_text_search,
     get_all_tags,
     get_all_categories,
+    get_price_calendar,
+    smart_schedule_advice,
 )
 
 logger = logging.getLogger(__name__)
@@ -172,6 +174,32 @@ async def recommend(
         weather=weather_dict,
         limit=limit,
     )
+
+
+
+
+@router.get("/calendar/{poi_name}")
+async def calendar(
+    poi_name: str,
+    month: Optional[str] = Query(None, description="月份 YYYY-MM, 默认当月"),
+):
+    """POI 31 天价格日历 (weekday/weekend + 季节因子, 无虚拟节假日)."""
+    result = get_price_calendar(poi_name, month=month)
+    if not result:
+        raise HTTPException(status_code=404, detail=f"POI not found: {poi_name}")
+    return result
+
+
+@router.get("/schedule/{poi_name}")
+async def schedule(
+    poi_name: str,
+    date: Optional[str] = Query(None, description="日期 YYYY-MM-DD, 默认明天"),
+):
+    """POI 8 时段调度建议 (08/10/12/14/16/18/20/22)."""
+    result = smart_schedule_advice(poi_name, date=date)
+    if not result:
+        raise HTTPException(status_code=404, detail=f"POI not found: {poi_name}")
+    return result
 
 
 @router.get("/{poi_id}")

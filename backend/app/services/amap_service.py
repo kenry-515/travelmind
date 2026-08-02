@@ -29,6 +29,27 @@ from app.config.settings import settings
 
 logger = logging.getLogger(__name__)
 
+
+# Phase 5 P0.7: AMAP quota protection
+# - In-memory search cache (avoid repeated identical queries)
+# - Fail-fast on quota exceeded (return [] for the rest of the session)
+_local_search_cache: Dict[str, List[Dict[str, Any]]] = {}
+_quota_exceeded = False
+_local_cache_lock = __import__("threading").Lock()
+
+
+def _mark_quota_exceeded() -> None:
+    """Mark AMAP quota as exhausted for this process."""
+    global _quota_exceeded
+    with _local_cache_lock:
+        _quota_exceeded = True
+        logger.warning("AMAP quota exceeded — search_poi will return [] without API call")
+
+
+def _is_quota_exceeded() -> bool:
+    return _quota_exceeded
+
+
 # ── API Key availability ───────────────────────────────────
 
 def is_amap_available() -> bool:
@@ -110,9 +131,20 @@ async def search_poi(
     Returns [] on any failure (treated as 'not found' by callers).
 
     Phase 12.11: Returns [] gracefully when Amap API key is not configured.
+    Phase 5 P0.7: In-memory cache + fail-fast on quota exceeded.
     """
     if not _check_amap_available():
         return []
+
+    # Phase 5 P0.7: Quota fail-fast
+    if _is_quota_exceeded():
+        return []
+
+    # Phase 5 P0.7: In-memory cache (per process, no Redis)
+    cache_key = f"{city}:{keywords}:{limit}"
+    with _local_cache_lock:
+        if cache_key in _local_search_cache:
+            return _local_search_cache[cache_key]
 
     params = _sign_params({
         "key": settings.AMAP_API_KEY,
@@ -139,10 +171,17 @@ async def search_poi(
                 else:
                     raise
         if data.get("status") != "1":
-            logger.debug(f"POI search failed: {data.get('info')} for {keywords}@{city}")
+            info = data.get("info", "") or ""
+            # Phase 5 P0.7: Fail-fast on quota errors
+            if "CUQPS" in info or "EXCEEDED" in info or "QUOTA" in info.upper():
+                _mark_quota_exceeded()
+            logger.debug(f"POI search failed: {info} for {keywords}@{city}")
             return []
 
         results: List[Dict[str, Any]] = []
+        # Phase 5 P0.7: cache success result
+        with _local_cache_lock:
+            _local_search_cache[cache_key] = results  # append后会被覆盖
         for poi in data.get("pois", []):
             lat, lon = None, None
             loc = poi.get("location", "")
@@ -160,6 +199,9 @@ async def search_poi(
                 "lat": lat,
                 "lon": lon,
             })
+        # Phase 5 P0.7: cache final result
+        with _local_cache_lock:
+            _local_search_cache[cache_key] = results
         return results
     except Exception as e:
         logger.debug(f"POI search error for {keywords}@{city}: {e}")
