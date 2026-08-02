@@ -112,6 +112,43 @@ class RateLimitMiddleware:
                 return rate, cap
         return self.default_rate, self.default_capacity
 
+    async def _check_rate_async(
+        self, bucket_key: Tuple[str, str], rate_per_sec: float, capacity: float,
+    ) -> Tuple[bool, int]:
+        """Async 限流检测 (Phase 18 P4: Redis Lua 跨 worker 一致)。
+
+        策略:
+        1. 先检查内存 bucket (廉价)
+        2. 如果内存允许, 再尝试 Redis (生产跨 worker 一致)
+        3. Redis 失败仍用内存结果 (fail-safe)
+        """
+        # Step 1: in-memory check (always available)
+        if bucket_key not in self._buckets:
+            self._buckets[bucket_key] = TokenBucket(rate_per_sec, capacity)
+        memory_allowed = self._buckets[bucket_key].consume()
+
+        # If memory denied, return immediately (no Redis query needed)
+        if not memory_allowed:
+            bucket = self._buckets[bucket_key]
+            needed = 1 - bucket.tokens
+            retry_after = int(needed / rate_per_sec) + 1 if rate_per_sec > 0 else 60
+            return False, retry_after
+
+        # Step 2: memory allowed, also check Redis (production path)
+        redis_key = f"ratelimit:{bucket_key[0]}:{bucket_key[1]}"
+        try:
+            from app.middleware.redis_rate_limit import get_redis_rate_limiter
+            limiter = get_redis_rate_limiter()
+            redis_allowed, redis_retry = await limiter.consume(redis_key, rate_per_sec, capacity)
+            if limiter._redis is not None:
+                # Redis is live, use Redis decision
+                return redis_allowed, redis_retry
+        except Exception as e:
+            logger.debug(f"Redis rate limiter unavailable, using memory: {e}")
+
+        # Redis not connected → return memory result
+        return memory_allowed, 0
+
     # Phase 12.29: 可信代理列表（生产环境配置，为空时不信任 X-Forwarded-For）
     TRUSTED_PROXIES: Tuple[str, ...] = tuple()
 
@@ -183,17 +220,17 @@ class RateLimitMiddleware:
         rate_per_sec, capacity = self._get_endpoint_key(path)
         bucket_key = (ip, path.split("/")[3] if "/" in path else path)  # by IP+endpoint
 
-        if bucket_key not in self._buckets:
-            self._buckets[bucket_key] = TokenBucket(rate_per_sec, capacity)
-
-        if self._buckets[bucket_key].consume():
+        # Phase 18 P4: Redis 限流 (跨 worker 一致), 失败降级到内存
+        allowed, retry_after = await self._check_rate_async(bucket_key, rate_per_sec, capacity)
+        if allowed:
             self._cleanup_expired()
             await self.app(scope, receive, send)
             return
 
         # Phase 18 M5.3: 限流响应也用统一错误结构(含 suggestion + retryable)
         from app.api.errors import ErrorPresets
-        retry_after = int(60 / capacity) + 1
+        if retry_after == 0:
+            retry_after = int(60 / capacity) + 1
         preset = ErrorPresets.get("rate_limited", retry_after=retry_after)
         import json
         body_dict = {

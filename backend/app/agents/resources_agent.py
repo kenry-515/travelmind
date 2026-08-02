@@ -15,6 +15,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 # 复用 guide_agent 的 attractions 加载与内存缓存
 from app.agents.guide_agent import _load_attractions
+from app.services.cache_decorator import cached
 
 logger = logging.getLogger(__name__)
 
@@ -200,6 +201,7 @@ def _weather_fit(poi: Dict[str, Any], weather: Optional[Dict[str, Any]]) -> floa
 
 # ── 公开 API ─────────────────────────────────────────────
 
+@cached(ttl=600, key_prefix="resources_overview")
 def get_resources_overview(city: str = "广州") -> Dict[str, Any]:
     """景区资源调度总览仪表盘 (P0 基础,无破坏性变更)。"""
     attractions = _load_attractions()
@@ -486,6 +488,7 @@ def get_resources_list(
     }
 
 
+@cached(ttl=3600, key_prefix="resources_districts")
 def get_districts(city: str = "广州") -> List[str]:
     """返回广州 11 个区中,有 POI 分布的区 (P3 数据补全后是全部 11 个)。
 
@@ -509,6 +512,7 @@ def get_districts(city: str = "广州") -> List[str]:
     return [d for d in _GZ_DISTRICTS if d in found]
 
 
+@cached(ttl=3600, key_prefix="resources_categories")
 def get_all_categories(city: str = "广州") -> List[Dict[str, Any]]:
     """返回主分类 + 子分类 + 计数。"""
     attractions = _load_attractions()
@@ -532,6 +536,7 @@ def get_all_categories(city: str = "广州") -> List[Dict[str, Any]]:
     return main + sub
 
 
+@cached(ttl=1800, key_prefix="resources_tags")
 def get_all_tags(city: str = "广州", limit: int = 50) -> List[Dict[str, Any]]:
     """返回标签云 (tag + count)。"""
     attractions = _load_attractions()
