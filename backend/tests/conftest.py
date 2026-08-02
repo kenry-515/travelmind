@@ -155,3 +155,18 @@ async def _cleanup_test_data(engine):
                 "DELETE FROM users WHERE device_id LIKE 'test-%'"
             )
         )
+
+
+
+# ── Phase 5 P3.1: Reset session_store singleton (跨 test 状态隔离) ──
+@pytest.fixture(autouse=True)
+def _reset_session_store():
+    """每个 test 前 reset session_store singleton, 避免 Redis 状态污染.
+
+    原因: get_session_store() 是模块级单例, 跨 test 复用同一 Redis client.
+    Test 间可能关闭/重连 Redis, 单例里持有的 client 引用可能变 stale.
+    """
+    from app.services import session_store
+    session_store._store = None
+    yield
+    session_store._store = None

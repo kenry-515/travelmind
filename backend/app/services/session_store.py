@@ -213,7 +213,11 @@ class RedisSessionStore(BaseSessionStore):
         return f"{self.PREFIX}{session_id}"
 
     async def get(self, session_id: str) -> Optional[Dict[str, Any]]:
-        raw = await self._redis.get(self._key(session_id))
+        try:
+            raw = await self._redis.get(self._key(session_id))
+        except Exception as e:
+            logger.warning(f"Redis session get failed: {e}")
+            return None
         if not raw:
             return None
         try:
@@ -222,17 +226,24 @@ class RedisSessionStore(BaseSessionStore):
             return None
 
     async def set(self, session_id: str, state: Dict[str, Any], ttl_seconds: int) -> None:
-        await self._redis.set(
-            self._key(session_id),
-            json.dumps(state, ensure_ascii=False),
-            ex=ttl_seconds,
-        )
+        try:
+            await self._redis.set(
+                self._key(session_id),
+                json.dumps(state, ensure_ascii=False),
+                ex=ttl_seconds,
+            )
+        except Exception as e:
+            # Phase 5 P3.1: Redis 不可用时降级 (不抛)
+            logger.warning(f"Redis session set failed: {e}")
 
     async def delete(self, session_id: str) -> None:
         await self._redis.delete(self._key(session_id))
 
     async def touch(self, session_id: str, ttl_seconds: int) -> None:
-        await self._redis.expire(self._key(session_id), ttl_seconds)
+        try:
+            await self._redis.expire(self._key(session_id), ttl_seconds)
+        except Exception as e:
+            logger.warning(f"Redis session touch failed: {e}")
 
 
 # ── 工厂（线程安全单例） ──────────────────────────────────

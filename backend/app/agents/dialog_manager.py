@@ -146,13 +146,19 @@ async def get_session(session_id: Optional[str]) -> Tuple[str, Dict[str, Any]]:
 
     注意：返回的 state 是内存对象——修改后须用 save_session() 持久化
     （Redis 后端必须显式写回，内存后端为兼容语义也统一显式保存）。
+
+    Phase 5 P3.1: Redis 临时不可用时降级到 in-memory (不抛, 保证 dialog 流可用).
     """
     store = get_session_store()
     if session_id:
-        state = await store.get(session_id)
-        if state is not None:
-            await store.touch(session_id, SESSION_TTL_SECONDS)
-            return session_id, state
+        try:
+            state = await store.get(session_id)
+            if state is not None:
+                await store.touch(session_id, SESSION_TTL_SECONDS)
+                return session_id, state
+        except Exception as e:
+            logger.warning(f"Session store get failed, fallback: {e}")
+            # Fall through to in-memory
 
     sid = session_id or f"dlg_{uuid.uuid4().hex[:12]}"
     state = {
@@ -164,7 +170,11 @@ async def get_session(session_id: Optional[str]) -> Tuple[str, Dict[str, Any]]:
         "messages": [],
         "touched": time.time(),
     }
-    await store.set(sid, state, SESSION_TTL_SECONDS)
+    try:
+        await store.set(sid, state, SESSION_TTL_SECONDS)
+    except Exception as e:
+        logger.warning(f"Session store set failed, in-memory only: {e}")
+        # Session stays in-memory only (lost on restart, but dialog works)
     return sid, state
 
 
