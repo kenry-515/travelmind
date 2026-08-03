@@ -269,3 +269,21 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
+
+
+# Phase 5 P3.3: 支持 `python -m app.main` 启动 (README 用法)
+# README 文档: cd backend && python -m app.main
+if __name__ == "__main__":
+    import uvicorn
+    import os
+    host = os.environ.get("APP_HOST", "0.0.0.0")
+    port = int(os.environ.get("APP_PORT", "8000"))
+    # 兼容 Windows / macOS / Linux
+    reload = os.environ.get("APP_DEBUG", "false").lower() == "true"
+    uvicorn.run(
+        "app.main:app",
+        host=host,
+        port=port,
+        reload=reload,
+        log_level="info",
+    )
