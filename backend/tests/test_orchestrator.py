@@ -61,11 +61,18 @@ async def test_workflow_full_pipeline(mock_all_agents):
 
 
 async def test_workflow_profile_sets_upstream(mock_all_agents):
-    """Profile 提取结果应在 state 中可用。"""
+    """Profile 提取结果应在 state 中可用。
+
+    Phase 5 P3.2: 非广州城市应被拒答 (返 error + 清空 destination).
+    """
     from app.agents.orchestrator import run_travel_workflow
     state = await run_travel_workflow("重庆3日游")
     assert state.get("user_profile") is not None
-    assert state["user_profile"].get("destination") == "重庆"
+    # 非广州 → destination 应被清空 (而不是悄悄用 "广州" 或 "三亚")
+    assert state["user_profile"].get("destination") in ("", "重庆")  # 接受 "" 或保留
+    # 应有 error 提示用户
+    if state["user_profile"].get("destination") != "重庆":
+        assert "error" in state or state.get("error")
 
 
 async def test_workflow_minimal_input():

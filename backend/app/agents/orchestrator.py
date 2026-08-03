@@ -132,7 +132,7 @@ async def _profile_extraction(state: TravelState) -> TravelState:
         profile = await _extract_profile(state["user_input"])
         state["user_profile"] = profile
 
-        # Validate critical fields — short-circuit if destination is empty
+        # Validate critical fields
         dest = (profile or {}).get("destination", "")
         if not dest or not dest.strip():
             logger.warning("Profile extracted but destination is empty — "
@@ -145,22 +145,42 @@ async def _profile_extraction(state: TravelState) -> TravelState:
             intent = (profile or {}).get("search_intent", "general")
             recs = _recommend_destination(tags, companions, constraints, intent)
             if recs:
-                profile["destination"] = recs[0]["city"]
-                profile["auto_recommended"] = True
+                # Phase 5 P3.2: 不要 auto-recommend 替换空 destination
+                # 设 recommended_cities 但不直接选一个填到 destination
+                # 让用户选或后端根据 dialog state 决定
                 profile["recommended_cities"] = recs
-                logger.info(f"Auto-recommended destination: {recs[0]['city']} "
-                           f"(reason: {recs[0]['reason']})")
+                profile["auto_recommended"] = False  # 不要自动选
+                logger.info(f"Recommended cities (user chooses): "
+                           f"{[r['city'] for r in recs[:3]]}")
                 state["user_profile"] = profile
+                _append_error(
+                    state, "profile_extraction",
+                    ValueError(
+                        "未识别到具体目的地，请说明想去哪个城市。"
+                        f"推荐：{[r['city'] for r in recs[:3]]}"
+                    ),
+                )
             else:
                 _append_error(
                     state, "profile_extraction",
                     ValueError(
                         "无法识别目的地，请提供更详细的旅行需求"
-                        "（例如：'想去重庆玩3天'）"
+                        "（例如：'想去广州玩3天'）"
                     ),
                 )
         else:
             logger.info(f"Profile extracted: {dest}")
+            # Phase 5 P3.2: 校验 city 是否在 KB (广州专属)
+            from app.agents.dialog_manager import check_city_coverage
+            covered, reason = check_city_coverage(dest)
+            if not covered:
+                logger.warning(f"Destination '{dest}' not in KB — refusing")
+                profile["destination"] = ""
+                profile["auto_recommended"] = False
+                _append_error(
+                    state, "profile_extraction",
+                    ValueError(reason),  # 包含用户提示: "抱歉「上海」暂不在..."
+                )
     except Exception as e:
         logger.error(f"Profile extraction failed: {e}")
         _append_error(state, "profile_extraction", e)
